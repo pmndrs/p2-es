@@ -1,8 +1,11 @@
 {
-  "name": "p2",
-  "version": "0.7.1",
+  "name": "p2-es",
+  "version": "0.7.2",
   "description": "A JavaScript 2D physics engine.",
   "author": "Stefan Hedman <schteppe@gmail.com> (http://steffe.se)",
+  "contributors": [
+    "Jörg Jäckel (https://github.com/joergjaeckel)"
+  ],
   "keywords": [
     "p2.js",
     "p2",
@@ -16,10 +19,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/schteppe/p2.js.git"
+    "url": "https://github.com/pmndrs/p2-es.git"
   },
   "bugs": {
-    "url": "https://github.com/schteppe/p2.js/issues"
+    "url": "https://github.com/pmndrs/p2-es/issues"
   },
   "licenses": [
     {

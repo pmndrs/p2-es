@@ -1,5 +1,13 @@
-p2.js
+p2-es
 =====
+
+This is a maintained fork of [p2.js](https://github.com/schteppe/p2.js), originally created by Stefan Hedman [@schteppe](https://github.com/schteppe).
+
+It will be a type-safe flatbundle (esm and cjs) which allows for **tree shaking** and usage in modern environments.
+
+For now we forked this repository and updated typescript definitions to develop a React-hook for three.js [use-p2](https://github.com/pmndrs/use-p2)
+
+---
 
 2D rigid body physics engine written in JavaScript. Includes collision detection, contacts, friction, restitution, motors, springs, advanced constraints and various shape types.
 
