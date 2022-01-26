@@ -430,6 +430,10 @@ declare namespace p2 {
         contactSkinSize: number;
     }
 
+    export interface MaterialOptions {
+        id?: number | undefined;
+    }
+
     export class Material {
         static idCounter: number;
 

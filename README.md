@@ -7,6 +7,9 @@ It will be a type-safe flatbundle (esm and cjs) which allows for **tree shaking*
 
 For now we forked this repository and updated typescript definitions to develop a React-hook for three.js [use-p2](https://github.com/pmndrs/use-p2)
 
+### TODO
+- [ ] add hasActiveBodies to World and use in use-p2 (see [cannon-es](https://github.com/pmndrs/cannon-es/blob/master/src/world/World.ts#L868)) 
+
 ---
 
 2D rigid body physics engine written in JavaScript. Includes collision detection, contacts, friction, restitution, motors, springs, advanced constraints and various shape types.
