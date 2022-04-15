@@ -4322,10 +4322,10 @@ pkg-dir@^4.2.0:
   dependencies:
     find-up "^4.0.0"
 
-poly-decomp@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/poly-decomp/-/poly-decomp-0.2.1.tgz#a5cc4088e9e2974070fa1ee23c7e3f2fc5b516d8"
-  integrity sha1-pcxAiOnil0Bw+h7iPH4/L8W1Ftg=
+poly-decomp-es@0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/poly-decomp-es/-/poly-decomp-es-0.4.1.tgz#523e81338ab7e16b2f5648315ddb5a4370e00109"
+  integrity sha512-ClJK/YGQ3A2xCQ1YkxCM5KvHtwplZ9LHHoPlJMJ/+O3EnF7OSq9OcqsOfMilgIjZiFpccBobpb4nnDlEKdg+ig==
 
 prelude-ls@^1.2.1:
   version "1.2.1"

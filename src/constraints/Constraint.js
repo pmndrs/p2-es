@@ -1,4 +1,4 @@
-module.exports = Constraint;
+module.exports = Constraint
 
 /**
  * Base constraint class.
@@ -13,13 +13,13 @@ module.exports = Constraint;
  * @param {Object} [options.collideConnected=true]
  */
 function Constraint(bodyA, bodyB, type, options){
-    options = options || {};
+    options = options || {}
 
     /**
      * The type of constraint. May be one of Constraint.DISTANCE, Constraint.GEAR, Constraint.LOCK, Constraint.PRISMATIC or Constraint.REVOLUTE.
      * @property {number} type
      */
-    this.type = type;
+    this.type = type
 
     /**
      * Equations to be solved in this constraint
@@ -27,21 +27,21 @@ function Constraint(bodyA, bodyB, type, options){
      * @property equations
      * @type {Array}
      */
-    this.equations = [];
+    this.equations = []
 
     /**
      * First body participating in the constraint.
      * @property bodyA
      * @type {Body}
      */
-    this.bodyA = bodyA;
+    this.bodyA = bodyA
 
     /**
      * Second body participating in the constraint.
      * @property bodyB
      * @type {Body}
      */
-    this.bodyB = bodyB;
+    this.bodyB = bodyB
 
     /**
      * Set to true if you want the connected bodies to collide.
@@ -49,15 +49,15 @@ function Constraint(bodyA, bodyB, type, options){
      * @type {Boolean}
      * @default true
      */
-    this.collideConnected = options.collideConnected !== undefined ? options.collideConnected : true;
+    this.collideConnected = options.collideConnected !== undefined ? options.collideConnected : true
 
     // Wake up bodies when connected
     if(options.wakeUpBodies !== false){
         if(bodyA){
-            bodyA.wakeUp();
+            bodyA.wakeUp()
         }
         if(bodyB){
-            bodyB.wakeUp();
+            bodyB.wakeUp()
         }
     }
 }
@@ -67,38 +67,38 @@ function Constraint(bodyA, bodyB, type, options){
  * @method update
  */
 Constraint.prototype.update = function(){
-    throw new Error("method update() not implmemented in this Constraint subclass!");
-};
+    throw new Error("method update() not implmemented in this Constraint subclass!")
+}
 
 /**
  * @static
  * @property {number} DISTANCE
  */
-Constraint.DISTANCE = 1;
+Constraint.DISTANCE = 1
 
 /**
  * @static
  * @property {number} GEAR
  */
-Constraint.GEAR = 2;
+Constraint.GEAR = 2
 
 /**
  * @static
  * @property {number} LOCK
  */
-Constraint.LOCK = 3;
+Constraint.LOCK = 3
 
 /**
  * @static
  * @property {number} PRISMATIC
  */
-Constraint.PRISMATIC = 4;
+Constraint.PRISMATIC = 4
 
 /**
  * @static
  * @property {number} REVOLUTE
  */
-Constraint.REVOLUTE = 5;
+Constraint.REVOLUTE = 5
 
 /**
  * Set stiffness for this constraint.
@@ -106,13 +106,13 @@ Constraint.REVOLUTE = 5;
  * @param {Number} stiffness
  */
 Constraint.prototype.setStiffness = function(stiffness){
-    var eqs = this.equations;
+    var eqs = this.equations
     for(var i=0; i !== eqs.length; i++){
-        var eq = eqs[i];
-        eq.stiffness = stiffness;
-        eq.needsUpdate = true;
+        var eq = eqs[i]
+        eq.stiffness = stiffness
+        eq.needsUpdate = true
     }
-};
+}
 
 /**
  * Set relaxation for this constraint.
@@ -120,22 +120,22 @@ Constraint.prototype.setStiffness = function(stiffness){
  * @param {Number} relaxation
  */
 Constraint.prototype.setRelaxation = function(relaxation){
-    var eqs = this.equations;
+    var eqs = this.equations
     for(var i=0; i !== eqs.length; i++){
-        var eq = eqs[i];
-        eq.relaxation = relaxation;
-        eq.needsUpdate = true;
+        var eq = eqs[i]
+        eq.relaxation = relaxation
+        eq.needsUpdate = true
     }
-};
+}
 
 /**
  * @method setMaxBias
  * @param {Number} maxBias
  */
 Constraint.prototype.setMaxBias = function(maxBias){
-    var eqs = this.equations;
+    var eqs = this.equations
     for(var i=0; i !== eqs.length; i++){
-        var eq = eqs[i];
-        eq.maxBias = maxBias;
+        var eq = eqs[i]
+        eq.maxBias = maxBias
     }
-};
+}

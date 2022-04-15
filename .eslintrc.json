@@ -21,7 +21,13 @@
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/no-namespace": ["error", { "allowDeclarations": true }],
         "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }],
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          {
+            "ignoreRestSiblings": true,
+            "argsIgnorePattern": "^_"
+          }
+        ],
         "@typescript-eslint/quotes": [
           "error",
           "single",

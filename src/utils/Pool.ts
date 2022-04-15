@@ -48,9 +48,9 @@ export abstract class Pool<T> {
      * Get an object from the pool or create a new instance.
      * @return an object from the pool
      */
-    get() {
+    get(): T {
         const objects = this.objects
-        return objects.length ? objects.pop() : this.create()
+        return objects.length ? objects.pop() as T : this.create()
     }
 
     /**

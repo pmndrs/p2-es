@@ -1,4 +1,4 @@
-import * as vec2 from './../../src/math/vec2'
+import * as vec2 from '../../src/math/vec2'
 
 describe('vec2', () => {
     test('centroid', () => {

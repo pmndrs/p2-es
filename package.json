@@ -76,7 +76,7 @@
     "prettier": "^2.5.1"
   },
   "dependencies": {
-    "poly-decomp": "0.2.1"
+    "poly-decomp-es": "0.4.1"
   },
   "lint-staged": {
     "*.{js,json,jsx,ts,tsx,md,yaml,yml}": "prettier --write"

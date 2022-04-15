@@ -59,8 +59,8 @@ export function crossVZ(out: Vec2, vec: Vec2, zcomp: number): Vec2 {
  * @return
  */
 export function crossZV(out: Vec2, zcomp: number, vec: Vec2) {
-    vec2.rotate(out, vec, Math.PI / 2) // Rotate according to the right hand rule
-    vec2.scale(out, out, zcomp) // Scale with z
+    rotate(out, vec, Math.PI / 2) // Rotate according to the right hand rule
+    scale(out, out, zcomp) // Scale with z
     return out
 }
 
@@ -436,7 +436,7 @@ export function reflect(out: Vec2, vector: Vec2, normal: Vec2): Vec2 {
  * @return True if there was an intersection, otherwise false.
  */
 export function getLineSegmentsIntersection(out: Vec2, p0: Vec2, p1: Vec2, p2: Vec2, p3: Vec2): boolean {
-    const t = vec2.getLineSegmentsIntersectionFraction(p0, p1, p2, p3)
+    const t = getLineSegmentsIntersectionFraction(p0, p1, p2, p3)
     if (t < 0) {
         return false
     } else {
