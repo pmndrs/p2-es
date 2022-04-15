@@ -1,8 +1,0 @@
-{
-    "name": "p2.js",
-    "options": {
-        "outdir" : "docs",
-        "paths" : ["./src/"],
-        "exclude": ".DS_Store,.svn,CVS,.git,build_rollup_tmp,build_tmp,gl-matrix"
-    }
-}

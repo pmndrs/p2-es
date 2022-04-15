@@ -1,8 +1,5 @@
 node_modules/
 coverage/
-types/
-yarn-error.log
-.size-snapshot.json
 Thumbs.db
 ehthumbs.db
 Desktop.ini
@@ -14,4 +11,3 @@ package-lock.json
 coverage/
 .idea
 .rpt2_cache/
-.eslintcache

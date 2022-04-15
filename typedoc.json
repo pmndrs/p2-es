@@ -1,0 +1,12 @@
+{
+  "entryPoints": "./src/cannon-es.ts",
+  "out": "docs/",
+  "readme": "./getting-started.md",
+  "customCss": "./docs-style.css",
+  "cleanOutputDir": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeExternals": true,
+  "hideGenerator": true,
+  "excludeNotDocumented": true
+}

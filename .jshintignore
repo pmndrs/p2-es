@@ -1,8 +1,0 @@
-build
-examples
-node_modules
-Gruntfile.js
-README.md
-src/p2.js
-src/math/polyk.js
-src/wrapper
