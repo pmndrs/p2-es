@@ -155,7 +155,7 @@ export class TopDownVehicle {
     wheels: WheelConstraint[]
     world: World | null
 
-    preStepCallback: () => void
+    postStepCallback: () => void
 
     constructor(chassisBody: Body) {
         this.chassisBody = chassisBody
@@ -166,7 +166,7 @@ export class TopDownVehicle {
 
         this.world = null
 
-        this.preStepCallback = () => {
+        this.postStepCallback = () => {
             this.update()
         }
     }
@@ -174,7 +174,7 @@ export class TopDownVehicle {
     addToWorld(world: World): void {
         this.world = world
         world.addBody(this.groundBody)
-        world.on('preStep', this.preStepCallback)
+        world.on('postStep', this.postStepCallback)
         for (let i = 0; i < this.wheels.length; i++) {
             const wheel = this.wheels[i]
             world.addConstraint(wheel)
@@ -187,7 +187,7 @@ export class TopDownVehicle {
         }
 
         this.world.removeBody(this.groundBody)
-        this.world.off('preStep', this.preStepCallback)
+        this.world.off('postStep', this.postStepCallback)
         for (let i = 0; i < this.wheels.length; i++) {
             const wheel = this.wheels[i]
             this.world.removeConstraint(wheel)

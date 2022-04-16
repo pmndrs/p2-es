@@ -35,9 +35,23 @@ export interface BodyOptions {
     fixedY?: boolean | undefined
 }
 
-export type SleepyEvent = typeof Body.sleepyEvent
-export type SleepEvent = typeof Body.sleepEvent
-export type WakeUpEvent = typeof Body.wakeUpEvent
+export type SleepyEvent = {
+    type: 'sleepy',
+}
+
+export type SleepEvent = {
+    type: 'sleep',
+}
+
+export type WakeUpEvent = {
+    type: 'wakeup',
+}
+
+export type BodyEventMap = {
+    sleepy: SleepyEvent
+    sleep: SleepEvent
+    wakeup: WakeUpEvent
+}
 
 /**
  * A rigid body. Has got a center of mass, position, velocity and a number of
@@ -81,19 +95,7 @@ export type WakeUpEvent = typeof Body.wakeUpEvent
  *     platformBody.addShape(boxShape);
  *     world.addBody(platformBody);
  */
-export class Body extends EventEmitter {
-    static sleepyEvent = {
-        type: 'sleepy',
-    }
-
-    static sleepEvent = {
-        type: 'sleep',
-    }
-
-    static wakeUpEvent = {
-        type: 'wakeup',
-    }
-
+export class Body extends EventEmitter<BodyEventMap> {
     /**
      * Dynamic body.
      */
@@ -1048,7 +1050,9 @@ export class Body extends EventEmitter {
         this.sleepState = Body.AWAKE
         this.idleTime = 0
         if (s !== Body.AWAKE) {
-            this.emit(Body.wakeUpEvent)
+            this.emit({
+                type: 'wakeup'
+            } as WakeUpEvent)
         }
     }
 
@@ -1060,7 +1064,9 @@ export class Body extends EventEmitter {
         this.angularVelocity = this.angularForce = 0
         vec2.set(this.velocity, 0, 0)
         vec2.set(this.force, 0, 0)
-        this.emit(Body.sleepEvent)
+        this.emit({
+            type: 'sleep',
+        })
     }
 
     /**
@@ -1087,7 +1093,9 @@ export class Body extends EventEmitter {
             this.idleTime += dt
             if (this.sleepState !== Body.SLEEPY) {
                 this.sleepState = Body.SLEEPY
-                this.emit(Body.sleepyEvent)
+                this.emit({
+                    type: 'sleepy'
+                })
             }
         }
 

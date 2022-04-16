@@ -1,5 +1,4 @@
 import type { Equation } from '../equations/Equation'
-import { EventEmitter } from '../events/EventEmitter'
 import type { World } from '../world/World'
 
 export interface SolverOptions {
@@ -9,7 +8,7 @@ export interface SolverOptions {
 /**
  * Base class for constraint solvers.
  */
-export abstract class Solver extends EventEmitter {
+export abstract class Solver {
     /**
      * Gauss-Seidel solver.
      */
@@ -31,7 +30,6 @@ export abstract class Solver extends EventEmitter {
     equationSortFunction?: (a: Equation, b: Equation) => number
 
     constructor(options: SolverOptions | undefined, type: typeof Solver.GS) {
-        super()
         options = options || {}
         this.type = type
         this.equations = []

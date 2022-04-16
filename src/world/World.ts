@@ -79,9 +79,21 @@ export type PreSolveEvent = {
     frictionEquations: FrictionEquation[]
 }
 
+export type WorldEventMap = {
+    postStep: PostStepEvent
+    addBody: AddBodyEvent
+    removeBody: RemoveBodyEvent
+    addSpring: AddSpringEvent
+    impact: ImpactEvent
+    postBroadphase: PostBroadphaseEvent
+    beginContact: BeginContactEvent
+    endContact: EndContactEvent
+    preSolve: PreSolveEvent
+}
+
 export interface WorldOptions {
     solver?: Solver | undefined
-    gravity?: [number, number] | undefined
+    gravity?: Vec2 | undefined
     broadphase?: Broadphase | undefined
     islandSplit?: boolean | undefined
 }
@@ -96,7 +108,7 @@ export interface WorldOptions {
  *     });
  *     world.addBody(new Body());
  */
-export class World extends EventEmitter {
+export class World extends EventEmitter<WorldEventMap> {
     /**
      * Never deactivate bodies.
      */

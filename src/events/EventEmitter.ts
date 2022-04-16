@@ -13,9 +13,9 @@
  *         message: 'Hello world!'
  *     });
  */
-export class EventEmitter {
+export class EventEmitter<EventMap extends Record<string, any>> {
     private tmpArray: Function[] = []
-    private _listeners: { [type: string]: Function[] } = {}
+    private listeners: Partial<Record<keyof EventMap, Function[]>> = {}
 
     /**
      * Add an event listener
@@ -27,14 +27,19 @@ export class EventEmitter {
      *         console.log('myEvt was triggered!');
      *     });
      */
-    on<E>(type: string, listener: (e: E) => void, context?: any) {
+    on<EventName extends keyof EventMap>(
+        type: EventName,
+        listener: (e: EventMap[EventName]) => void,
+        context?: any
+    ) {
         (listener as any).context = context || this
-        const listeners = this._listeners
-        if (listeners[type] === undefined) {
-            listeners[type] = []
+        let listeners = this.listeners[type]
+        if (listeners === undefined) {
+            listeners = []
+            this.listeners[type] = listeners   
         }
-        if (listeners[type].indexOf(listener) === -1) {
-            listeners[type].push(listener)
+        if (listeners.indexOf(listener) === -1) {
+            listeners.push(listener)
         }
         return this
     }
@@ -48,14 +53,14 @@ export class EventEmitter {
      *     emitter.on('myEvent', handler); // Add handler
      *     emitter.off('myEvent', handler); // Remove handler
      */
-    off(type: string, listener: Function): EventEmitter {
-        const listeners = this._listeners
-        if (!listeners || !listeners[type]) {
+    off<EventName extends keyof EventMap>(type: EventName, listener: Function): EventEmitter<EventMap> {
+        const listeners = this.listeners[type]
+        if (!listeners) {
             return this
         }
-        const index = listeners[type].indexOf(listener)
+        const index = listeners.indexOf(listener)
         if (index !== -1) {
-            listeners[type].splice(index, 1)
+            listeners.splice(index, 1)
         }
         return this
     }
@@ -67,17 +72,17 @@ export class EventEmitter {
      * @param listener
      * @return
      */
-    has(type: string, listener?: Function): boolean {
-        if (this._listeners === undefined) {
+    has<EventName extends keyof EventMap>(type: EventName, listener?: Function): boolean {
+        if (this.listeners === undefined) {
             return false
         }
-        const listeners = this._listeners
+        const listeners = this.listeners[type]
         if (listener) {
-            if (listeners[type] !== undefined && listeners[type].indexOf(listener) !== -1) {
+            if (listeners !== undefined && listeners.indexOf(listener) !== -1) {
                 return true
             }
         } else {
-            if (listeners[type] !== undefined) {
+            if (listeners !== undefined) {
                 return true
             }
         }
@@ -96,11 +101,11 @@ export class EventEmitter {
      *         customData: 123
      *     });
      */
-    emit<T extends { type: string }>(event: T) {
-        if (this._listeners === undefined) {
+    emit<E extends keyof EventMap>(event: EventMap[E]) {
+        if (this.listeners === undefined) {
             return this
         }
-        const listeners = this._listeners
+        const listeners = this.listeners
         const listenerArray = listeners[event.type]
 
         if (listenerArray !== undefined) {
