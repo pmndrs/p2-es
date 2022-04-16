@@ -27,7 +27,6 @@ export interface ShapeOptions extends SharedShapeOptions {
         | typeof Shape.BOX
         | typeof Shape.CAPSULE
         | typeof Shape.HEIGHTFIELD
-        | 0
 }
 
 /**
@@ -142,24 +141,55 @@ export abstract class Shape {
      */
     sensor: boolean
 
+    /**
+     * ID counter for shapes
+     */
     static idCounter = 0
 
-    static CIRCLE = 1
+    /**
+     * Circle shape type
+     */
+    static CIRCLE: 1 = 1
 
-    static PARTICLE = 2
+    /**
+     * Particle shape type
+     */
+    static PARTICLE: 2 = 2
 
-    static PLANE = 4
+    /**
+     * Plane shape type
+     */
+    static PLANE: 4 = 4
 
-    static CONVEX = 8
+    /**
+     * Convex shape type
+     */
+    static CONVEX: 8 = 8
 
-    static LINE = 16
+    /**
+     * Line shape type
+     */
+    static LINE: 16 = 16
 
-    static BOX = 32
+    /**
+     * Box shape type
+     */
+    static BOX: 32 = 32
 
-    static CAPSULE = 64
+    /**
+     * Capsule shape type
+     */
+    static CAPSULE: 64 = 64
 
-    static HEIGHTFIELD = 128
+    /**
+     * Heightfield shape type
+     */
+    static HEIGHTFIELD: 128 = 128
 
+    /**
+     * Constructor for a Shape
+     * @param options
+     */
     constructor(options: ShapeOptions) {
         this.id = Shape.idCounter++
         this.body = null
@@ -197,6 +227,14 @@ export abstract class Shape {
     abstract computeMomentOfInertia(): number
 
     /**
+     * Compute the world axis-aligned bounding box (AABB) of this shape.
+     * @param out The resulting AABB.
+     * @param position World position of the shape.
+     * @param angle World angle of the shape.
+     */
+    abstract computeAABB(out?: AABB, position?: Vec2, angle?: number): void
+
+    /**
      * Updates the bounding circle radius of this shape.
      */
     updateBoundingRadius(): void {}
@@ -205,14 +243,6 @@ export abstract class Shape {
      * Update the .area property of the shape.
      */
     updateArea(): void {}
-
-    /**
-     * Compute the world axis-aligned bounding box (AABB) of this shape.
-     * @param out The resulting AABB.
-     * @param position World position of the shape.
-     * @param angle World angle of the shape.
-     */
-    abstract computeAABB(out?: AABB, position?: Vec2, angle?: number): void
 
     /**
      * Perform raycasting on this shape.
