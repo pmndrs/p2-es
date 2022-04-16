@@ -5,7 +5,7 @@ import { World } from '../../src/world/World'
 
 describe('Constraints: Constraint', () => {
     test('construct', () => {
-        new Constraint(new Body(), new Body(), 0)
+        new Constraint(new Body(), new Body(), 1)
     })
 
     test('setMaxBias', () => {
