@@ -56,7 +56,6 @@
   "rules": {
     "eol-last": ["error", "always"],
     "es/no-logical-assignment-operators": "error",
-    "es/no-nullish-coalescing-operators": "error",
     "no-debugger": "error",
     "no-unused-vars": ["error", { "ignoreRestSiblings": true }],
     "semi": ["error", "never"],

@@ -27,14 +27,16 @@ export class Line extends Shape {
      */
     length: number
 
-    constructor({ length = 1, ...rest }: LineOptions) {
-        const options = {
-            ...rest,
-            length,
+    constructor(options: LineOptions = {}) {
+        const params = {
+            ...options,
+            type: Shape.LINE,
+            length: options.length ?? 1,
         }
-        super(options)
 
-        this.length = length
+        super(params)
+
+        this.length = params.length
 
         this.updateBoundingRadius()
         this.updateArea()

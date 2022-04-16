@@ -33,15 +33,18 @@ export class Capsule extends Shape {
      */
     radius: number
 
-    constructor({ length = 1, radius = 1, ...rest }: CapsuleOptions) {
-        super({
-            ...rest,
-            length,
-            radius,
-        } as CapsuleOptions)
+    constructor(options: CapsuleOptions = {}) {
+        const params = {
+            ...options,
+            type: Shape.CAPSULE,
+            length: options.length ?? 1,
+            radius: options.radius ?? 1,
+        }
 
-        this.length = length
-        this.radius = radius
+        super(params)
+
+        this.length = params.length
+        this.radius = params.radius
 
         this.updateBoundingRadius()
         this.updateArea()

@@ -124,9 +124,9 @@ export class Narrowphase {
 
                 if (shapeA.type <= shapeB.type) {
                     if (
-                        // @ts-expect-error todo - variable arguments
                         this.narrowphases[shapeA.type | shapeB.type](
                             bodyA,
+                            // @ts-expect-error todo
                             shapeA,
                             shapePositionA,
                             shapeA.angle + bodyA.angle,
@@ -141,9 +141,9 @@ export class Narrowphase {
                     }
                 } else {
                     if (
-                        // @ts-expect-error todo - variable arguments
                         this.narrowphases[shapeA.type | shapeB.type](
                             bodyB,
+                            // @ts-expect-error todo
                             shapeB,
                             shapePositionB,
                             shapeB.angle + bodyB.angle,
@@ -323,7 +323,7 @@ export class Narrowphase {
         _lineShape: Line,
         _lineOffset: Vec2,
         _lineAngle: number,
-        _justTest: boolean
+        _justTest = false
     ): number => {
         return 0
     }
@@ -351,7 +351,7 @@ export class Narrowphase {
         _boxShape: Box,
         _boxOffset: Vec2,
         _boxAngle: number,
-        _justTest: boolean
+        _justTest = false
     ): number => {
         // TODO
         return 0
@@ -380,7 +380,7 @@ export class Narrowphase {
         capsuleShape: Capsule,
         capsulePosition: Vec2,
         capsuleAngle: number,
-        justTest: boolean
+        justTest = false
     ): number => {
         // Check the circles
         // Add offsets!
@@ -461,7 +461,7 @@ export class Narrowphase {
         _capsuleShape: Capsule,
         _capsulePosition: Vec2,
         _capsuleAngle: number,
-        _justTest: boolean
+        _justTest = false
     ): number => {
         // TODO
         return 0
@@ -489,7 +489,7 @@ export class Narrowphase {
         sj: Capsule,
         xj: Vec2,
         aj: number,
-        justTest: boolean
+        justTest = false
     ): number => {
         // todo - was undefined
         let enableFrictionBefore = true
@@ -612,7 +612,7 @@ export class Narrowphase {
         _shapeB: Line,
         _positionB: Vec2,
         _angleB: number,
-        _justTest: boolean
+        _justTest = false
     ): number => {
         // TODO
         return 0
@@ -640,7 +640,7 @@ export class Narrowphase {
         lineShape: Line,
         lineOffset: Vec2,
         lineAngle: number,
-        justTest: boolean
+        justTest = false
     ): number => {
         const worldVertex0 = tmp1
         const worldVertex1 = tmp2
@@ -752,7 +752,7 @@ export class Narrowphase {
         capsuleShape: Capsule,
         capsulePosition: Vec2,
         capsuleAngle: number,
-        justTest: boolean
+        justTest = false
     ): number => {
         return this.circleLine(
             particleBody,
@@ -793,9 +793,9 @@ export class Narrowphase {
         lineShape: Line,
         lineOffset: Vec2,
         lineAngle: number,
-        justTest: boolean,
-        lineRadius: number,
-        circleRadius: number
+        justTest = false,
+        lineRadius?: number,
+        circleRadius?: number
     ): number => {
         lineRadius = lineRadius || 0
         circleRadius = circleRadius !== undefined ? circleRadius : circleShape.radius
@@ -956,7 +956,7 @@ export class Narrowphase {
         sj: Capsule,
         xj: Vec2,
         aj: number,
-        justTest: boolean
+        justTest = false
     ): number => {
         return this.circleLine(bi, si, xi, ai, bj, sj, xj, aj, justTest, si.radius, sj.radius)
     }
@@ -984,8 +984,8 @@ export class Narrowphase {
         convexShape: Convex,
         convexOffset: Vec2,
         convexAngle: number,
-        justTest: boolean,
-        circleRadius: number
+        justTest = false,
+        circleRadius?: number
     ): number => {
         circleRadius = circleRadius !== undefined ? circleRadius : circleShape.radius
 
@@ -1170,7 +1170,7 @@ export class Narrowphase {
         convexShape: Convex,
         convexOffset: Vec2,
         convexAngle: number,
-        justTest: boolean
+        justTest = false
     ): number => {
         const worldVertex0 = tmp1
         const worldVertex1 = tmp2
@@ -1283,9 +1283,9 @@ export class Narrowphase {
         shapeB: Circle | Capsule,
         offsetB: Vec2,
         angleB: number,
-        justTest: boolean,
-        radiusA: number,
-        radiusB: number
+        justTest = false,
+        radiusA?: number,
+        radiusB?: number
     ): number => {
         const dist = tmp1
         radiusA = radiusA || shapeA.radius
@@ -1346,7 +1346,7 @@ export class Narrowphase {
         convexShape: Convex,
         convexOffset: Vec2,
         convexAngle: number,
-        justTest: boolean
+        justTest = false
     ): number => {
         const worldVertex = tmp1
         const worldNormal = tmp2
@@ -1437,7 +1437,7 @@ export class Narrowphase {
         planeShape: Plane,
         planeOffset: Vec2,
         planeAngle: number,
-        justTest: boolean
+        justTest = false
     ): number => {
         const dist = tmp1,
             worldNormal = tmp2
@@ -1486,7 +1486,7 @@ export class Narrowphase {
         particleShape: Particle,
         particleOffset: Vec2,
         particleAngle: number,
-        justTest: boolean
+        justTest = false
     ): number => {
         const dist = tmp1
         const circleRadius = circleShape.radius
@@ -1546,7 +1546,7 @@ export class Narrowphase {
         capsuleShape: Capsule,
         capsuleOffset: Vec2,
         capsuleAngle: number,
-        justTest: boolean
+        justTest = false
     ): number => {
         const end1 = planeCapsule_tmp1,
             end2 = planeCapsule_tmp2,
@@ -1634,7 +1634,7 @@ export class Narrowphase {
         planeShape: Plane,
         planeOffset: Vec2,
         planeAngle: number,
-        justTest: boolean
+        justTest = false
     ): number => {
         const circleRadius = circleShape.radius
 
@@ -1710,7 +1710,7 @@ export class Narrowphase {
         polyB: Convex,
         positionB: Vec2,
         angleB: number,
-        justTest: boolean
+        justTest = false
     ): number => {
         const totalRadius = 0
         const dist = collidePolygons_dist
@@ -1883,8 +1883,8 @@ export class Narrowphase {
         hfShape: Heightfield,
         hfPos: Vec2,
         hfAngle: number,
-        justTest: boolean,
-        radius: number
+        justTest = false,
+        radius?: number
     ): number => {
         radius = radius || circleShape.radius
 
@@ -2066,7 +2066,7 @@ export class Narrowphase {
         hfShape: Heightfield,
         hfPos: Vec2,
         hfAngle: number,
-        justTest: boolean
+        justTest = false
     ): number => {
         const data = hfShape.heights,
             w = hfShape.elementWidth,

@@ -59,27 +59,26 @@ export class Convex extends Shape {
      * Constructor for Convex shape
      * @param options
      */
-    constructor({
-        vertices = [],
-        axes = [],
-        ...rest
-    }: ConvexOptions) {
-        const options = {
-            ...rest,
-            vertices,
-            axes
+    constructor(options: ConvexOptions = {}) {
+        const params = {
+            ...options,
+            type: Shape.CONVEX,
+            vertices: options.vertices ?? [],
+            axes: options.axes ?? []
         }
-        super(options)
-        this.axes = axes
+
+        super(params)
+
+        this.axes = params.axes
 
         // Copy the verts
         this.vertices = []
-        for (let i = 0; i < vertices.length; i++) {
-            this.vertices.push(vec2.clone(vertices[i]))
+        for (let i = 0; i < params.vertices.length; i++) {
+            this.vertices.push(vec2.clone(params.vertices[i]))
         }
 
         this.normals = []
-        for (let i = 0; i < vertices.length; i++) {
+        for (let i = 0; i < params.vertices.length; i++) {
             this.normals.push(vec2.create())
         }
         this.updateNormals()

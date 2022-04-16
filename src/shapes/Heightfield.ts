@@ -56,23 +56,25 @@ export class Heightfield extends Shape {
      */
     elementWidth: number
 
-    constructor({ heights = [], elementWidth = 0.1, ...rest }: HeightfieldOptions) {
-        const options = {
-            ...rest,
-            heights,
-            elementWidth,
+    constructor(options: HeightfieldOptions = {}) {
+        const params = {
+            ...options,
+            type: Shape.HEIGHTFIELD,
+            heights: options.heights ?? [],
+            elementWidth: options.elementWidth ?? 0.1,
         }
-        super(options as HeightfieldOptions)
 
-        this.heights = options.heights.slice(0)
+        super(params)
 
-        this.maxValue = options.maxValue
+        this.heights = params.heights.slice(0)
 
-        this.minValue = options.minValue
+        this.maxValue = params.maxValue
 
-        this.elementWidth = options.elementWidth !== undefined ? options.elementWidth : 0.1
+        this.minValue = params.minValue
 
-        if (options.maxValue === undefined || options.minValue === undefined) {
+        this.elementWidth = params.elementWidth !== undefined ? params.elementWidth : 0.1
+
+        if (params.maxValue === undefined || params.minValue === undefined) {
             this.updateMaxMinValues()
         }
 

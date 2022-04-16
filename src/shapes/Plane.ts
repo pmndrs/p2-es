@@ -3,7 +3,6 @@ import type { Ray } from '../collision/Ray'
 import type { RaycastResult } from '../collision/RaycastResult'
 import * as vec2 from '../math/vec2'
 import type { Vec2 } from '../types'
-import { Utils } from '../utils/Utils'
 import type { SharedShapeOptions } from './Shape'
 import { Shape } from './Shape'
 
@@ -16,9 +15,11 @@ import { Shape } from './Shape'
  *     body.addShape(shape);
  */
 export class Plane extends Shape {
-    constructor(options?: SharedShapeOptions) {
-        options = options ? Utils.shallowClone(options) : {}
-        super(options)
+    constructor(options: SharedShapeOptions = {}) {
+        super({
+            ...options,
+            type: Shape.PLANE,
+        })
 
         this.updateBoundingRadius()
         this.updateArea()

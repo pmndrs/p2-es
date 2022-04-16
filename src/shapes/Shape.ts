@@ -18,7 +18,7 @@ export interface SharedShapeOptions {
 }
 
 export interface ShapeOptions extends SharedShapeOptions {
-    type?:
+    type:
         | typeof Shape.CIRCLE
         | typeof Shape.PARTICLE
         | typeof Shape.PLANE
@@ -27,7 +27,7 @@ export interface ShapeOptions extends SharedShapeOptions {
         | typeof Shape.BOX
         | typeof Shape.CAPSULE
         | typeof Shape.HEIGHTFIELD
-        | undefined
+        | 0
 }
 
 /**
@@ -37,12 +37,12 @@ export abstract class Shape {
     /**
      * The body this shape is attached to. A shape can only be attached to a single body.
      */
-    body: Body | null
+    body: Body | null = null
 
     /**
      * Body-local position of the shape.
      */
-    position: Vec2
+    position: Vec2 = vec2.create()
 
     /**
      * Body-local angle of the shape.
@@ -82,7 +82,7 @@ export abstract class Shape {
      * Bounding circle radius of this shape
      * @readonly
      */
-    boundingRadius: number
+    boundingRadius = 0
 
     /**
      * Collision group that this shape belongs to (bit mask). See <a href="http://www.aurelienribon.com/blog/2011/07/box2d-tutorial-collision-filtering/">this tutorial</a>.
@@ -134,10 +134,8 @@ export abstract class Shape {
 
     /**
      * Area of this shape.
-     * @property area
-     * @type {Number}
      */
-    area: number
+    area = 0
 
     /**
      * Set to true if you want this shape to be a sensor. A sensor does not generate contacts, but it still reports contact events. This is good if you want to know if a shape is overlapping another shape, without them generating contacts.
@@ -162,53 +160,33 @@ export abstract class Shape {
 
     static HEIGHTFIELD = 128
 
-    constructor({
-        angle = 0,
-        type = 0,
-        collisionGroup = 1,
-        collisionResponse = true,
-        collisionMask = 1,
-        material = undefined,
-        sensor = false,
-        ...rest
-    }: ShapeOptions) {
-        const options = {
-            ...rest,
-            angle,
-            type,
-            collisionGroup,
-            collisionResponse,
-            collisionMask,
-            material,
-            sensor,
-        }
-
+    constructor(options: ShapeOptions) {
+        this.id = Shape.idCounter++
         this.body = null
 
-        this.position = vec2.create()
-        if (options.position) {
-            vec2.copy(this.position, options.position)
+        const params = {
+            ...options,
+            angle: options.angle ?? 0,
+            type: options.type,
+            collisionGroup: options.collisionGroup ?? 1,
+            collisionResponse: options.collisionResponse ?? true,
+            collisionMask: options.collisionMask ?? 1,
+            sensor: options.sensor ?? false,
         }
 
-        this.angle = options.angle || 0
+        if (params.position) {
+            vec2.copy(this.position, params.position)
+        }
 
-        this.type = options.type || 0
+        this.angle = params.angle
+        this.type = params.type
 
-        this.id = Shape.idCounter++
+        this.collisionGroup = params.collisionGroup
+        this.collisionResponse = params.collisionResponse
+        this.collisionMask = params.collisionMask
 
-        this.boundingRadius = 0
-
-        this.collisionGroup = options.collisionGroup !== undefined ? options.collisionGroup : 1
-
-        this.collisionResponse = options.collisionResponse !== undefined ? options.collisionResponse : true
-
-        this.collisionMask = options.collisionMask !== undefined ? options.collisionMask : 1
-
-        this.material = options.material || null
-
-        this.area = 0
-
-        this.sensor = options.sensor !== undefined ? options.sensor : false
+        this.material = params.material || null
+        this.sensor = params.sensor
     }
 
     /**
@@ -260,17 +238,16 @@ export abstract class Shape {
      * @param out
      * @param worldPoint
      */
-    worldPointToLocal: (out: Vec2, worldPoint: Vec2) => Vec2 = (() => {
-        const shapeWorldPosition = vec2.create()
-        return (out, worldPoint) => {
-            const body = this.body
+    worldPointToLocal(out: Vec2, worldPoint: Vec2) {
+        const body = this.body
 
-            vec2.rotate(shapeWorldPosition, this.position, body!.angle)
-            vec2.add(shapeWorldPosition, shapeWorldPosition, body!.position)
+        vec2.rotate(shapeWorldPosition, this.position, body!.angle)
+        vec2.add(shapeWorldPosition, shapeWorldPosition, body!.position)
 
-            vec2.toLocalFrame(out, worldPoint, shapeWorldPosition, this.body!.angle + this.angle)
+        vec2.toLocalFrame(out, worldPoint, shapeWorldPosition, this.body!.angle + this.angle)
 
-            return out
-        }
-    })()
+        return out
+    }
 }
+
+const shapeWorldPosition = vec2.create()

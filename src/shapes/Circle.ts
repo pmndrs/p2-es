@@ -29,14 +29,16 @@ export class Circle extends Shape {
      */
     radius: number
 
-    constructor({ radius = 1, ...rest }: CircleOptions) {
-        const options = {
-            ...rest,
-            radius,
+    constructor(options: CircleOptions = {}) {
+        const params = {
+            ...options,
+            type: Shape.CIRCLE,
+            radius: options.radius ?? 1,
         }
 
-        super(options)
-        this.radius = radius
+        super(params)
+        
+        this.radius = params.radius
 
         this.updateBoundingRadius()
         this.updateArea()

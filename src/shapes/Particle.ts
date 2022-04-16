@@ -1,13 +1,14 @@
 import type { AABB } from '../collision/AABB'
 import * as vec2 from '../math/vec2'
-import { Utils } from '../utils/Utils'
 import type { SharedShapeOptions } from './Shape'
 import { Shape } from './Shape'
 
 export class Particle extends Shape {
-    constructor(options?: SharedShapeOptions) {
-        options = options ? Utils.shallowClone(options) : {}
-        super(options)
+    constructor(options: SharedShapeOptions = {}) {
+        super({
+            ...options,
+            type: Shape.PARTICLE,
+        })
 
         this.updateBoundingRadius()
         this.updateArea()

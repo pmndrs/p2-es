@@ -48,27 +48,29 @@ export class Box extends Convex {
      */
     height: number
 
-    constructor({ width = 1, height = 1, ...rest }: BoxOptions) {
-        const options = {
-            ...rest,
-            width,
-            height,
+    constructor(options: BoxOptions = {}) {
+        const params = {
+            ...options,
+            type: Shape.BOX,
+            width: options?.width ?? 1,
+            height: options?.height ?? 1,
         }
-        super(options)
-
-        this.width = width
-        this.height = height
 
         const verts = [
-            vec2.fromValues(-width / 2, -height / 2),
-            vec2.fromValues(width / 2, -height / 2),
-            vec2.fromValues(width / 2, height / 2),
-            vec2.fromValues(-width / 2, height / 2),
+            vec2.fromValues(-params.width / 2, -params / 2),
+            vec2.fromValues(params.width / 2, -params.height / 2),
+            vec2.fromValues(params.width / 2, params.height / 2),
+            vec2.fromValues(-params.width / 2, params.height / 2),
         ]
 
         const convexOptions: ConvexOptions = Utils.shallowClone(options)
         convexOptions.vertices = verts
         convexOptions.type = Shape.BOX
+
+        super(convexOptions)
+
+        this.width = params.width
+        this.height = params.height
 
         this.updateBoundingRadius()
         this.updateArea()
