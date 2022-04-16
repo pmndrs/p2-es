@@ -67,12 +67,6 @@ export class ContactEquation extends Equation {
         this.firstImpact = false
 
         this.shapeA = null
-
-        /**
-         * The shape in body j that triggered this contact.
-         * @property shapeB
-         * @type {Shape}
-         */
         this.shapeB = null
     }
 
@@ -84,12 +78,12 @@ export class ContactEquation extends Equation {
             xi = bi.position,
             xj = bj.position
 
-        const n = this.normalA,
-            G = this.G
+        const n = this.normalA
+        const G = this.G
 
         // Caluclate cross products
-        const rixn = vec2.crossLength(ri, n),
-            rjxn = vec2.crossLength(rj, n)
+        const rixn = vec2.crossLength(ri, n)
+        const rjxn = vec2.crossLength(rj, n)
 
         // G = [-n -rixn n rjxn]
         G[0] = -n[0]

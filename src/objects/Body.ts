@@ -73,7 +73,6 @@ export type WakeUpEvent = typeof Body.wakeUpEvent
  * shapes that are used for collisions.
  *
  * @example
- *
  *     // Create a typical dynamic body
  *     var body = new Body({
  *         mass: 1, // non-zero mass will set type to Body.DYNAMIC
@@ -91,7 +90,6 @@ export type WakeUpEvent = typeof Body.wakeUpEvent
  *     world.addBody(body);
  *
  * @example
- *
  *     // Create a static plane body
  *     var planeBody = new Body({
  *         mass: 0, // zero mass will set type to Body.STATIC
@@ -102,7 +100,6 @@ export type WakeUpEvent = typeof Body.wakeUpEvent
  *     world.addBody(planeBody);
  *
  * @example
- *
  *     // Create a moving kinematic box body
  *     var platformBody = new Body({
  *         type: Body.KINEMATIC,

@@ -21,9 +21,6 @@ export class RotationalLockEquation extends Equation {
         options = options || {}
         super(bodyA, bodyB, -Number.MAX_VALUE, Number.MAX_VALUE)
 
-        /**
-         * @property {number} angle
-         */
         this.angle = options.angle || 0
 
         const G = this.G
