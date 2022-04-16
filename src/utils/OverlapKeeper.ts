@@ -78,18 +78,18 @@ export class OverlapKeeper {
         }
     }
 
-    getNewOverlaps(result: OverlapKeeperRecord[]) {
+    getNewOverlaps(result?: OverlapKeeperRecord[]) {
         return this.getDiff(this.overlappingShapesLastState, this.overlappingShapesCurrentState, result)
     }
 
-    getEndOverlaps(result: OverlapKeeperRecord[]) {
+    getEndOverlaps(result?: OverlapKeeperRecord[]) {
         return this.getDiff(this.overlappingShapesCurrentState, this.overlappingShapesLastState, result)
     }
 
     getDiff(
         dictA: TupleDictionary<OverlapKeeperRecord>,
         dictB: TupleDictionary<OverlapKeeperRecord>,
-        result: OverlapKeeperRecord[]
+        result?: OverlapKeeperRecord[]
     ) {
         result = result || []
         const last = dictA
@@ -125,13 +125,13 @@ export class OverlapKeeper {
         return !last.get(idA, idB) && !!current.get(idA, idB)
     }
 
-    getNewBodyOverlaps(result: Body[]): Body[] {
+    getNewBodyOverlaps(result?: Body[]): Body[] {
         this.tmpArray1.length = 0
         const overlaps = this.getNewOverlaps(this.tmpArray1)
         return this.getBodyDiff(overlaps, result)
     }
 
-    getEndBodyOverlaps(result: Body[]): Body[] {
+    getEndBodyOverlaps(result?: Body[]): Body[] {
         this.tmpArray1.length = 0
         const overlaps = this.getEndOverlaps(this.tmpArray1)
         return this.getBodyDiff(overlaps, result)
