@@ -10,6 +10,7 @@ export interface ConstraintOptions {
  * Base constraint class.
  */
 export class Constraint {
+    static OTHER = -1
     static DISTANCE = 1
     static GEAR = 2
     static LOCK = 3
@@ -25,6 +26,7 @@ export class Constraint {
         | typeof Constraint.LOCK
         | typeof Constraint.PRISMATIC
         | typeof Constraint.REVOLUTE
+        | typeof Constraint.OTHER
 
     /**
      * Equations to be solved in this constraint
@@ -55,7 +57,8 @@ export class Constraint {
             | typeof Constraint.GEAR
             | typeof Constraint.LOCK
             | typeof Constraint.PRISMATIC
-            | typeof Constraint.REVOLUTE,
+            | typeof Constraint.REVOLUTE
+            | typeof Constraint.OTHER,
         options?: ConstraintOptions
     ) {
         options = options || {}
