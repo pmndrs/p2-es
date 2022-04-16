@@ -1,0 +1,269 @@
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>p2-es</title><meta name="description" content="Documentation for p2-es"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><link rel="stylesheet" href="assets/custom.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">p2-es</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>p2-es </h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
+<a href="#p2-es" id="p2-es" style="color: inherit; text-decoration: none;">
+  <h1>p2-es</h1>
+</a>
+<p>This is a maintained fork of <a href="https://github.com/schteppe/p2.js">p2.js</a>, originally created by Stefan Hedman <a href="https://github.com/schteppe">@schteppe</a>.</p>
+<p>It will be a type-safe flatbundle (esm and cjs) which allows for <strong>tree shaking</strong> and usage in modern environments.</p>
+<p>For now we forked this repository and updated typescript definitions to develop a React-hook for three.js <a href="https://github.com/pmndrs/use-p2">use-p2</a></p>
+
+<a href="#todo" id="todo" style="color: inherit; text-decoration: none;">
+  <h3>TODO</h3>
+</a>
+<ul>
+<li><input disabled="" type="checkbox"> add hasActiveBodies to World and use in use-p2 (see <a href="https://github.com/pmndrs/cannon-es/blob/master/src/world/World.ts#L868">cannon-es</a>)</li>
+</ul>
+<hr>
+<p>2D rigid body physics engine written in JavaScript. Includes collision detection, contacts, friction, restitution, motors, springs, advanced constraints and various shape types.</p>
+<p><a href="#demos">Demos</a> | <a href="#examples">Examples</a> | <a href="http://schteppe.github.io/p2.js/docs/">Documentation</a> | <a href="https://raw.github.com/schteppe/p2.js/master/build/p2.js">Download</a> | <a href="http://cdnjs.com/libraries/p2.js">CDN</a> | <a href="https://github.com/schteppe/p2.js/wiki">Wiki</a></p>
+
+<a href="#featured-projects-using-p2js" id="featured-projects-using-p2js" style="color: inherit; text-decoration: none;">
+  <h3>Featured projects using p2.js</h3>
+</a>
+<ul>
+<li><a href="http://www.chromeexperiments.com/detail/io-2015-experiment">Google I/O 2015 Experiment</a> by Instrument</li>
+<li><a href="http://christmasexperiments.com/experiments/11">PixiLights, a Christmas Experiment</a> by Mat Groves</li>
+<li><a href="https://github.com/schteppe/p2.js/wiki/Projects-using-p2.js">More...</a></li>
+</ul>
+
+<a href="#demos" id="demos" style="color: inherit; text-decoration: none;">
+  <h3>Demos</h3>
+</a>
+<p>These demos use the p2 Demo framework, which provides rendering and interactivity. Use mouse/touch to throw or create objects. Use the right menu (or console!) to tweak parameters. Or just check the source to see how to programmatically build the current scene using p2.</p>
+<ul>
+<li><a href="http://schteppe.github.io/p2.js/demos/buoyancy.html">Buoyancy</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/car.html">Car</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/ccd.html">CCD</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/circles.html">Circle container</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/collisions.html">Collision tests</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/compound.html">Compound objects</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/concave.html">Concave objects</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/constraints.html">Constraints</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/distanceConstraint.html">DistanceConstraint</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/fixedRotation.html">Fixed rotation</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/fixedXY.html">Fixed XY</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/friction.html">Friction</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/gearConstraint.html">Gear constraint</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/heightfield.html">Heightfield</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/islandSolver.html">Island solver</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/kinematic.html">Kinematic body</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/lock.html">Lock constraint</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/piston.html">Piston</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/prismatic.html">Prismatic constraint</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/ragdoll.html">Ragdoll</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/removeSensor.html">Sensor</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/restitution.html">Restitution</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/sleep.html">Sleep</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/segway.html">Segway</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/sleep.html">Sleep</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/springs.html">Springs</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/surfaceVelocity.html">Surface velocity</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/suspension.html">Suspension</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/tearable.html">Tearable constraints</a></li>
+<li><a href="http://schteppe.github.io/p2.js/demos/topDownVehicle.html">TopDownVehicle</a></li>
+</ul>
+
+<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
+  <h3>Examples</h3>
+</a>
+<p>Examples showing how to use p2.js with your favorite renderer.</p>
+<ul>
+<li><a href="http://schteppe.github.io/p2.js/examples/canvas/asteroids.html">Canvas: Asteroids game</a></li>
+<li><a href="http://schteppe.github.io/p2.js/examples/canvas/box.html">Canvas: Box on plane</a></li>
+<li><a href="http://schteppe.github.io/p2.js/examples/canvas/character.html">Canvas: Character demo</a></li>
+<li><a href="http://schteppe.github.io/p2.js/examples/canvas/circle.html">Canvas: Circle on plane</a></li>
+<li><a href="http://schteppe.github.io/p2.js/examples/canvas/interpolation.html">Canvas: Interpolation</a></li>
+<li><a href="http://schteppe.github.io/p2.js/examples/canvas/mouseJoint.html">Canvas: Mousejoint</a></li>
+<li><a href="http://schteppe.github.io/p2.js/examples/canvas/raycasting.html">Canvas: Raycasting</a></li>
+<li><a href="http://schteppe.github.io/p2.js/examples/canvas/rayreflect.html">Canvas: Rayreflect</a></li>
+<li><a href="http://schteppe.github.io/p2.js/examples/canvas/sensors.html">Canvas: Sensors</a></li>
+<li><a href="http://schteppe.github.io/p2.js/examples/canvas/sensors2.html">Canvas: Sensors 2</a></li>
+<li><a href="http://schteppe.github.io/p2.js/examples/pixijs/box.html">Pixi.js: Box on plane</a></li>
+</ul>
+
+<a href="#sample-code" id="sample-code" style="color: inherit; text-decoration: none;">
+  <h3>Sample code</h3>
+</a>
+<p>The following example uses the <a href="http://schteppe.github.io/p2.js/docs/classes/World.html">World</a>, <a href="http://schteppe.github.io/p2.js/docs/classes/Circle.html">Circle</a>, <a href="http://schteppe.github.io/p2.js/docs/classes/Body.html">Body</a> and <a href="http://schteppe.github.io/p2.js/docs/classes/Plane.html">Plane</a> classes to set up a simple physics scene with a ball on a plane.</p>
+<pre><code class="language-js"><span class="hl-0">// Create a physics world, where bodies and constraints live</span><br/><span class="hl-1">var</span><span class="hl-2"> </span><span class="hl-3">world</span><span class="hl-2"> = </span><span class="hl-1">new</span><span class="hl-2"> </span><span class="hl-3">p2</span><span class="hl-2">.</span><span class="hl-4">World</span><span class="hl-2">({</span><br/><span class="hl-2">    </span><span class="hl-3">gravity:</span><span class="hl-2">[</span><span class="hl-5">0</span><span class="hl-2">, -</span><span class="hl-5">9.82</span><span class="hl-2">]</span><br/><span class="hl-2">});</span><br/><br/><span class="hl-0">// Create an empty dynamic body</span><br/><span class="hl-1">var</span><span class="hl-2"> </span><span class="hl-3">circleBody</span><span class="hl-2"> = </span><span class="hl-1">new</span><span class="hl-2"> </span><span class="hl-3">p2</span><span class="hl-2">.</span><span class="hl-4">Body</span><span class="hl-2">({</span><br/><span class="hl-2">    </span><span class="hl-3">mass:</span><span class="hl-2"> </span><span class="hl-5">5</span><span class="hl-2">,</span><br/><span class="hl-2">    </span><span class="hl-3">position:</span><span class="hl-2"> [</span><span class="hl-5">0</span><span class="hl-2">, </span><span class="hl-5">10</span><span class="hl-2">]</span><br/><span class="hl-2">});</span><br/><br/><span class="hl-0">// Add a circle shape to the body</span><br/><span class="hl-1">var</span><span class="hl-2"> </span><span class="hl-3">circleShape</span><span class="hl-2"> = </span><span class="hl-1">new</span><span class="hl-2"> </span><span class="hl-3">p2</span><span class="hl-2">.</span><span class="hl-4">Circle</span><span class="hl-2">({ </span><span class="hl-3">radius:</span><span class="hl-2"> </span><span class="hl-5">1</span><span class="hl-2"> });</span><br/><span class="hl-3">circleBody</span><span class="hl-2">.</span><span class="hl-4">addShape</span><span class="hl-2">(</span><span class="hl-3">circleShape</span><span class="hl-2">);</span><br/><br/><span class="hl-0">// ...and add the body to the world.</span><br/><span class="hl-0">// If we don&#39;t add it to the world, it won&#39;t be simulated.</span><br/><span class="hl-3">world</span><span class="hl-2">.</span><span class="hl-4">addBody</span><span class="hl-2">(</span><span class="hl-3">circleBody</span><span class="hl-2">);</span><br/><br/><span class="hl-0">// Create an infinite ground plane body</span><br/><span class="hl-1">var</span><span class="hl-2"> </span><span class="hl-3">groundBody</span><span class="hl-2"> = </span><span class="hl-1">new</span><span class="hl-2"> </span><span class="hl-3">p2</span><span class="hl-2">.</span><span class="hl-4">Body</span><span class="hl-2">({</span><br/><span class="hl-2">    </span><span class="hl-3">mass:</span><span class="hl-2"> </span><span class="hl-5">0</span><span class="hl-2"> </span><span class="hl-0">// Setting mass to 0 makes it static</span><br/><span class="hl-2">});</span><br/><span class="hl-1">var</span><span class="hl-2"> </span><span class="hl-3">groundShape</span><span class="hl-2"> = </span><span class="hl-1">new</span><span class="hl-2"> </span><span class="hl-3">p2</span><span class="hl-2">.</span><span class="hl-4">Plane</span><span class="hl-2">();</span><br/><span class="hl-3">groundBody</span><span class="hl-2">.</span><span class="hl-4">addShape</span><span class="hl-2">(</span><span class="hl-3">groundShape</span><span class="hl-2">);</span><br/><span class="hl-3">world</span><span class="hl-2">.</span><span class="hl-4">addBody</span><span class="hl-2">(</span><span class="hl-3">groundBody</span><span class="hl-2">);</span><br/><br/><span class="hl-0">// To animate the bodies, we must step the world forward in time, using a fixed time step size.</span><br/><span class="hl-0">// The World will run substeps and interpolate automatically for us, to get smooth animation.</span><br/><span class="hl-1">var</span><span class="hl-2"> </span><span class="hl-3">fixedTimeStep</span><span class="hl-2"> = </span><span class="hl-5">1</span><span class="hl-2"> / </span><span class="hl-5">60</span><span class="hl-2">; </span><span class="hl-0">// seconds</span><br/><span class="hl-1">var</span><span class="hl-2"> </span><span class="hl-3">maxSubSteps</span><span class="hl-2"> = </span><span class="hl-5">10</span><span class="hl-2">; </span><span class="hl-0">// Max sub steps to catch up with the wall clock</span><br/><span class="hl-1">var</span><span class="hl-2"> </span><span class="hl-3">lastTime</span><span class="hl-2">;</span><br/><br/><span class="hl-0">// Animation loop</span><br/><span class="hl-1">function</span><span class="hl-2"> </span><span class="hl-4">animate</span><span class="hl-2">(</span><span class="hl-3">time</span><span class="hl-2">){</span><br/><span class="hl-2">    </span><span class="hl-4">requestAnimationFrame</span><span class="hl-2">(</span><span class="hl-3">animate</span><span class="hl-2">);</span><br/><br/><span class="hl-2">    </span><span class="hl-0">// Compute elapsed time since last render frame</span><br/><span class="hl-2">    </span><span class="hl-1">var</span><span class="hl-2"> </span><span class="hl-3">deltaTime</span><span class="hl-2"> = </span><span class="hl-3">lastTime</span><span class="hl-2"> ? (</span><span class="hl-3">time</span><span class="hl-2"> - </span><span class="hl-3">lastTime</span><span class="hl-2">) / </span><span class="hl-5">1000</span><span class="hl-2"> : </span><span class="hl-5">0</span><span class="hl-2">;</span><br/><br/><span class="hl-2">    </span><span class="hl-0">// Move bodies forward in time</span><br/><span class="hl-2">    </span><span class="hl-3">world</span><span class="hl-2">.</span><span class="hl-4">step</span><span class="hl-2">(</span><span class="hl-3">fixedTimeStep</span><span class="hl-2">, </span><span class="hl-3">deltaTime</span><span class="hl-2">, </span><span class="hl-3">maxSubSteps</span><span class="hl-2">);</span><br/><br/><span class="hl-2">    </span><span class="hl-0">// Render the circle at the current interpolated position</span><br/><span class="hl-2">    </span><span class="hl-4">renderCircleAtPosition</span><span class="hl-2">(</span><span class="hl-3">circleBody</span><span class="hl-2">.</span><span class="hl-3">interpolatedPosition</span><span class="hl-2">);</span><br/><br/><span class="hl-2">    </span><span class="hl-3">lastTime</span><span class="hl-2"> = </span><span class="hl-3">time</span><span class="hl-2">;</span><br/><span class="hl-2">}</span><br/><br/><span class="hl-0">// Start the animation loop</span><br/><span class="hl-4">requestAnimationFrame</span><span class="hl-2">(</span><span class="hl-3">animate</span><span class="hl-2">);</span>
+</code></pre>
+<p>To interact with bodies, you need to do it <em>after each internal step</em>. Simply attach a <em>&quot;postStep&quot;</em> listener to the world, and make sure to use <code>body.position</code> here - <code>body.interpolatedPosition</code> is only for rendering.</p>
+<pre><code class="language-js"><span class="hl-3">world</span><span class="hl-2">.</span><span class="hl-4">on</span><span class="hl-2">(</span><span class="hl-6">&#39;postStep&#39;</span><span class="hl-2">, </span><span class="hl-1">function</span><span class="hl-2">(</span><span class="hl-3">event</span><span class="hl-2">){</span><br/><span class="hl-2">    </span><span class="hl-0">// Add horizontal spring force</span><br/><span class="hl-2">    </span><span class="hl-3">circleBody</span><span class="hl-2">.</span><span class="hl-3">force</span><span class="hl-2">[</span><span class="hl-5">0</span><span class="hl-2">] -= </span><span class="hl-5">100</span><span class="hl-2"> * </span><span class="hl-3">circleBody</span><span class="hl-2">.</span><span class="hl-3">position</span><span class="hl-2">[</span><span class="hl-5">0</span><span class="hl-2">];</span><br/><span class="hl-2">});</span>
+</code></pre>
+
+<a href="#install" id="install" style="color: inherit; text-decoration: none;">
+  <h3>Install</h3>
+</a>
+
+<a href="#browser" id="browser" style="color: inherit; text-decoration: none;">
+  <h5>Browser</h5>
+</a>
+<p>Download either <a href="build/p2.js">p2.js</a> or the minified <a href="build/p2.min.js">p2.min.js</a> and include the script in your HTML:</p>
+<pre><code class="language-html"><span class="hl-7">&lt;</span><span class="hl-8">script</span><span class="hl-9"> </span><span class="hl-10">src</span><span class="hl-9">=</span><span class="hl-11">&quot;p2.js&quot;</span><span class="hl-9"> </span><span class="hl-10">type</span><span class="hl-9">=</span><span class="hl-11">&quot;text/javascript&quot;</span><span class="hl-7">&gt;&lt;/</span><span class="hl-8">script</span><span class="hl-7">&gt;</span>
+</code></pre>
+<p>If you would like to use ordinary <code>Array</code> instead of <code>Float32Array</code>, define <code>P2_ARRAY_TYPE</code> globally before loading the library.</p>
+<pre><code class="language-html"><span class="hl-7">&lt;</span><span class="hl-8">script</span><span class="hl-9"> </span><span class="hl-10">type</span><span class="hl-9">=</span><span class="hl-11">&quot;text/javascript&quot;</span><span class="hl-7">&gt;</span><span class="hl-12">P2_ARRAY_TYPE</span><span class="hl-9"> </span><span class="hl-2">=</span><span class="hl-9"> </span><span class="hl-13">Array</span><span class="hl-9">;</span><span class="hl-7">&lt;/</span><span class="hl-8">script</span><span class="hl-7">&gt;</span><br/><span class="hl-7">&lt;</span><span class="hl-8">script</span><span class="hl-9"> </span><span class="hl-10">src</span><span class="hl-9">=</span><span class="hl-11">&quot;p2.js&quot;</span><span class="hl-9"> </span><span class="hl-10">type</span><span class="hl-9">=</span><span class="hl-11">&quot;text/javascript&quot;</span><span class="hl-7">&gt;&lt;/</span><span class="hl-8">script</span><span class="hl-7">&gt;</span>
+</code></pre>
+
+<a href="#nodejs" id="nodejs" style="color: inherit; text-decoration: none;">
+  <h5>Node.js</h5>
+</a>
+<pre><code><span class="hl-3">npm</span><span class="hl-2"> </span><span class="hl-3">install</span><span class="hl-2"> </span><span class="hl-3">p2</span>
+</code></pre>
+<p>Then require it like so:</p>
+<pre><code class="language-js"><span class="hl-1">var</span><span class="hl-2"> </span><span class="hl-3">p2</span><span class="hl-2"> = </span><span class="hl-4">require</span><span class="hl-2">(</span><span class="hl-6">&#39;p2&#39;</span><span class="hl-2">);</span>
+</code></pre>
+
+<a href="#supported-collision-pairs" id="supported-collision-pairs" style="color: inherit; text-decoration: none;">
+  <h3>Supported collision pairs</h3>
+</a>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">Circle</th>
+<th align="center">Plane</th>
+<th align="center">Box</th>
+<th align="center">Convex</th>
+<th align="center">Particle</th>
+<th align="center">Line</th>
+<th align="center">Capsule</th>
+<th align="center">Heightfield</th>
+<th align="center">Ray</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><a href="http://schteppe.github.io/p2.js/docs/classes/Circle.html">Circle</a></td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center"><a href="http://schteppe.github.io/p2.js/docs/classes/Plane.html">Plane</a></td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center"><a href="http://schteppe.github.io/p2.js/docs/classes/Box.html">Box</a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center"><a href="http://schteppe.github.io/p2.js/docs/classes/Convex.html">Convex</a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center"><a href="http://schteppe.github.io/p2.js/docs/classes/Particle.html">Particle</a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center"><a href="http://schteppe.github.io/p2.js/docs/classes/Line.html">Line</a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">(todo)</td>
+<td align="center">(todo)</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center"><a href="http://schteppe.github.io/p2.js/docs/classes/Capsule.html">Capsule</a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">(todo)</td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center"><a href="http://schteppe.github.io/p2.js/docs/classes/Heightfield.html">Heightfield</a></td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">(todo)</td>
+<td align="center">(todo)</td>
+<td align="center">(todo)</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center"><a href="http://schteppe.github.io/p2.js/docs/classes/Ray.html">Ray</a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+</tr>
+</tbody></table>
+<p>Note that concave polygon shapes can be created using <a href="http://schteppe.github.io/p2.js/docs/classes/Body.html#method_fromPolygon">Body.fromPolygon</a>.</p>
+
+<a href="#install-1" id="install-1" style="color: inherit; text-decoration: none;">
+  <h3>Install</h3>
+</a>
+<p>Make sure you have git, <a href="http://nodejs.org">Node.js</a>, NPM and <a href="http://gruntjs.com/">grunt</a> installed.</p>
+<pre><code><span class="hl-3">git</span><span class="hl-2"> </span><span class="hl-3">clone</span><span class="hl-2"> </span><span class="hl-14">https</span><span class="hl-2">:</span><span class="hl-0">//github.com/schteppe/p2.js.git;</span><br/><span class="hl-3">cd</span><span class="hl-2"> </span><span class="hl-3">p2</span><span class="hl-2">.</span><span class="hl-3">js</span><span class="hl-2">;</span><br/><span class="hl-3">npm</span><span class="hl-2"> </span><span class="hl-3">install</span><span class="hl-2">; # </span><span class="hl-3">Install</span><span class="hl-2"> </span><span class="hl-3">dependencies</span><br/><span class="hl-3">grunt</span><span class="hl-2">;</span>
+</code></pre>
+
+<a href="#grunt-tasks" id="grunt-tasks" style="color: inherit; text-decoration: none;">
+  <h3>Grunt tasks</h3>
+</a>
+<p>List all tasks using <code>grunt --help</code>.</p>
+<pre><code><span class="hl-3">grunt</span><span class="hl-2">        # </span><span class="hl-3">Run</span><span class="hl-2"> </span><span class="hl-3">tests</span><span class="hl-2">, </span><span class="hl-3">build</span><span class="hl-2">, </span><span class="hl-3">minify</span><br/><span class="hl-3">grunt</span><span class="hl-2"> </span><span class="hl-3">dev</span><span class="hl-2">    # </span><span class="hl-3">Run</span><span class="hl-2"> </span><span class="hl-3">tests</span><span class="hl-2">, </span><span class="hl-3">build</span><br/><span class="hl-3">grunt</span><span class="hl-2"> </span><span class="hl-3">test</span><span class="hl-2">   # </span><span class="hl-3">Run</span><span class="hl-2"> </span><span class="hl-3">tests</span><br/><span class="hl-3">grunt</span><span class="hl-2"> </span><span class="hl-3">yuidoc</span><span class="hl-2"> # </span><span class="hl-3">Build</span><span class="hl-2"> </span><span class="hl-3">docs</span><br/><span class="hl-3">grunt</span><span class="hl-2"> </span><span class="hl-3">watch</span><span class="hl-2">  # </span><span class="hl-3">Watch</span><span class="hl-2"> </span><span class="hl-3">for</span><span class="hl-2"> </span><span class="hl-3">changes</span><span class="hl-2"> </span><span class="hl-3">and</span><span class="hl-2"> </span><span class="hl-3">run</span><span class="hl-2"> </span><span class="hl-3">the</span><span class="hl-2"> </span><span class="hl-6">&quot;dev&quot;</span><span class="hl-2"> </span><span class="hl-3">task</span>
+</code></pre>
+
+<a href="#release-process" id="release-process" style="color: inherit; text-decoration: none;">
+  <h3>Release process</h3>
+</a>
+<ol>
+<li>Bump version number.</li>
+<li>Build and commit files in <code>build/</code> and <code>docs/</code>.</li>
+<li>Tag the commit with the version number e.g. vX.Y.Z</li>
+<li>Add relase notes to github</li>
+<li>Publish to NPM</li>
+</ol>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Exports</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="tsd-kind-class"><a href="classes/AABB.html" class="tsd-kind-icon">AABB</a></li><li class="tsd-kind-class"><a href="classes/AngleLockEquation.html" class="tsd-kind-icon">Angle<wbr/>Lock<wbr/>Equation</a></li><li class="tsd-kind-class"><a href="classes/Body.html" class="tsd-kind-icon">Body</a></li><li class="tsd-kind-class"><a href="classes/Box.html" class="tsd-kind-icon">Box</a></li><li class="tsd-kind-class"><a href="classes/Broadphase.html" class="tsd-kind-icon">Broadphase</a></li><li class="tsd-kind-class"><a href="classes/Capsule.html" class="tsd-kind-icon">Capsule</a></li><li class="tsd-kind-class"><a href="classes/Circle.html" class="tsd-kind-icon">Circle</a></li><li class="tsd-kind-class"><a href="classes/Constraint.html" class="tsd-kind-icon">Constraint</a></li><li class="tsd-kind-class"><a href="classes/ContactEquation.html" class="tsd-kind-icon">Contact<wbr/>Equation</a></li><li class="tsd-kind-class"><a href="classes/ContactMaterial.html" class="tsd-kind-icon">Contact<wbr/>Material</a></li><li class="tsd-kind-class"><a href="classes/Convex.html" class="tsd-kind-icon">Convex</a></li><li class="tsd-kind-class"><a href="classes/DistanceConstraint.html" class="tsd-kind-icon">Distance<wbr/>Constraint</a></li><li class="tsd-kind-class"><a href="classes/Equation.html" class="tsd-kind-icon">Equation</a></li><li class="tsd-kind-class tsd-has-type-parameter"><a href="classes/EventEmitter.html" class="tsd-kind-icon">Event<wbr/>Emitter</a></li><li class="tsd-kind-class"><a href="classes/FrictionEquation.html" class="tsd-kind-icon">Friction<wbr/>Equation</a></li><li class="tsd-kind-class"><a href="classes/GSSolver.html" class="tsd-kind-icon">GSSolver</a></li><li class="tsd-kind-class"><a href="classes/GearConstraint.html" class="tsd-kind-icon">Gear<wbr/>Constraint</a></li><li class="tsd-kind-class"><a href="classes/Heightfield.html" class="tsd-kind-icon">Heightfield</a></li><li class="tsd-kind-class"><a href="classes/Line.html" class="tsd-kind-icon">Line</a></li><li class="tsd-kind-class"><a href="classes/LinearSpring.html" class="tsd-kind-icon">Linear<wbr/>Spring</a></li><li class="tsd-kind-class"><a href="classes/LockConstraint.html" class="tsd-kind-icon">Lock<wbr/>Constraint</a></li><li class="tsd-kind-class"><a href="classes/Material.html" class="tsd-kind-icon">Material</a></li><li class="tsd-kind-class"><a href="classes/NaiveBroadphase.html" class="tsd-kind-icon">Naive<wbr/>Broadphase</a></li><li class="tsd-kind-class"><a href="classes/Narrowphase.html" class="tsd-kind-icon">Narrowphase</a></li><li class="tsd-kind-class"><a href="classes/Plane.html" class="tsd-kind-icon">Plane</a></li><li class="tsd-kind-class tsd-has-type-parameter"><a href="classes/Pool.html" class="tsd-kind-icon">Pool</a></li><li class="tsd-kind-class"><a href="classes/PrismaticConstraint.html" class="tsd-kind-icon">Prismatic<wbr/>Constraint</a></li><li class="tsd-kind-class"><a href="classes/Ray.html" class="tsd-kind-icon">Ray</a></li><li class="tsd-kind-class"><a href="classes/RaycastResult.html" class="tsd-kind-icon">Raycast<wbr/>Result</a></li><li class="tsd-kind-class"><a href="classes/RevoluteConstraint.html" class="tsd-kind-icon">Revolute<wbr/>Constraint</a></li><li class="tsd-kind-class"><a href="classes/RotationalSpring.html" class="tsd-kind-icon">Rotational<wbr/>Spring</a></li><li class="tsd-kind-class"><a href="classes/RotationalVelocityEquation.html" class="tsd-kind-icon">Rotational<wbr/>Velocity<wbr/>Equation</a></li><li class="tsd-kind-class"><a href="classes/SAPBroadphase.html" class="tsd-kind-icon">SAPBroadphase</a></li><li class="tsd-kind-class"><a href="classes/Shape.html" class="tsd-kind-icon">Shape</a></li><li class="tsd-kind-class"><a href="classes/Solver.html" class="tsd-kind-icon">Solver</a></li><li class="tsd-kind-class"><a href="classes/Spring.html" class="tsd-kind-icon">Spring</a></li><li class="tsd-kind-class"><a href="classes/TopDownVehicle.html" class="tsd-kind-icon">Top<wbr/>Down<wbr/>Vehicle</a></li><li class="tsd-kind-class"><a href="classes/WheelConstraint.html" class="tsd-kind-icon">Wheel<wbr/>Constraint</a></li><li class="tsd-kind-class"><a href="classes/World.html" class="tsd-kind-icon">World</a></li><li class="tsd-kind-interface"><a href="interfaces/BoxOptions.html" class="tsd-kind-icon">Box<wbr/>Options</a></li><li class="tsd-kind-interface"><a href="interfaces/CircleOptions.html" class="tsd-kind-icon">Circle<wbr/>Options</a></li></ul></nav></div></div></div><footer class=""><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li><li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li><li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li><li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li><li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="overlay"></div><script src="assets/main.js"></script></body></html>

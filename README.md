@@ -3,12 +3,9 @@ p2-es
 
 This is a maintained fork of [p2.js](https://github.com/schteppe/p2.js), originally created by Stefan Hedman [@schteppe](https://github.com/schteppe).
 
-It will be a type-safe flatbundle (esm and cjs) which allows for **tree shaking** and usage in modern environments.
+It is a type-safe flatbundle (esm and cjs) which allows for **tree shaking** and usage in modern environments.
 
-For now we forked this repository and updated typescript definitions to develop a React-hook for three.js [use-p2](https://github.com/pmndrs/use-p2)
-
-### TODO
-- [ ] add hasActiveBodies to World and use in use-p2 (see [cannon-es](https://github.com/pmndrs/cannon-es/blob/master/src/world/World.ts#L868)) 
+If you're using three.js in a React environment with react-three-fiber, check out [use-p2](https://github.com/pmndrs/use-p2)! It's a wrapper around p2-es that runs in a web worker.
 
 ---
 
@@ -175,27 +172,21 @@ var p2 = require('p2');
 Note that concave polygon shapes can be created using [Body.fromPolygon](http://schteppe.github.io/p2.js/docs/classes/Body.html#method_fromPolygon).
 
 ### Install
-Make sure you have git, [Node.js](http://nodejs.org), NPM and [grunt](http://gruntjs.com/) installed.
+Make sure you have git, [Node.js](http://nodejs.org) and Yarn installed
 ```
-git clone https://github.com/schteppe/p2.js.git;
-cd p2.js;
-npm install; # Install dependencies
-grunt;
+git clone https://github.com/pmndrs/p2-es.git;
+cd p2-es;
+yarn install
+yarn build
+yarn generate-docs
+yarn serve
 ```
-
-### Grunt tasks
-List all tasks using ```grunt --help```.
-```
-grunt        # Run tests, build, minify
-grunt dev    # Run tests, build
-grunt test   # Run tests
-grunt yuidoc # Build docs
-grunt watch  # Watch for changes and run the "dev" task
-```
-
 ### Release process
 1. Bump version number.
-2. Build and commit files in ```build/``` and ```docs/```.
+2. Build and commit files in ```dist/``` and ```docs/```.
 3. Tag the commit with the version number e.g. vX.Y.Z
-4. Add relase notes to github
+4. Add release notes to github
 5. Publish to NPM
+
+### TODO
+- [ ] add hasActiveBodies to World and use in use-p2 (see [cannon-es](https://github.com/pmndrs/cannon-es/blob/master/src/world/World.ts#L868)) 

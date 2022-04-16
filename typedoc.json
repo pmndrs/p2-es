@@ -1,7 +1,7 @@
 {
-  "entryPoints": "./src/cannon-es.ts",
+  "entryPoints": "./src/p2-es.ts",
   "out": "docs/",
-  "readme": "./getting-started.md",
+  "readme": "./README.md",
   "customCss": "./docs-style.css",
   "cleanOutputDir": true,
   "excludePrivate": true,
