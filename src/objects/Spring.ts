@@ -2,12 +2,12 @@ import type { Body } from '../objects/Body'
 import type { Vec2 } from '../types'
 
 export interface SpringOptions {
-    stiffness?: number | undefined
-    damping?: number | undefined
-    localAnchorA?: Vec2 | undefined
-    localAnchorB?: Vec2 | undefined
-    worldAnchorA?: Vec2 | undefined
-    worldAnchorB?: Vec2 | undefined
+    stiffness?: number
+    damping?: number
+    localAnchorA?: Vec2
+    localAnchorB?: Vec2
+    worldAnchorA?: Vec2
+    worldAnchorB?: Vec2
 }
 
 /**

@@ -2,6 +2,7 @@ import { Constraint } from '../constraints/Constraint'
 import { FrictionEquation } from '../equations/FrictionEquation'
 import * as vec2 from '../math/vec2'
 import type { Vec2 } from '../types'
+import type { World } from '../world/World'
 import { Body } from './Body'
 
 export interface WheelConstraintOptions {
@@ -152,7 +153,7 @@ export class TopDownVehicle {
     chassisBody: Body
     groundBody: Body
     wheels: WheelConstraint[]
-    world: World
+    world: World | null
 
     preStepCallback: () => void
 
@@ -181,12 +182,15 @@ export class TopDownVehicle {
     }
 
     removeFromWorld(): void {
-        const world = this.world
-        world.removeBody(this.groundBody)
-        world.off('preStep', this.preStepCallback)
+        if (this.world === null) {
+            return
+        }
+
+        this.world.removeBody(this.groundBody)
+        this.world.off('preStep', this.preStepCallback)
         for (let i = 0; i < this.wheels.length; i++) {
             const wheel = this.wheels[i]
-            world.removeConstraint(wheel)
+            this.world.removeConstraint(wheel)
         }
         this.world = null
     }

@@ -1,7 +1,6 @@
-import type { AABB } from 'collision/AABB'
-import type { Vec2 } from 'types'
-
+import type { AABB } from '../collision/AABB'
 import * as vec2 from '../math/vec2'
+import type { Vec2 } from '../types'
 import { Utils } from './../utils/Utils'
 import type { ConvexOptions } from './Convex'
 import { Convex } from './Convex'
@@ -15,12 +14,12 @@ export interface BoxOptions extends SharedShapeOptions {
     /**
      * Total width of the box
      */
-    width?: number | undefined
+    width?: number
 
     /**
      * Total height of the box
      */
-    height?: number | undefined
+    height?: number
 }
 
 /**

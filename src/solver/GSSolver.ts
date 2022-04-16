@@ -1,6 +1,6 @@
-import type { Equation } from 'equations/Equation'
-
+import type { Equation } from '../equations/Equation'
 import { FrictionEquation } from '../equations/FrictionEquation'
+import type { World } from '../world/World'
 import type { SolverOptions } from './Solver'
 import { Solver } from './Solver'
 

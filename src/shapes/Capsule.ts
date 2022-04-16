@@ -6,18 +6,9 @@ import type { Vec2 } from '../types'
 import type { SharedShapeOptions } from './Shape'
 import { Shape } from './Shape'
 
-
-const r = vec2.create()
-
-const intersectCapsule_hitPointWorld = vec2.create()
-const intersectCapsule_normal = vec2.create()
-const intersectCapsule_l0 = vec2.create()
-const intersectCapsule_l1 = vec2.create()
-const intersectCapsule_unit_y = vec2.fromValues(0, 1)
-
 export interface CapsuleOptions extends SharedShapeOptions {
-    length?: number | undefined
-    radius?: number | undefined
+    length?: number
+    radius?: number
 }
 
 /**
@@ -222,3 +213,11 @@ export class Capsule extends Shape {
         return false
     }
 }
+
+const r = vec2.create()
+
+const intersectCapsule_hitPointWorld = vec2.create()
+const intersectCapsule_normal = vec2.create()
+const intersectCapsule_l0 = vec2.create()
+const intersectCapsule_l1 = vec2.create()
+const intersectCapsule_unit_y = vec2.fromValues(0, 1)

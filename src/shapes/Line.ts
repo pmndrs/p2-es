@@ -1,21 +1,13 @@
-import type { AABB } from 'collision/AABB'
-import type { Vec2 } from 'types'
-
+import type { AABB } from '../collision/AABB'
 import type { Ray } from '../collision/Ray'
 import type { RaycastResult } from '../collision/RaycastResult'
 import * as vec2 from '../math/vec2'
+import type { Vec2 } from '../types'
 import type { SharedShapeOptions } from './Shape'
 import { Shape } from './Shape'
 
-const points = [vec2.create(), vec2.create()]
-
-const raycast_normal = vec2.create()
-const raycast_l0 = vec2.create()
-const raycast_l1 = vec2.create()
-const raycast_unit_y = vec2.fromValues(0, 1)
-
 export interface LineOptions extends SharedShapeOptions {
-    length?: number | undefined
+    length?: number
 }
 
 /**
@@ -85,3 +77,10 @@ export class Line extends Shape {
         }
     }
 }
+
+const points = [vec2.create(), vec2.create()]
+
+const raycast_normal = vec2.create()
+const raycast_l0 = vec2.create()
+const raycast_l1 = vec2.create()
+const raycast_unit_y = vec2.fromValues(0, 1)

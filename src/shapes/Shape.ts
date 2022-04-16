@@ -8,12 +8,12 @@ import type { Body } from '../objects/Body'
 import type { Vec2 } from '../types'
 
 export interface SharedShapeOptions {
-    position?: Vec2 | undefined
-    angle?: number | undefined
-    collisionGroup?: number | undefined
-    collisionMask?: number | undefined
-    sensor?: boolean | undefined
-    collisionResponse?: boolean | undefined
+    position?: Vec2
+    angle?: number
+    collisionGroup?: number
+    collisionMask?: number
+    sensor?: boolean
+    collisionResponse?: boolean
     material?: Material
 }
 

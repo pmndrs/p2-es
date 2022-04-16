@@ -6,14 +6,6 @@ import type { Vec2 } from '../types'
 import type { SharedShapeOptions } from './Shape'
 import { Shape } from './Shape'
 
-const points = [vec2.create(), vec2.create(), vec2.create(), vec2.create()]
-
-const intersectHeightfield_worldNormal = vec2.create()
-const intersectHeightfield_l0 = vec2.create()
-const intersectHeightfield_l1 = vec2.create()
-const intersectHeightfield_localFrom = vec2.create()
-const intersectHeightfield_localTo = vec2.create()
-
 export interface HeightfieldOptions extends SharedShapeOptions {
     heights?: number[]
     minValue?: number
@@ -188,3 +180,11 @@ export class Heightfield extends Shape {
         }
     }
 }
+
+const points = [vec2.create(), vec2.create(), vec2.create(), vec2.create()]
+
+const intersectHeightfield_worldNormal = vec2.create()
+const intersectHeightfield_l0 = vec2.create()
+const intersectHeightfield_l1 = vec2.create()
+const intersectHeightfield_localFrom = vec2.create()
+const intersectHeightfield_localTo = vec2.create()

@@ -27,7 +27,7 @@ export class EventEmitter {
      *         console.log('myEvt was triggered!');
      *     });
      */
-    on(type: string, listener: () => void, context?: any) {
+    on<E>(type: string, listener: (e: E) => void, context?: any) {
         (listener as any).context = context || this
         const listeners = this._listeners
         if (listeners[type] === undefined) {

@@ -1,5 +1,6 @@
 import * as vec2 from '../math/vec2'
 import type { Body } from '../objects/Body'
+import { Circle } from '../shapes/Circle'
 import type { Shape } from '../shapes/Shape'
 import type { Vec2 } from '../types'
 import { Equation } from './Equation'
@@ -12,6 +13,8 @@ function addSubSub(out: Vec2, a: Vec2, b: Vec2, c: Vec2, d: Vec2) {
 const vi = vec2.create()
 const vj = vec2.create()
 const relVel = vec2.create()
+
+const tmpShape = new Circle({ radius: 1 })
 
 /**
  * Non-penetration constraint equation. Tries to make the contactPointA and contactPointB vectors coincide, while keeping the applied force repulsive.
@@ -48,9 +51,9 @@ export class ContactEquation extends Equation {
     /**
      * The shape in body i that triggered this contact.
      */
-    shapeA: Shape | null
+    shapeA: Shape
 
-    shapeB: Shape | null
+    shapeB: Shape
 
     constructor(bodyA: Body, bodyB: Body) {
         super(bodyA, bodyB, 0, Number.MAX_VALUE)
@@ -66,8 +69,8 @@ export class ContactEquation extends Equation {
 
         this.firstImpact = false
 
-        this.shapeA = null
-        this.shapeB = null
+        this.shapeA = tmpShape
+        this.shapeB = tmpShape
     }
 
     computeB(a: number, b: number, h: number): number {

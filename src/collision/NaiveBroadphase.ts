@@ -1,5 +1,6 @@
 import type { AABB } from '../collision/AABB'
 import type { Body } from '../objects/Body'
+import type { World } from '../world/World'
 import { Broadphase } from './Broadphase'
 
 /**

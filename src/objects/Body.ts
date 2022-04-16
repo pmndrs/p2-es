@@ -9,6 +9,7 @@ import { add, create as vec2create, subtract } from '../math/vec2'
 import { Convex } from '../shapes/Convex'
 import type { Shape } from '../shapes/Shape'
 import type { Vec2 } from '../types'
+import type { World } from '../world/World'
 
 const shapeAABB = new AABB()
 const tmp = vec2create()
@@ -171,7 +172,7 @@ export class Body extends EventEmitter {
      * The world that this body is added to (read only). This property is set to NULL if the body is not added to any world.
      * @readonly
      */
-    world: World | null
+    world: World | null = null
 
     /**
      * The shapes of the body.
@@ -477,7 +478,6 @@ export class Body extends EventEmitter {
 
         this.id = options.id || ++Body._idCounter
         this.index = -1
-        this.world = null
         this.shapes = []
 
         this.mass = options.mass || 0
@@ -1137,6 +1137,9 @@ export class Body extends EventEmitter {
      * @return if the body overlaps the given body
      */
     overlaps(body: Body): boolean {
+        if (this.world === null) {
+            return false
+        }
         return this.world.overlapKeeper.bodiesAreOverlapping(this, body)
     }
 
@@ -1199,6 +1202,10 @@ export class Body extends EventEmitter {
     }
 
     integrateToTimeOfImpact(dt: number): boolean {
+        if (this.world === null) {
+            throw new Error('world is not set for body')
+        }
+
         if (this.ccdSpeedThreshold < 0 || vec2.squaredLength(this.velocity) < Math.pow(this.ccdSpeedThreshold, 2)) {
             return false
         }
@@ -1240,7 +1247,7 @@ export class Body extends EventEmitter {
             this.world.raycast(result, ray)
             hitBody = result.body
 
-            if (hitBody === this || ignoreBodies.indexOf(hitBody) !== -1) {
+            if (hitBody !== null && (hitBody === this || ignoreBodies.indexOf(hitBody) !== -1)) {
                 hitBody = null
             }
 

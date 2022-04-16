@@ -7,10 +7,6 @@ import { Utils } from '../utils/Utils'
 import type { SharedShapeOptions } from './Shape'
 import { Shape } from './Shape'
 
-const intersectPlane_planePointToFrom = vec2.create()
-const intersectPlane_normal = vec2.create()
-const intersectPlane_len = vec2.create()
-
 /**
  * Plane shape class. The plane is facing in the Y direction.
  *
@@ -104,3 +100,7 @@ export class Plane extends Shape {
         return localPoint[1] <= 0
     }
 }
+
+const intersectPlane_planePointToFrom = vec2.create()
+const intersectPlane_normal = vec2.create()
+const intersectPlane_len = vec2.create()

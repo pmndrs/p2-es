@@ -7,25 +7,9 @@ import type { Vec2 } from '../types'
 import type { SharedShapeOptions } from './Shape'
 import { Shape } from './Shape'
 
-const tmpVec1 = vec2.create()
-const tmpVec2 = vec2.create()
-
-const updateCenterOfMass_centroid = vec2.create()
-const updateCenterOfMass_centroid_times_mass = vec2.create()
-const updateCenterOfMass_a = vec2.create()
-const updateCenterOfMass_b = vec2.create()
-const updateCenterOfMass_c = vec2.create()
-
-const intersectConvex_rayStart = vec2.create()
-const intersectConvex_rayEnd = vec2.create()
-const intersectConvex_normal = vec2.create()
-
-const pic_r0 = vec2.create()
-const pic_r1 = vec2.create()
-
 export interface ConvexOptions extends SharedShapeOptions {
-    vertices?: Vec2[] | undefined
-    axes?: Vec2[] | undefined
+    vertices?: Vec2[]
+    axes?: Vec2[]
     type?: number
 }
 
@@ -383,3 +367,19 @@ export class Convex extends Shape {
         return ((b[0] - a[0]) * (c[1] - a[1]) - (c[0] - a[0]) * (b[1] - a[1])) * 0.5
     }
 }
+
+const tmpVec1 = vec2.create()
+const tmpVec2 = vec2.create()
+
+const updateCenterOfMass_centroid = vec2.create()
+const updateCenterOfMass_centroid_times_mass = vec2.create()
+const updateCenterOfMass_a = vec2.create()
+const updateCenterOfMass_b = vec2.create()
+const updateCenterOfMass_c = vec2.create()
+
+const intersectConvex_rayStart = vec2.create()
+const intersectConvex_rayEnd = vec2.create()
+const intersectConvex_normal = vec2.create()
+
+const pic_r0 = vec2.create()
+const pic_r1 = vec2.create()

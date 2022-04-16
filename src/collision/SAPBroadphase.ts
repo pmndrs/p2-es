@@ -1,18 +1,22 @@
 import type { AABB } from '../collision/AABB'
 import type { Body } from '../objects/Body'
 import { Utils } from '../utils/Utils'
+import type { AddBodyEvent, RemoveBodyEvent, World } from '../world/World'
 import { Broadphase } from './Broadphase'
 
 function sortAxisList(a: Body[], axisIndex: number) {
     axisIndex = axisIndex | 0
     for (let i = 1, l = a.length; i < l; i++) {
         const v = a[i]
-        for (let j = i - 1; j >= 0; j--) {
+
+        let j: number
+        for (j = i - 1; j >= 0; j--) {
             if (a[j].aabb.lowerBound[axisIndex] <= v.aabb.lowerBound[axisIndex]) {
                 break
             }
             a[j + 1] = a[j]
         }
+
         a[j + 1] = v
     }
     return a
@@ -28,18 +32,17 @@ export class SAPBroadphase extends Broadphase {
     axisList: Body[] = []
     axisIndex = 0
 
-    // todo - remove any
-    _addBodyHandler: (e: any) => void
-    _removeBodyHandler: (e: any) => void
+    private addBodyHandler: (e: AddBodyEvent) => void
+    private removeBodyHandler: (e: RemoveBodyEvent) => void
 
     constructor() {
         super(Broadphase.SAP)
 
-        this._addBodyHandler = (e) => {
+        this.addBodyHandler = (e) => {
             this.axisList.push(e.body)
         }
 
-        this._removeBodyHandler = (e) => {
+        this.removeBodyHandler = (e) => {
             // Remove from list
             const idx = this.axisList.indexOf(e.body)
             if (idx !== -1) {
@@ -60,10 +63,10 @@ export class SAPBroadphase extends Broadphase {
         Utils.appendArray(this.axisList, world.bodies)
 
         // Remove old handlers, if any
-        world.off('addBody', this._addBodyHandler).off('removeBody', this._removeBodyHandler)
+        world.off('addBody', this.addBodyHandler).off('removeBody', this.removeBodyHandler)
 
         // Add handlers to update the list of bodies.
-        world.on('addBody', this._addBodyHandler).on('removeBody', this._removeBodyHandler)
+        world.on('addBody', this.addBodyHandler).on('removeBody', this.removeBodyHandler)
 
         this.world = world
     }

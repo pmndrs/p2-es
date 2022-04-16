@@ -5,12 +5,12 @@ import type { Shape } from '../shapes/Shape'
  * Overlap data container for the OverlapKeeper
  */
 export class OverlapKeeperRecord {
-    shapeA?: Shape
-    shapeB?: Shape
-    bodyA?: Body
-    bodyB?: Body
+    shapeA: Shape
+    shapeB: Shape
+    bodyA: Body
+    bodyB: Body
 
-    constructor(bodyA?: Body, shapeA?: Shape, bodyB?: Body, shapeB?: Shape) {
+    constructor(bodyA: Body, shapeA: Shape, bodyB: Body, shapeB: Shape) {
         this.bodyA = bodyA
         this.shapeA = shapeA
         this.bodyB = bodyB

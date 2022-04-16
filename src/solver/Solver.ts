@@ -1,5 +1,6 @@
 import type { Equation } from '../equations/Equation'
 import { EventEmitter } from '../events/EventEmitter'
+import type { World } from '../world/World'
 
 export interface SolverOptions {
     equationSortFunction?: (a: Equation, b: Equation) => number

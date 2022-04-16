@@ -1,6 +1,5 @@
 node_modules/
 coverage/
-types/
 yarn-error.log
 .size-snapshot.json
 Thumbs.db

@@ -6,15 +6,11 @@ import type { Vec2 } from '../types'
 import type { SharedShapeOptions } from './Shape'
 import { Shape } from './Shape'
 
-
-const Ray_intersectSphere_intersectionPoint = vec2.create()
-const Ray_intersectSphere_normal = vec2.create()
-
 /**
  * (Note that this options object will be passed on to the {{#crossLink "Shape"}}{{/crossLink}} constructor.)
  */
 export interface CircleOptions extends SharedShapeOptions {
-    radius?: number | undefined
+    radius?: number
 }
 
 /**
@@ -128,3 +124,6 @@ export class Circle extends Shape {
         return vec2.squaredLength(localPoint) <= radius * radius
     }
 }
+
+const Ray_intersectSphere_intersectionPoint = vec2.create()
+const Ray_intersectSphere_normal = vec2.create()
