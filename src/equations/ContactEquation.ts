@@ -122,7 +122,7 @@ export class ContactEquation extends Equation {
         this.bodyA.getVelocityAtPoint(vi, this.contactPointA)
         this.bodyB.getVelocityAtPoint(vj, this.contactPointB)
 
-        vec2.subtract(relVel, vi, vj)
+        vec2.sub(relVel, vi, vj)
 
         return vec2.dot(this.normalA, relVel)
     }

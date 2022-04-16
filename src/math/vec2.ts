@@ -257,7 +257,7 @@ export function add(out: Vec2, a: Vec2, b: Vec2): Vec2 {
  * @param b the second operand
  * @return out
  */
-export function subtract(out: Vec2, a: Vec2, b: Vec2): Vec2 {
+export function sub(out: Vec2, a: Vec2, b: Vec2): Vec2 {
     out[0] = a[0] - b[0]
     out[1] = a[1] - b[1]
     return out

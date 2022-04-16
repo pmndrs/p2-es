@@ -3,7 +3,6 @@
   <head>
     <title>p2.js Canvas raycast example</title>
     <meta charset="utf-8">
-    <script src="../../build/p2.js"></script>
   </head>
   <body>
 
@@ -11,8 +10,16 @@
     <canvas width="600" height="400" id="myCanvas"></canvas>
     <input type="checkbox" id="reflect"> Reflect
 
-    <script>
-      var canvas, ctx, w, h, world, boxBody, planeBody, planeShape, lineBody, lineShape;
+    <script type="module">
+      import * as p2 from '../../dist/p2-es.js'
+
+      var canvas, ctx, w, h, world;
+      var boxShape, boxBody;
+      var planeBody, planeShape;
+      var lineBody, lineShape;
+      var circleShape, circleBody;
+      var capsuleShape, capsuleBody;
+      var convexShape, convexBody;
       var scaleX = 50, scaleY = -50;
 
       var start = [0,0];
@@ -292,7 +299,7 @@
         if(dot < 0){
           // Into the material
           dot = p2.vec2.dot(normal, direction);
-          inAngle = Math.acos(dot);
+          var inAngle = Math.acos(dot);
           p2.vec2.scale(normal, normal, -1);
           var a = airIndex / shapeIndex * Math.sin(inAngle);
 
@@ -309,7 +316,7 @@
 
           // Out of the material - flip the indices
           dot = p2.vec2.dot(normal, direction);
-          inAngle = Math.acos(dot);
+          var inAngle = Math.acos(dot);
 
           var a = shapeIndex / airIndex * Math.sin(inAngle);
           if(a <= 1){

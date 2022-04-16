@@ -5,7 +5,7 @@ import { Ray } from '../collision/Ray'
 import { RaycastResult } from '../collision/RaycastResult'
 import { EventEmitter } from '../events/EventEmitter'
 import * as vec2 from '../math/vec2'
-import { add, create as vec2create, subtract } from '../math/vec2'
+import { add, create as vec2create, sub } from '../math/vec2'
 import { Convex } from '../shapes/Convex'
 import type { Shape } from '../shapes/Shape'
 import type { Vec2 } from '../types'
@@ -955,7 +955,7 @@ export class Body extends EventEmitter<BodyEventMap> {
             // Move all vertices so its center of mass is in the local center of the convex
             for (let j = 0; j !== c.vertices.length; j++) {
                 const v = c.vertices[j]
-                subtract(v, v, c.centerOfMass)
+                sub(v, v, c.centerOfMass)
             }
 
             vec2.copy(cm, c.centerOfMass)
@@ -1004,7 +1004,7 @@ export class Body extends EventEmitter<BodyEventMap> {
         // Now move all shapes
         for (let i = 0; i !== this.shapes.length; i++) {
             const s = this.shapes[i]
-            subtract(s.position, s.position, cm)
+            sub(s.position, s.position, cm)
         }
 
         // Move the body position too
@@ -1012,7 +1012,7 @@ export class Body extends EventEmitter<BodyEventMap> {
 
         // And concave path
         for (let i = 0; this.concavePath && i < this.concavePath.length; i++) {
-            subtract(this.concavePath[i], this.concavePath[i], cm)
+            sub(this.concavePath[i], this.concavePath[i], cm)
         }
 
         this.updateMassProperties()
@@ -1175,7 +1175,7 @@ export class Body extends EventEmitter<BodyEventMap> {
          */
     getVelocityAtPoint(result: Vec2, relativePoint: Vec2): Vec2 {
         vec2.crossVZ(result, relativePoint, this.angularVelocity)
-        vec2.subtract(result, this.velocity, result)
+        vec2.sub(result, this.velocity, result)
         return result
     }
 
@@ -1207,7 +1207,7 @@ export class Body extends EventEmitter<BodyEventMap> {
         vec2.scale(end, this.velocity, dt)
         add(end, end, this.position)
 
-        subtract(startToEnd, end, this.position)
+        sub(startToEnd, end, this.position)
         const startToEndAngle = this.angularVelocity * dt
         const len = vec2.length(startToEnd)
 
@@ -1238,7 +1238,7 @@ export class Body extends EventEmitter<BodyEventMap> {
             return false
         }
         result.getHitPoint(end, ray)
-        subtract(startToEnd, end, this.position)
+        sub(startToEnd, end, this.position)
         timeOfImpact = vec2.distance(end, this.position) / len // guess
 
         const rememberAngle = this.angle

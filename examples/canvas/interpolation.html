@@ -3,18 +3,16 @@
   <head>
     <title>p2.js Canvas example</title>
     <meta charset="utf-8">
-    <script src="../../build/p2.js"></script>
   </head>
   <body>
 
     <!-- The canvas, where we draw stuff -->
     <canvas width="500" height="500" id="myCanvas"></canvas>
 
-    <script>
-      var w, h, canvas, ctx, world, circleBody;
+    <script type="module">
+      import * as p2 from '../../dist/p2-es.js'
 
-      init();
-      animate();
+      var w, h, canvas, ctx, world, circleShape, circleBody;
 
       function init(){
 
@@ -100,6 +98,9 @@
       function time(){
         return new Date().getTime() / 1000;
       }
+
+      init();
+      animate();
     </script>
 
   </body>

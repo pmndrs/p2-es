@@ -1,10 +1,7 @@
 # conversion to ts scratch nodes
 
 ## TODO
-- Finish converting to TS
-  - Constraint classes
-  - Narrowphase
-  - World
-  - Any missed tests
-- Fix examples
+- Fix demos and examples
+- Fix docs crosslinks
 - Generate docs
+- Raise draft PR

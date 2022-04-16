@@ -3,12 +3,13 @@
   <head>
     <title>p2.js and Pixi.js example</title>
     <meta charset="utf-8">
-    <script src="../../demos/js/pixi.js"></script>
-    <script src="../../build/p2.js"></script>
+    <script src="https://unpkg.com/pixi.js@1.4.3/bin/pixi.js"></script>
   </head>
   <body>
 
-    <script>
+    <script type="module">
+        import * as p2 from '../../dist/p2-es.js'
+
         var renderer, stage, container, graphics, zoom,
             world, boxShape, boxBody, planeBody, planeShape;
 

@@ -3,14 +3,17 @@
   <head>
     <title>p2.js sensors</title>
     <meta charset="utf-8">
-    <script src="../../build/p2.js"></script>
   </head>
   <body>
 
     <canvas width="500" height="200" id="myCanvas"></canvas>
 
-    <script>
-      var w, h, canvas, ctx, world, circleBody, sensorSize=1.4, inactiveColor='green';
+    <script type="module">
+      import * as p2 from '../../dist/p2-es.js'
+
+      var w, h, canvas, ctx, world, sensorSize=1.4, inactiveColor='green';
+      var circleShape, circleBody;
+      var sensorShape, sensorBody;
 
       var sensors = [];
 

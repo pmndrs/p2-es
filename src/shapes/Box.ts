@@ -57,7 +57,7 @@ export class Box extends Convex {
         }
 
         const verts = [
-            vec2.fromValues(-params.width / 2, -params / 2),
+            vec2.fromValues(-params.width / 2, -params.height / 2),
             vec2.fromValues(params.width / 2, -params.height / 2),
             vec2.fromValues(params.width / 2, params.height / 2),
             vec2.fromValues(-params.width / 2, params.height / 2),

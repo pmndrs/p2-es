@@ -3,7 +3,6 @@
   <head>
     <title>p2.js Asteroids</title>
     <meta charset="utf-8">
-    <script src="../../build/p2.js"></script>
     <style>
       body {
         background-color: black;
@@ -60,7 +59,9 @@
     <div id="lives" class="textBox"></div>
     <div id="gameover" class="textBox centered hidden">GAME OVER</div>
     <div id="instructions" class="textBox centered">ARROW KEYS = CONTROL SHIP<br/>SPACE = SHOOT</div>
-    <script>
+    <script type="module">
+      import * as p2 from '../../dist/p2-es.js'
+      
       var canvas, ctx, w, h, zoom,
           shipSize = 0.3, spaceWidth = 16, spaceHeight = 9, hideShip = false, allowShipCollision = true,
           world, shipShape, shipBody, shipReloadTime = 0.1, shipTurnSpeed = 4,

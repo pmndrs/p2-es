@@ -126,8 +126,8 @@ export class RevoluteConstraint extends Constraint {
 
         if (options.worldPivot) {
             // Compute pivotA and pivotB
-            vec2.subtract(pivotA, options.worldPivot, bodyA.position)
-            vec2.subtract(pivotB, options.worldPivot, bodyB.position)
+            vec2.sub(pivotA, options.worldPivot, bodyA.position)
+            vec2.sub(pivotB, options.worldPivot, bodyB.position)
             // Rotate to local coordinate system
             vec2.rotate(pivotA, pivotA, -bodyA.angle)
             vec2.rotate(pivotB, pivotB, -bodyB.angle)
@@ -164,8 +164,8 @@ export class RevoluteConstraint extends Constraint {
             vec2.rotate(worldPivotA, pivotA, bodyA.angle)
             vec2.rotate(worldPivotB, pivotB, bodyB.angle)
             vec2.add(g, bodyB.position, worldPivotB)
-            vec2.subtract(g, g, bodyA.position)
-            vec2.subtract(g, g, worldPivotA)
+            vec2.sub(g, g, bodyA.position)
+            vec2.sub(g, g, worldPivotA)
             return vec2.dot(g, xAxis)
         }
 
@@ -173,8 +173,8 @@ export class RevoluteConstraint extends Constraint {
             vec2.rotate(worldPivotA, pivotA, bodyA.angle)
             vec2.rotate(worldPivotB, pivotB, bodyB.angle)
             vec2.add(g, bodyB.position, worldPivotB)
-            vec2.subtract(g, g, bodyA.position)
-            vec2.subtract(g, g, worldPivotA)
+            vec2.sub(g, g, bodyA.position)
+            vec2.sub(g, g, worldPivotA)
             return vec2.dot(g, yAxis)
         }
 

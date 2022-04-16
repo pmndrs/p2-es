@@ -3,15 +3,16 @@
   <head>
     <title>p2.js Platformer example</title>
     <meta charset="utf-8">
-    <script src="../../build/p2.js"></script>
-    <script src="js/p2.KinematicCharacterController.js"></script>
   </head>
   <body>
     <canvas width="600" height="400" id="myCanvas"></canvas>
     <p>Use arrow keys to control character</p>
     <code id="debug"></code>
 
-    <script>
+    <script type="module">
+      import * as p2 from '../../dist/p2-es.js'
+      import { KinematicCharacterController } from './js/KinematicCharacterController.js'
+
       var canvas;
       var ctx;
       var w, h;
@@ -27,9 +28,6 @@
       // Collision groups
       var SCENERY_GROUP = 0x01;
       var PLAYER_GROUP = 0x02;
-
-      init();
-      requestAnimationFrame(animate);
 
       function init(){
 
@@ -67,7 +65,7 @@
         world.addBody(characterBody);
 
         // Create the character controller
-        player = new p2.KinematicCharacterController({
+        player = new KinematicCharacterController({
           world: world,
           body: characterBody,
           collisionMask: SCENERY_GROUP,
@@ -246,6 +244,9 @@
           'player.collisions.fallingThroughPlatform: ' + player.collisions.fallingThroughPlatform
         ].join('<br>');
       }
+
+      init();
+      requestAnimationFrame(animate);
 
     </script>
   </body>

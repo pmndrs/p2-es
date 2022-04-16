@@ -31,7 +31,7 @@ declare module "math/vec2" {
     export function copy(out: Vec2, a: Vec2): Vec2;
     export function set(out: Vec2, x: number, y: number): Vec2;
     export function add(out: Vec2, a: Vec2, b: Vec2): Vec2;
-    export function subtract(out: Vec2, a: Vec2, b: Vec2): Vec2;
+    export function sub(out: Vec2, a: Vec2, b: Vec2): Vec2;
     export function multiply(out: Vec2, a: Vec2, b: Vec2): Vec2;
     export function divide(out: Vec2, a: Vec2, b: Vec2): Vec2;
     export function scale(out: Vec2, a: Vec2, b: number): Vec2;
@@ -72,7 +72,7 @@ declare module "shapes/Shape" {
         material?: Material;
     }
     export interface ShapeOptions extends SharedShapeOptions {
-        type: typeof Shape.CIRCLE | typeof Shape.PARTICLE | typeof Shape.PLANE | typeof Shape.CONVEX | typeof Shape.LINE | typeof Shape.BOX | typeof Shape.CAPSULE | typeof Shape.HEIGHTFIELD | 0;
+        type: typeof Shape.CIRCLE | typeof Shape.PARTICLE | typeof Shape.PLANE | typeof Shape.CONVEX | typeof Shape.LINE | typeof Shape.BOX | typeof Shape.CAPSULE | typeof Shape.HEIGHTFIELD;
     }
     export abstract class Shape {
         body: Body | null;
@@ -98,9 +98,9 @@ declare module "shapes/Shape" {
         static HEIGHTFIELD: 128;
         constructor(options: ShapeOptions);
         abstract computeMomentOfInertia(): number;
+        abstract computeAABB(out?: AABB, position?: Vec2, angle?: number): void;
         updateBoundingRadius(): void;
         updateArea(): void;
-        abstract computeAABB(out?: AABB, position?: Vec2, angle?: number): void;
         raycast(_result: RaycastResult, _ray: Ray, _position: Vec2, _angle: number): void;
         pointTest(_localPoint: Vec2): boolean;
         worldPointToLocal(out: Vec2, worldPoint: Vec2): Vec2;

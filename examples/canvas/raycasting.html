@@ -3,7 +3,6 @@
   <head>
     <title>p2.js Canvas raycast example</title>
     <meta charset="utf-8">
-    <script src="../../build/p2.js"></script>
   </head>
   <body>
     <p>
@@ -15,8 +14,15 @@
     <!-- The canvas, where we draw stuff -->
     <canvas width="600" height="400" id="myCanvas"></canvas>
 
-    <script>
-      var canvas, ctx, w, h, world, boxBody, planeBody;
+    <script type="module">
+      import * as p2 from '../../dist/p2-es.js'
+
+      var canvas, ctx, w, h, world;
+      var boxShape, boxBody;
+      var planeShape, planeBody;
+      var circleShape, circleBody;
+      var capsuleShape, capsuleBody;
+      var convexShape, convexBody;
       var scaleX = 50, scaleY = -50;
 
       var start = [0,0];

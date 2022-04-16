@@ -159,8 +159,8 @@ export class PrismaticConstraint extends Constraint {
             vec2.rotate(ri, localAnchorA, bodyA.angle)
             vec2.rotate(rj, localAnchorB, bodyB.angle)
             vec2.add(gg, xj, rj)
-            vec2.subtract(gg, gg, xi)
-            vec2.subtract(gg, gg, ri)
+            vec2.sub(gg, gg, xi)
+            vec2.sub(gg, gg, ri)
             vec2.rotate(t, localAxisA, bodyA.angle + Math.PI / 2)
 
             G[0] = -t[0]
@@ -329,8 +329,8 @@ export class PrismaticConstraint extends Constraint {
         if (this.upperLimitEnabled && relPosition > upperLimit) {
             // Update contact constraint normal, etc
             vec2.scale(upperLimitEquation.normalA, worldAxisA, -1)
-            vec2.subtract(upperLimitEquation.contactPointA, worldAnchorA, bodyA.position)
-            vec2.subtract(upperLimitEquation.contactPointB, worldAnchorB, bodyB.position)
+            vec2.sub(upperLimitEquation.contactPointA, worldAnchorA, bodyA.position)
+            vec2.sub(upperLimitEquation.contactPointB, worldAnchorB, bodyB.position)
             vec2.scale(tmp, worldAxisA, upperLimit)
             vec2.add(upperLimitEquation.contactPointA, upperLimitEquation.contactPointA, tmp)
             if (eqs.indexOf(upperLimitEquation) === -1) {
@@ -346,10 +346,10 @@ export class PrismaticConstraint extends Constraint {
         if (this.lowerLimitEnabled && relPosition < lowerLimit) {
             // Update contact constraint normal, etc
             vec2.scale(lowerLimitEquation.normalA, worldAxisA, 1)
-            vec2.subtract(lowerLimitEquation.contactPointA, worldAnchorA, bodyA.position)
-            vec2.subtract(lowerLimitEquation.contactPointB, worldAnchorB, bodyB.position)
+            vec2.sub(lowerLimitEquation.contactPointA, worldAnchorA, bodyA.position)
+            vec2.sub(lowerLimitEquation.contactPointB, worldAnchorB, bodyB.position)
             vec2.scale(tmp, worldAxisA, lowerLimit)
-            vec2.subtract(lowerLimitEquation.contactPointB, lowerLimitEquation.contactPointB, tmp)
+            vec2.sub(lowerLimitEquation.contactPointB, lowerLimitEquation.contactPointB, tmp)
             if (eqs.indexOf(lowerLimitEquation) === -1) {
                 eqs.push(lowerLimitEquation)
             }
