@@ -11,36 +11,6 @@ import type { Shape } from '../shapes/Shape'
 import type { Vec2 } from '../types'
 import type { World } from '../world/World'
 
-const shapeAABB = new AABB()
-const tmp = vec2create()
-
-const Body_applyForce_forceWorld = vec2create()
-const Body_applyForce_pointWorld = vec2create()
-const Body_applyForce_pointLocal = vec2create()
-
-const Body_applyImpulse_velo = vec2create()
-
-const Body_applyImpulse_impulseWorld = vec2create()
-const Body_applyImpulse_pointWorld = vec2create()
-const Body_applyImpulse_pointLocal = vec2create()
-
-const adjustCenterOfMass_tmp2 = vec2create()
-const adjustCenterOfMass_tmp3 = vec2create()
-const adjustCenterOfMass_tmp4 = vec2create()
-
-const integrate_fhMinv = vec2create()
-const integrate_velodt = vec2create()
-
-const result = new RaycastResult()
-const ray = new Ray({
-    mode: Ray.CLOSEST,
-    skipBackfaces: true,
-})
-const direction = vec2create()
-const end = vec2create()
-const startToEnd = vec2create()
-const rememberPosition = vec2create()
-
 export interface BodyOptions {
     type?: typeof Body.DYNAMIC | typeof Body.STATIC | typeof Body.KINEMATIC | undefined
     force?: Vec2 | undefined
@@ -127,32 +97,32 @@ export class Body extends EventEmitter {
     /**
      * Dynamic body.
      */
-    static DYNAMIC: 1
+    static DYNAMIC = 1
 
     /**
      * Static body.
      */
-    static STATIC: 2
+    static STATIC = 2
 
     /**
      * Kinematic body.
      */
-    static KINEMATIC: 4
+    static KINEMATIC = 4
 
     /**
      * Awake sleep state.
      */
-    static AWAKE: 0
+    static AWAKE = 0
 
     /**
      * Sleepy sleep state.
      */
-    static SLEEPY: 1
+    static SLEEPY = 1
 
     /**
      * Sleeping sleep state.
      */
-    static SLEEPING: 2
+    static SLEEPING = 2
 
     static _idCounter = 0
 
@@ -1323,3 +1293,33 @@ export class Body extends EventEmitter {
         this.angularVelocity += this.wlambda
     }
 }
+
+const shapeAABB = new AABB()
+const tmp = vec2create()
+
+const Body_applyForce_forceWorld = vec2create()
+const Body_applyForce_pointWorld = vec2create()
+const Body_applyForce_pointLocal = vec2create()
+
+const Body_applyImpulse_velo = vec2create()
+
+const Body_applyImpulse_impulseWorld = vec2create()
+const Body_applyImpulse_pointWorld = vec2create()
+const Body_applyImpulse_pointLocal = vec2create()
+
+const adjustCenterOfMass_tmp2 = vec2create()
+const adjustCenterOfMass_tmp3 = vec2create()
+const adjustCenterOfMass_tmp4 = vec2create()
+
+const integrate_fhMinv = vec2create()
+const integrate_velodt = vec2create()
+
+const result = new RaycastResult()
+const ray = new Ray({
+    mode: Ray.CLOSEST,
+    skipBackfaces: true,
+})
+const direction = vec2create()
+const end = vec2create()
+const startToEnd = vec2create()
+const rememberPosition = vec2create()

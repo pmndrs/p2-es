@@ -25,6 +25,9 @@ export class OverlapKeeperRecord {
      * @param shapeB
      */
     set(bodyA: Body, shapeA: Shape, bodyB: Body, shapeB: Shape): void {
-        OverlapKeeperRecord.call(this, bodyA, shapeA, bodyB, shapeB)
+        this.bodyA = bodyA
+        this.shapeA = shapeA
+        this.bodyB = bodyB
+        this.shapeB = shapeB
     }
 }

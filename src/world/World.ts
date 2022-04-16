@@ -1165,8 +1165,9 @@ function runNarrowphase(
     np.currentContactMaterial = cm
     np.enabledEquations = bi.collisionResponse && bj.collisionResponse && si.collisionResponse && sj.collisionResponse
 
-    const resolver = np.narrowphases[si.type | sj.type],
-        numContacts = 0
+    const resolver = np.narrowphases[si.type | sj.type]
+    let numContacts = 0
+
     if (resolver) {
         const sensor = si.sensor || sj.sensor
         const numFrictionBefore = np.frictionEquations.length
