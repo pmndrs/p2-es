@@ -109,7 +109,7 @@ export class Convex extends Shape {
             const worldPoint1 = this.vertices[(i + 1) % this.vertices.length]
 
             const normal = this.normals[i]
-            vec2.sub(normal, worldPoint1, worldPoint0)
+            vec2.subtract(normal, worldPoint1, worldPoint0)
 
             // Get normal - just rotate 90 degrees since vertices are given in CCW
             vec2.rotate90cw(normal, normal)
@@ -317,7 +317,7 @@ export class Convex extends Shape {
             const delta = vec2.getLineSegmentsIntersectionFraction(rayStart, rayEnd, q1, q2)
 
             if (delta >= 0) {
-                vec2.sub(normal, q2, q1)
+                vec2.subtract(normal, q2, q1)
                 vec2.rotate(normal, normal, -Math.PI / 2 + angle)
                 vec2.normalize(normal, normal)
                 ray.reportIntersection(result, delta, normal, i)
@@ -336,8 +336,8 @@ export class Convex extends Shape {
             const v0 = verts[i % numVerts],
                 v1 = verts[(i + 1) % numVerts]
 
-            vec2.sub(r0, v0, localPoint)
-            vec2.sub(r1, v1, localPoint)
+            vec2.subtract(r0, v0, localPoint)
+            vec2.subtract(r1, v1, localPoint)
 
             const cross = vec2.crossLength(r0, r1)
 

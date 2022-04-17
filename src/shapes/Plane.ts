@@ -75,9 +75,9 @@ export class Plane extends Shape {
         vec2.set(normal, 0, 1)
         vec2.rotate(normal, normal, angle)
 
-        vec2.sub(len, from, position)
+        vec2.subtract(len, from, position)
         const planeToFrom = vec2.dot(len, normal)
-        vec2.sub(len, to, position)
+        vec2.subtract(len, to, position)
         const planeToTo = vec2.dot(len, normal)
 
         if (planeToFrom * planeToTo > 0) {
@@ -91,7 +91,7 @@ export class Plane extends Shape {
 
         const n_dot_dir = vec2.dot(normal, direction)
 
-        vec2.sub(planePointToFrom, from, position)
+        vec2.subtract(planePointToFrom, from, position)
         const t = -vec2.dot(normal, planePointToFrom) / n_dot_dir / ray.length
 
         ray.reportIntersection(result, t, normal, -1)

@@ -171,7 +171,7 @@ export class Heightfield extends Shape {
             this.getLineSegment(l0, l1, i)
             const t = vec2.getLineSegmentsIntersectionFraction(localFrom, localTo, l0, l1)
             if (t >= 0) {
-                vec2.sub(worldNormal, l1, l0)
+                vec2.subtract(worldNormal, l1, l0)
                 vec2.rotate(worldNormal, worldNormal, angle + Math.PI / 2)
                 vec2.normalize(worldNormal, worldNormal)
                 ray.reportIntersection(result, t, worldNormal, -1)

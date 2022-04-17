@@ -105,8 +105,8 @@ export class DistanceConstraint extends Constraint {
             vec2.rotate(worldAnchorB, localAnchorB, bodyB.angle)
 
             vec2.add(r, bodyB.position, worldAnchorB)
-            vec2.sub(r, r, worldAnchorA)
-            vec2.sub(r, r, bodyA.position)
+            vec2.subtract(r, r, worldAnchorA)
+            vec2.subtract(r, r, bodyA.position)
 
             this.distance = vec2.length(r)
         }
@@ -155,8 +155,8 @@ export class DistanceConstraint extends Constraint {
             vec2.rotate(rj, localAnchorB, bodyB.angle)
 
             vec2.add(r, xj, rj)
-            vec2.sub(r, r, ri)
-            vec2.sub(r, r, xi)
+            vec2.subtract(r, r, ri)
+            vec2.subtract(r, r, xi)
 
             return vec2.length(r) - that.distance
         }
@@ -207,8 +207,8 @@ export class DistanceConstraint extends Constraint {
 
         // Get world anchor points and normal
         vec2.add(n, xj, rj)
-        vec2.sub(n, n, ri)
-        vec2.sub(n, n, xi)
+        vec2.subtract(n, n, ri)
+        vec2.subtract(n, n, xi)
         this.position = vec2.length(n)
 
         let violating = false

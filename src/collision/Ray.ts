@@ -10,7 +10,7 @@ const intersect = vec2.create()
 
 function distanceFromIntersectionSquared(from: Vec2, direction: Vec2, position: Vec2) {
     // v0 is vector from from to position
-    vec2.sub(v0, position, from)
+    vec2.subtract(v0, position, from)
     const dot = vec2.dot(v0, direction)
 
     // intersect = direction * dot + from
@@ -152,7 +152,7 @@ export class Ray {
     update(): void {
         // Update .direction and .length
         const d = this.direction
-        vec2.sub(d, this.to, this.from)
+        vec2.subtract(d, this.to, this.from)
         this.length = vec2.length(d)
         vec2.normalize(d, d)
     }

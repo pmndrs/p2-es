@@ -285,7 +285,7 @@ export class Narrowphase {
                 vec2.add(eq.contactPointA, eq.contactPointA, c.contactPointA)
                 vec2.add(eq.contactPointB, eq.contactPointB, c.contactPointB)
             } else {
-                vec2.sub(eq.t, eq.t, c.normalA)
+                vec2.subtract(eq.t, eq.t, c.normalA)
                 vec2.add(eq.contactPointA, eq.contactPointA, c.contactPointB)
                 vec2.add(eq.contactPointB, eq.contactPointB, c.contactPointA)
             }
@@ -666,7 +666,7 @@ export class Narrowphase {
         vec2.copy(worldVertex1, worldVertex11)
 
         // Get vector along the line
-        vec2.sub(worldEdge, worldVertex1, worldVertex0)
+        vec2.subtract(worldEdge, worldVertex1, worldVertex0)
         vec2.normalize(worldEdgeUnit, worldEdge)
 
         // Get tangent to the edge.
@@ -680,7 +680,7 @@ export class Narrowphase {
         for (let i = 0; i < verts.length; i++) {
             const v = verts[i]
 
-            vec2.sub(dist, v, planeOffset)
+            vec2.subtract(dist, v, planeOffset)
 
             const d = vec2.dot(dist, worldNormal)
 
@@ -699,13 +699,13 @@ export class Narrowphase {
                 vec2.scale(dist, worldNormal, d)
 
                 // Vector from plane center to contact
-                vec2.sub(c.contactPointA, v, dist)
-                vec2.sub(c.contactPointA, c.contactPointA, planeBody.position)
+                vec2.subtract(c.contactPointA, v, dist)
+                vec2.subtract(c.contactPointA, c.contactPointA, planeBody.position)
 
                 // From line center to contact
-                vec2.sub(c.contactPointB, v, lineOffset)
+                vec2.subtract(c.contactPointB, v, lineOffset)
                 vec2.add(c.contactPointB, c.contactPointB, lineOffset)
-                vec2.sub(c.contactPointB, c.contactPointB, lineBody.position)
+                vec2.subtract(c.contactPointB, c.contactPointB, lineBody.position)
 
                 this.contactEquations.push(c)
 
@@ -830,25 +830,25 @@ export class Narrowphase {
         vec2.copy(worldVertex1, worldVertex11)
 
         // Get vector along the line
-        vec2.sub(worldEdge, worldVertex1, worldVertex0)
+        vec2.subtract(worldEdge, worldVertex1, worldVertex0)
         vec2.normalize(worldEdgeUnit, worldEdge)
 
         // Get tangent to the edge.
         vec2.rotate90cw(worldTangent, worldEdgeUnit)
 
         // Check distance from the plane spanned by the edge vs the circle
-        vec2.sub(dist, circleOffset, worldVertex0)
+        vec2.subtract(dist, circleOffset, worldVertex0)
         const d = vec2.dot(dist, worldTangent) // Distance from center of line to circle center
-        vec2.sub(centerDist, worldVertex0, lineOffset)
+        vec2.subtract(centerDist, worldVertex0, lineOffset)
 
-        vec2.sub(lineToCircle, circleOffset, lineOffset)
+        vec2.subtract(lineToCircle, circleOffset, lineOffset)
 
         const radiusSum = circleRadius + lineRadius
 
         if (Math.abs(d) < radiusSum) {
             // Now project the circle onto the edge
             vec2.scale(orthoDist, worldTangent, d)
-            vec2.sub(projectedPoint, circleOffset, orthoDist)
+            vec2.subtract(projectedPoint, circleOffset, orthoDist)
 
             // Add the missing line radius
             vec2.scale(lineToCircleOrthoUnit, worldTangent, vec2.dot(worldTangent, lineToCircle))
@@ -875,11 +875,11 @@ export class Narrowphase {
 
                 vec2.scale(c.contactPointA, c.normalA, circleRadius)
                 vec2.add(c.contactPointA, c.contactPointA, circleOffset)
-                vec2.sub(c.contactPointA, c.contactPointA, circleBody.position)
+                vec2.subtract(c.contactPointA, c.contactPointA, circleBody.position)
 
-                vec2.sub(c.contactPointB, projectedPoint, lineOffset)
+                vec2.subtract(c.contactPointB, projectedPoint, lineOffset)
                 vec2.add(c.contactPointB, c.contactPointB, lineOffset)
-                vec2.sub(c.contactPointB, c.contactPointB, lineBody.position)
+                vec2.subtract(c.contactPointB, c.contactPointB, lineBody.position)
 
                 this.contactEquations.push(c)
 
@@ -898,7 +898,7 @@ export class Narrowphase {
         for (let i = 0; i < verts.length; i++) {
             const v = verts[i]
 
-            vec2.sub(dist, v, circleOffset)
+            vec2.subtract(dist, v, circleOffset)
 
             if (vec2.squaredLength(dist) < Math.pow(radiusSum, 2)) {
                 if (justTest) {
@@ -913,13 +913,13 @@ export class Narrowphase {
                 // Vector from circle to contact point is the normal times the circle radius
                 vec2.scale(c.contactPointA, c.normalA, circleRadius)
                 vec2.add(c.contactPointA, c.contactPointA, circleOffset)
-                vec2.sub(c.contactPointA, c.contactPointA, circleBody.position)
+                vec2.subtract(c.contactPointA, c.contactPointA, circleBody.position)
 
-                vec2.sub(c.contactPointB, v, lineOffset)
+                vec2.subtract(c.contactPointB, v, lineOffset)
                 vec2.scale(lineEndToLineRadius, c.normalA, -lineRadius)
                 vec2.add(c.contactPointB, c.contactPointB, lineEndToLineRadius)
                 vec2.add(c.contactPointB, c.contactPointB, lineOffset)
-                vec2.sub(c.contactPointB, c.contactPointB, lineBody.position)
+                vec2.subtract(c.contactPointB, c.contactPointB, lineBody.position)
 
                 this.contactEquations.push(c)
 
@@ -1025,7 +1025,7 @@ export class Narrowphase {
         const radius = convexShape.boundingRadius + circleRadius
 
         for (let i = 0; i < numVertices; i++) {
-            vec2.sub(r, localCirclePosition, vertices[i])
+            vec2.subtract(r, localCirclePosition, vertices[i])
             const s = vec2.dot(normals[i], r)
 
             if (s > radius) {
@@ -1049,7 +1049,7 @@ export class Narrowphase {
             vec2.add(candidate, candidate, localCirclePosition)
 
             if (pointInConvexLocal(candidate, convexShape)) {
-                vec2.sub(candidateDist, v0, candidate)
+                vec2.subtract(candidateDist, v0, candidate)
                 const candidateDistance = Math.abs(vec2.dot(candidateDist, n))
 
                 if (candidateDistance < minCandidateDistance) {
@@ -1070,7 +1070,7 @@ export class Narrowphase {
             vec2.toGlobalFrame(worldVertex0, v0, convexOffset, convexAngle)
             vec2.toGlobalFrame(worldVertex1, v1, convexOffset, convexAngle)
 
-            vec2.sub(edge, worldVertex1, worldVertex0)
+            vec2.subtract(edge, worldVertex1, worldVertex0)
 
             vec2.normalize(edgeUnit, edge)
 
@@ -1085,16 +1085,16 @@ export class Narrowphase {
             vec2.add(closestEdgeProjectedPoint, closestEdgeProjectedPoint, candidate)
 
             const c = this.createContactEquation(circleBody, convexBody, circleShape, convexShape)
-            vec2.sub(c.normalA, candidate, circleOffset)
+            vec2.subtract(c.normalA, candidate, circleOffset)
             vec2.normalize(c.normalA, c.normalA)
 
             vec2.scale(c.contactPointA, c.normalA, circleRadius)
             vec2.add(c.contactPointA, c.contactPointA, circleOffset)
-            vec2.sub(c.contactPointA, c.contactPointA, circleBody.position)
+            vec2.subtract(c.contactPointA, c.contactPointA, circleBody.position)
 
-            vec2.sub(c.contactPointB, closestEdgeProjectedPoint, convexOffset)
+            vec2.subtract(c.contactPointB, closestEdgeProjectedPoint, convexOffset)
             vec2.add(c.contactPointB, c.contactPointB, convexOffset)
-            vec2.sub(c.contactPointB, c.contactPointB, convexBody.position)
+            vec2.subtract(c.contactPointB, c.contactPointB, convexBody.position)
 
             this.contactEquations.push(c)
 
@@ -1110,7 +1110,7 @@ export class Narrowphase {
             for (let i = normalIndex + numVertices; i < normalIndex + numVertices + 2; i++) {
                 const localVertex = vertices[i % numVertices]
 
-                vec2.sub(dist, localVertex, localCirclePosition)
+                vec2.subtract(dist, localVertex, localCirclePosition)
 
                 if (vec2.squaredLength(dist) < circleRadius * circleRadius) {
                     if (justTest) {
@@ -1118,7 +1118,7 @@ export class Narrowphase {
                     }
 
                     vec2.toGlobalFrame(worldVertex, localVertex, convexOffset, convexAngle)
-                    vec2.sub(dist, worldVertex, circleOffset)
+                    vec2.subtract(dist, worldVertex, circleOffset)
 
                     const c = this.createContactEquation(circleBody, convexBody, circleShape, convexShape)
 
@@ -1128,11 +1128,11 @@ export class Narrowphase {
                     // Vector from circle to contact point is the normal times the circle radius
                     vec2.scale(c.contactPointA, c.normalA, circleRadius)
                     vec2.add(c.contactPointA, c.contactPointA, circleOffset)
-                    vec2.sub(c.contactPointA, c.contactPointA, circleBody.position)
+                    vec2.subtract(c.contactPointA, c.contactPointA, circleBody.position)
 
-                    vec2.sub(c.contactPointB, worldVertex, convexOffset)
+                    vec2.subtract(c.contactPointB, worldVertex, convexOffset)
                     vec2.add(c.contactPointB, c.contactPointB, convexOffset)
-                    vec2.sub(c.contactPointB, c.contactPointB, convexBody.position)
+                    vec2.subtract(c.contactPointB, c.contactPointB, convexBody.position)
 
                     this.contactEquations.push(c)
 
@@ -1208,18 +1208,18 @@ export class Narrowphase {
             vec2.add(worldVertex1, worldVertex1, convexOffset)
 
             // Get world edge
-            vec2.sub(worldEdge, worldVertex1, worldVertex0)
+            vec2.subtract(worldEdge, worldVertex1, worldVertex0)
             vec2.normalize(worldEdgeUnit, worldEdge)
 
             // Get tangent to the edge. Points out of the Convex
             vec2.rotate90cw(worldTangent, worldEdgeUnit)
 
             // Check distance from the infinite line (spanned by the edge) to the particle
-            vec2.sub(centerDist, worldVertex0, convexOffset)
+            vec2.subtract(centerDist, worldVertex0, convexOffset)
 
-            vec2.sub(convexToparticle, particleOffset, convexOffset)
+            vec2.subtract(convexToparticle, particleOffset, convexOffset)
 
-            vec2.sub(candidateDist, worldVertex0, particleOffset)
+            vec2.subtract(candidateDist, worldVertex0, particleOffset)
             const candidateDistance = Math.abs(vec2.dot(candidateDist, worldTangent))
 
             if (candidateDistance < minCandidateDistance) {
@@ -1240,12 +1240,12 @@ export class Narrowphase {
             // Particle has no extent to the contact point
             vec2.set(c.contactPointA, 0, 0)
             vec2.add(c.contactPointA, c.contactPointA, particleOffset)
-            vec2.sub(c.contactPointA, c.contactPointA, particleBody.position)
+            vec2.subtract(c.contactPointA, c.contactPointA, particleBody.position)
 
             // From convex center to point
-            vec2.sub(c.contactPointB, closestEdgeProjectedPoint, convexOffset)
+            vec2.subtract(c.contactPointB, closestEdgeProjectedPoint, convexOffset)
             vec2.add(c.contactPointB, c.contactPointB, convexOffset)
-            vec2.sub(c.contactPointB, c.contactPointB, convexBody.position)
+            vec2.subtract(c.contactPointB, c.contactPointB, convexBody.position)
 
             this.contactEquations.push(c)
 
@@ -1291,7 +1291,7 @@ export class Narrowphase {
         radiusA = radiusA || shapeA.radius
         radiusB = radiusB || shapeB.radius
 
-        vec2.sub(dist, offsetA, offsetB)
+        vec2.subtract(dist, offsetA, offsetB)
         const r = radiusA + radiusB
         if (vec2.squaredLength(dist) > r * r) {
             return 0
@@ -1306,7 +1306,7 @@ export class Narrowphase {
         const cpB = c.contactPointB
         const normalA = c.normalA
 
-        vec2.sub(normalA, offsetB, offsetA)
+        vec2.subtract(normalA, offsetB, offsetA)
         vec2.normalize(normalA, normalA)
 
         vec2.scale(cpA, normalA, radiusA)
@@ -1366,7 +1366,7 @@ export class Narrowphase {
         for (let i = 0, numVerts = vertices.length; i !== numVerts; i++) {
             const v = vertices[i]
 
-            vec2.sub(localDist, v, localPlaneOffset)
+            vec2.subtract(localDist, v, localPlaneOffset)
 
             if (vec2.dot(localDist, localPlaneNormal) <= 0) {
                 if (justTest) {
@@ -1375,14 +1375,14 @@ export class Narrowphase {
 
                 vec2.toGlobalFrame(worldVertex, v, convexOffset, convexAngle)
 
-                vec2.sub(dist, worldVertex, planeOffset)
+                vec2.subtract(dist, worldVertex, planeOffset)
 
                 // Found vertex
                 numReported++
 
                 const c = this.createContactEquation(planeBody, convexBody, planeShape, convexShape)
 
-                vec2.sub(dist, worldVertex, planeOffset)
+                vec2.subtract(dist, worldVertex, planeOffset)
 
                 vec2.copy(c.normalA, worldNormal)
 
@@ -1390,11 +1390,11 @@ export class Narrowphase {
                 vec2.scale(dist, c.normalA, d)
 
                 // rj is from convex center to contact
-                vec2.sub(c.contactPointB, worldVertex, convexBody.position)
+                vec2.subtract(c.contactPointB, worldVertex, convexBody.position)
 
                 // ri is from plane center to contact
-                vec2.sub(c.contactPointA, worldVertex, dist)
-                vec2.sub(c.contactPointA, c.contactPointA, planeBody.position)
+                vec2.subtract(c.contactPointA, worldVertex, dist)
+                vec2.subtract(c.contactPointA, c.contactPointA, planeBody.position)
 
                 this.contactEquations.push(c)
 
@@ -1444,7 +1444,7 @@ export class Narrowphase {
 
         planeAngle = planeAngle || 0
 
-        vec2.sub(dist, particleOffset, planeOffset)
+        vec2.subtract(dist, particleOffset, planeOffset)
         vec2.rotate(worldNormal, yAxis, planeAngle)
 
         const d = vec2.dot(dist, worldNormal)
@@ -1463,11 +1463,11 @@ export class Narrowphase {
         // dist is now the distance vector in the normal direction
 
         // ri is the particle position projected down onto the plane, from the plane center
-        vec2.sub(c.contactPointA, particleOffset, dist)
-        vec2.sub(c.contactPointA, c.contactPointA, planeBody.position)
+        vec2.subtract(c.contactPointA, particleOffset, dist)
+        vec2.subtract(c.contactPointA, c.contactPointA, planeBody.position)
 
         // rj is from the body center to the particle center
-        vec2.sub(c.contactPointB, particleOffset, particleBody.position)
+        vec2.subtract(c.contactPointB, particleOffset, particleBody.position)
 
         this.contactEquations.push(c)
 
@@ -1491,7 +1491,7 @@ export class Narrowphase {
         const dist = tmp1
         const circleRadius = circleShape.radius
 
-        vec2.sub(dist, particleOffset, circleOffset)
+        vec2.subtract(dist, particleOffset, circleOffset)
         if (vec2.squaredLength(dist) > circleRadius * circleRadius) {
             return 0
         }
@@ -1510,10 +1510,10 @@ export class Narrowphase {
         // Vector from circle to contact point is the normal times the circle radius
         vec2.scale(contactPointA, normalA, circleRadius)
         vec2.add(contactPointA, contactPointA, circleOffset)
-        vec2.sub(contactPointA, contactPointA, circleBody.position)
+        vec2.subtract(contactPointA, contactPointA, circleBody.position)
 
         // Vector from particle center to contact point is zero
-        vec2.sub(contactPointB, particleOffset, particleBody.position)
+        vec2.subtract(contactPointB, particleOffset, particleBody.position)
 
         this.contactEquations.push(c)
 
@@ -1643,7 +1643,7 @@ export class Narrowphase {
             worldNormal = tmp2,
             temp = tmp3
 
-        vec2.sub(planeToCircle, circleOffset, planeOffset)
+        vec2.subtract(planeToCircle, circleOffset, planeOffset)
 
         // World plane normal
         vec2.rotate(worldNormal, yAxis, planeAngle)
@@ -1669,14 +1669,14 @@ export class Narrowphase {
         const cpB = contact.contactPointB
         vec2.scale(cpB, contact.normalA, -circleRadius)
         vec2.add(cpB, cpB, circleOffset)
-        vec2.sub(cpB, cpB, circleBody.position)
+        vec2.subtract(cpB, cpB, circleBody.position)
 
         // ri is the distance from plane center to contact.
         const cpA = contact.contactPointA
         vec2.scale(temp, contact.normalA, d)
-        vec2.sub(cpA, planeToCircle, temp) // Subtract normal distance vector from the distance vector
+        vec2.subtract(cpA, planeToCircle, temp) // Subtract normal distance vector from the distance vector
         vec2.add(cpA, cpA, planeOffset)
-        vec2.sub(cpA, cpA, planeBody.position)
+        vec2.subtract(cpA, cpA, planeBody.position)
 
         this.contactEquations.push(contact)
 
@@ -1779,7 +1779,7 @@ export class Narrowphase {
         vec2.copy(v12, vertices1[iv2])
 
         const localTangent = collidePolygons_localTangent
-        vec2.sub(localTangent, v12, v11)
+        vec2.subtract(localTangent, v12, v11)
         vec2.normalize(localTangent, localTangent)
 
         const localNormal = collidePolygons_localNormal
@@ -1839,11 +1839,11 @@ export class Narrowphase {
 
                 vec2.copy(c.normalA, normal)
                 vec2.copy(c.contactPointB, clipPoints2[i])
-                vec2.sub(c.contactPointB, c.contactPointB, body2.position)
+                vec2.subtract(c.contactPointB, c.contactPointB, body2.position)
 
                 vec2.scale(dist, normal, -separation)
                 vec2.add(c.contactPointA, clipPoints2[i], dist)
-                vec2.sub(c.contactPointA, c.contactPointA, body1.position)
+                vec2.subtract(c.contactPointA, c.contactPointA, body1.position)
 
                 this.contactEquations.push(c)
 
@@ -1951,7 +1951,7 @@ export class Narrowphase {
             vec2.add(v1, v1, hfPos)
 
             // Get normal
-            vec2.sub(worldNormal, v1, v0)
+            vec2.subtract(worldNormal, v1, v0)
             vec2.rotate(worldNormal, worldNormal, Math.PI / 2)
             vec2.normalize(worldNormal, worldNormal)
 
@@ -1960,7 +1960,7 @@ export class Narrowphase {
             vec2.add(candidate, candidate, circlePos)
 
             // Distance from v0 to the candidate point
-            vec2.sub(dist, candidate, v0)
+            vec2.subtract(dist, candidate, v0)
 
             // Check if it is in the element "stick"
             const d = vec2.dot(dist, worldNormal)
@@ -1984,10 +1984,10 @@ export class Narrowphase {
                 // Vector from circle to heightfield
                 vec2.scale(c.contactPointB, c.normalA, -radius)
                 vec2.add(c.contactPointB, c.contactPointB, circlePos)
-                vec2.sub(c.contactPointB, c.contactPointB, circleBody.position)
+                vec2.subtract(c.contactPointB, c.contactPointB, circleBody.position)
 
                 vec2.copy(c.contactPointA, minCandidate)
-                vec2.sub(c.contactPointA, c.contactPointA, hfBody.position)
+                vec2.subtract(c.contactPointA, c.contactPointA, hfBody.position)
 
                 this.contactEquations.push(c)
 
@@ -2005,7 +2005,7 @@ export class Narrowphase {
                 vec2.set(v0, i * w, data[i])
                 vec2.add(v0, v0, hfPos)
 
-                vec2.sub(dist, circlePos, v0)
+                vec2.subtract(dist, circlePos, v0)
 
                 if (vec2.squaredLength(dist) < Math.pow(radius, 2)) {
                     if (justTest) {
@@ -2022,11 +2022,11 @@ export class Narrowphase {
 
                     vec2.scale(c.contactPointB, c.normalA, -radius)
                     vec2.add(c.contactPointB, c.contactPointB, circlePos)
-                    vec2.sub(c.contactPointB, c.contactPointB, circleBody.position)
+                    vec2.subtract(c.contactPointB, c.contactPointB, circleBody.position)
 
-                    vec2.sub(c.contactPointA, v0, hfPos)
+                    vec2.subtract(c.contactPointA, v0, hfPos)
                     vec2.add(c.contactPointA, c.contactPointA, hfPos)
-                    vec2.sub(c.contactPointA, c.contactPointA, hfBody.position)
+                    vec2.subtract(c.contactPointA, c.contactPointA, hfBody.position)
 
                     this.contactEquations.push(c)
 
@@ -2119,8 +2119,8 @@ export class Narrowphase {
             const tileHeight = 100 // todo
             vec2.set(tilePos, (v1[0] + v0[0]) * 0.5, (v1[1] + v0[1] - tileHeight) * 0.5)
 
-            vec2.sub(tileConvex.vertices[0], v1, tilePos)
-            vec2.sub(tileConvex.vertices[1], v0, tilePos)
+            vec2.subtract(tileConvex.vertices[0], v1, tilePos)
+            vec2.subtract(tileConvex.vertices[1], v0, tilePos)
             vec2.copy(tileConvex.vertices[2], tileConvex.vertices[1])
             vec2.copy(tileConvex.vertices[3], tileConvex.vertices[0])
             tileConvex.vertices[2][1] -= tileHeight
@@ -2265,8 +2265,8 @@ function pointInConvex(worldPoint: Vec2, convexShape: Convex, convexOffset: Vec2
         const v0 = verts[i % numVerts],
             v1 = verts[(i + 1) % numVerts]
 
-        vec2.sub(r0, v0, localPoint)
-        vec2.sub(r1, v1, localPoint)
+        vec2.subtract(r0, v0, localPoint)
+        vec2.subtract(r1, v1, localPoint)
 
         const cross = vec2.crossLength(r0, r1)
 
@@ -2302,8 +2302,8 @@ function pointInConvexLocal(localPoint: Vec2, convexShape: Convex) {
         const v0 = verts[i % numVerts],
             v1 = verts[(i + 1) % numVerts]
 
-        vec2.sub(r0, v0, localPoint)
-        vec2.sub(r1, v1, localPoint)
+        vec2.subtract(r0, v0, localPoint)
+        vec2.subtract(r1, v1, localPoint)
 
         const cross = vec2.crossLength(r0, r1)
 
@@ -2364,7 +2364,7 @@ function findMaxSeparation(
         // Find deepest point for normal i.
         let si = Number.MAX_VALUE
         for (let j = 0; j < count2; ++j) {
-            vec2.sub(tmp, v2s[j], v1)
+            vec2.subtract(tmp, v2s[j], v1)
             const sij = vec2.dot(n, tmp)
             if (sij < si) {
                 si = sij
@@ -2443,7 +2443,7 @@ function clipSegmentToLine(vOut: Vec2[], vIn: Vec2[], normal: Vec2, offset: numb
         // Find intersection point of edge and plane
         const interp = distance0 / (distance0 - distance1)
         const v = vOut[numOut]
-        vec2.sub(v, vIn[1], vIn[0])
+        vec2.subtract(v, vIn[1], vIn[0])
         vec2.scale(v, v, interp)
         vec2.add(v, v, vIn[0])
         ++numOut
