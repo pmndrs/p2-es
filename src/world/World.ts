@@ -499,6 +499,7 @@ export class World extends EventEmitter<WorldEventMap> {
             }
         }
 
+        // Apply damping
         if (this.applyDamping) {
             for (let i = 0; i !== Nbodies; i++) {
                 const b = bodies[i]
@@ -508,7 +509,7 @@ export class World extends EventEmitter<WorldEventMap> {
             }
         }
 
-        // Broadphase
+        // Get Broadphase collision pairs
         const result = broadphase.getCollisionPairs(this)
 
         // Remove ignored collision pairs

@@ -776,7 +776,9 @@ export class Body extends EventEmitter<BodyEventMap> {
     }
 
     /**
-     * Apply impulse to a point relative to the body. This could for example be a point on the Body surface. An impulse is a force added to a body during a short period of time (impulse = force * time). Impulses will be added to Body.velocity and Body.angularVelocity.
+     * Apply impulse to a point relative to the body. This could for example be a point on the Body surface.
+     * An impulse is a force added to a body during a short period of time (impulse = force * time).
+     * Impulses will be added to Body.velocity and Body.angularVelocity.
      * @param impulseVector The impulse vector to add, oriented in world space.
      * @param relativePoint A point relative to the body in world space. If not given, it is set to zero and all of the impulse will be exerted on the center of mass.
      * @example

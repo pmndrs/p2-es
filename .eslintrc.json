@@ -90,7 +90,8 @@
         "no-nested-ternary": "off",
         "no-cond-assign": "off",
         "prefer-destructuring": "off",
-        "max-len": "off"
+        "max-len": "off",
+        "guard-for-in": "off"
       }
     }
   ],

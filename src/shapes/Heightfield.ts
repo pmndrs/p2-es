@@ -60,16 +60,15 @@ export class Heightfield extends Shape {
         const params = {
             ...options,
             type: Shape.HEIGHTFIELD,
-            heights: options.heights ?? [],
+            heights: options.heights ? [...options.heights] : [],
             elementWidth: options.elementWidth ?? 0.1,
         }
 
         super(params)
 
-        this.heights = params.heights.slice(0)
+        this.heights = params.heights
 
         this.maxValue = params.maxValue
-
         this.minValue = params.minValue
 
         this.elementWidth = params.elementWidth !== undefined ? params.elementWidth : 0.1
@@ -101,6 +100,10 @@ export class Heightfield extends Shape {
 
     computeMomentOfInertia(): number {
         return Number.MAX_VALUE
+    }
+
+    updateBoundingRadius(): void {
+        this.boundingRadius = Number.MAX_VALUE
     }
 
     updateArea(): void {

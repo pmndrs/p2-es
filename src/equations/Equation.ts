@@ -27,12 +27,12 @@ export class Equation {
     /**
      * The default stiffness when creating a new Equation.
      */
-     static DEFAULT_STIFFNESS = 1e6
+    static DEFAULT_STIFFNESS = 1e6
 
-     /**
-      * The default relaxation when creating a new Equation.
-      */
-     static DEFAULT_RELAXATION = 4
+    /**
+     * The default relaxation when creating a new Equation.
+     */
+    static DEFAULT_RELAXATION = 4
 
     /**
      * Whether this equation is enabled or not. If true, it will be added to the solver.
@@ -186,8 +186,8 @@ export class Equation {
         const G = this.G,
             bi = this.bodyA,
             bj = this.bodyB,
-            ai = bi!.angle,
-            aj = bj!.angle
+            ai = bi.angle,
+            aj = bj.angle
 
         return this.gmult(G, qi, ai, qj, aj) + this.offset
     }
@@ -273,17 +273,17 @@ export class Equation {
     addToWlambda(deltalambda: number): void {
         const bi = this.bodyA,
             bj = this.bodyB,
-            invMassi = bi!.invMassSolve,
-            invMassj = bj!.invMassSolve,
-            invIi = bi!.invInertiaSolve,
-            invIj = bj!.invInertiaSolve,
+            invMassi = bi.invMassSolve,
+            invMassj = bj.invMassSolve,
+            invIi = bi.invInertiaSolve,
+            invIj = bj.invInertiaSolve,
             G = this.G
 
-        addToVLambda(bi!.vlambda, G[0], G[1], invMassi, deltalambda, bi!.massMultiplier)
-        bi!.wlambda += invIi * G[2] * deltalambda
+        addToVLambda(bi.vlambda, G[0], G[1], invMassi, deltalambda, bi.massMultiplier)
+        bi.wlambda += invIi * G[2] * deltalambda
 
-        addToVLambda(bj!.vlambda, G[3], G[4], invMassj, deltalambda, bj!.massMultiplier)
-        bj!.wlambda += invIj * G[5] * deltalambda
+        addToVLambda(bj.vlambda, G[3], G[4], invMassj, deltalambda, bj.massMultiplier)
+        bj.wlambda += invIj * G[5] * deltalambda
     }
 
     /**

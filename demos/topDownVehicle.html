@@ -2,18 +2,18 @@
 <html>
 <head>
     <title>Top down vehicle demo - p2.js physics engine</title>
-    <script src="../build/p2.js"></script>
-    <script src="../build/p2.renderer.js"></script>
     <link href="css/demo.css" rel="stylesheet"/>
     <meta name="description" content="">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 </head>
 <body>
-    <script>
+    <script type="module">
+        import * as p2 from '../../dist/p2-es.js'
+        import { Demo } from './js/Demo.js'
 
         // Create demo application
-        var app = new p2.WebGLRenderer(function(){
+        new Demo(function(){
 
             // Create a World
             var world = new p2.World({
@@ -22,7 +22,7 @@
             this.setWorld(world);
 
             // Create a dynamic body for the chassis
-            chassisBody = new p2.Body({
+            var chassisBody = new p2.Body({
                 mass: 1
             });
             var boxShape = new p2.Box({ width: 0.5, height: 1 });
@@ -30,16 +30,16 @@
             world.addBody(chassisBody);
 
             // Create the vehicle
-            vehicle = new p2.TopDownVehicle(chassisBody);
+            var vehicle = new p2.TopDownVehicle(chassisBody);
 
             // Add one front wheel and one back wheel - we don't actually need four :)
-            frontWheel = vehicle.addWheel({
+            var frontWheel = vehicle.addWheel({
                 localPosition: [0, 0.5] // front
             });
             frontWheel.setSideFriction(4);
 
             // Back wheel
-            backWheel = vehicle.addWheel({
+            var backWheel = vehicle.addWheel({
                 localPosition: [0, -0.5] // back
             });
             backWheel.setSideFriction(3); // Less side friction on back wheel makes it easier to drift

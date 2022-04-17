@@ -353,7 +353,7 @@ function add(out, a, b) {
  * @return out
  */
 
-function sub(out, a, b) {
+function subtract(out, a, b) {
   out[0] = a[0] - b[0];
   out[1] = a[1] - b[1];
   return out;
@@ -587,7 +587,7 @@ var vec2 = /*#__PURE__*/Object.freeze({
   copy: copy,
   set: set,
   add: add,
-  sub: sub,
+  subtract: subtract,
   multiply: multiply,
   divide: divide,
   scale: scale,
@@ -1505,7 +1505,7 @@ const intersect = create();
 
 function distanceFromIntersectionSquared(from, direction, position) {
   // v0 is vector from from to position
-  sub(v0, position, from);
+  subtract(v0, position, from);
   const dot$1 = dot(v0, direction); // intersect = direction * dot + from
 
   scale(intersect, direction, dot$1);
@@ -1562,7 +1562,7 @@ class Ray {
   update() {
     // Update .direction and .length
     const d = this.direction;
-    sub(d, this.to, this.from);
+    subtract(d, this.to, this.from);
     this.length = length(d);
     normalize(d, d);
   }
@@ -2309,7 +2309,7 @@ class Convex extends Shape {
       const worldPoint0 = this.vertices[i];
       const worldPoint1 = this.vertices[(i + 1) % this.vertices.length];
       const normal = this.normals[i];
-      sub(normal, worldPoint1, worldPoint0); // Get normal - just rotate 90 degrees since vertices are given in CCW
+      subtract(normal, worldPoint1, worldPoint0); // Get normal - just rotate 90 degrees since vertices are given in CCW
 
       rotate90cw(normal, normal);
       normalize(normal, normal);
@@ -2514,7 +2514,7 @@ class Convex extends Shape {
       const delta = getLineSegmentsIntersectionFraction(rayStart, rayEnd, q1, q2);
 
       if (delta >= 0) {
-        sub(normal, q2, q1);
+        subtract(normal, q2, q1);
         rotate(normal, normal, -Math.PI / 2 + angle);
         normalize(normal, normal);
         ray.reportIntersection(result, delta, normal, i);
@@ -2532,8 +2532,8 @@ class Convex extends Shape {
     for (let i = 0; i < numVerts + 1; i++) {
       const v0 = verts[i % numVerts],
             v1 = verts[(i + 1) % numVerts];
-      sub(r0, v0, localPoint);
-      sub(r1, v1, localPoint);
+      subtract(r0, v0, localPoint);
+      subtract(r1, v1, localPoint);
       const cross = crossLength(r0, r1);
 
       if (lastCross === null) {
@@ -2971,7 +2971,9 @@ class Body extends EventEmitter {
     this.applyForce(worldForce, worldPoint);
   }
   /**
-   * Apply impulse to a point relative to the body. This could for example be a point on the Body surface. An impulse is a force added to a body during a short period of time (impulse = force * time). Impulses will be added to Body.velocity and Body.angularVelocity.
+   * Apply impulse to a point relative to the body. This could for example be a point on the Body surface.
+   * An impulse is a force added to a body during a short period of time (impulse = force * time).
+   * Impulses will be added to Body.velocity and Body.angularVelocity.
    * @param impulseVector The impulse vector to add, oriented in world space.
    * @param relativePoint A point relative to the body in world space. If not given, it is set to zero and all of the impulse will be exerted on the center of mass.
    * @example
@@ -3151,7 +3153,7 @@ class Body extends EventEmitter {
 
       for (let j = 0; j !== c.vertices.length; j++) {
         const v = c.vertices[j];
-        sub(v, v, c.centerOfMass);
+        subtract(v, v, c.centerOfMass);
       }
 
       copy(cm, c.centerOfMass);
@@ -3197,14 +3199,14 @@ class Body extends EventEmitter {
 
     for (let i = 0; i !== this.shapes.length; i++) {
       const s = this.shapes[i];
-      sub(s.position, s.position, cm);
+      subtract(s.position, s.position, cm);
     } // Move the body position too
 
 
     add(this.position, this.position, cm); // And concave path
 
     for (let i = 0; this.concavePath && i < this.concavePath.length; i++) {
-      sub(this.concavePath[i], this.concavePath[i], cm);
+      subtract(this.concavePath[i], this.concavePath[i], cm);
     }
 
     this.updateMassProperties();
@@ -3375,7 +3377,7 @@ class Body extends EventEmitter {
 
   getVelocityAtPoint(result, relativePoint) {
     crossVZ(result, relativePoint, this.angularVelocity);
-    sub(result, this.velocity, result);
+    subtract(result, this.velocity, result);
     return result;
   }
 
@@ -3407,7 +3409,7 @@ class Body extends EventEmitter {
     normalize(direction, this.velocity);
     scale(end, this.velocity, dt);
     add(end, end, this.position);
-    sub(startToEnd, end, this.position);
+    subtract(startToEnd, end, this.position);
     const startToEndAngle = this.angularVelocity * dt;
     const len = length(startToEnd);
     let timeOfImpact = 1;
@@ -3438,7 +3440,7 @@ class Body extends EventEmitter {
     }
 
     result.getHitPoint(end, ray);
-    sub(startToEnd, end, this.position);
+    subtract(startToEnd, end, this.position);
     timeOfImpact = distance(end, this.position) / len; // guess
 
     const rememberAngle = this.angle;
@@ -3892,7 +3894,7 @@ class Circle extends Shape {
     } else if (delta === 0) {
       // single intersection point
       lerp(intersectionPoint, from, to, delta);
-      sub(normal, intersectionPoint, position);
+      subtract(normal, intersectionPoint, position);
       normalize(normal, normal);
       ray.reportIntersection(result, delta, normal, -1);
     } else {
@@ -3903,7 +3905,7 @@ class Circle extends Shape {
 
       if (d1 >= 0 && d1 <= 1) {
         lerp(intersectionPoint, from, to, d1);
-        sub(normal, intersectionPoint, position);
+        subtract(normal, intersectionPoint, position);
         normalize(normal, normal);
         ray.reportIntersection(result, d1, normal, -1);
 
@@ -3914,7 +3916,7 @@ class Circle extends Shape {
 
       if (d2 >= 0 && d2 <= 1) {
         lerp(intersectionPoint, from, to, d2);
-        sub(normal, intersectionPoint, position);
+        subtract(normal, intersectionPoint, position);
         normalize(normal, normal);
         ray.reportIntersection(result, d2, normal, -1);
       }
@@ -4238,7 +4240,7 @@ class ContactEquation extends Equation {
   getVelocityAlongNormal() {
     this.bodyA.getVelocityAtPoint(vi, this.contactPointA);
     this.bodyB.getVelocityAtPoint(vj, this.contactPointB);
-    sub(relVel, vi, vj);
+    subtract(relVel, vi, vj);
     return dot(this.normalA, relVel);
   }
 
@@ -4764,7 +4766,7 @@ class Narrowphase {
       copy(worldVertex0, worldVertex01);
       copy(worldVertex1, worldVertex11); // Get vector along the line
 
-      sub(worldEdge, worldVertex1, worldVertex0);
+      subtract(worldEdge, worldVertex1, worldVertex0);
       normalize(worldEdgeUnit, worldEdge); // Get tangent to the edge.
 
       rotate90cw(worldTangent, worldEdgeUnit);
@@ -4775,7 +4777,7 @@ class Narrowphase {
 
       for (let i = 0; i < verts.length; i++) {
         const v = verts[i];
-        sub(dist, v, planeOffset);
+        subtract(dist, v, planeOffset);
         const d = dot(dist, worldNormal);
 
         if (d < 0) {
@@ -4791,12 +4793,12 @@ class Narrowphase {
 
           scale(dist, worldNormal, d); // Vector from plane center to contact
 
-          sub(c.contactPointA, v, dist);
-          sub(c.contactPointA, c.contactPointA, planeBody.position); // From line center to contact
+          subtract(c.contactPointA, v, dist);
+          subtract(c.contactPointA, c.contactPointA, planeBody.position); // From line center to contact
 
-          sub(c.contactPointB, v, lineOffset);
+          subtract(c.contactPointB, v, lineOffset);
           add(c.contactPointB, c.contactPointB, lineOffset);
-          sub(c.contactPointB, c.contactPointB, lineBody.position);
+          subtract(c.contactPointB, c.contactPointB, lineBody.position);
 
           _this.contactEquations.push(c);
 
@@ -4861,22 +4863,22 @@ class Narrowphase {
       copy(worldVertex0, worldVertex01);
       copy(worldVertex1, worldVertex11); // Get vector along the line
 
-      sub(worldEdge, worldVertex1, worldVertex0);
+      subtract(worldEdge, worldVertex1, worldVertex0);
       normalize(worldEdgeUnit, worldEdge); // Get tangent to the edge.
 
       rotate90cw(worldTangent, worldEdgeUnit); // Check distance from the plane spanned by the edge vs the circle
 
-      sub(dist, circleOffset, worldVertex0);
+      subtract(dist, circleOffset, worldVertex0);
       const d = dot(dist, worldTangent); // Distance from center of line to circle center
 
-      sub(centerDist, worldVertex0, lineOffset);
-      sub(lineToCircle, circleOffset, lineOffset);
+      subtract(centerDist, worldVertex0, lineOffset);
+      subtract(lineToCircle, circleOffset, lineOffset);
       const radiusSum = circleRadius + lineRadius;
 
       if (Math.abs(d) < radiusSum) {
         // Now project the circle onto the edge
         scale(orthoDist, worldTangent, d);
-        sub(projectedPoint, circleOffset, orthoDist); // Add the missing line radius
+        subtract(projectedPoint, circleOffset, orthoDist); // Add the missing line radius
 
         scale(lineToCircleOrthoUnit, worldTangent, dot(worldTangent, lineToCircle));
         normalize(lineToCircleOrthoUnit, lineToCircleOrthoUnit);
@@ -4899,10 +4901,10 @@ class Narrowphase {
           normalize(c.normalA, c.normalA);
           scale(c.contactPointA, c.normalA, circleRadius);
           add(c.contactPointA, c.contactPointA, circleOffset);
-          sub(c.contactPointA, c.contactPointA, circleBody.position);
-          sub(c.contactPointB, projectedPoint, lineOffset);
+          subtract(c.contactPointA, c.contactPointA, circleBody.position);
+          subtract(c.contactPointB, projectedPoint, lineOffset);
           add(c.contactPointB, c.contactPointB, lineOffset);
-          sub(c.contactPointB, c.contactPointB, lineBody.position);
+          subtract(c.contactPointB, c.contactPointB, lineBody.position);
 
           _this.contactEquations.push(c);
 
@@ -4920,7 +4922,7 @@ class Narrowphase {
 
       for (let i = 0; i < verts.length; i++) {
         const v = verts[i];
-        sub(dist, v, circleOffset);
+        subtract(dist, v, circleOffset);
 
         if (squaredLength(dist) < Math.pow(radiusSum, 2)) {
           if (justTest) {
@@ -4934,12 +4936,12 @@ class Narrowphase {
 
           scale(c.contactPointA, c.normalA, circleRadius);
           add(c.contactPointA, c.contactPointA, circleOffset);
-          sub(c.contactPointA, c.contactPointA, circleBody.position);
-          sub(c.contactPointB, v, lineOffset);
+          subtract(c.contactPointA, c.contactPointA, circleBody.position);
+          subtract(c.contactPointB, v, lineOffset);
           scale(lineEndToLineRadius, c.normalA, -lineRadius);
           add(c.contactPointB, c.contactPointB, lineEndToLineRadius);
           add(c.contactPointB, c.contactPointB, lineOffset);
-          sub(c.contactPointB, c.contactPointB, lineBody.position);
+          subtract(c.contactPointB, c.contactPointB, lineBody.position);
 
           _this.contactEquations.push(c);
 
@@ -4999,7 +5001,7 @@ class Narrowphase {
       const radius = convexShape.boundingRadius + circleRadius;
 
       for (let i = 0; i < numVertices; i++) {
-        sub(r, localCirclePosition, vertices[i]);
+        subtract(r, localCirclePosition, vertices[i]);
         const s = dot(normals[i], r);
 
         if (s > radius) {
@@ -5022,7 +5024,7 @@ class Narrowphase {
         add(candidate, candidate, localCirclePosition);
 
         if (pointInConvexLocal(candidate, convexShape)) {
-          sub(candidateDist, v0, candidate);
+          subtract(candidateDist, v0, candidate);
           const candidateDistance = Math.abs(dot(candidateDist, n));
 
           if (candidateDistance < minCandidateDistance) {
@@ -5041,7 +5043,7 @@ class Narrowphase {
         const v1 = vertices[(found + 1) % numVertices];
         toGlobalFrame(worldVertex0, v0, convexOffset, convexAngle);
         toGlobalFrame(worldVertex1, v1, convexOffset, convexAngle);
-        sub(edge, worldVertex1, worldVertex0);
+        subtract(edge, worldVertex1, worldVertex0);
         normalize(edgeUnit, edge); // Get tangent to the edge. Points out of the Convex
 
         rotate90cw(normal, edgeUnit); // Get point on circle, closest to the convex
@@ -5053,14 +5055,14 @@ class Narrowphase {
 
         const c = _this.createContactEquation(circleBody, convexBody, circleShape, convexShape);
 
-        sub(c.normalA, candidate, circleOffset);
+        subtract(c.normalA, candidate, circleOffset);
         normalize(c.normalA, c.normalA);
         scale(c.contactPointA, c.normalA, circleRadius);
         add(c.contactPointA, c.contactPointA, circleOffset);
-        sub(c.contactPointA, c.contactPointA, circleBody.position);
-        sub(c.contactPointB, closestEdgeProjectedPoint, convexOffset);
+        subtract(c.contactPointA, c.contactPointA, circleBody.position);
+        subtract(c.contactPointB, closestEdgeProjectedPoint, convexOffset);
         add(c.contactPointB, c.contactPointB, convexOffset);
-        sub(c.contactPointB, c.contactPointB, convexBody.position);
+        subtract(c.contactPointB, c.contactPointB, convexBody.position);
 
         _this.contactEquations.push(c);
 
@@ -5075,7 +5077,7 @@ class Narrowphase {
       if (circleRadius > 0 && normalIndex !== -1) {
         for (let i = normalIndex + numVertices; i < normalIndex + numVertices + 2; i++) {
           const localVertex = vertices[i % numVertices];
-          sub(dist, localVertex, localCirclePosition);
+          subtract(dist, localVertex, localCirclePosition);
 
           if (squaredLength(dist) < circleRadius * circleRadius) {
             if (justTest) {
@@ -5083,7 +5085,7 @@ class Narrowphase {
             }
 
             toGlobalFrame(worldVertex, localVertex, convexOffset, convexAngle);
-            sub(dist, worldVertex, circleOffset);
+            subtract(dist, worldVertex, circleOffset);
 
             const c = _this.createContactEquation(circleBody, convexBody, circleShape, convexShape);
 
@@ -5092,10 +5094,10 @@ class Narrowphase {
 
             scale(c.contactPointA, c.normalA, circleRadius);
             add(c.contactPointA, c.contactPointA, circleOffset);
-            sub(c.contactPointA, c.contactPointA, circleBody.position);
-            sub(c.contactPointB, worldVertex, convexOffset);
+            subtract(c.contactPointA, c.contactPointA, circleBody.position);
+            subtract(c.contactPointB, worldVertex, convexOffset);
             add(c.contactPointB, c.contactPointB, convexOffset);
-            sub(c.contactPointB, c.contactPointB, convexBody.position);
+            subtract(c.contactPointB, c.contactPointB, convexBody.position);
 
             _this.contactEquations.push(c);
 
@@ -5149,14 +5151,14 @@ class Narrowphase {
         add(worldVertex0, worldVertex0, convexOffset);
         add(worldVertex1, worldVertex1, convexOffset); // Get world edge
 
-        sub(worldEdge, worldVertex1, worldVertex0);
+        subtract(worldEdge, worldVertex1, worldVertex0);
         normalize(worldEdgeUnit, worldEdge); // Get tangent to the edge. Points out of the Convex
 
         rotate90cw(worldTangent, worldEdgeUnit); // Check distance from the infinite line (spanned by the edge) to the particle
 
-        sub(centerDist, worldVertex0, convexOffset);
-        sub(convexToparticle, particleOffset, convexOffset);
-        sub(candidateDist, worldVertex0, particleOffset);
+        subtract(centerDist, worldVertex0, convexOffset);
+        subtract(convexToparticle, particleOffset, convexOffset);
+        subtract(candidateDist, worldVertex0, particleOffset);
         const candidateDistance = Math.abs(dot(candidateDist, worldTangent));
 
         if (candidateDistance < minCandidateDistance) {
@@ -5176,11 +5178,11 @@ class Narrowphase {
 
         set(c.contactPointA, 0, 0);
         add(c.contactPointA, c.contactPointA, particleOffset);
-        sub(c.contactPointA, c.contactPointA, particleBody.position); // From convex center to point
+        subtract(c.contactPointA, c.contactPointA, particleBody.position); // From convex center to point
 
-        sub(c.contactPointB, closestEdgeProjectedPoint, convexOffset);
+        subtract(c.contactPointB, closestEdgeProjectedPoint, convexOffset);
         add(c.contactPointB, c.contactPointB, convexOffset);
-        sub(c.contactPointB, c.contactPointB, convexBody.position);
+        subtract(c.contactPointB, c.contactPointB, convexBody.position);
 
         _this.contactEquations.push(c);
 
@@ -5202,7 +5204,7 @@ class Narrowphase {
       const dist = tmp1;
       radiusA = radiusA || shapeA.radius;
       radiusB = radiusB || shapeB.radius;
-      sub(dist, offsetA, offsetB);
+      subtract(dist, offsetA, offsetB);
       const r = radiusA + radiusB;
 
       if (squaredLength(dist) > r * r) {
@@ -5218,7 +5220,7 @@ class Narrowphase {
       const cpA = c.contactPointA;
       const cpB = c.contactPointB;
       const normalA = c.normalA;
-      sub(normalA, offsetB, offsetA);
+      subtract(normalA, offsetB, offsetA);
       normalize(normalA, normalA);
       scale(cpA, normalA, radiusA);
       scale(cpB, normalA, -radiusB);
@@ -5254,7 +5256,7 @@ class Narrowphase {
 
       for (let i = 0, numVerts = vertices.length; i !== numVerts; i++) {
         const v = vertices[i];
-        sub(localDist, v, localPlaneOffset);
+        subtract(localDist, v, localPlaneOffset);
 
         if (dot(localDist, localPlaneNormal) <= 0) {
           if (justTest) {
@@ -5262,21 +5264,21 @@ class Narrowphase {
           }
 
           toGlobalFrame(worldVertex, v, convexOffset, convexAngle);
-          sub(dist, worldVertex, planeOffset); // Found vertex
+          subtract(dist, worldVertex, planeOffset); // Found vertex
 
           numReported++;
 
           const c = _this.createContactEquation(planeBody, convexBody, planeShape, convexShape);
 
-          sub(dist, worldVertex, planeOffset);
+          subtract(dist, worldVertex, planeOffset);
           copy(c.normalA, worldNormal);
           const d = dot(dist, c.normalA);
           scale(dist, c.normalA, d); // rj is from convex center to contact
 
-          sub(c.contactPointB, worldVertex, convexBody.position); // ri is from plane center to contact
+          subtract(c.contactPointB, worldVertex, convexBody.position); // ri is from plane center to contact
 
-          sub(c.contactPointA, worldVertex, dist);
-          sub(c.contactPointA, c.contactPointA, planeBody.position);
+          subtract(c.contactPointA, worldVertex, dist);
+          subtract(c.contactPointA, c.contactPointA, planeBody.position);
 
           _this.contactEquations.push(c);
 
@@ -5305,7 +5307,7 @@ class Narrowphase {
       const dist = tmp1,
             worldNormal = tmp2;
       planeAngle = planeAngle || 0;
-      sub(dist, particleOffset, planeOffset);
+      subtract(dist, particleOffset, planeOffset);
       rotate(worldNormal, yAxis$3, planeAngle);
       const d = dot(dist, worldNormal);
 
@@ -5323,10 +5325,10 @@ class Narrowphase {
       scale(dist, c.normalA, d); // dist is now the distance vector in the normal direction
       // ri is the particle position projected down onto the plane, from the plane center
 
-      sub(c.contactPointA, particleOffset, dist);
-      sub(c.contactPointA, c.contactPointA, planeBody.position); // rj is from the body center to the particle center
+      subtract(c.contactPointA, particleOffset, dist);
+      subtract(c.contactPointA, c.contactPointA, planeBody.position); // rj is from the body center to the particle center
 
-      sub(c.contactPointB, particleOffset, particleBody.position);
+      subtract(c.contactPointB, particleOffset, particleBody.position);
 
       _this.contactEquations.push(c);
 
@@ -5344,7 +5346,7 @@ class Narrowphase {
 
       const dist = tmp1;
       const circleRadius = circleShape.radius;
-      sub(dist, particleOffset, circleOffset);
+      subtract(dist, particleOffset, circleOffset);
 
       if (squaredLength(dist) > circleRadius * circleRadius) {
         return 0;
@@ -5364,9 +5366,9 @@ class Narrowphase {
 
       scale(contactPointA, normalA, circleRadius);
       add(contactPointA, contactPointA, circleOffset);
-      sub(contactPointA, contactPointA, circleBody.position); // Vector from particle center to contact point is zero
+      subtract(contactPointA, contactPointA, circleBody.position); // Vector from particle center to contact point is zero
 
-      sub(contactPointB, particleOffset, particleBody.position);
+      subtract(contactPointB, particleOffset, particleBody.position);
 
       _this.contactEquations.push(c);
 
@@ -5434,7 +5436,7 @@ class Narrowphase {
       const planeToCircle = tmp1,
             worldNormal = tmp2,
             temp = tmp3;
-      sub(planeToCircle, circleOffset, planeOffset); // World plane normal
+      subtract(planeToCircle, circleOffset, planeOffset); // World plane normal
 
       rotate(worldNormal, yAxis$3, planeAngle); // Normal direction distance
 
@@ -5457,14 +5459,14 @@ class Narrowphase {
       const cpB = contact.contactPointB;
       scale(cpB, contact.normalA, -circleRadius);
       add(cpB, cpB, circleOffset);
-      sub(cpB, cpB, circleBody.position); // ri is the distance from plane center to contact.
+      subtract(cpB, cpB, circleBody.position); // ri is the distance from plane center to contact.
 
       const cpA = contact.contactPointA;
       scale(temp, contact.normalA, d);
-      sub(cpA, planeToCircle, temp); // Subtract normal distance vector from the distance vector
+      subtract(cpA, planeToCircle, temp); // Subtract normal distance vector from the distance vector
 
       add(cpA, cpA, planeOffset);
-      sub(cpA, cpA, planeBody.position);
+      subtract(cpA, cpA, planeBody.position);
 
       _this.contactEquations.push(contact);
 
@@ -5543,7 +5545,7 @@ class Narrowphase {
       copy(v11, vertices1[iv1]);
       copy(v12, vertices1[iv2]);
       const localTangent = collidePolygons_localTangent;
-      sub(localTangent, v12, v11);
+      subtract(localTangent, v12, v11);
       normalize(localTangent, localTangent);
       const localNormal = collidePolygons_localNormal;
       crossVZ(localNormal, localTangent, 1.0);
@@ -5599,10 +5601,10 @@ class Narrowphase {
 
           copy(c.normalA, normal);
           copy(c.contactPointB, clipPoints2[i]);
-          sub(c.contactPointB, c.contactPointB, body2.position);
+          subtract(c.contactPointB, c.contactPointB, body2.position);
           scale(dist, normal, -separation);
           add(c.contactPointA, clipPoints2[i], dist);
-          sub(c.contactPointA, c.contactPointA, body1.position);
+          subtract(c.contactPointA, c.contactPointA, body1.position);
 
           _this.contactEquations.push(c);
 
@@ -5687,14 +5689,14 @@ class Narrowphase {
 
         add(v1, v1, hfPos); // Get normal
 
-        sub(worldNormal, v1, v0);
+        subtract(worldNormal, v1, v0);
         rotate(worldNormal, worldNormal, Math.PI / 2);
         normalize(worldNormal, worldNormal); // Get point on circle, closest to the edge
 
         scale(candidate, worldNormal, -radius);
         add(candidate, candidate, circlePos); // Distance from v0 to the candidate point
 
-        sub(dist, candidate, v0); // Check if it is in the element "stick"
+        subtract(dist, candidate, v0); // Check if it is in the element "stick"
 
         const d = dot(dist, worldNormal);
 
@@ -5716,9 +5718,9 @@ class Narrowphase {
 
           scale(c.contactPointB, c.normalA, -radius);
           add(c.contactPointB, c.contactPointB, circlePos);
-          sub(c.contactPointB, c.contactPointB, circleBody.position);
+          subtract(c.contactPointB, c.contactPointB, circleBody.position);
           copy(c.contactPointA, minCandidate);
-          sub(c.contactPointA, c.contactPointA, hfBody.position);
+          subtract(c.contactPointA, c.contactPointA, hfBody.position);
 
           _this.contactEquations.push(c);
 
@@ -5736,7 +5738,7 @@ class Narrowphase {
           // Get point
           set(v0, i * w, data[i]);
           add(v0, v0, hfPos);
-          sub(dist, circlePos, v0);
+          subtract(dist, circlePos, v0);
 
           if (squaredLength(dist) < Math.pow(radius, 2)) {
             if (justTest) {
@@ -5752,10 +5754,10 @@ class Narrowphase {
             normalize(c.normalA, c.normalA);
             scale(c.contactPointB, c.normalA, -radius);
             add(c.contactPointB, c.contactPointB, circlePos);
-            sub(c.contactPointB, c.contactPointB, circleBody.position);
-            sub(c.contactPointA, v0, hfPos);
+            subtract(c.contactPointB, c.contactPointB, circleBody.position);
+            subtract(c.contactPointA, v0, hfPos);
             add(c.contactPointA, c.contactPointA, hfPos);
-            sub(c.contactPointA, c.contactPointA, hfBody.position);
+            subtract(c.contactPointA, c.contactPointA, hfBody.position);
 
             _this.contactEquations.push(c);
 
@@ -5829,8 +5831,8 @@ class Narrowphase {
         const tileHeight = 100; // todo
 
         set(tilePos, (v1[0] + v0[0]) * 0.5, (v1[1] + v0[1] - tileHeight) * 0.5);
-        sub(tileConvex.vertices[0], v1, tilePos);
-        sub(tileConvex.vertices[1], v0, tilePos);
+        subtract(tileConvex.vertices[0], v1, tilePos);
+        subtract(tileConvex.vertices[1], v0, tilePos);
         copy(tileConvex.vertices[2], tileConvex.vertices[1]);
         copy(tileConvex.vertices[3], tileConvex.vertices[0]);
         tileConvex.vertices[2][1] -= tileHeight;
@@ -5850,7 +5852,7 @@ class Narrowphase {
       [Shape.BOX | Shape.CAPSULE]: this.convexCapsule,
       [Shape.LINE | Shape.CAPSULE]: this.lineCapsule,
       [Shape.CAPSULE]: this.capsuleCapsule,
-      [Shape.LINE]: this.capsuleCapsule,
+      [Shape.LINE]: this.lineLine,
       [Shape.PLANE | Shape.LINE]: this.planeLine,
       [Shape.PARTICLE | Shape.CAPSULE]: this.particleCapsule,
       [Shape.CIRCLE | Shape.LINE]: this.circleLine,
@@ -6050,7 +6052,7 @@ class Narrowphase {
         add(eq.contactPointA, eq.contactPointA, c.contactPointA);
         add(eq.contactPointB, eq.contactPointB, c.contactPointB);
       } else {
-        sub(eq.t, eq.t, c.normalA);
+        subtract(eq.t, eq.t, c.normalA);
         add(eq.contactPointA, eq.contactPointA, c.contactPointB);
         add(eq.contactPointB, eq.contactPointB, c.contactPointA);
       }
@@ -6170,8 +6172,8 @@ function pointInConvex(worldPoint, convexShape, convexOffset, convexAngle) {
   for (let i = 0, numVerts = verts.length; i !== numVerts + 1; i++) {
     const v0 = verts[i % numVerts],
           v1 = verts[(i + 1) % numVerts];
-    sub(r0, v0, localPoint);
-    sub(r1, v1, localPoint);
+    subtract(r0, v0, localPoint);
+    subtract(r1, v1, localPoint);
     const cross = crossLength(r0, r1);
 
     if (lastCross === null) {
@@ -6208,8 +6210,8 @@ function pointInConvexLocal(localPoint, convexShape) {
   for (let i = 0; i < numVerts + 1; i++) {
     const v0 = verts[i % numVerts],
           v1 = verts[(i + 1) % numVerts];
-    sub(r0, v0, localPoint);
-    sub(r1, v1, localPoint);
+    subtract(r0, v0, localPoint);
+    subtract(r1, v1, localPoint);
     const cross = crossLength(r0, r1);
 
     if (lastCross === null) {
@@ -6262,7 +6264,7 @@ function findMaxSeparation(maxSeparationOut, poly1, position1, angle1, poly2, po
     let si = Number.MAX_VALUE;
 
     for (let j = 0; j < count2; ++j) {
-      sub(tmp, v2s[j], v1);
+      subtract(tmp, v2s[j], v1);
       const sij = dot(n, tmp);
 
       if (sij < si) {
@@ -6331,7 +6333,7 @@ function clipSegmentToLine(vOut, vIn, normal, offset) {
     // Find intersection point of edge and plane
     const interp = distance0 / (distance0 - distance1);
     const v = vOut[numOut];
-    sub(v, vIn[1], vIn[0]);
+    subtract(v, vIn[1], vIn[0]);
     scale(v, v, interp);
     add(v, v, vIn[0]);
     ++numOut;
@@ -6653,8 +6655,8 @@ class DistanceConstraint extends Constraint {
       rotate(worldAnchorA, localAnchorA, bodyA.angle);
       rotate(worldAnchorB, localAnchorB, bodyB.angle);
       add(r, bodyB.position, worldAnchorB);
-      sub(r, r, worldAnchorA);
-      sub(r, r, bodyA.position);
+      subtract(r, r, worldAnchorA);
+      subtract(r, r, bodyA.position);
       this.distance = length(r);
     }
 
@@ -6700,8 +6702,8 @@ class DistanceConstraint extends Constraint {
       rotate(ri, localAnchorA, bodyA.angle);
       rotate(rj, localAnchorB, bodyB.angle);
       add(r, xj, rj);
-      sub(r, r, ri);
-      sub(r, r, xi);
+      subtract(r, r, ri);
+      subtract(r, r, xi);
       return length(r) - that.distance;
     }; // Make the contact constraint bilateral
 
@@ -6751,8 +6753,8 @@ class DistanceConstraint extends Constraint {
     rotate(rj, this.localAnchorB, bodyB.angle); // Get world anchor points and normal
 
     add(n, xj, rj);
-    sub(n, n, ri);
-    sub(n, n, xi);
+    subtract(n, n, ri);
+    subtract(n, n, xi);
     this.position = length(n);
     let violating = false;
 
@@ -6958,15 +6960,15 @@ class LockConstraint extends Constraint {
 
     x.computeGq = function () {
       rotate(l, that.localOffsetB, bodyA.angle);
-      sub(g, bodyB.position, bodyA.position);
-      sub(g, g, l);
+      subtract(g, bodyB.position, bodyA.position);
+      subtract(g, g, l);
       return g[0];
     };
 
     y.computeGq = function () {
       rotate(l, that.localOffsetB, bodyA.angle);
-      sub(g, bodyB.position, bodyA.position);
-      sub(g, g, l);
+      subtract(g, bodyB.position, bodyA.position);
+      subtract(g, g, l);
       return g[1];
     };
 
@@ -6976,7 +6978,7 @@ class LockConstraint extends Constraint {
     rot.computeGq = function () {
       rotate(r, that.localOffsetB, bodyB.angle - that.localAngleB);
       scale(r, r, -1);
-      sub(g, bodyA.position, bodyB.position);
+      subtract(g, bodyA.position, bodyB.position);
       add(g, g, r);
       rotate(t, r, -Math.PI / 2);
       normalize(t, t);
@@ -6989,7 +6991,7 @@ class LockConstraint extends Constraint {
       copy(this.localOffsetB, options.localOffsetB);
     } else {
       // Construct from current positions
-      sub(this.localOffsetB, bodyB.position, bodyA.position);
+      subtract(this.localOffsetB, bodyB.position, bodyA.position);
       rotate(this.localOffsetB, this.localOffsetB, -bodyA.angle);
     }
 
@@ -7185,8 +7187,8 @@ class PrismaticConstraint extends Constraint {
       rotate(ri, localAnchorA, bodyA.angle);
       rotate(rj, localAnchorB, bodyB.angle);
       add(gg, xj, rj);
-      sub(gg, gg, xi);
-      sub(gg, gg, ri);
+      subtract(gg, gg, xi);
+      subtract(gg, gg, ri);
       rotate(t, localAxisA, bodyA.angle + Math.PI / 2);
       G[0] = -t[0];
       G[1] = -t[1];
@@ -7352,8 +7354,8 @@ class PrismaticConstraint extends Constraint {
     if (this.upperLimitEnabled && relPosition > upperLimit) {
       // Update contact constraint normal, etc
       scale(upperLimitEquation.normalA, worldAxisA, -1);
-      sub(upperLimitEquation.contactPointA, worldAnchorA, bodyA.position);
-      sub(upperLimitEquation.contactPointB, worldAnchorB, bodyB.position);
+      subtract(upperLimitEquation.contactPointA, worldAnchorA, bodyA.position);
+      subtract(upperLimitEquation.contactPointB, worldAnchorB, bodyB.position);
       scale(tmp, worldAxisA, upperLimit);
       add(upperLimitEquation.contactPointA, upperLimitEquation.contactPointA, tmp);
 
@@ -7371,10 +7373,10 @@ class PrismaticConstraint extends Constraint {
     if (this.lowerLimitEnabled && relPosition < lowerLimit) {
       // Update contact constraint normal, etc
       scale(lowerLimitEquation.normalA, worldAxisA, 1);
-      sub(lowerLimitEquation.contactPointA, worldAnchorA, bodyA.position);
-      sub(lowerLimitEquation.contactPointB, worldAnchorB, bodyB.position);
+      subtract(lowerLimitEquation.contactPointA, worldAnchorA, bodyA.position);
+      subtract(lowerLimitEquation.contactPointB, worldAnchorB, bodyB.position);
       scale(tmp, worldAxisA, lowerLimit);
-      sub(lowerLimitEquation.contactPointB, lowerLimitEquation.contactPointB, tmp);
+      subtract(lowerLimitEquation.contactPointB, lowerLimitEquation.contactPointB, tmp);
 
       if (eqs.indexOf(lowerLimitEquation) === -1) {
         eqs.push(lowerLimitEquation);
@@ -7496,8 +7498,8 @@ class RevoluteConstraint extends Constraint {
 
     if (options.worldPivot) {
       // Compute pivotA and pivotB
-      sub(pivotA, options.worldPivot, bodyA.position);
-      sub(pivotB, options.worldPivot, bodyB.position); // Rotate to local coordinate system
+      subtract(pivotA, options.worldPivot, bodyA.position);
+      subtract(pivotB, options.worldPivot, bodyB.position); // Rotate to local coordinate system
 
       rotate(pivotA, pivotA, -bodyA.angle);
       rotate(pivotB, pivotB, -bodyB.angle);
@@ -7526,8 +7528,8 @@ class RevoluteConstraint extends Constraint {
       rotate(worldPivotA, pivotA, bodyA.angle);
       rotate(worldPivotB, pivotB, bodyB.angle);
       add(g, bodyB.position, worldPivotB);
-      sub(g, g, bodyA.position);
-      sub(g, g, worldPivotA);
+      subtract(g, g, bodyA.position);
+      subtract(g, g, worldPivotA);
       return dot(g, xAxis);
     };
 
@@ -7535,8 +7537,8 @@ class RevoluteConstraint extends Constraint {
       rotate(worldPivotA, pivotA, bodyA.angle);
       rotate(worldPivotB, pivotB, bodyB.angle);
       add(g, bodyB.position, worldPivotB);
-      sub(g, g, bodyA.position);
-      sub(g, g, worldPivotA);
+      subtract(g, g, bodyA.position);
+      subtract(g, g, worldPivotA);
       return dot(g, yAxis);
     };
 
@@ -7953,22 +7955,22 @@ class LinearSpring extends Spring {
     this.getWorldAnchorA(worldAnchorA);
     this.getWorldAnchorB(worldAnchorB); // Get offset points
 
-    sub(ri, worldAnchorA, bodyA.position);
-    sub(rj, worldAnchorB, bodyB.position); // Compute distance vector between world anchor points
+    subtract(ri, worldAnchorA, bodyA.position);
+    subtract(rj, worldAnchorB, bodyB.position); // Compute distance vector between world anchor points
 
-    sub(r, worldAnchorB, worldAnchorA);
+    subtract(r, worldAnchorB, worldAnchorA);
     const rlen = length(r);
     normalize(r_unit, r); // Compute relative velocity of the anchor points, u
 
-    sub(u, bodyB.velocity, bodyA.velocity);
+    subtract(u, bodyB.velocity, bodyA.velocity);
     crossZV(tmp, bodyB.angularVelocity, rj);
     add(u, u, tmp);
     crossZV(tmp, bodyA.angularVelocity, ri);
-    sub(u, u, tmp); // F = - k * ( x - L ) - D * ( u )
+    subtract(u, u, tmp); // F = - k * ( x - L ) - D * ( u )
 
     scale(f, r_unit, -k * (rlen - l) - d * dot(u, r_unit)); // Add forces to bodies
 
-    sub(bodyA.force, bodyA.force, f);
+    subtract(bodyA.force, bodyA.force, f);
     add(bodyB.force, bodyB.force, f); // Angular force
 
     const ri_x_f = crossLength(ri, f);
@@ -8334,7 +8336,7 @@ class Capsule extends Shape {
         lerp(hitPointWorld, from, to, delta);
 
         if (squaredDistance(hitPointWorld, position) > diagonalLengthSquared) {
-          sub(normal, hitPointWorld, l0);
+          subtract(normal, hitPointWorld, l0);
           normalize(normal, normal);
           ray.reportIntersection(result, delta, normal, -1);
 
@@ -8352,7 +8354,7 @@ class Capsule extends Shape {
           lerp(hitPointWorld, from, to, d1);
 
           if (squaredDistance(hitPointWorld, position) > diagonalLengthSquared) {
-            sub(normal, hitPointWorld, l0);
+            subtract(normal, hitPointWorld, l0);
             normalize(normal, normal);
             ray.reportIntersection(result, d1, normal, -1);
 
@@ -8366,7 +8368,7 @@ class Capsule extends Shape {
           lerp(hitPointWorld, from, to, d2);
 
           if (squaredDistance(hitPointWorld, position) > diagonalLengthSquared) {
-            sub(normal, hitPointWorld, l0);
+            subtract(normal, hitPointWorld, l0);
             normalize(normal, normal);
             ray.reportIntersection(result, d2, normal, -1);
 
@@ -8451,11 +8453,11 @@ class Heightfield extends Shape {
 
     const params = { ...options,
       type: Shape.HEIGHTFIELD,
-      heights: options.heights ?? [],
+      heights: options.heights ? [...options.heights] : [],
       elementWidth: options.elementWidth ?? 0.1
     };
     super(params);
-    this.heights = params.heights.slice(0);
+    this.heights = params.heights;
     this.maxValue = params.maxValue;
     this.minValue = params.minValue;
     this.elementWidth = params.elementWidth !== undefined ? params.elementWidth : 0.1;
@@ -8491,6 +8493,10 @@ class Heightfield extends Shape {
 
   computeMomentOfInertia() {
     return Number.MAX_VALUE;
+  }
+
+  updateBoundingRadius() {
+    this.boundingRadius = Number.MAX_VALUE;
   }
 
   updateArea() {
@@ -8558,7 +8564,7 @@ class Heightfield extends Shape {
       const t = getLineSegmentsIntersectionFraction(localFrom, localTo, l0, l1);
 
       if (t >= 0) {
-        sub(worldNormal, l1, l0);
+        subtract(worldNormal, l1, l0);
         rotate(worldNormal, worldNormal, angle + Math.PI / 2);
         normalize(worldNormal, worldNormal);
         ray.reportIntersection(result, t, worldNormal, -1);
@@ -8748,9 +8754,9 @@ class Plane extends Shape {
 
     set(normal, 0, 1);
     rotate(normal, normal, angle);
-    sub(len, from, position);
+    subtract(len, from, position);
     const planeToFrom = dot(len, normal);
-    sub(len, to, position);
+    subtract(len, to, position);
     const planeToTo = dot(len, normal);
 
     if (planeToFrom * planeToTo > 0) {
@@ -8763,7 +8769,7 @@ class Plane extends Shape {
     }
 
     const n_dot_dir = dot(normal, direction);
-    sub(planePointToFrom, from, position);
+    subtract(planePointToFrom, from, position);
     const t = -dot(normal, planePointToFrom) / n_dot_dir / ray.length;
     ray.reportIntersection(result, t, normal, -1);
   }
@@ -9639,7 +9645,8 @@ class World extends EventEmitter {
         const s = springs[i];
         s.applyForce();
       }
-    }
+    } // Apply damping
+
 
     if (this.applyDamping) {
       for (let i = 0; i !== Nbodies; i++) {
@@ -9649,7 +9656,7 @@ class World extends EventEmitter {
           b.applyDamping(dt);
         }
       }
-    } // Broadphase
+    } // Get Broadphase collision pairs
 
 
     const result = broadphase.getCollisionPairs(this); // Remove ignored collision pairs

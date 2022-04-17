@@ -2,15 +2,15 @@
 <html>
 <head>
     <title>Island solver demo - p2.js physics engine</title>
-    <script src="../build/p2.js"></script>
-    <script src="../build/p2.renderer.js"></script>
     <link href="css/demo.css" rel="stylesheet"/>
     <meta name="description" content="How to use the IslandSolver for improved performance.">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 </head>
 <body>
-    <script>
+    <script type="module">
+        import * as p2 from '../../dist/p2-es.js'
+        import { Demo } from './js/Demo.js'
 
         var interval;
 
@@ -19,7 +19,7 @@
             r = 0.1; // Circle radius
 
         // Create demo application
-        var app = new p2.WebGLRenderer({
+        new Demo({
 
             setup: function(){
 

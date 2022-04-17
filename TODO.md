@@ -2,6 +2,6 @@
 
 ## TODO
 - Fix demos and examples
+  - Fix heightfield issues 
 - Fix docs crosslinks
-- Generate docs
 - Raise draft PR

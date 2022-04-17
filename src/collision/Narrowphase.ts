@@ -613,7 +613,7 @@ export class Narrowphase {
         _positionB: Vec2,
         _angleB: number,
         _justTest = false
-    ): number => {
+    ): number | boolean => {
         // TODO
         return 0
     }
@@ -2151,7 +2151,7 @@ export class Narrowphase {
         [Shape.BOX | Shape.CAPSULE]: this.convexCapsule,
         [Shape.LINE | Shape.CAPSULE]: this.lineCapsule,
         [Shape.CAPSULE]: this.capsuleCapsule,
-        [Shape.LINE]: this.capsuleCapsule,
+        [Shape.LINE]: this.lineLine,
         [Shape.PLANE | Shape.LINE]: this.planeLine,
         [Shape.PARTICLE | Shape.CAPSULE]: this.particleCapsule,
         [Shape.CIRCLE | Shape.LINE]: this.circleLine,
