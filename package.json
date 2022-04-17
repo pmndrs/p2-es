@@ -19,7 +19,7 @@
   "main": "./dist/p2-es.cjs.js",
   "module": "./dist/p2-es.js",
   "react-native": "./dist/p2-es.js",
-  "types": "./index.d.ts",
+  "types": "./dist/p2-es.d.ts",
   "sideEffects": false,
   "files": [
     "dist/"
