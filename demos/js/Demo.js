@@ -1,6 +1,6 @@
-import * as dat from './dat.gui.module.js'
 import * as PIXI from '../../demos/js/pixi.min.mjs'
 import * as p2 from '../../dist/p2-es.js'
+import * as dat from './dat.gui.module.js'
 
 const disableSelectionCSS = [
     '-ms-user-select: none',
@@ -136,8 +136,6 @@ export class Demo extends p2.EventEmitter {
 
         this.islandColors = {} // id -> int
 
-        const that = this
-
         this.state = Demo.DEFAULT
 
         this.bodies = []
@@ -247,7 +245,7 @@ export class Demo extends p2.EventEmitter {
         this.pickPrecision = 0.1
 
         // Update "ghost draw line"
-        this.on('drawPointsChange', (e) => {
+        this.on('drawPointsChange', () => {
             const g = this.drawShapeGraphics
             const path = this.drawPoints
 
@@ -263,7 +261,7 @@ export class Demo extends p2.EventEmitter {
         })
 
         // Update draw circle
-        this.on('drawCircleChange', (e) => {
+        this.on('drawCircleChange', () => {
             const g = this.drawShapeGraphics
             g.clear()
             const center = this.drawCircleCenter
@@ -272,7 +270,7 @@ export class Demo extends p2.EventEmitter {
         })
 
         // Update draw circle
-        this.on('drawRectangleChange', (e) => {
+        this.on('drawRectangleChange', () => {
             const g = this.drawShapeGraphics
             g.clear()
             const start = this.drawRectStart
@@ -305,8 +303,6 @@ export class Demo extends p2.EventEmitter {
      */
     init() {
         const s = this.settings
-
-        const that = this
 
         this.application = new PIXI.Application({ width: s.width, height: s.height, backgroundColor: 0xffffff })
         this.view = this.application.view
@@ -381,11 +377,11 @@ export class Demo extends p2.EventEmitter {
                 const touchA = this.container.interactionManager.touchs[0]
                 const touchB = this.container.interactionManager.touchs[1]
 
-                let pos = touchA.getLocalPosition(stage)
+                let pos = touchA.getLocalPosition(this.container) // todo - was `stage` 
                 p2.vec2.set(stagePos, pos.x, pos.y)
                 this.stagePositionToPhysics(physicsPosA, stagePos)
 
-                pos = touchB.getLocalPosition(stage)
+                pos = touchB.getLocalPosition(this.container)
                 p2.vec2.set(stagePos, pos.x, pos.y)
                 this.stagePositionToPhysics(physicsPosB, stagePos)
 
@@ -850,7 +846,7 @@ export class Demo extends p2.EventEmitter {
 
     zoom(x, y, zoomOut, actualScaleX, actualScaleY, multiplier) {
         let { scrollFactor } = this
-        const { container, stage } = this
+        const { container } = this
 
         if (typeof actualScaleX === 'undefined') {
             if (!zoomOut) {

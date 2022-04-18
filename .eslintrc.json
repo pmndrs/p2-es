@@ -69,11 +69,6 @@
       }
     },
     {
-      "env": {
-        "es2021": true,
-        "node": true
-      },    
-      "extends": "airbnb-base",
       "files": [
         "*.js"
       ],
@@ -91,7 +86,8 @@
         "no-cond-assign": "off",
         "prefer-destructuring": "off",
         "max-len": "off",
-        "guard-for-in": "off"
+        "guard-for-in": "off",
+        "no-case-declarations": "off"
       }
     }
   ],
