@@ -35,9 +35,7 @@ export class WheelConstraint extends Constraint {
     localForwardVector: Vec2
     localPosition: Vec2
 
-    constructor(vehicle: TopDownVehicle, options?: WheelConstraintOptions) {
-        options = options || {}
-
+    constructor(vehicle: TopDownVehicle, options: WheelConstraintOptions = {}) {
         super(vehicle.chassisBody, vehicle.groundBody, Constraint.OTHER)
 
         this.vehicle = vehicle

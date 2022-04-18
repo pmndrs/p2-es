@@ -619,7 +619,10 @@ class AABB {
    * The lower bound of the bounding box.
    */
   constructor(options) {
-    options = options || {};
+    if (options === void 0) {
+      options = {};
+    }
+
     this.lowerBound = options.lowerBound ? clone(options.lowerBound) : create();
     this.upperBound = options.upperBound ? clone(options.upperBound) : create();
   }
@@ -2640,7 +2643,10 @@ class Body extends EventEmitter {
    * @readonly
    */
   constructor(options) {
-    options = options || {};
+    if (options === void 0) {
+      options = {};
+    }
+
     super();
     this.world = null;
     this.id = options.id || ++Body._idCounter;
@@ -3080,8 +3086,11 @@ class Body extends EventEmitter {
 
 
   fromPolygon(path, options) {
-    options = options || {}; // Remove all shapes
+    if (options === void 0) {
+      options = {};
+    }
 
+    // Remove all shapes
     for (let i = this.shapes.length; i >= 0; --i) {
       this.removeShape(this.shapes[i]);
     } // Copy the path
@@ -3689,7 +3698,10 @@ class NaiveBroadphase extends Broadphase {
 
 
   aabbQuery(world, aabb, result) {
-    result = result || [];
+    if (result === void 0) {
+      result = [];
+    }
+
     const bodies = world.bodies;
 
     for (let i = 0; i < bodies.length; i++) {
@@ -4804,8 +4816,14 @@ class Narrowphase {
         justTest = false;
       }
 
-      lineRadius = lineRadius || 0;
-      circleRadius = circleRadius !== undefined ? circleRadius : circleShape.radius;
+      if (lineRadius === void 0) {
+        lineRadius = 0;
+      }
+
+      if (circleRadius === void 0) {
+        circleRadius = circleShape.radius;
+      }
+
       const orthoDist = tmp1;
       const lineToCircleOrthoUnit = tmp2;
       const projectedPoint = tmp3;
@@ -4937,7 +4955,10 @@ class Narrowphase {
         justTest = false;
       }
 
-      circleRadius = circleRadius !== undefined ? circleRadius : circleShape.radius;
+      if (circleRadius === void 0) {
+        circleRadius = circleShape.radius;
+      }
+
       const worldVertex0 = tmp1;
       const worldVertex1 = tmp2;
       const edge = tmp3;
@@ -5169,9 +5190,15 @@ class Narrowphase {
         justTest = false;
       }
 
+      if (radiusA === void 0) {
+        radiusA = shapeA.radius;
+      }
+
+      if (radiusB === void 0) {
+        radiusB = shapeB.radius;
+      }
+
       const dist = tmp1;
-      radiusA = radiusA || shapeA.radius;
-      radiusB = radiusB || shapeB.radius;
       subtract(dist, offsetA, offsetB);
       const r = radiusA + radiusB;
 
@@ -5272,8 +5299,8 @@ class Narrowphase {
         justTest = false;
       }
 
-      const dist = tmp1,
-            worldNormal = tmp2;
+      const dist = tmp1;
+      const worldNormal = tmp2;
       planeAngle = planeAngle || 0;
       subtract(dist, particleOffset, planeOffset);
       rotate(worldNormal, yAxis$3, planeAngle);
@@ -5352,10 +5379,10 @@ class Narrowphase {
         justTest = false;
       }
 
-      const end1 = planeCapsule_tmp1,
-            end2 = planeCapsule_tmp2,
-            circle = planeCapsule_tmpCircle,
-            halfLength = capsuleShape.length / 2; // Compute world end positions
+      const end1 = planeCapsule_tmp1;
+      const end2 = planeCapsule_tmp2;
+      const circle = planeCapsule_tmpCircle;
+      const halfLength = capsuleShape.length / 2; // Compute world end positions
 
       set(end1, -halfLength, 0);
       set(end2, halfLength, 0);
@@ -5593,7 +5620,10 @@ class Narrowphase {
         justTest = false;
       }
 
-      radius = radius || circleShape.radius;
+      if (radius === void 0) {
+        radius = circleShape.radius;
+      }
+
       const data = hfShape.heights;
       const w = hfShape.elementWidth;
       const dist = circleHeightfield_dist;
@@ -6413,7 +6443,10 @@ class SAPBroadphase extends Broadphase {
 
 
   aabbQuery(world, aabb, result) {
-    result = result || [];
+    if (result === void 0) {
+      result = [];
+    }
+
     this.sortList();
     const axisList = this.axisList;
 
@@ -6460,7 +6493,10 @@ function sortAxisList(a, axisIndex) {
  */
 class Constraint {
   constructor(bodyA, bodyB, type, options) {
-    options = options || {};
+    if (options === void 0) {
+      options = {};
+    }
+
     this.type = type;
     this.equations = [];
     this.bodyA = bodyA;
@@ -6595,7 +6631,10 @@ class DistanceConstraint extends Constraint {
    * Current constraint position. This is equal to the current distance between the world anchor points.
    */
   constructor(bodyA, bodyB, options) {
-    options = options || {};
+    if (options === void 0) {
+      options = {};
+    }
+
     super(bodyA, bodyB, Constraint.DISTANCE, options);
     this.localAnchorA = options.localAnchorA ? clone(options.localAnchorA) : create();
     this.localAnchorB = options.localAnchorB ? clone(options.localAnchorB) : create();
@@ -6769,7 +6808,10 @@ class AngleLockEquation extends Equation {
    * The gear ratio.
    */
   constructor(bodyA, bodyB, options) {
-    options = options || {};
+    if (options === void 0) {
+      options = {};
+    }
+
     super(bodyA, bodyB, -Number.MAX_VALUE, Number.MAX_VALUE);
     this.angle = options.angle || 0;
     this.ratio = options.ratio !== undefined ? options.ratio : 1;
@@ -6810,7 +6852,10 @@ class AngleLockEquation extends Equation {
  */
 class GearConstraint extends Constraint {
   constructor(bodyA, bodyB, options) {
-    options = options || {};
+    if (options === void 0) {
+      options = {};
+    }
+
     super(bodyA, bodyB, Constraint.GEAR, options);
     /**
      * The gear ratio.
@@ -6885,7 +6930,10 @@ class LockConstraint extends Constraint {
    * The offset angle of bodyB in bodyA's frame.
    */
   constructor(bodyA, bodyB, options) {
-    options = options || {};
+    if (options === void 0) {
+      options = {};
+    }
+
     super(bodyA, bodyB, Constraint.LOCK, options);
     const maxForce = typeof options.maxForce === 'undefined' ? Number.MAX_VALUE : options.maxForce; // Use 3 equations:
     // gx =   (xj - xi - l) * xhat = 0
@@ -7027,7 +7075,10 @@ const yAxis$2 = fromValues(0, 1);
  */
 class RotationalLockEquation extends Equation {
   constructor(bodyA, bodyB, options) {
-    options = options || {};
+    if (options === void 0) {
+      options = {};
+    }
+
     super(bodyA, bodyB, -Number.MAX_VALUE, Number.MAX_VALUE);
     this.angle = options.angle || 0;
     const G = this.G;
@@ -7094,8 +7145,15 @@ class PrismaticConstraint extends Constraint {
   /**
    * Set the target speed for the motor.
    */
+
+  /**
+   * Max force for the motor
+   */
   constructor(bodyA, bodyB, options) {
-    options = options || {};
+    if (options === void 0) {
+      options = {};
+    }
+
     super(bodyA, bodyB, Constraint.PRISMATIC, options); // Get anchors
 
     const localAnchorA = create(),
@@ -7449,7 +7507,10 @@ class RevoluteConstraint extends Constraint {
   }
 
   constructor(bodyA, bodyB, options) {
-    options = options || {};
+    if (options === void 0) {
+      options = {};
+    }
+
     super(bodyA, bodyB, Constraint.REVOLUTE, options);
     const maxForce = this.maxForce = options.maxForce !== undefined ? options.maxForce : Number.MAX_VALUE;
     const pivotA = this.pivotA = create();
@@ -7728,7 +7789,9 @@ class ContactMaterial {
    * Offset to be set on ContactEquations. A positive value will make the bodies penetrate more into each other. Can be useful in scenes where contacts need to be more persistent, for example when stacking. Aka "cure for nervous contacts".
    */
   constructor(materialA, materialB, options) {
-    options = options || {};
+    if (options === void 0) {
+      options = {};
+    }
 
     if (!(materialA instanceof Material) || !(materialB instanceof Material)) {
       throw new Error('First two arguments must be Material instances.');
@@ -7770,7 +7833,10 @@ class Spring {
    * Second connected body.
    */
   constructor(bodyA, bodyB, options) {
-    options = options || {};
+    if (options === void 0) {
+      options = {};
+    }
+
     this.stiffness = options.stiffness !== undefined ? options.stiffness : 100;
     this.damping = options.damping !== undefined ? options.damping : 1;
     this.bodyA = bodyA;
@@ -7816,7 +7882,10 @@ class LinearSpring extends Spring {
    * @type {number}
    */
   constructor(bodyA, bodyB, options) {
-    options = options || {};
+    if (options === void 0) {
+      options = {};
+    }
+
     super(bodyA, bodyB, options);
     this.localAnchorA = create();
     this.localAnchorB = create();
@@ -7957,7 +8026,10 @@ class RotationalSpring extends Spring {
    * Rest angle of the spring.
    */
   constructor(bodyA, bodyB, options) {
-    options = options || {};
+    if (options === void 0) {
+      options = {};
+    }
+
     super(bodyA, bodyB, options);
     this.restAngle = options.restAngle !== undefined ? options.restAngle : bodyB.angle - bodyA.angle;
   }
@@ -7986,7 +8058,10 @@ class RotationalSpring extends Spring {
  */
 class WheelConstraint extends Constraint {
   constructor(vehicle, options) {
-    options = options || {};
+    if (options === void 0) {
+      options = {};
+    }
+
     super(vehicle.chassisBody, vehicle.groundBody, Constraint.OTHER);
     this.vehicle = vehicle;
     this.forwardEquation = new FrictionEquation(vehicle.chassisBody, vehicle.groundBody, 0);
@@ -8766,7 +8841,10 @@ class Solver {
    * Function that is used to sort all equations before each solve.
    */
   constructor(options, type) {
-    options = options || {};
+    if (options === void 0) {
+      options = {};
+    }
+
     this.type = type;
     this.equations = [];
     this.equationSortFunction = options.equationSortFunction;
@@ -8842,9 +8920,12 @@ class Solver {
  */
 class GSSolver extends Solver {
   constructor(options) {
+    if (options === void 0) {
+      options = {};
+    }
+
     super(options, Solver.GS);
     this.type = Solver.GS;
-    options = options || {};
     this.iterations = options.iterations || 10;
     this.tolerance = options.tolerance !== undefined ? options.tolerance : 1e-7;
     this.frictionIterations = options.frictionIterations !== undefined ? options.frictionIterations : 0;
@@ -9123,7 +9204,10 @@ class OverlapKeeper {
   }
 
   getDiff(dictA, dictB, result) {
-    result = result || [];
+    if (result === void 0) {
+      result = [];
+    }
+
     const last = dictA;
     const current = dictB;
     result.length = 0;
@@ -9170,7 +9254,10 @@ class OverlapKeeper {
   }
 
   getBodyDiff(overlaps, result) {
-    result = result || [];
+    if (result === void 0) {
+      result = [];
+    }
+
     const accumulator = this.tmpDict;
     let l = overlaps.length;
 
@@ -9354,6 +9441,10 @@ class World extends EventEmitter {
    * @param options options for creating the world
    */
   constructor(options) {
+    if (options === void 0) {
+      options = {};
+    }
+
     super();
     this.springs = [];
     this.bodies = [];
@@ -9372,7 +9463,6 @@ class World extends EventEmitter {
     this.overlapKeeper = new OverlapKeeper();
     this.disabledBodyCollisionPairs = [];
     this.unionFind = new UnionFind(1);
-    options = options || {};
     this.solver = options.solver || new GSSolver();
     this.gravity = fromValues(0, -9.78);
 

@@ -41,9 +41,7 @@ export class GearConstraint extends Constraint {
 
     angle: number
 
-    constructor(bodyA: Body, bodyB: Body, options?: GearConstraintOptions) {
-        options = options || {}
-
+    constructor(bodyA: Body, bodyB: Body, options: GearConstraintOptions = {}) {
         super(bodyA, bodyB, Constraint.GEAR, options)
 
         /**

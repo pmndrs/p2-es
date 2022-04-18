@@ -78,9 +78,7 @@ export class DistanceConstraint extends Constraint {
      */
     position: number
 
-    constructor(bodyA: Body, bodyB: Body, options?: DistanceConstraintOptions) {
-        options = options || {}
-
+    constructor(bodyA: Body, bodyB: Body, options: DistanceConstraintOptions = {}) {
         super(bodyA, bodyB, Constraint.DISTANCE, options)
 
         this.localAnchorA = options.localAnchorA ? vec2.clone(options.localAnchorA) : vec2.create()

@@ -59,10 +59,8 @@ export class Constraint {
             | typeof Constraint.PRISMATIC
             | typeof Constraint.REVOLUTE
             | typeof Constraint.OTHER,
-        options?: ConstraintOptions
+        options: ConstraintOptions = {}
     ) {
-        options = options || {}
-
         this.type = type
         this.equations = []
         this.bodyA = bodyA

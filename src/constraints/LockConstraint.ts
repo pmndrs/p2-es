@@ -41,9 +41,7 @@ export class LockConstraint extends Constraint {
      */
     localAngleB: number
 
-    constructor(bodyA: Body, bodyB: Body, options?: LockConstraintOptions) {
-        options = options || {}
-
+    constructor(bodyA: Body, bodyB: Body, options: LockConstraintOptions = {}) {
         super(bodyA, bodyB, Constraint.LOCK, options)
 
         const maxForce = typeof options.maxForce === 'undefined' ? Number.MAX_VALUE : options.maxForce

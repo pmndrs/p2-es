@@ -12,8 +12,7 @@ export interface RotationalLockEquationOptions {
 export class RotationalLockEquation extends Equation {
     angle: number
 
-    constructor(bodyA: Body, bodyB: Body, options?: RotationalLockEquationOptions) {
-        options = options || {}
+    constructor(bodyA: Body, bodyB: Body, options: RotationalLockEquationOptions = {}) {
         super(bodyA, bodyB, -Number.MAX_VALUE, Number.MAX_VALUE)
 
         this.angle = options.angle || 0

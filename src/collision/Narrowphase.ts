@@ -787,11 +787,9 @@ export class Narrowphase {
         lineOffset: Vec2,
         lineAngle: number,
         justTest = false,
-        lineRadius?: number,
-        circleRadius?: number
+        lineRadius = 0,
+        circleRadius = circleShape.radius
     ): number => {
-        lineRadius = lineRadius || 0
-        circleRadius = circleRadius !== undefined ? circleRadius : circleShape.radius
 
         const orthoDist = tmp1
         const lineToCircleOrthoUnit = tmp2
@@ -978,10 +976,8 @@ export class Narrowphase {
         convexOffset: Vec2,
         convexAngle: number,
         justTest = false,
-        circleRadius?: number
+        circleRadius = circleShape.radius
     ): number => {
-        circleRadius = circleRadius !== undefined ? circleRadius : circleShape.radius
-
         const worldVertex0 = tmp1
         const worldVertex1 = tmp2
         const edge = tmp3
@@ -1277,12 +1273,10 @@ export class Narrowphase {
         offsetB: Vec2,
         _angleB: number,
         justTest = false,
-        radiusA?: number,
-        radiusB?: number
+        radiusA = shapeA.radius,
+        radiusB = shapeB.radius
     ): number => {
         const dist = tmp1
-        radiusA = radiusA || shapeA.radius
-        radiusB = radiusB || shapeB.radius
 
         vec2.subtract(dist, offsetA, offsetB)
         const r = radiusA + radiusB
@@ -1432,8 +1426,8 @@ export class Narrowphase {
         planeAngle: number,
         justTest = false
     ): number => {
-        const dist = tmp1,
-            worldNormal = tmp2
+        const dist = tmp1
+        const worldNormal = tmp2
 
         planeAngle = planeAngle || 0
 
@@ -1541,10 +1535,10 @@ export class Narrowphase {
         capsuleAngle: number,
         justTest = false
     ): number => {
-        const end1 = planeCapsule_tmp1,
-            end2 = planeCapsule_tmp2,
-            circle = planeCapsule_tmpCircle,
-            halfLength = capsuleShape.length / 2
+        const end1 = planeCapsule_tmp1
+        const end2 = planeCapsule_tmp2
+        const circle = planeCapsule_tmpCircle
+        const halfLength = capsuleShape.length / 2
 
         // Compute world end positions
         vec2.set(end1, -halfLength, 0)
@@ -1626,7 +1620,7 @@ export class Narrowphase {
         planeShape: Plane,
         planeOffset: Vec2,
         planeAngle: number,
-        justTest = false
+        justTest = false,
     ): number => {
         const circleRadius = circleShape.radius
 
@@ -1878,10 +1872,8 @@ export class Narrowphase {
         hfPos: Vec2,
         _fAngle: number,
         justTest = false,
-        radius?: number
+        radius = circleShape.radius
     ): number => {
-        radius = radius || circleShape.radius
-
         const data = hfShape.heights
         const w = hfShape.elementWidth
         const dist = circleHeightfield_dist

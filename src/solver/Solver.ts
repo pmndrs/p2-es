@@ -29,8 +29,7 @@ export abstract class Solver {
      */
     equationSortFunction?: (a: Equation, b: Equation) => number
 
-    constructor(options: SolverOptions | undefined, type: typeof Solver.GS) {
-        options = options || {}
+    constructor(options: SolverOptions = {}, type: typeof Solver.GS) {
         this.type = type
         this.equations = []
         this.equationSortFunction = options.equationSortFunction

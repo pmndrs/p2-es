@@ -34,9 +34,7 @@ export abstract class Spring {
      */
     bodyB: Body
 
-    constructor(bodyA: Body, bodyB: Body, options?: SpringOptions) {
-        options = options || {}
-
+    constructor(bodyA: Body, bodyB: Body, options: SpringOptions = {}) {
         this.stiffness = options.stiffness !== undefined ? options.stiffness : 100
         this.damping = options.damping !== undefined ? options.damping : 1
         this.bodyA = bodyA

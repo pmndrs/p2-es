@@ -115,8 +115,7 @@ export class RevoluteConstraint extends Constraint {
 
     lowerLimitEquation: RotationalLockEquation
 
-    constructor(bodyA: Body, bodyB: Body, options?: RevoluteConstraintOptions) {
-        options = options || {}
+    constructor(bodyA: Body, bodyB: Body, options: RevoluteConstraintOptions = {}) {
         super(bodyA, bodyB, Constraint.REVOLUTE, options)
 
         const maxForce = (this.maxForce = options.maxForce !== undefined ? options.maxForce : Number.MAX_VALUE)

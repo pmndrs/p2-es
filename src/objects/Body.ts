@@ -443,9 +443,7 @@ export class Body extends EventEmitter<BodyEventMap> {
 
     _wakeUpAfterNarrowphase: boolean
 
-    constructor(options?: BodyOptions) {
-        options = options || {}
-
+    constructor(options: BodyOptions = {}) {
         super()
 
         this.id = options.id || ++Body._idCounter
@@ -890,14 +888,12 @@ export class Body extends EventEmitter<BodyEventMap> {
      */
     fromPolygon(
         path: Vec2[],
-        options?: {
+        options: {
             optimalDecomp?: boolean
             skipSimpleCheck?: boolean
             removeCollinearPoints?: boolean | number
-        }
+        } = {}
     ): boolean {
-        options = options || {}
-
         // Remove all shapes
         for (let i = this.shapes.length; i >= 0; --i) {
             this.removeShape(this.shapes[i])

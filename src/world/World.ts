@@ -273,10 +273,8 @@ export class World extends EventEmitter<WorldEventMap> {
      * Constructor for a p2-es World
      * @param options options for creating the world
      */
-    constructor(options?: WorldOptions) {
+    constructor(options: WorldOptions = {}) {
         super()
-
-        options = options || {}
 
         this.solver = options.solver || new GSSolver()
 

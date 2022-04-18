@@ -113,9 +113,7 @@ export class SAPBroadphase extends Broadphase {
      * @return
      * @todo since the list is sorted, optimization can be done
      */
-    aabbQuery(world: World, aabb: AABB, result?: Body[]): Body[] {
-        result = result || []
-
+    aabbQuery(world: World, aabb: AABB, result: Body[] = []): Body[] {
         this.sortList()
 
         const axisList = this.axisList

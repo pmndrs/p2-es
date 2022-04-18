@@ -90,9 +90,7 @@ export class ContactMaterial {
 
     static idCounter = 0
 
-    constructor(materialA: Material, materialB: Material, options?: ContactMaterialOptions) {
-        options = options || {}
-
+    constructor(materialA: Material, materialB: Material, options: ContactMaterialOptions = {}) {
         if (!(materialA instanceof Material) || !(materialB instanceof Material)) {
             throw new Error('First two arguments must be Material instances.')
         }

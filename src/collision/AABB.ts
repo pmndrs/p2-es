@@ -34,9 +34,7 @@ export class AABB {
      */
     lowerBound: Vec2
 
-    constructor(options?: AABBOptions) {
-        options = options || {}
-
+    constructor(options: AABBOptions = {}) {
         this.lowerBound = options.lowerBound ? vec2.clone(options.lowerBound) : vec2.create()
         this.upperBound = options.upperBound ? vec2.clone(options.upperBound) : vec2.create()
     }

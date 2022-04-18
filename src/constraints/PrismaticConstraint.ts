@@ -106,10 +106,13 @@ export class PrismaticConstraint extends Constraint {
      * Set the target speed for the motor.
      */
     motorSpeed: number
+
+    /**
+     * Max force for the motor
+     */
     maxForce: number
 
-    constructor(bodyA: Body, bodyB: Body, options?: PrismaticConstraintOptions) {
-        options = options || {}
+    constructor(bodyA: Body, bodyB: Body, options: PrismaticConstraintOptions = {}) {
         super(bodyA, bodyB, Constraint.PRISMATIC, options)
 
         // Get anchors

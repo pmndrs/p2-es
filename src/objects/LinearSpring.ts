@@ -65,9 +65,7 @@ export class LinearSpring extends Spring {
      */
     restLength: number
 
-    constructor(bodyA: Body, bodyB: Body, options?: LinearSpringOptions) {
-        options = options || {}
-
+    constructor(bodyA: Body, bodyB: Body, options: LinearSpringOptions = {}) {
         super(bodyA, bodyB, options)
 
         this.localAnchorA = vec2.create()

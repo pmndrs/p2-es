@@ -89,9 +89,8 @@ export class OverlapKeeper {
     getDiff(
         dictA: TupleDictionary<OverlapKeeperRecord>,
         dictB: TupleDictionary<OverlapKeeperRecord>,
-        result?: OverlapKeeperRecord[]
+        result: OverlapKeeperRecord[] = []
     ) {
-        result = result || []
         const last = dictA
         const current = dictB
 
@@ -137,8 +136,7 @@ export class OverlapKeeper {
         return this.getBodyDiff(overlaps, result)
     }
 
-    getBodyDiff(overlaps: OverlapKeeperRecord[], result?: Body[]): Body[] {
-        result = result || []
+    getBodyDiff(overlaps: OverlapKeeperRecord[], result: Body[] = []): Body[] {
         const accumulator = this.tmpDict
 
         let l: number = overlaps.length

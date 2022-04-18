@@ -17,8 +17,7 @@ export class AngleLockEquation extends Equation {
      */
     ratio: number
 
-    constructor(bodyA: Body, bodyB: Body, options?: AngleLockEquationOptions) {
-        options = options || {}
+    constructor(bodyA: Body, bodyB: Body, options: AngleLockEquationOptions = {}) {
         super(bodyA, bodyB, -Number.MAX_VALUE, Number.MAX_VALUE)
         this.angle = options.angle || 0
         this.ratio = options.ratio !== undefined ? options.ratio : 1
