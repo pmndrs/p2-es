@@ -16,6 +16,8 @@ You can also import the esm flatbundle via unpkg
 </script>
 ```
 
+---
+
 If you would like to use ordinary ```Array``` instead of ```Float32Array```, define ```P2_ARRAY_TYPE``` globally before loading the library.
 
 ```html

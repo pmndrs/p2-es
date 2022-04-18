@@ -605,7 +605,6 @@ var vec2 = /*#__PURE__*/Object.freeze({
   getLineSegmentsIntersectionFraction: getLineSegmentsIntersectionFraction
 });
 
-const tmp$2 = create();
 /**
  * Axis aligned bounding box class
  *
@@ -615,7 +614,6 @@ const tmp$2 = create();
  *         lowerBound: [-1, -1]
  *     });
  */
-
 class AABB {
   /**
    * The upper bound of the bounding box.
@@ -647,9 +645,8 @@ class AABB {
       skinSize = 0;
     }
 
-    const l = this.lowerBound,
-          u = this.upperBound;
-    angle = angle || 0; // Set to the first point
+    const l = this.lowerBound;
+    const u = this.upperBound; // Set to the first point
 
     if (angle !== 0) {
       rotate(l, points[0], angle);
@@ -659,8 +656,8 @@ class AABB {
 
     copy(u, l); // Compute cosines and sines just once
 
-    const cosAngle = Math.cos(angle),
-          sinAngle = Math.sin(angle);
+    const cosAngle = Math.cos(angle);
+    const sinAngle = Math.sin(angle);
 
     for (let i = 1; i < points.length; i++) {
       let p = points[i];
@@ -813,6 +810,7 @@ class AABB {
   }
 
 }
+const tmp$2 = create();
 
 const tmpPoint1 = [0, 0];
 const tmpPoint2 = [0, 0];
@@ -1496,21 +1494,6 @@ function scalarsEqual(a, b, precision) {
   return Math.abs(a - b) <= precision;
 }
 
-const v0 = create();
-const intersect = create();
-
-function distanceFromIntersectionSquared(from, direction, position) {
-  // v0 is vector from from to position
-  subtract(v0, position, from);
-  const dot$1 = dot(v0, direction); // intersect = direction * dot + from
-
-  scale(intersect, direction, dot$1);
-  add(intersect, intersect, from);
-  return squaredDistance(position, intersect);
-}
-
-const intersectBody_worldPosition = create();
-
 /**
  * A line with a start and end point that is used to intersect shapes.
  * @see {@link World.raycast} for example usage
@@ -1694,6 +1677,20 @@ class Ray {
 Ray.CLOSEST = 1;
 Ray.ANY = 2;
 Ray.ALL = 4;
+const v0 = create();
+const intersect = create();
+
+function distanceFromIntersectionSquared(from, direction, position) {
+  // v0 is vector from from to position
+  subtract(v0, position, from);
+  const dot$1 = dot(v0, direction); // intersect = direction * dot + from
+
+  scale(intersect, direction, dot$1);
+  add(intersect, intersect, from);
+  return squaredDistance(position, intersect);
+}
+
+const intersectBody_worldPosition = create();
 
 /**
  * Storage for Ray casting hit data.
@@ -2520,8 +2517,8 @@ class Convex extends Shape {
   }
 
   pointTest(localPoint) {
-    const r0 = pic_r0$1,
-          r1 = pic_r1$1,
+    const r0 = pic_r0,
+          r1 = pic_r1,
           verts = this.vertices,
           numVerts = verts.length;
     let lastCross = null;
@@ -2572,8 +2569,8 @@ const updateCenterOfMass_c = create();
 const intersectConvex_rayStart = create();
 const intersectConvex_rayEnd = create();
 const intersectConvex_normal = create();
-const pic_r0$1 = create();
-const pic_r1$1 = create();
+const pic_r0 = create();
+const pic_r1 = create();
 
 /**
  * A rigid body. Has got a center of mass, position, velocity and a number of
@@ -3638,22 +3635,16 @@ class Broadphase {
 
 
   boundingVolumeCheck(bodyA, bodyB) {
-    let result;
-
     switch (this.boundingVolumeType) {
       case Broadphase.BOUNDING_CIRCLE:
-        result = Broadphase.boundingRadiusCheck(bodyA, bodyB);
-        break;
+        return Broadphase.boundingRadiusCheck(bodyA, bodyB);
 
       case Broadphase.AABB:
-        result = Broadphase.aabbCheck(bodyA, bodyB);
-        break;
+        return Broadphase.aabbCheck(bodyA, bodyB);
 
       default:
         throw new Error('Bounding volume type not recognized: ' + this.boundingVolumeType);
     }
-
-    return result;
   }
 
 }
@@ -3937,19 +3928,9 @@ class Circle extends Shape {
 const Ray_intersectSphere_intersectionPoint = create();
 const Ray_intersectSphere_normal = create();
 
-const qi = create();
-const qj = create();
-const iMfi = create();
-const iMfj = create();
-
-function addToVLambda(vlambda, Gx, Gy, invMass, deltalambda, massMultiplier) {
-  vlambda[0] += Gx * invMass * deltalambda * massMultiplier[0];
-  vlambda[1] += Gy * invMass * deltalambda * massMultiplier[1];
-}
 /**
  * Base class for constraint equations.
  */
-
 
 class Equation {
   /**
@@ -4147,6 +4128,15 @@ class Equation {
 }
 Equation.DEFAULT_STIFFNESS = 1e6;
 Equation.DEFAULT_RELAXATION = 4;
+const qi = create();
+const qj = create();
+const iMfi = create();
+const iMfj = create();
+
+function addToVLambda(vlambda, Gx, Gy, invMass, deltalambda, massMultiplier) {
+  vlambda[0] += Gx * invMass * deltalambda * massMultiplier[0];
+  vlambda[1] += Gy * invMass * deltalambda * massMultiplier[1];
+}
 
 function addSubSub(out, a, b, c, d) {
   out[0] = a[0] + b[0] - c[0] - d[0];
@@ -4309,7 +4299,6 @@ class Pool {
 
 }
 
-const tmpBody$2 = new Body();
 class ContactEquationPool extends Pool {
   create() {
     return new ContactEquation(tmpBody$2, tmpBody$2);
@@ -4321,6 +4310,7 @@ class ContactEquationPool extends Pool {
   }
 
 }
+const tmpBody$2 = new Body();
 
 /**
  * Constrains the slipping in a contact along a tangent
@@ -4408,7 +4398,6 @@ class FrictionEquation extends Equation {
 
 }
 
-const tmpBody$1 = new Body();
 class FrictionEquationPool extends Pool {
   create() {
     return new FrictionEquation(tmpBody$1, tmpBody$1, 0);
@@ -4420,6 +4409,7 @@ class FrictionEquationPool extends Pool {
   }
 
 }
+const tmpBody$1 = new Body();
 
 class TupleDictionary {
   constructor() {
@@ -4588,7 +4578,6 @@ class Narrowphase {
 
     this.lineBox = function (_lineBody, _lineShape, _lineOffset, _lineAngle, _boxBody, _boxShape, _boxOffset, _boxAngle, _justTest) {
 
-      // TODO
       return 0;
     };
 
@@ -4604,14 +4593,12 @@ class Narrowphase {
       set(circlePos, halfLength, 0);
       toGlobalFrame(circlePos, circlePos, capsulePosition, capsuleAngle);
 
-      const result1 = _this.circleConvex(capsuleBody, capsuleShape, // todo
-      circlePos, capsuleAngle, convexBody, convexShape, convexPosition, convexAngle, justTest, capsuleShape.radius);
+      const result1 = _this.circleConvex(capsuleBody, capsuleShape, circlePos, capsuleAngle, convexBody, convexShape, convexPosition, convexAngle, justTest, capsuleShape.radius);
 
       set(circlePos, -halfLength, 0);
       toGlobalFrame(circlePos, circlePos, capsulePosition, capsuleAngle);
 
-      const result2 = _this.circleConvex(capsuleBody, capsuleShape, // todo
-      circlePos, capsuleAngle, convexBody, convexShape, convexPosition, convexAngle, justTest, capsuleShape.radius);
+      const result2 = _this.circleConvex(capsuleBody, capsuleShape, circlePos, capsuleAngle, convexBody, convexShape, convexPosition, convexAngle, justTest, capsuleShape.radius);
 
       if (justTest && result1 + result2 !== 0) {
         return 1;
@@ -4628,7 +4615,6 @@ class Narrowphase {
 
     this.lineCapsule = function (_lineBody, _lineShape, _linePosition, _lineAngle, _capsuleBody, _capsuleShape, _capsulePosition, _capsuleAngle, _justTest) {
 
-      // TODO
       return 0;
     };
 
@@ -4637,7 +4623,6 @@ class Narrowphase {
         justTest = false;
       }
 
-      // todo - was undefined
       let enableFrictionBefore = true; // Check the circles
       // Add offsets!
 
@@ -4725,7 +4710,6 @@ class Narrowphase {
 
     this.lineLine = function (_bodyA, _shapeA, _positionA, _angleA, _bodyB, _shapeB, _positionB, _angleB, _justTest) {
 
-      // TODO
       return 0;
     };
 
@@ -5381,8 +5365,7 @@ class Narrowphase {
       set(end2, halfLength, 0);
       toGlobalFrame(end1, end1, capsuleOffset, capsuleAngle);
       toGlobalFrame(end2, end2, capsuleOffset, capsuleAngle);
-      circle.radius = capsuleShape.radius; // todo - was undefined
-
+      circle.radius = capsuleShape.radius;
       let enableFrictionBefore = true; // Temporarily turn off friction
 
       if (_this.enableFrictionReduction) {
@@ -5471,9 +5454,9 @@ class Narrowphase {
       }
 
       const totalRadius = 0;
-      const dist = collidePolygons_dist;
-      const tempVec = collidePolygons_tempVec;
-      const tmpVec = collidePolygons_tmpVec;
+      const dist = convexConvex_dist;
+      const tempVec = convexConvex_tempVec;
+      const tmpVec = convexConvex_tmpVec;
       const edgeA = findMaxSeparation(tempVec, polyA, positionA, angleA, polyB, positionB, angleB);
       const separationA = tempVec[0];
 
@@ -5522,28 +5505,28 @@ class Narrowphase {
         edge1 = edgeA;
       }
 
-      const incidentEdge = collidePolygons_incidentEdge;
+      const incidentEdge = convexConvex_incidentEdge;
       findIncidentEdge(incidentEdge, poly1, position1, angle1, edge1, poly2, position2, angle2);
       const count1 = poly1.vertices.length;
       const vertices1 = poly1.vertices;
       const iv1 = edge1;
       const iv2 = edge1 + 1 < count1 ? edge1 + 1 : 0;
-      const v11 = collidePolygons_v11;
-      const v12 = collidePolygons_v12;
+      const v11 = convexConvex_v11;
+      const v12 = convexConvex_v12;
       copy(v11, vertices1[iv1]);
       copy(v12, vertices1[iv2]);
-      const localTangent = collidePolygons_localTangent;
+      const localTangent = convexConvex_localTangent;
       subtract(localTangent, v12, v11);
       normalize(localTangent, localTangent);
-      const localNormal = collidePolygons_localNormal;
+      const localNormal = convexConvex_localNormal;
       crossVZ(localNormal, localTangent, 1.0);
-      const planePoint = collidePolygons_planePoint;
+      const planePoint = convexConvex_planePoint;
       add(planePoint, v11, v12);
       scale(planePoint, planePoint, 0.5);
-      const tangent = collidePolygons_tangent; // tangent in world space
+      const tangent = convexConvex_tangent; // tangent in world space
 
       rotate(tangent, localTangent, angle1);
-      const normal = collidePolygons_normal; // normal in world space
+      const normal = convexConvex_normal; // normal in world space
 
       crossVZ(normal, tangent, 1.0);
       toGlobalFrame(v11, v11, position1, angle1);
@@ -5554,11 +5537,11 @@ class Narrowphase {
       const sideOffset1 = -dot(tangent, v11) + totalRadius;
       const sideOffset2 = dot(tangent, v12) + totalRadius; // Clip incident edge against extruded edge1 side edges.
 
-      const clipPoints1 = collidePolygons_clipPoints1;
-      const clipPoints2 = collidePolygons_clipPoints2;
+      const clipPoints1 = convexConvex_clipPoints1;
+      const clipPoints2 = convexConvex_clipPoints2;
       let np = 0; // Clip to box side 1
 
-      const negativeTangent = collidePolygons_negativeTangent;
+      const negativeTangent = convexConvex_negativeTangent;
       scale(negativeTangent, tangent, -1);
       np = clipSegmentToLine(clipPoints1, incidentEdge, negativeTangent, sideOffset1);
 
@@ -6089,27 +6072,21 @@ const tmp14 = create();
 const tmp15 = create();
 const tmpArray = [];
 const bodiesOverlap_shapePositionA = create();
-const bodiesOverlap_shapePositionB = create(); // Find edge normal of max separation on A - return if separating axis is found
-// Find edge normal of max separation on B - return if separation axis is found
-// Choose reference edge as min(minA, minB)
-// Find incident edge
-// Clip
-// The normal points from 1 to 2
-
-const collidePolygons_tempVec = create();
-const collidePolygons_tmpVec = create();
-const collidePolygons_localTangent = create();
-const collidePolygons_localNormal = create();
-const collidePolygons_planePoint = create();
-const collidePolygons_tangent = create();
-const collidePolygons_normal = create();
-const collidePolygons_negativeTangent = create();
-const collidePolygons_v11 = create();
-const collidePolygons_v12 = create();
-const collidePolygons_dist = create();
-const collidePolygons_clipPoints1 = [create(), create()];
-const collidePolygons_clipPoints2 = [create(), create()];
-const collidePolygons_incidentEdge = [create(), create()];
+const bodiesOverlap_shapePositionB = create();
+const convexConvex_tempVec = create();
+const convexConvex_tmpVec = create();
+const convexConvex_localTangent = create();
+const convexConvex_localNormal = create();
+const convexConvex_planePoint = create();
+const convexConvex_tangent = create();
+const convexConvex_normal = create();
+const convexConvex_negativeTangent = create();
+const convexConvex_v11 = create();
+const convexConvex_v12 = create();
+const convexConvex_dist = create();
+const convexConvex_clipPoints1 = [create(), create()];
+const convexConvex_clipPoints2 = [create(), create()];
+const convexConvex_incidentEdge = [create(), create()];
 const maxManifoldPoints = 2;
 const circleHeightfield_candidate = create();
 const circleHeightfield_dist = create();
@@ -6140,17 +6117,17 @@ const capsuleCapsule_tempRect1 = new Box({
   width: 1,
   height: 1
 });
-const pic_localPoint = create();
-const pic_r0 = create();
-const pic_r1 = create();
+const pointInConvex_localPoint = create();
+const pointInConvex_r0 = create();
+const pointInConvex_r1 = create();
 /*
  * Check if a point is in a polygon
  */
 
 function pointInConvex(worldPoint, convexShape, convexOffset, convexAngle) {
-  const localPoint = pic_localPoint;
-  const r0 = pic_r0;
-  const r1 = pic_r1;
+  const localPoint = pointInConvex_localPoint;
+  const r0 = pointInConvex_r0;
+  const r1 = pointInConvex_r1;
   const verts = convexShape.vertices;
   let lastCross = null;
   toLocalFrame(localPoint, worldPoint, convexOffset, convexAngle);
@@ -6187,8 +6164,8 @@ function addsubtract(out, a, b, c) {
 
 
 function pointInConvexLocal(localPoint, convexShape) {
-  const r0 = pic_r0;
-  const r1 = pic_r1;
+  const r0 = pointInConvex_r0;
+  const r1 = pointInConvex_r1;
   const verts = convexShape.vertices;
   const numVerts = verts.length;
   let lastCross = null;
@@ -6328,37 +6305,16 @@ function clipSegmentToLine(vOut, vIn, normal, offset) {
   return numOut;
 }
 
-const convexHeightfield_v0 = create(),
-      convexHeightfield_v1 = create(),
-      convexHeightfield_tilePos = create(),
-      convexHeightfield_tempConvexShape = new Convex({
+const convexHeightfield_v0 = create();
+const convexHeightfield_v1 = create();
+const convexHeightfield_tilePos = create();
+const convexHeightfield_tempConvexShape = new Convex({
   vertices: [create(), create(), create(), create()]
 });
 
-function sortAxisList(a, axisIndex) {
-  axisIndex = axisIndex | 0;
-
-  for (let i = 1, l = a.length; i < l; i++) {
-    const v = a[i];
-    let j;
-
-    for (j = i - 1; j >= 0; j--) {
-      if (a[j].aabb.lowerBound[axisIndex] <= v.aabb.lowerBound[axisIndex]) {
-        break;
-      }
-
-      a[j + 1] = a[j];
-    }
-
-    a[j + 1] = v;
-  }
-
-  return a;
-}
 /**
  * Sweep and prune broadphase along one axis.
  */
-
 
 class SAPBroadphase extends Broadphase {
   /**
@@ -6480,6 +6436,27 @@ class SAPBroadphase extends Broadphase {
     return result;
   }
 
+}
+
+function sortAxisList(a, axisIndex) {
+  axisIndex = axisIndex | 0;
+
+  for (let i = 1, l = a.length; i < l; i++) {
+    const v = a[i];
+    let j;
+
+    for (j = i - 1; j >= 0; j--) {
+      if (a[j].aabb.lowerBound[axisIndex] <= v.aabb.lowerBound[axisIndex]) {
+        break;
+      }
+
+      a[j + 1] = a[j];
+    }
+
+    a[j + 1] = v;
+  }
+
+  return a;
 }
 
 /**
@@ -7049,11 +7026,6 @@ const t = create();
 const xAxis$2 = fromValues(1, 0);
 const yAxis$2 = fromValues(0, 1);
 
-const worldVectorA = create();
-const worldVectorB = create();
-const xAxis$1 = fromValues(1, 0);
-const yAxis$1 = fromValues(0, 1);
-
 /**
  * Locks the relative angle between two bodies. The constraint tries to keep the dot product between two vectors, local in each body, to zero. The local angle in body i is a parameter.
  */
@@ -7074,6 +7046,10 @@ class RotationalLockEquation extends Equation {
   }
 
 }
+const worldVectorA = create();
+const worldVectorB = create();
+const xAxis$1 = fromValues(1, 0);
+const yAxis$1 = fromValues(0, 1);
 
 /**
  * Constraint that only allows bodies to move along a line, relative to each other.
@@ -7190,8 +7166,7 @@ class PrismaticConstraint extends Constraint {
     this.equations.push(trans); // Rotational part
 
     if (!options.disableRotationalLock) {
-      const rot = new RotationalLockEquation(bodyA, bodyB); // todo - was `-maxForce,maxForce`
-
+      const rot = new RotationalLockEquation(bodyA, bodyB);
       this.equations.push(rot);
     }
 
@@ -7208,8 +7183,7 @@ class PrismaticConstraint extends Constraint {
 
     this.upperLimitEquation.minForce = this.lowerLimitEquation.minForce = 0;
     this.upperLimitEquation.maxForce = this.lowerLimitEquation.maxForce = maxForce;
-    this.motorEquation = new Equation(bodyA, bodyB, 0, 0); // todo - min, max was not given
-
+    this.motorEquation = new Equation(bodyA, bodyB, 0, 0);
     this.motorEnabled = false;
     this.motorSpeed = 0; // eslint-disable-next-line @typescript-eslint/no-this-alias
 
@@ -7579,22 +7553,22 @@ class RevoluteConstraint extends Constraint {
     lowerLimitEquation.angle = lowerLimit;
     lowerLimitEquation.enabled = this.lowerLimitEnabled && relAngle < lowerLimit;
     /*
-    The constraint violation is
-     g = xj + rj - xi - ri
-    ...where xi and xj are the body positions and ri and rj world-oriented offset vectors. Differentiate:
-     gdot = vj + wj x rj - vi - wi x ri
-    We split this into x and y directions. (let x and y be unit vectors along the respective axes)
-     gdot * x = ( vj + wj x rj - vi - wi x ri ) * x
-             = ( vj*x + (wj x rj)*x -vi*x -(wi x ri)*x
-             = ( vj*x + (rj x x)*wj -vi*x -(ri x x)*wi
-             = [ -x   -(ri x x)   x   (rj x x)] * [vi wi vj wj]
-             = G*W
-    ...and similar for y. We have then identified the jacobian entries for x and y directions:
-     Gx = [ x   (rj x x)   -x   -(ri x x)]
-    Gy = [ y   (rj x y)   -y   -(ri x y)]
-    So for example, in the X direction we would get in 2 dimensions
-     G = [ [1   0   (rj x [1,0])   -1   0   -(ri x [1,0])]
-          [0   1   (rj x [0,1])    0  -1   -(ri x [0,1])]
+     The constraint violation is
+         g = xj + rj - xi - ri
+     ...where xi and xj are the body positions and ri and rj world-oriented offset vectors. Differentiate:
+         gdot = vj + wj x rj - vi - wi x ri
+     We split this into x and y directions. (let x and y be unit vectors along the respective axes)
+         gdot * x = ( vj + wj x rj - vi - wi x ri ) * x
+                = ( vj*x + (wj x rj)*x -vi*x -(wi x ri)*x
+                = ( vj*x + (rj x x)*wj -vi*x -(ri x x)*wi
+                = [ -x   -(ri x x)   x   (rj x x)] * [vi wi vj wj]
+                = G*W
+     ...and similar for y. We have then identified the jacobian entries for x and y directions:
+         Gx = [ x   (rj x x)   -x   -(ri x x)]
+        Gy = [ y   (rj x y)   -y   -(ri x y)]
+     So for example, in the X direction we would get in 2 dimensions
+         G = [ [1   0   (rj x [1,0])   -1   0   -(ri x [1,0])]
+            [0   1   (rj x [0,1])    0  -1   -(ri x [0,1])]
     */
 
     rotate(worldPivotA, pivotA, bodyA.angle);
@@ -7813,16 +7787,6 @@ class Spring {
 
 }
 
-const applyForce_r = create(),
-      applyForce_r_unit = create(),
-      applyForce_u = create(),
-      applyForce_f = create(),
-      applyForce_worldAnchorA = create(),
-      applyForce_worldAnchorB = create(),
-      applyForce_ri = create(),
-      applyForce_rj = create(),
-      applyForce_tmp = create();
-
 /**
  * A spring, connecting two bodies.
  *
@@ -7970,6 +7934,15 @@ class LinearSpring extends Spring {
   }
 
 }
+const applyForce_r = create();
+const applyForce_r_unit = create();
+const applyForce_u = create();
+const applyForce_f = create();
+const applyForce_worldAnchorA = create();
+const applyForce_worldAnchorB = create();
+const applyForce_ri = create();
+const applyForce_rj = create();
+const applyForce_tmp = create();
 
 /**
  * A rotational spring, connecting two bodies rotation. This spring explicitly adds angularForce (torque) to the bodies.
@@ -8868,39 +8841,6 @@ class Solver {
 
 }
 
-function updateMultipliers(equations, invDt) {
-  let l = equations.length;
-
-  while (l--) {
-    const eq = equations[l];
-    eq.multiplier = eq.lambda * invDt;
-  }
-}
-
-function iterateEquation(eq) {
-  // Compute iteration
-  const B = eq.B,
-        eps = eq.epsilon,
-        invC = eq.invC,
-        lambdaj = eq.lambda,
-        GWlambda = eq.computeGWlambda(),
-        maxForce_dt = eq.maxForceDt,
-        minForce_dt = eq.minForceDt;
-  let deltalambda = invC * (B - GWlambda - eps * lambdaj); // Clamp if we are not within the min/max interval
-
-  const lambdaj_plus_deltalambda = lambdaj + deltalambda;
-
-  if (lambdaj_plus_deltalambda < minForce_dt) {
-    deltalambda = minForce_dt - lambdaj;
-  } else if (lambdaj_plus_deltalambda > maxForce_dt) {
-    deltalambda = maxForce_dt - lambdaj;
-  }
-
-  eq.lambda += deltalambda;
-  eq.addToWlambda(deltalambda);
-  return deltalambda;
-}
-
 /**
  * Iterative Gauss-Seidel constraint equation solver.
  */
@@ -9026,6 +8966,39 @@ class GSSolver extends Solver {
     }
   }
 
+} // Sets the .multiplier property of each equation
+
+function updateMultipliers(equations, invDt) {
+  let l = equations.length;
+
+  while (l--) {
+    const eq = equations[l];
+    eq.multiplier = eq.lambda * invDt;
+  }
+}
+
+function iterateEquation(eq) {
+  // Compute iteration
+  const B = eq.B,
+        eps = eq.epsilon,
+        invC = eq.invC,
+        lambdaj = eq.lambda,
+        GWlambda = eq.computeGWlambda(),
+        maxForce_dt = eq.maxForceDt,
+        minForce_dt = eq.minForceDt;
+  let deltalambda = invC * (B - GWlambda - eps * lambdaj); // Clamp if we are not within the min/max interval
+
+  const lambdaj_plus_deltalambda = lambdaj + deltalambda;
+
+  if (lambdaj_plus_deltalambda < minForce_dt) {
+    deltalambda = minForce_dt - lambdaj;
+  } else if (lambdaj_plus_deltalambda > maxForce_dt) {
+    deltalambda = maxForce_dt - lambdaj;
+  }
+
+  eq.lambda += deltalambda;
+  eq.addToWlambda(deltalambda);
+  return deltalambda;
 }
 
 /**
@@ -9056,10 +9029,6 @@ class OverlapKeeperRecord {
 
 }
 
-const tmpShape = new Circle({
-  radius: 1
-});
-const tmpBody = new Body();
 class OverlapKeeperRecordPool extends Pool {
   create() {
     return new OverlapKeeperRecord(tmpBody, tmpShape, tmpBody, tmpShape);
@@ -9072,6 +9041,10 @@ class OverlapKeeperRecordPool extends Pool {
   }
 
 }
+const tmpShape = new Circle({
+  radius: 1
+});
+const tmpBody = new Body();
 
 class OverlapKeeper {
   constructor() {

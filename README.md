@@ -13,7 +13,6 @@ If you're using three.js in a React environment with react-three-fiber, check ou
 
 [Demos](#demos) | [Examples](#examples) | [Documentation](http://pmndrs.github.io/p2-es/docs/)
 
-
 ### Getting Started
 
 **Usage with NPM**
@@ -32,7 +31,9 @@ You can also import the esm flatbundle via unpkg
 </script>
 ```
 
-If you would like to use ordinary ```Array``` instead of ```Float32Array```, define ```P2_ARRAY_TYPE``` globally before loading the library.
+---
+
+If you would like to use ordinary `Array` instead of `Float32Array`, define `P2_ARRAY_TYPE` globally before loading the library.
 
 ```html
 <script type="text/javascript">P2_ARRAY_TYPE = Array;</script>
