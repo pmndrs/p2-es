@@ -18,7 +18,7 @@ export interface LinearSpringOptions extends SpringOptions {
     /**
      * A number > 0. Default is the current distance between the world anchor points.
      */
-    restLength?: number | undefined
+    restLength?: number
 
     /**
      * Where to hook the spring to body A, in local body coordinates. Defaults to the body center.

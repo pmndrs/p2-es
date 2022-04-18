@@ -1,5 +1,5 @@
 export interface PoolOptions {
-    size?: number | undefined
+    size?: number
 }
 
 /**

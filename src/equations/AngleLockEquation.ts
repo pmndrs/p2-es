@@ -2,8 +2,8 @@ import type { Body } from '../objects/Body'
 import { Equation } from './Equation'
 
 export interface AngleLockEquationOptions {
-    angle?: number | undefined
-    ratio?: number | undefined
+    angle?: number
+    ratio?: number
 }
 
 /**

@@ -9,7 +9,7 @@ export interface LockConstraintOptions extends ConstraintOptions {
     /**
      * The offset of bodyB in bodyA's frame. If not given the offset is computed from current positions.
      */
-    localOffsetB?: [number, number]
+    localOffsetB?: Vec2
 
     /**
      * The angle of bodyB in bodyA's frame. If not given, the angle is computed from current angles.

@@ -17,7 +17,14 @@ export abstract class Broadphase {
      */
     static BOUNDING_CIRCLE: 2
 
+    /**
+     * Naive Broadphase
+     */
     static NAIVE: 1
+
+    /**
+     * SAP Broadphase
+     */
     static SAP: 2
 
     /**

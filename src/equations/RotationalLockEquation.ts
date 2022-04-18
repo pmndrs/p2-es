@@ -8,7 +8,7 @@ const xAxis = vec2.fromValues(1, 0)
 const yAxis = vec2.fromValues(0, 1)
 
 export interface RotationalLockEquationOptions {
-    angle?: number | undefined
+    angle?: number
 }
 
 /**

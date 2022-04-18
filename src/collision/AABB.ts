@@ -3,8 +3,15 @@ import * as vec2 from '../math/vec2'
 import type { Vec2 } from '../types'
 
 export interface AABBOptions {
-    upperBound?: [number, number] | undefined
-    lowerBound?: [number, number] | undefined
+    /**
+     * The upper bound of the bounding box.
+     */
+    upperBound?: Vec2
+
+    /**
+     * The lower bound of the bounding box.
+     */
+    lowerBound?: Vec2
 }
 
 const tmp = vec2.create()
@@ -20,14 +27,15 @@ const tmp = vec2.create()
  */
 export class AABB {
     /**
+     * The upper bound of the bounding box.
+     */
+    upperBound: Vec2
+
+    /**
      * The lower bound of the bounding box.
      */
     lowerBound: Vec2
 
-    /**
-     * The upper bound of the bounding box.
-     */
-    upperBound: Vec2
     constructor(options?: AABBOptions) {
         options = options || {}
 

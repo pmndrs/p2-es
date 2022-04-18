@@ -39,9 +39,9 @@ function iterateEquation(eq: Equation) {
 }
 
 export interface GSSolverOptions extends SolverOptions {
-    iterations?: number | undefined
-    tolerance?: number | undefined
-    frictionIterations?: number | undefined
+    iterations?: number
+    tolerance?: number
+    frictionIterations?: number
 }
 
 /**

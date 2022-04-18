@@ -214,8 +214,8 @@ declare module "shapes/Heightfield" {
     }
     export class Heightfield extends Shape {
         heights: number[];
-        maxValue: number | undefined;
-        minValue: number | undefined;
+        maxValue?: number;
+        minValue?: number;
         elementWidth: number;
         constructor(options?: HeightfieldOptions);
         updateMaxMinValues(): void;
@@ -334,13 +334,13 @@ declare module "equations/FrictionEquation" {
 declare module "material/ContactMaterial" {
     import { Material } from "material/Material";
     export interface ContactMaterialOptions {
-        friction?: number | undefined;
-        restitution?: number | undefined;
-        stiffness?: number | undefined;
-        relaxation?: number | undefined;
-        frictionStiffness?: number | undefined;
-        frictionRelaxation?: number | undefined;
-        surfaceVelocity?: number | undefined;
+        friction?: number;
+        restitution?: number;
+        stiffness?: number;
+        relaxation?: number;
+        frictionStiffness?: number;
+        frictionRelaxation?: number;
+        surfaceVelocity?: number;
     }
     export class ContactMaterial {
         readonly id: number;
@@ -450,7 +450,7 @@ declare module "shapes/Plane" {
 }
 declare module "utils/Pool" {
     export interface PoolOptions {
-        size?: number | undefined;
+        size?: number;
     }
     export abstract class Pool<T> {
         objects: T[];
@@ -534,27 +534,27 @@ declare module "collision/Narrowphase" {
         convexCapsule: (convexBody: Body, convexShape: Convex, convexPosition: Vec2, convexAngle: number, capsuleBody: Body, capsuleShape: Capsule, capsulePosition: Vec2, capsuleAngle: number, justTest?: boolean) => number;
         lineCapsule: (_lineBody: Body, _lineShape: Line, _linePosition: Vec2, _lineAngle: number, _capsuleBody: Body, _capsuleShape: Capsule, _capsulePosition: Vec2, _capsuleAngle: number, _justTest?: boolean) => number;
         capsuleCapsule: (bi: Body, si: Capsule, xi: Vec2, ai: number, bj: Body, sj: Capsule, xj: Vec2, aj: number, justTest?: boolean) => number;
-        lineLine: (_bodyA: Body, _shapeA: Line, _positionA: Vec2, _angleA: number, _bodyB: Body, _shapeB: Line, _positionB: Vec2, _angleB: number, _justTest?: boolean) => number | boolean;
+        lineLine: (_bodyA: Body, _shapeA: Line, _positionA: Vec2, _angleA: number, _bodyB: Body, _shapeB: Line, _positionB: Vec2, _angleB: number, _justTest?: boolean) => number;
         planeLine: (planeBody: Body, planeShape: Plane, planeOffset: Vec2, planeAngle: number, lineBody: Body, lineShape: Line, lineOffset: Vec2, lineAngle: number, justTest?: boolean) => number;
         particleCapsule: (particleBody: Body, particleShape: Particle, particlePosition: Vec2, particleAngle: number, capsuleBody: Body, capsuleShape: Capsule, capsulePosition: Vec2, capsuleAngle: number, justTest?: boolean) => number;
-        circleLine: (circleBody: Body, circleShape: Circle, circleOffset: Vec2, circleAngle: number, lineBody: Body, lineShape: Line, lineOffset: Vec2, lineAngle: number, justTest?: boolean, lineRadius?: number | undefined, circleRadius?: number | undefined) => number;
+        circleLine: (circleBody: Body, circleShape: Circle, circleOffset: Vec2, _circleAngle: number, lineBody: Body, lineShape: Line, lineOffset: Vec2, lineAngle: number, justTest?: boolean, lineRadius?: number | undefined, circleRadius?: number | undefined) => number;
         circleCapsule: (bi: Body, si: Circle, xi: Vec2, ai: number, bj: Body, sj: Capsule, xj: Vec2, aj: number, justTest?: boolean) => number;
-        circleConvex: (circleBody: Body, circleShape: Circle | Capsule, circleOffset: Vec2, circleAngle: number, convexBody: Body, convexShape: Convex, convexOffset: Vec2, convexAngle: number, justTest?: boolean, circleRadius?: number | undefined) => number;
-        particleConvex: (particleBody: Body, particleShape: Particle, particleOffset: Vec2, particleAngle: number, convexBody: Body, convexShape: Convex, convexOffset: Vec2, convexAngle: number, justTest?: boolean) => number;
-        circleCircle: (bodyA: Body, shapeA: Circle | Capsule, offsetA: Vec2, angleA: number, bodyB: Body, shapeB: Circle | Capsule, offsetB: Vec2, angleB: number, justTest?: boolean, radiusA?: number | undefined, radiusB?: number | undefined) => number;
+        circleConvex: (circleBody: Body, circleShape: Circle | Capsule, circleOffset: Vec2, _circleAngle: number, convexBody: Body, convexShape: Convex, convexOffset: Vec2, convexAngle: number, justTest?: boolean, circleRadius?: number | undefined) => number;
+        particleConvex: (particleBody: Body, particleShape: Particle, particleOffset: Vec2, _particleAngle: number, convexBody: Body, convexShape: Convex, convexOffset: Vec2, convexAngle: number, justTest?: boolean) => number;
+        circleCircle: (bodyA: Body, shapeA: Circle | Capsule, offsetA: Vec2, _angleA: number, bodyB: Body, shapeB: Circle | Capsule, offsetB: Vec2, _angleB: number, justTest?: boolean, radiusA?: number | undefined, radiusB?: number | undefined) => number;
         planeConvex: (planeBody: Body, planeShape: Plane, planeOffset: Vec2, planeAngle: number, convexBody: Body, convexShape: Convex, convexOffset: Vec2, convexAngle: number, justTest?: boolean) => number;
-        particlePlane: (particleBody: Body, particleShape: Particle, particleOffset: Vec2, particleAngle: number, planeBody: Body, planeShape: Plane, planeOffset: Vec2, planeAngle: number, justTest?: boolean) => number;
-        circleParticle: (circleBody: Body, circleShape: Circle, circleOffset: Vec2, circleAngle: number, particleBody: Body, particleShape: Particle, particleOffset: Vec2, particleAngle: number, justTest?: boolean) => number;
+        particlePlane: (particleBody: Body, particleShape: Particle, particleOffset: Vec2, _particleAngle: number, planeBody: Body, planeShape: Plane, planeOffset: Vec2, planeAngle: number, justTest?: boolean) => number;
+        circleParticle: (circleBody: Body, circleShape: Circle, circleOffset: Vec2, _circleAngle: number, particleBody: Body, particleShape: Particle, particleOffset: Vec2, _particleAngle: number, justTest?: boolean) => number;
         planeCapsule: (planeBody: Body, planeShape: Plane, planeOffset: Vec2, planeAngle: number, capsuleBody: Body, capsuleShape: Capsule, capsuleOffset: Vec2, capsuleAngle: number, justTest?: boolean) => number;
-        circlePlane: (circleBody: Body, circleShape: Circle, circleOffset: Vec2, circleAngle: number, planeBody: Body, planeShape: Plane, planeOffset: Vec2, planeAngle: number, justTest?: boolean) => number;
+        circlePlane: (circleBody: Body, circleShape: Circle, circleOffset: Vec2, _circleAngle: number, planeBody: Body, planeShape: Plane, planeOffset: Vec2, planeAngle: number, justTest?: boolean) => number;
         convexConvex: (bodyA: Body, polyA: Convex, positionA: Vec2, angleA: number, bodyB: Body, polyB: Convex, positionB: Vec2, angleB: number, justTest?: boolean) => number;
-        circleHeightfield: (circleBody: Body, circleShape: Circle, circlePos: Vec2, circleAngle: number, hfBody: Body, hfShape: Heightfield, hfPos: Vec2, hfAngle: number, justTest?: boolean, radius?: number | undefined) => number;
-        convexHeightfield: (convexBody: Body, convexShape: Convex, convexPos: Vec2, convexAngle: number, hfBody: Body, hfShape: Heightfield, hfPos: Vec2, hfAngle: number, justTest?: boolean) => number;
+        circleHeightfield: (circleBody: Body, circleShape: Circle, circlePos: Vec2, _circleAngle: number, hfBody: Body, hfShape: Heightfield, hfPos: Vec2, _fAngle: number, justTest?: boolean, radius?: number | undefined) => number;
+        convexHeightfield: (convexBody: Body, convexShape: Convex, convexPos: Vec2, convexAngle: number, hfBody: Body, hfShape: Heightfield, hfPos: Vec2, _hfAngle: number, justTest?: boolean) => number;
         narrowphases: {
-            [x: number]: ((_lineBody: Body, _lineShape: Line, _lineOffset: Vec2, _lineAngle: number, _boxBody: Body, _boxShape: Box, _boxOffset: Vec2, _boxAngle: number, _justTest?: boolean) => number) | ((convexBody: Body, convexShape: Convex, convexPosition: Vec2, convexAngle: number, capsuleBody: Body, capsuleShape: Capsule, capsulePosition: Vec2, capsuleAngle: number, justTest?: boolean) => number) | ((bi: Body, si: Capsule, xi: Vec2, ai: number, bj: Body, sj: Capsule, xj: Vec2, aj: number, justTest?: boolean) => number) | ((_bodyA: Body, _shapeA: Line, _positionA: Vec2, _angleA: number, _bodyB: Body, _shapeB: Line, _positionB: Vec2, _angleB: number, _justTest?: boolean) => number | boolean) | ((circleBody: Body, circleShape: Circle, circleOffset: Vec2, circleAngle: number, lineBody: Body, lineShape: Line, lineOffset: Vec2, lineAngle: number, justTest?: boolean, lineRadius?: number | undefined, circleRadius?: number | undefined) => number) | ((bi: Body, si: Circle, xi: Vec2, ai: number, bj: Body, sj: Capsule, xj: Vec2, aj: number, justTest?: boolean) => number) | ((circleBody: Body, circleShape: Circle | Capsule, circleOffset: Vec2, circleAngle: number, convexBody: Body, convexShape: Convex, convexOffset: Vec2, convexAngle: number, justTest?: boolean, circleRadius?: number | undefined) => number) | ((particleBody: Body, particleShape: Particle, particleOffset: Vec2, particleAngle: number, convexBody: Body, convexShape: Convex, convexOffset: Vec2, convexAngle: number, justTest?: boolean) => number) | ((bodyA: Body, shapeA: Circle | Capsule, offsetA: Vec2, angleA: number, bodyB: Body, shapeB: Circle | Capsule, offsetB: Vec2, angleB: number, justTest?: boolean, radiusA?: number | undefined, radiusB?: number | undefined) => number) | ((circleBody: Body, circleShape: Circle, circleOffset: Vec2, circleAngle: number, particleBody: Body, particleShape: Particle, particleOffset: Vec2, particleAngle: number, justTest?: boolean) => number) | ((bodyA: Body, polyA: Convex, positionA: Vec2, angleA: number, bodyB: Body, polyB: Convex, positionB: Vec2, angleB: number, justTest?: boolean) => number) | ((circleBody: Body, circleShape: Circle, circlePos: Vec2, circleAngle: number, hfBody: Body, hfShape: Heightfield, hfPos: Vec2, hfAngle: number, justTest?: boolean, radius?: number | undefined) => number) | ((convexBody: Body, convexShape: Convex, convexPos: Vec2, convexAngle: number, hfBody: Body, hfShape: Heightfield, hfPos: Vec2, hfAngle: number, justTest?: boolean) => number);
+            [x: number]: ((_lineBody: Body, _lineShape: Line, _lineOffset: Vec2, _lineAngle: number, _boxBody: Body, _boxShape: Box, _boxOffset: Vec2, _boxAngle: number, _justTest?: boolean) => number) | ((convexBody: Body, convexShape: Convex, convexPosition: Vec2, convexAngle: number, capsuleBody: Body, capsuleShape: Capsule, capsulePosition: Vec2, capsuleAngle: number, justTest?: boolean) => number) | ((bi: Body, si: Capsule, xi: Vec2, ai: number, bj: Body, sj: Capsule, xj: Vec2, aj: number, justTest?: boolean) => number) | ((circleBody: Body, circleShape: Circle, circleOffset: Vec2, _circleAngle: number, lineBody: Body, lineShape: Line, lineOffset: Vec2, lineAngle: number, justTest?: boolean, lineRadius?: number | undefined, circleRadius?: number | undefined) => number) | ((bi: Body, si: Circle, xi: Vec2, ai: number, bj: Body, sj: Capsule, xj: Vec2, aj: number, justTest?: boolean) => number) | ((circleBody: Body, circleShape: Circle | Capsule, circleOffset: Vec2, _circleAngle: number, convexBody: Body, convexShape: Convex, convexOffset: Vec2, convexAngle: number, justTest?: boolean, circleRadius?: number | undefined) => number) | ((particleBody: Body, particleShape: Particle, particleOffset: Vec2, _particleAngle: number, convexBody: Body, convexShape: Convex, convexOffset: Vec2, convexAngle: number, justTest?: boolean) => number) | ((bodyA: Body, shapeA: Circle | Capsule, offsetA: Vec2, _angleA: number, bodyB: Body, shapeB: Circle | Capsule, offsetB: Vec2, _angleB: number, justTest?: boolean, radiusA?: number | undefined, radiusB?: number | undefined) => number) | ((circleBody: Body, circleShape: Circle, circleOffset: Vec2, _circleAngle: number, particleBody: Body, particleShape: Particle, particleOffset: Vec2, _particleAngle: number, justTest?: boolean) => number) | ((bodyA: Body, polyA: Convex, positionA: Vec2, angleA: number, bodyB: Body, polyB: Convex, positionB: Vec2, angleB: number, justTest?: boolean) => number) | ((circleBody: Body, circleShape: Circle, circlePos: Vec2, _circleAngle: number, hfBody: Body, hfShape: Heightfield, hfPos: Vec2, _fAngle: number, justTest?: boolean, radius?: number | undefined) => number) | ((convexBody: Body, convexShape: Convex, convexPos: Vec2, convexAngle: number, hfBody: Body, hfShape: Heightfield, hfPos: Vec2, _hfAngle: number, justTest?: boolean) => number);
             64: (bi: Body, si: Capsule, xi: Vec2, ai: number, bj: Body, sj: Capsule, xj: Vec2, aj: number, justTest?: boolean) => number;
-            16: (_bodyA: Body, _shapeA: Line, _positionA: Vec2, _angleA: number, _bodyB: Body, _shapeB: Line, _positionB: Vec2, _angleB: number, _justTest?: boolean) => number | boolean;
-            1: (bodyA: Body, shapeA: Circle | Capsule, offsetA: Vec2, angleA: number, bodyB: Body, shapeB: Circle | Capsule, offsetB: Vec2, angleB: number, justTest?: boolean, radiusA?: number | undefined, radiusB?: number | undefined) => number;
+            16: (_bodyA: Body, _shapeA: Line, _positionA: Vec2, _angleA: number, _bodyB: Body, _shapeB: Line, _positionB: Vec2, _angleB: number, _justTest?: boolean) => number;
+            1: (bodyA: Body, shapeA: Circle | Capsule, offsetA: Vec2, _angleA: number, bodyB: Body, shapeB: Circle | Capsule, offsetB: Vec2, _angleB: number, justTest?: boolean, radiusA?: number | undefined, radiusB?: number | undefined) => number;
             8: (bodyA: Body, polyA: Convex, positionA: Vec2, angleA: number, bodyB: Body, polyB: Convex, positionB: Vec2, angleB: number, justTest?: boolean) => number;
             32: (bodyA: Body, polyA: Convex, positionA: Vec2, angleA: number, bodyB: Body, polyB: Convex, positionB: Vec2, angleB: number, justTest?: boolean) => number;
         };
@@ -648,9 +648,9 @@ declare module "solver/GSSolver" {
     import type { SolverOptions } from "solver/Solver";
     import { Solver } from "solver/Solver";
     export interface GSSolverOptions extends SolverOptions {
-        iterations?: number | undefined;
-        tolerance?: number | undefined;
-        frictionIterations?: number | undefined;
+        iterations?: number;
+        tolerance?: number;
+        frictionIterations?: number;
     }
     export class GSSolver extends Solver {
         type: 1;
@@ -795,10 +795,10 @@ declare module "world/World" {
         preSolve: PreSolveEvent;
     };
     export interface WorldOptions {
-        solver?: Solver | undefined;
-        gravity?: Vec2 | undefined;
-        broadphase?: Broadphase | undefined;
-        islandSplit?: boolean | undefined;
+        solver?: Solver;
+        gravity?: Vec2;
+        broadphase?: Broadphase;
+        islandSplit?: boolean;
     }
     export class World extends EventEmitter<WorldEventMap> {
         static NO_SLEEPING: number;
@@ -861,27 +861,27 @@ declare module "objects/Body" {
     import type { Vec2 } from "types/index";
     import type { World } from "world/World";
     export interface BodyOptions {
-        type?: typeof Body.DYNAMIC | typeof Body.STATIC | typeof Body.KINEMATIC | undefined;
-        force?: Vec2 | undefined;
-        position?: Vec2 | undefined;
-        velocity?: Vec2 | undefined;
-        allowSleep?: boolean | undefined;
-        collisionResponse?: boolean | undefined;
-        angle?: number | undefined;
-        angularDamping?: number | undefined;
-        angularForce?: number | undefined;
-        angularVelocity?: number | undefined;
-        ccdIterations?: number | undefined;
-        ccdSpeedThreshold?: number | undefined;
-        damping?: number | undefined;
-        fixedRotation?: boolean | undefined;
-        gravityScale?: number | undefined;
-        id?: number | undefined;
-        mass?: number | undefined;
-        sleepSpeedLimit?: number | undefined;
-        sleepTimeLimit?: number | undefined;
-        fixedX?: boolean | undefined;
-        fixedY?: boolean | undefined;
+        type?: typeof Body.DYNAMIC | typeof Body.STATIC | typeof Body.KINEMATIC;
+        force?: Vec2;
+        position?: Vec2;
+        velocity?: Vec2;
+        allowSleep?: boolean;
+        collisionResponse?: boolean;
+        angle?: number;
+        angularDamping?: number;
+        angularForce?: number;
+        angularVelocity?: number;
+        ccdIterations?: number;
+        ccdSpeedThreshold?: number;
+        damping?: number;
+        fixedRotation?: boolean;
+        gravityScale?: number;
+        id?: number;
+        mass?: number;
+        sleepSpeedLimit?: number;
+        sleepTimeLimit?: number;
+        fixedX?: boolean;
+        fixedY?: boolean;
     }
     export type SleepyEvent = {
         type: 'sleepy';
@@ -970,9 +970,9 @@ declare module "objects/Body" {
         vectorToLocalFrame(out: Vec2, worldVector: Vec2): void;
         vectorToWorldFrame(out: Vec2, localVector: Vec2): void;
         fromPolygon(path: Vec2[], options?: {
-            optimalDecomp?: boolean | undefined;
-            skipSimpleCheck?: boolean | undefined;
-            removeCollinearPoints?: boolean | number | undefined;
+            optimalDecomp?: boolean;
+            skipSimpleCheck?: boolean;
+            removeCollinearPoints?: boolean | number;
         }): boolean;
         adjustCenterOfMass(): void;
         setZeroForce(): void;
@@ -997,12 +997,12 @@ declare module "collision/Ray" {
     export interface RayOptions {
         from?: Vec2;
         to?: Vec2;
-        checkCollisionResponse?: boolean | undefined;
-        skipBackfaces?: boolean | undefined;
-        collisionMask?: number | undefined;
-        collisionGroup?: number | undefined;
-        mode?: typeof Ray.CLOSEST | typeof Ray.ANY | typeof Ray.ALL | undefined;
-        callback?: ((result: RaycastResult) => void) | undefined;
+        checkCollisionResponse?: boolean;
+        skipBackfaces?: boolean;
+        collisionMask?: number;
+        collisionGroup?: number;
+        mode?: typeof Ray.CLOSEST | typeof Ray.ANY | typeof Ray.ALL;
+        callback?: ((result: RaycastResult) => void);
     }
     export class Ray {
         static CLOSEST: number;
@@ -1033,12 +1033,12 @@ declare module "collision/AABB" {
     import type { Ray } from "collision/Ray";
     import type { Vec2 } from "types/index";
     export interface AABBOptions {
-        upperBound?: [number, number] | undefined;
-        lowerBound?: [number, number] | undefined;
+        upperBound?: Vec2;
+        lowerBound?: Vec2;
     }
     export class AABB {
-        lowerBound: Vec2;
         upperBound: Vec2;
+        lowerBound: Vec2;
         constructor(options?: AABBOptions);
         setFromPoints(points: Vec2[], position: Vec2, angle?: number, skinSize?: number): void;
         copy(aabb: AABB): void;
@@ -1090,8 +1090,8 @@ declare module "equations/AngleLockEquation" {
     import type { Body } from "objects/Body";
     import { Equation } from "equations/Equation";
     export interface AngleLockEquationOptions {
-        angle?: number | undefined;
-        ratio?: number | undefined;
+        angle?: number;
+        ratio?: number;
     }
     export class AngleLockEquation extends Equation {
         angle: number;
@@ -1126,7 +1126,7 @@ declare module "constraints/LockConstraint" {
     import type { ConstraintOptions } from "constraints/Constraint";
     import { Constraint } from "constraints/Constraint";
     export interface LockConstraintOptions extends ConstraintOptions {
-        localOffsetB?: [number, number];
+        localOffsetB?: Vec2;
         localAngleB?: number;
         maxForce?: number;
     }
@@ -1143,7 +1143,7 @@ declare module "equations/RotationalLockEquation" {
     import type { Body } from "objects/Body";
     import { Equation } from "equations/Equation";
     export interface RotationalLockEquationOptions {
-        angle?: number | undefined;
+        angle?: number;
     }
     export class RotationalLockEquation extends Equation {
         angle: number;
@@ -1246,7 +1246,7 @@ declare module "objects/LinearSpring" {
     import type { SpringOptions } from "objects/Spring";
     import { Spring } from "objects/Spring";
     export interface LinearSpringOptions extends SpringOptions {
-        restLength?: number | undefined;
+        restLength?: number;
         localAnchorA?: Vec2;
         localAnchorB?: Vec2;
         worldAnchorA?: Vec2;
@@ -1271,7 +1271,7 @@ declare module "objects/RotationalSpring" {
     import type { SpringOptions } from "objects/Spring";
     import { Spring } from "objects/Spring";
     export interface RotationalSpringOptions extends SpringOptions {
-        restAngle?: number | undefined;
+        restAngle?: number;
     }
     export class RotationalSpring extends Spring {
         restAngle: number;

@@ -44,12 +44,12 @@ export class Heightfield extends Shape {
     /**
      * Max value of the heights
      */
-    maxValue: number | undefined
+    maxValue?: number
 
     /**
      * Max value of the heights
      */
-    minValue: number | undefined
+    minValue?: number
 
     /**
      * The width of each element

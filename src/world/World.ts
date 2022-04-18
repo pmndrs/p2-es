@@ -92,10 +92,10 @@ export type WorldEventMap = {
 }
 
 export interface WorldOptions {
-    solver?: Solver | undefined
-    gravity?: Vec2 | undefined
-    broadphase?: Broadphase | undefined
-    islandSplit?: boolean | undefined
+    solver?: Solver
+    gravity?: Vec2
+    broadphase?: Broadphase
+    islandSplit?: boolean
 }
 
 /**
@@ -261,7 +261,7 @@ export class World extends EventEmitter<WorldEventMap> {
      * Overlap keeper for the world
      */
     overlapKeeper = new OverlapKeeper()
-    
+
     /**
      * Disabled body collision pairs. See {@link World.disableBodyCollision}.
      */
@@ -1102,10 +1102,7 @@ export class World extends EventEmitter<WorldEventMap> {
         return result.hasHit()
     }
 
-    private setGlobalEquationParameters(parameters: {
-        relaxation?: number | undefined
-        stiffness?: number | undefined
-    }): void {
+    private setGlobalEquationParameters(parameters: { relaxation?: number; stiffness?: number }): void {
         const constraints = this.constraints
         for (let i = 0; i !== constraints.length; i++) {
             const c = constraints[i]
@@ -1186,11 +1183,9 @@ function runNarrowphase(
         const sensor = si.sensor || sj.sensor
         const numFrictionBefore = np.frictionEquations.length
         if (si.type < sj.type) {
-            // @ts-expect-error todo
-            numContacts = resolver.call(np, bi, si, xiw, aiw, bj, sj, xjw, ajw, sensor)
+            numContacts = resolver.call(np, bi, si as never, xiw, aiw, bj, sj as never, xjw, ajw, sensor)
         } else {
-            // @ts-expect-error todo
-            numContacts = resolver.call(np, bj, sj, xjw, ajw, bi, si, xiw, aiw, sensor)
+            numContacts = resolver.call(np, bj, sj as never, xjw, ajw, bi, si as never, xiw, aiw, sensor)
         }
         const numFrictionEquations = np.frictionEquations.length - numFrictionBefore
 

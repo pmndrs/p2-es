@@ -2,13 +2,13 @@ import { Equation } from '../equations/Equation'
 import { Material } from './Material'
 
 export interface ContactMaterialOptions {
-    friction?: number | undefined
-    restitution?: number | undefined
-    stiffness?: number | undefined
-    relaxation?: number | undefined
-    frictionStiffness?: number | undefined
-    frictionRelaxation?: number | undefined
-    surfaceVelocity?: number | undefined
+    friction?: number
+    restitution?: number
+    stiffness?: number
+    relaxation?: number
+    frictionStiffness?: number
+    frictionRelaxation?: number
+    surfaceVelocity?: number
 }
 
 /**

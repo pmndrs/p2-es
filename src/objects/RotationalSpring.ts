@@ -3,7 +3,7 @@ import type { SpringOptions } from './Spring'
 import { Spring } from './Spring'
 
 export interface RotationalSpringOptions extends SpringOptions {
-    restAngle?: number | undefined
+    restAngle?: number
 }
 
 /**

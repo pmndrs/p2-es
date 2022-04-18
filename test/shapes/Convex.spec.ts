@@ -1,4 +1,6 @@
 import { AABB } from '../../src/collision/AABB'
+import { Ray } from '../../src/collision/Ray'
+import { RaycastResult } from '../../src/collision/RaycastResult'
 // import { Ray } from '../../src/collision/Ray'
 // import { RaycastResult } from '../../src/collision/RaycastResult'
 import * as vec2 from '../../src/math/vec2'
@@ -160,26 +162,24 @@ describe('Shape: Convex', () => {
     })
 
     test('raycast', () => {
-        // todo
+        const ray = new Ray({
+            mode: Ray.CLOSEST,
+            from: [0, 0],
+            to: [10, 0],
+        })
 
-        // const ray = new Ray({
-        //     mode: Ray.CLOSEST,
-        //     from: [0, 0],
-        //     to: [10, 0],
-        // })
-
-        // const w = 1,
-        //     h = 1
-        // const shape = new Convex({
-        //     vertices: [
-        //         [-w / 2, -h / 2],
-        //         [w / 2, -h / 2],
-        //         [w / 2, h / 2],
-        //         [-w / 2, h / 2],
-        //     ],
-        // })
-        // const result = new RaycastResult()
-        // shape.raycast(result, ray, [1, 0], Math.PI / 2)
+        const w = 1,
+            h = 1
+        const shape = new Convex({
+            vertices: [
+                [-w / 2, -h / 2],
+                [w / 2, -h / 2],
+                [w / 2, h / 2],
+                [-w / 2, h / 2],
+            ],
+        })
+        const result = new RaycastResult()
+        shape.raycast(result, ray, [1, 0], Math.PI / 2)
     })
 
     test('updateNormals', () => {

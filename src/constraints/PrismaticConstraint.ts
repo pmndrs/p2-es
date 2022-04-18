@@ -185,7 +185,7 @@ export class PrismaticConstraint extends Constraint {
 
         // Rotational part
         if (!options.disableRotationalLock) {
-            const rot = new RotationalLockEquation(bodyA, bodyB) // todo - was `-maxForce,maxForce`
+            const rot = new RotationalLockEquation(bodyA, bodyB)
             this.equations.push(rot)
         }
 
@@ -208,7 +208,7 @@ export class PrismaticConstraint extends Constraint {
         this.upperLimitEquation.minForce = this.lowerLimitEquation.minForce = 0
         this.upperLimitEquation.maxForce = this.lowerLimitEquation.maxForce = maxForce
 
-        this.motorEquation = new Equation(bodyA, bodyB, 0, 0) // todo - min, max was not given
+        this.motorEquation = new Equation(bodyA, bodyB, 0, 0)
         this.motorEnabled = false
         this.motorSpeed = 0
 

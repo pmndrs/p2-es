@@ -25,12 +25,12 @@ const intersectBody_worldPosition = vec2.create()
 export interface RayOptions {
     from?: Vec2
     to?: Vec2
-    checkCollisionResponse?: boolean | undefined
-    skipBackfaces?: boolean | undefined
-    collisionMask?: number | undefined
-    collisionGroup?: number | undefined
-    mode?: typeof Ray.CLOSEST | typeof Ray.ANY | typeof Ray.ALL | undefined
-    callback?: ((result: RaycastResult) => void) | undefined
+    checkCollisionResponse?: boolean
+    skipBackfaces?: boolean
+    collisionMask?: number
+    collisionGroup?: number
+    mode?: typeof Ray.CLOSEST | typeof Ray.ANY | typeof Ray.ALL
+    callback?: ((result: RaycastResult) => void)
 }
 
 /**

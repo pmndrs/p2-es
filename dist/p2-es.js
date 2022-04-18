@@ -614,11 +614,11 @@ const tmp$2 = create();
 
 class AABB {
   /**
-   * The lower bound of the bounding box.
+   * The upper bound of the bounding box.
    */
 
   /**
-   * The upper bound of the bounding box.
+   * The lower bound of the bounding box.
    */
   constructor(options) {
     options = options || {};
@@ -3537,6 +3537,14 @@ class Broadphase {
    */
 
   /**
+   * Naive Broadphase
+   */
+
+  /**
+   * SAP Broadphase
+   */
+
+  /**
    * Check whether the bounding radius of two bodies overlap.
    * @param bodyA
    * @param bodyB
@@ -4317,46 +4325,32 @@ class ContactEquationPool extends Pool {
 class FrictionEquation extends Equation {
   /**
    * Relative vector from center of body A to the contact point, world oriented.
-   * @property contactPointA
-   * @type {Array}
    */
 
   /**
    * Relative vector from center of body B to the contact point, world oriented.
-   * @property contactPointB
-   * @type {Array}
    */
 
   /**
    * Tangent vector that the friction force will act along. World oriented.
-   * @property t
-   * @type {Array}
    */
 
   /**
    * ContactEquations connected to this friction equation. The contact equations can be used to rescale the max force for the friction. If more than one contact equation is given, then the max force can be set to the average.
-   * @property contactEquations
-   * @type {ContactEquation}
    */
 
   /**
    * The shape in body i that triggered this friction.
-   * @property shapeA
-   * @type {Shape}
    * @todo Needed? The shape can be looked up via contactEquation.shapeA...
    */
 
   /**
    * The shape in body j that triggered this friction.
-   * @property shapeB
-   * @type {Shape}
    * @todo Needed? The shape can be looked up via contactEquation.shapeB...
    */
 
   /**
    * The friction coefficient to use.
-   * @property frictionCoefficient
-   * @type {Number}
    */
   constructor(bodyA, bodyB, slipForce) {
     super(bodyA, bodyB, -slipForce, slipForce);
@@ -4369,8 +4363,7 @@ class FrictionEquation extends Equation {
     this.frictionCoefficient = 0.3;
   }
   /**
-   * Set the slipping condition for the constraint. The friction force cannot be
-   * larger than this value.
+   * Set the slipping condition for the constraint. The friction force cannot be larger than this value.
    * @param slipForce
    */
 
@@ -4381,8 +4374,6 @@ class FrictionEquation extends Equation {
   }
   /**
    * Get the max force for the constraint.
-   * @method getSlipForce
-   * @return {Number}
    */
 
 
@@ -4824,7 +4815,7 @@ class Narrowphase {
       return _this.circleLine(particleBody, particleShape, particlePosition, particleAngle, capsuleBody, capsuleShape, capsulePosition, capsuleAngle, justTest, capsuleShape.radius, 0);
     };
 
-    this.circleLine = function (circleBody, circleShape, circleOffset, circleAngle, lineBody, lineShape, lineOffset, lineAngle, justTest, lineRadius, circleRadius) {
+    this.circleLine = function (circleBody, circleShape, circleOffset, _circleAngle, lineBody, lineShape, lineOffset, lineAngle, justTest, lineRadius, circleRadius) {
       if (justTest === void 0) {
         justTest = false;
       }
@@ -4957,7 +4948,7 @@ class Narrowphase {
       return _this.circleLine(bi, si, xi, ai, bj, sj, xj, aj, justTest, si.radius, sj.radius);
     };
 
-    this.circleConvex = function (circleBody, circleShape, circleOffset, circleAngle, convexBody, convexShape, convexOffset, convexAngle, justTest, circleRadius) {
+    this.circleConvex = function (circleBody, circleShape, circleOffset, _circleAngle, convexBody, convexShape, convexOffset, convexAngle, justTest, circleRadius) {
       if (justTest === void 0) {
         justTest = false;
       }
@@ -5106,7 +5097,7 @@ class Narrowphase {
       return 0;
     };
 
-    this.particleConvex = function (particleBody, particleShape, particleOffset, particleAngle, convexBody, convexShape, convexOffset, convexAngle, justTest) {
+    this.particleConvex = function (particleBody, particleShape, particleOffset, _particleAngle, convexBody, convexShape, convexOffset, convexAngle, justTest) {
       if (justTest === void 0) {
         justTest = false;
       }
@@ -5189,7 +5180,7 @@ class Narrowphase {
       return 0;
     };
 
-    this.circleCircle = function (bodyA, shapeA, offsetA, angleA, bodyB, shapeB, offsetB, angleB, justTest, radiusA, radiusB) {
+    this.circleCircle = function (bodyA, shapeA, offsetA, _angleA, bodyB, shapeB, offsetB, _angleB, justTest, radiusA, radiusB) {
       if (justTest === void 0) {
         justTest = false;
       }
@@ -5292,7 +5283,7 @@ class Narrowphase {
       return numReported;
     };
 
-    this.particlePlane = function (particleBody, particleShape, particleOffset, particleAngle, planeBody, planeShape, planeOffset, planeAngle, justTest) {
+    this.particlePlane = function (particleBody, particleShape, particleOffset, _particleAngle, planeBody, planeShape, planeOffset, planeAngle, justTest) {
       if (justTest === void 0) {
         justTest = false;
       }
@@ -5332,7 +5323,7 @@ class Narrowphase {
       return 1;
     };
 
-    this.circleParticle = function (circleBody, circleShape, circleOffset, circleAngle, particleBody, particleShape, particleOffset, particleAngle, justTest) {
+    this.circleParticle = function (circleBody, circleShape, circleOffset, _circleAngle, particleBody, particleShape, particleOffset, _particleAngle, justTest) {
       if (justTest === void 0) {
         justTest = false;
       }
@@ -5419,7 +5410,7 @@ class Narrowphase {
       }
     };
 
-    this.circlePlane = function (circleBody, circleShape, circleOffset, circleAngle, planeBody, planeShape, planeOffset, planeAngle, justTest) {
+    this.circlePlane = function (circleBody, circleShape, circleOffset, _circleAngle, planeBody, planeShape, planeOffset, planeAngle, justTest) {
       if (justTest === void 0) {
         justTest = false;
       }
@@ -5614,7 +5605,7 @@ class Narrowphase {
       return pointCount;
     };
 
-    this.circleHeightfield = function (circleBody, circleShape, circlePos, circleAngle, hfBody, hfShape, hfPos, hfAngle, justTest, radius) {
+    this.circleHeightfield = function (circleBody, circleShape, circlePos, _circleAngle, hfBody, hfShape, hfPos, _fAngle, justTest, radius) {
       if (justTest === void 0) {
         justTest = false;
       }
@@ -5768,7 +5759,7 @@ class Narrowphase {
       return 0;
     };
 
-    this.convexHeightfield = function (convexBody, convexShape, convexPos, convexAngle, hfBody, hfShape, hfPos, hfAngle, justTest) {
+    this.convexHeightfield = function (convexBody, convexShape, convexPos, convexAngle, hfBody, hfShape, hfPos, _hfAngle, justTest) {
       if (justTest === void 0) {
         justTest = false;
       }
@@ -5895,7 +5886,6 @@ class Narrowphase {
         const shapeB = bodyB.shapes[l]; // Check collision groups and masks
 
         if (checkCollisionMasks && !((shapeA.collisionGroup & shapeB.collisionMask) !== 0 && (shapeB.collisionGroup & shapeA.collisionMask) !== 0)) {
-          // todo - was undefined, check
           return false;
         }
 
@@ -5903,8 +5893,7 @@ class Narrowphase {
         bodyB.toWorldFrame(shapePositionB, shapeB.position);
 
         if (shapeA.type <= shapeB.type) {
-          if (this.narrowphases[shapeA.type | shapeB.type](bodyA, // @ts-expect-error todo
-          shapeA, shapePositionA, shapeA.angle + bodyA.angle, bodyB, shapeB, shapePositionB, shapeB.angle + bodyB.angle, true)) {
+          if (this.narrowphases[shapeA.type | shapeB.type](bodyA, shapeA, shapePositionA, shapeA.angle + bodyA.angle, bodyB, shapeB, shapePositionB, shapeB.angle + bodyB.angle, true)) {
             return true;
           }
         } else {
@@ -8185,6 +8174,10 @@ const relativePoint = create();
 const tmpVec = create();
 
 /**
+ * Options for creating a {@link Capsule}
+ */
+
+/**
  * Capsule shape.
  *
  * @example
@@ -10326,10 +10319,8 @@ function runNarrowphase(world, np, bi, si, xi, ai, bj, sj, xj, aj, cm, glen) {
     const numFrictionBefore = np.frictionEquations.length;
 
     if (si.type < sj.type) {
-      // @ts-expect-error todo
       numContacts = resolver.call(np, bi, si, xiw, aiw, bj, sj, xjw, ajw, sensor);
     } else {
-      // @ts-expect-error todo
       numContacts = resolver.call(np, bj, sj, xjw, ajw, bi, si, xiw, aiw, sensor);
     }
 

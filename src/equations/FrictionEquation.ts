@@ -11,52 +11,38 @@ import { Equation } from './Equation'
 export class FrictionEquation extends Equation {
     /**
      * Relative vector from center of body A to the contact point, world oriented.
-     * @property contactPointA
-     * @type {Array}
      */
     contactPointA: Vec2
 
     /**
      * Relative vector from center of body B to the contact point, world oriented.
-     * @property contactPointB
-     * @type {Array}
      */
     contactPointB: Vec2
 
     /**
      * Tangent vector that the friction force will act along. World oriented.
-     * @property t
-     * @type {Array}
      */
     t: Vec2
 
     /**
      * ContactEquations connected to this friction equation. The contact equations can be used to rescale the max force for the friction. If more than one contact equation is given, then the max force can be set to the average.
-     * @property contactEquations
-     * @type {ContactEquation}
      */
     contactEquations: ContactEquation[]
 
     /**
      * The shape in body i that triggered this friction.
-     * @property shapeA
-     * @type {Shape}
      * @todo Needed? The shape can be looked up via contactEquation.shapeA...
      */
     shapeA: Shape | null
 
     /**
      * The shape in body j that triggered this friction.
-     * @property shapeB
-     * @type {Shape}
      * @todo Needed? The shape can be looked up via contactEquation.shapeB...
      */
     shapeB: Shape | null
 
     /**
      * The friction coefficient to use.
-     * @property frictionCoefficient
-     * @type {Number}
      */
     frictionCoefficient: number
 
@@ -72,8 +58,7 @@ export class FrictionEquation extends Equation {
     }
 
     /**
-     * Set the slipping condition for the constraint. The friction force cannot be
-     * larger than this value.
+     * Set the slipping condition for the constraint. The friction force cannot be larger than this value.
      * @param slipForce
      */
     setSlipForce(slipForce: number): void {
@@ -83,8 +68,6 @@ export class FrictionEquation extends Equation {
 
     /**
      * Get the max force for the constraint.
-     * @method getSlipForce
-     * @return {Number}
      */
     getSlipForce(): number {
         return this.maxForce

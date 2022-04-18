@@ -115,7 +115,6 @@ export class Narrowphase {
                         (shapeB.collisionGroup & shapeA.collisionMask) !== 0
                     )
                 ) {
-                    // todo - was undefined, check
                     return false
                 }
 
@@ -126,12 +125,11 @@ export class Narrowphase {
                     if (
                         this.narrowphases[shapeA.type | shapeB.type](
                             bodyA,
-                            // @ts-expect-error todo
-                            shapeA,
+                            shapeA as never,
                             shapePositionA,
                             shapeA.angle + bodyA.angle,
                             bodyB,
-                            shapeB,
+                            shapeB as never,
                             shapePositionB,
                             shapeB.angle + bodyB.angle,
                             true
@@ -353,13 +351,11 @@ export class Narrowphase {
         _boxAngle: number,
         _justTest = false
     ): number => {
-        // TODO
         return 0
     }
 
     /**
      * Convex/Capsule Narrowphase.
-     * @todo
      * @param convexBody
      * @param convexShape
      * @param convexPosition
@@ -390,7 +386,7 @@ export class Narrowphase {
         vec2.toGlobalFrame(circlePos, circlePos, capsulePosition, capsuleAngle)
         const result1 = this.circleConvex(
             capsuleBody,
-            capsuleShape, // todo
+            capsuleShape,
             circlePos,
             capsuleAngle,
             convexBody,
@@ -405,7 +401,7 @@ export class Narrowphase {
         vec2.toGlobalFrame(circlePos, circlePos, capsulePosition, capsuleAngle)
         const result2 = this.circleConvex(
             capsuleBody,
-            capsuleShape, // todo
+            capsuleShape,
             circlePos,
             capsuleAngle,
             convexBody,
@@ -463,7 +459,6 @@ export class Narrowphase {
         _capsuleAngle: number,
         _justTest = false
     ): number => {
-        // TODO
         return 0
     }
 
@@ -491,7 +486,6 @@ export class Narrowphase {
         aj: number,
         justTest = false
     ): number => {
-        // todo - was undefined
         let enableFrictionBefore = true
 
         // Check the circles
@@ -613,8 +607,7 @@ export class Narrowphase {
         _positionB: Vec2,
         _angleB: number,
         _justTest = false
-    ): number | boolean => {
-        // TODO
+    ): number => {
         return 0
     }
 
@@ -788,7 +781,7 @@ export class Narrowphase {
         circleBody: Body,
         circleShape: Circle,
         circleOffset: Vec2,
-        circleAngle: number,
+        _circleAngle: number,
         lineBody: Body,
         lineShape: Line,
         lineOffset: Vec2,
@@ -979,7 +972,7 @@ export class Narrowphase {
         circleBody: Body,
         circleShape: Circle | Capsule,
         circleOffset: Vec2,
-        circleAngle: number,
+        _circleAngle: number,
         convexBody: Body,
         convexShape: Convex,
         convexOffset: Vec2,
@@ -1165,7 +1158,7 @@ export class Narrowphase {
         particleBody: Body,
         particleShape: Particle,
         particleOffset: Vec2,
-        particleAngle: number,
+        _particleAngle: number,
         convexBody: Body,
         convexShape: Convex,
         convexOffset: Vec2,
@@ -1278,11 +1271,11 @@ export class Narrowphase {
         bodyA: Body,
         shapeA: Circle | Capsule,
         offsetA: Vec2,
-        angleA: number,
+        _angleA: number,
         bodyB: Body,
         shapeB: Circle | Capsule,
         offsetB: Vec2,
-        angleB: number,
+        _angleB: number,
         justTest = false,
         radiusA?: number,
         radiusB?: number
@@ -1432,7 +1425,7 @@ export class Narrowphase {
         particleBody: Body,
         particleShape: Particle,
         particleOffset: Vec2,
-        particleAngle: number,
+        _particleAngle: number,
         planeBody: Body,
         planeShape: Plane,
         planeOffset: Vec2,
@@ -1481,11 +1474,11 @@ export class Narrowphase {
         circleBody: Body,
         circleShape: Circle,
         circleOffset: Vec2,
-        circleAngle: number,
+        _circleAngle: number,
         particleBody: Body,
         particleShape: Particle,
         particleOffset: Vec2,
-        particleAngle: number,
+        _particleAngle: number,
         justTest = false
     ): number => {
         const dist = tmp1
@@ -1561,7 +1554,6 @@ export class Narrowphase {
 
         circle.radius = capsuleShape.radius
 
-        // todo - was undefined
         let enableFrictionBefore = true
 
         // Temporarily turn off friction
@@ -1629,7 +1621,7 @@ export class Narrowphase {
         circleBody: Body,
         circleShape: Circle,
         circleOffset: Vec2,
-        circleAngle: number,
+        _circleAngle: number,
         planeBody: Body,
         planeShape: Plane,
         planeOffset: Vec2,
@@ -1689,7 +1681,9 @@ export class Narrowphase {
 
     /**
      * Convex/Convex Narrowphase.
-     * Convex/convex Narrowphase.See <a href="http://www.altdevblogaday.com/2011/05/13/contact-generation-between-3d-convex-meshes/">this article</a> for more info.
+     * 
+     * @see http://www.altdevblogaday.com/2011/05/13/contact-generation-between-3d-convex-meshes/
+     * 
      * @param bodyA
      * @param polyA
      * @param positionA
@@ -1878,11 +1872,11 @@ export class Narrowphase {
         circleBody: Body,
         circleShape: Circle,
         circlePos: Vec2,
-        circleAngle: number,
+        _circleAngle: number,
         hfBody: Body,
         hfShape: Heightfield,
         hfPos: Vec2,
-        hfAngle: number,
+        _fAngle: number,
         justTest = false,
         radius?: number
     ): number => {
@@ -2065,7 +2059,7 @@ export class Narrowphase {
         hfBody: Body,
         hfShape: Heightfield,
         hfPos: Vec2,
-        hfAngle: number,
+        _hfAngle: number,
         justTest = false
     ): number => {
         const data = hfShape.heights,

@@ -12,27 +12,27 @@ import type { Vec2 } from '../types'
 import type { World } from '../world/World'
 
 export interface BodyOptions {
-    type?: typeof Body.DYNAMIC | typeof Body.STATIC | typeof Body.KINEMATIC | undefined
-    force?: Vec2 | undefined
-    position?: Vec2 | undefined
-    velocity?: Vec2 | undefined
-    allowSleep?: boolean | undefined
-    collisionResponse?: boolean | undefined
-    angle?: number | undefined
-    angularDamping?: number | undefined
-    angularForce?: number | undefined
-    angularVelocity?: number | undefined
-    ccdIterations?: number | undefined
-    ccdSpeedThreshold?: number | undefined
-    damping?: number | undefined
-    fixedRotation?: boolean | undefined
-    gravityScale?: number | undefined
-    id?: number | undefined
-    mass?: number | undefined
-    sleepSpeedLimit?: number | undefined
-    sleepTimeLimit?: number | undefined
-    fixedX?: boolean | undefined
-    fixedY?: boolean | undefined
+    type?: typeof Body.DYNAMIC | typeof Body.STATIC | typeof Body.KINEMATIC
+    force?: Vec2
+    position?: Vec2
+    velocity?: Vec2
+    allowSleep?: boolean
+    collisionResponse?: boolean
+    angle?: number
+    angularDamping?: number
+    angularForce?: number
+    angularVelocity?: number
+    ccdIterations?: number
+    ccdSpeedThreshold?: number
+    damping?: number
+    fixedRotation?: boolean
+    gravityScale?: number
+    id?: number
+    mass?: number
+    sleepSpeedLimit?: number
+    sleepTimeLimit?: number
+    fixedX?: boolean
+    fixedY?: boolean
 }
 
 export type SleepyEvent = {
@@ -891,9 +891,9 @@ export class Body extends EventEmitter<BodyEventMap> {
     fromPolygon(
         path: Vec2[],
         options?: {
-            optimalDecomp?: boolean | undefined
-            skipSimpleCheck?: boolean | undefined
-            removeCollinearPoints?: boolean | number | undefined
+            optimalDecomp?: boolean
+            skipSimpleCheck?: boolean
+            removeCollinearPoints?: boolean | number
         }
     ): boolean {
         options = options || {}
