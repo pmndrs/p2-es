@@ -15,7 +15,7 @@ export interface ContactMaterialOptions {
  * Defines what happens when two materials meet, such as what friction coefficient to use.
  * You can also set other things such as restitution, surface velocity and constraint parameters.
  *
- * Also see {{#crossLink "Material"}}{{/crossLink}}.
+ * Also see {@link Material}
  *
  * @example
  *     var ice = new Material();
@@ -56,24 +56,25 @@ export class ContactMaterial {
 
     /**
      * Hardness of the contact. Less stiffness will make the objects penetrate more, and will make the contact act more like a spring than a contact force.
-     * Default value is {{#crossLink "Equation/DEFAULT_STIFFNESS:property"}}Equation.DEFAULT_STIFFNESS{{/crossLink}}.
+     * Default value is {@link Equation.DEFAULT_STIFFNESS}
      */
     stiffness: number
 
     /**
      * Relaxation of the resulting ContactEquation that this ContactMaterial generate.
-     * Default value is {{#crossLink "Equation/DEFAULT_RELAXATION:property"}}Equation.DEFAULT_RELAXATION{{/crossLink}}.
+     * Default value is {@link Equation.DEFAULT_RELAXATION}
      */
     relaxation: number
 
     /**
      * Stiffness of the resulting friction force. For most cases, the value of this property should be a large number. I cannot think of any case where you would want less frictionStiffness.
-     * Default value is {{#crossLink "Equation/DEFAULT_STIFFNESS:property"}}Equation.DEFAULT_STIFFNESS{{/crossLink}}.
+     * Default value is {@link Equation.DEFAULT_STIFFNESS}
      */
     frictionStiffness: number
 
     /**
-     * Relaxation of the resulting friction force. The default value should be good for most simulations. Default value is {{#crossLink "Equation/DEFAULT_RELAXATION:property"}}Equation.DEFAULT_RELAXATION{{/crossLink}}.
+     * Relaxation of the resulting friction force. The default value should be good for most simulations.
+     * Default value is {@link Equation.DEFAULT_RELAXATION}
      */
     frictionRelaxation: number
 

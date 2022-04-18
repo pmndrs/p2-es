@@ -604,6 +604,7 @@ var vec2 = /*#__PURE__*/Object.freeze({
 const tmp$2 = create();
 /**
  * Axis aligned bounding box class
+ *
  * @example
  *     var aabb = new AABB({
  *         upperBound: [1, 1],
@@ -612,21 +613,16 @@ const tmp$2 = create();
  */
 
 class AABB {
+  /**
+   * The lower bound of the bounding box.
+   */
+
+  /**
+   * The upper bound of the bounding box.
+   */
   constructor(options) {
     options = options || {};
-    /**
-     * The lower bound of the bounding box.
-     * @property lowerBound
-     * @type {Array}
-     */
-
     this.lowerBound = options.lowerBound ? clone(options.lowerBound) : create();
-    /**
-     * The upper bound of the bounding box.
-     * @property upperBound
-     * @type {Array}
-     */
-
     this.upperBound = options.upperBound ? clone(options.upperBound) : create();
   }
   /**
@@ -1512,7 +1508,8 @@ function distanceFromIntersectionSquared(from, direction, position) {
 const intersectBody_worldPosition = create();
 
 /**
- * A line with a start and end point that is used to intersect shapes. For an example, see {{#crossLink "World/raycast:method"}}World.raycast{{/crossLink}}
+ * A line with a start and end point that is used to intersect shapes.
+ * @see {@link World.raycast} for example usage
  */
 class Ray {
   /**
@@ -3233,7 +3230,7 @@ class Body extends EventEmitter {
   }
   /**
    * Wake the body up. Normally you should not need this, as the body is automatically awoken at events such as collisions.
-   * Sets the sleepState to {{#crossLink "Body/AWAKE:property"}}Body.AWAKE{{/crossLink}} and emits the wakeUp event if the body wasn't awake before.
+   * Sets the sleepState to {@link Body.AWAKE} and emits the wakeUp event if the body wasn't awake before.
    * @method wakeUp
    */
 
@@ -3714,7 +3711,7 @@ class NaiveBroadphase extends Broadphase {
 }
 
 /**
- * (Note that this options object will be passed on to the {{#crossLink "Shape"}}{{/crossLink}} constructor.)
+ * (Note that this options object will be passed on to the {@link Shape} constructor.)
  */
 
 /**
@@ -3817,7 +3814,7 @@ class Box extends Convex {
 }
 
 /**
- * (Note that this options object will be passed on to the {{#crossLink "Shape"}}{{/crossLink}} constructor.)
+ * (Note that this options object will be passed on to the {@link Shape} constructor.)
  */
 
 /**
@@ -7087,7 +7084,10 @@ class RotationalLockEquation extends Equation {
 
 /**
  * Constraint that only allows bodies to move along a line, relative to each other.
- * See <a href="http://www.iforce2d.net/b2dtut/joints-prismatic">this tutorial</a>. Also called "slider constraint".
+ * 
+ * Also called "slider constraint".
+ * 
+ * @see http://www.iforce2d.net/b2dtut/joints-prismatic
  *
  * @todo Ability to create using only a point and a worldAxis
  *
@@ -7678,7 +7678,7 @@ const worldPivotA = create(),
 /**
  * Defines a physics material.
  *
- * To be used with {{#crossLink "ContactMaterial"}}{{/crossLink}}.
+ * To be used with {@link ContactMaterial}.
  *
  * @example
  *     // Create a wooden box
@@ -7703,7 +7703,7 @@ Material.idCounter = 0;
  * Defines what happens when two materials meet, such as what friction coefficient to use.
  * You can also set other things such as restitution, surface velocity and constraint parameters.
  *
- * Also see {{#crossLink "Material"}}{{/crossLink}}.
+ * Also see {@link Material}
  *
  * @example
  *     var ice = new Material();
@@ -7739,21 +7739,22 @@ class ContactMaterial {
 
   /**
    * Hardness of the contact. Less stiffness will make the objects penetrate more, and will make the contact act more like a spring than a contact force.
-   * Default value is {{#crossLink "Equation/DEFAULT_STIFFNESS:property"}}Equation.DEFAULT_STIFFNESS{{/crossLink}}.
+   * Default value is {@link Equation.DEFAULT_STIFFNESS}
    */
 
   /**
    * Relaxation of the resulting ContactEquation that this ContactMaterial generate.
-   * Default value is {{#crossLink "Equation/DEFAULT_RELAXATION:property"}}Equation.DEFAULT_RELAXATION{{/crossLink}}.
+   * Default value is {@link Equation.DEFAULT_RELAXATION}
    */
 
   /**
    * Stiffness of the resulting friction force. For most cases, the value of this property should be a large number. I cannot think of any case where you would want less frictionStiffness.
-   * Default value is {{#crossLink "Equation/DEFAULT_STIFFNESS:property"}}Equation.DEFAULT_STIFFNESS{{/crossLink}}.
+   * Default value is {@link Equation.DEFAULT_STIFFNESS}
    */
 
   /**
-   * Relaxation of the resulting friction force. The default value should be good for most simulations. Default value is {{#crossLink "Equation/DEFAULT_RELAXATION:property"}}Equation.DEFAULT_RELAXATION{{/crossLink}}.
+   * Relaxation of the resulting friction force. The default value should be good for most simulations.
+   * Default value is {@link Equation.DEFAULT_RELAXATION}
    */
 
   /**
@@ -7787,7 +7788,7 @@ class ContactMaterial {
 ContactMaterial.idCounter = 0;
 
 /**
- * Base class for {{#crossLink "LinearSpring"}}{{/crossLink}} and {{#crossLink "RotationalSpring"}}{{/crossLink}}. Not supposed to be used directly.
+ * Base class for {@link LinearSpring} and {@link RotationalSpring}. Not supposed to be used directly.
  */
 class Spring {
   /**
@@ -7980,7 +7981,7 @@ class LinearSpring extends Spring {
 /**
  * A rotational spring, connecting two bodies rotation. This spring explicitly adds angularForce (torque) to the bodies.
  *
- * The spring can be combined with a {{#crossLink "RevoluteConstraint"}}{{/crossLink}} to make, for example, a mouse trap.
+ * The spring can be combined with a {@link RevoluteConstraint} to make, for example, a mouse trap.
  *
  * @example
  *     var spring = new RotationalSpring(bodyA, bodyB, {
@@ -9310,11 +9311,11 @@ class World extends EventEmitter {
    */
 
   /**
-   * All springs in the world. To add a spring to the world, use {{#crossLink "World/addSpring:method"}}{{/crossLink}}.
+   * All springs in the world. To add a spring to the world, use {@link World.addSpring}.
    */
 
   /**
-   * All bodies in the world. To add a body to the world, use {{#crossLink "World/addBody:method"}}{{/crossLink}}.
+   * All bodies in the world. To add a body to the world, use {@link World.addBody}.
    */
 
   /**
@@ -9368,8 +9369,9 @@ class World extends EventEmitter {
    */
 
   /**
-   * How to deactivate bodies during simulation. Possible modes are: {{#crossLink "World/NO_SLEEPING:property"}}World.NO_SLEEPING{{/crossLink}}, {{#crossLink "World/BODY_SLEEPING:property"}}World.BODY_SLEEPING{{/crossLink}} and {{#crossLink "World/ISLAND_SLEEPING:property"}}World.ISLAND_SLEEPING{{/crossLink}}.
-   * If sleeping is enabled, you might need to {{#crossLink "Body/wakeUp:method"}}wake up{{/crossLink}} the bodies if they fall asleep when they shouldn't. If you want to enable sleeping in the world, but want to disable it for a particular body, see {{#crossLink "Body/allowSleep:property"}}Body.allowSleep{{/crossLink}}.
+   * How to deactivate bodies during simulation. Possible modes are: {@link World,NO_SLEEPING}, {@link World.BODY_SLEEPING} and {@link World.ISLAND_SLEEPING}.
+   * If sleeping is enabled, you might need to {@link Body.wakeUp} the bodies if they fall asleep when they shouldn't.
+   * If you want to enable sleeping in the world, but want to disable it for a particular body, see {@link Body.allowSleep}.
    * @default World.NO_SLEEPING
    */
 
@@ -9378,7 +9380,7 @@ class World extends EventEmitter {
    */
 
   /**
-   * Disabled body collision pairs. See {{#crossLink "World/disableBodyCollision:method"}}.
+   * Disabled body collision pairs. See {@link World.disableBodyCollision}.
    */
 
   /**

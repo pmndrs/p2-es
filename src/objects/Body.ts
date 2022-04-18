@@ -152,7 +152,7 @@ export class Body extends EventEmitter<BodyEventMap> {
     shapes: Shape[]
 
     /**
-     * The mass of the body. If you change this number, you should call {{#crossLink "Body/updateMassProperties:method"}}{{/crossLink}}.
+     * The mass of the body. If you change this number, you should call {@link Body.updateMassProperties}.
      *
      * @example
      *     body.mass = 1;
@@ -280,7 +280,7 @@ export class Body extends EventEmitter<BodyEventMap> {
     angularVelocity: number
 
     /**
-     * The force acting on the body. Since the body force (and {{#crossLink "Body/angularForce:property"}}{{/crossLink}}) will be zeroed after each step, so you need to set the force before each step.
+     * The force acting on the body. Since the body force (and {@link Body.angularForce}) will be zeroed after each step, so you need to set the force before each step.
      *
      * @example
      *     // This produces a forcefield of 1 Newton in the positive x direction.
@@ -299,7 +299,7 @@ export class Body extends EventEmitter<BodyEventMap> {
     force: Vec2
 
     /**
-     * The angular force acting on the body. See {{#crossLink "Body/force:property"}}{{/crossLink}}.
+     * The angular force acting on the body. See {@link Body.force}.
      * @property angularForce
      */
     angularForce: number
@@ -317,7 +317,7 @@ export class Body extends EventEmitter<BodyEventMap> {
     angularDamping: number
 
     /**
-     * The type of motion this body has. Should be one of: {{#crossLink "Body/STATIC:property"}}Body.STATIC{{/crossLink}}, {{#crossLink "Body/DYNAMIC:property"}}Body.DYNAMIC{{/crossLink}} and {{#crossLink "Body/KINEMATIC:property"}}Body.KINEMATIC{{/crossLink}}.
+     * The type of motion this body has. Should be one of: {@link Body.STATIC}, {@link Body.DYNAMIC} and {@link Body.KINEMATIC}.
      *
      * * Static bodies do not move, and they do not respond to forces or collision.
      * * Dynamic bodies body can move and respond to collisions and forces.
@@ -345,18 +345,18 @@ export class Body extends EventEmitter<BodyEventMap> {
     type: typeof Body.DYNAMIC | typeof Body.STATIC | typeof Body.KINEMATIC
 
     /**
-     * Bounding circle radius. Update with {{#crossLink "Body/updateBoundingRadius:method"}}{{/crossLink}}.
+     * Bounding circle radius. Update with {@link Body.updateBoundingRadius}.
      * @readonly
      */
     boundingRadius: number
 
     /**
-     * Bounding box of this body. Update with {{#crossLink "Body/updateAABB:method"}}{{/crossLink}}.
+     * Bounding box of this body. Update with {@link Body.updateAABB}.
      */
     aabb: AABB
 
     /**
-     * Indicates if the AABB needs update. Update it with {{#crossLink "Body/updateAABB:method"}}{{/crossLink}}.
+     * Indicates if the AABB needs update. Update it with {@link "Body.updateAABB"}.
      *
      * @example
      *     // Force update the AABB
@@ -367,13 +367,13 @@ export class Body extends EventEmitter<BodyEventMap> {
     aabbNeedsUpdate: boolean
 
     /**
-     * If true, the body will automatically fall to sleep. Note that you need to enable sleeping in the {{#crossLink "World"}}{{/crossLink}} before anything will happen.
+     * If true, the body will automatically fall to sleep. Note that you need to enable sleeping in the {@link World} before anything will happen.
      * @default true
      */
     allowSleep: boolean
 
     /**
-     * One of {{#crossLink "Body/AWAKE:property"}}Body.AWAKE{{/crossLink}}, {{#crossLink "Body/SLEEPY:property"}}Body.SLEEPY{{/crossLink}} and {{#crossLink "Body/SLEEPING:property"}}Body.SLEEPING{{/crossLink}}.
+     * One of {@link Body.AWAKE}, {@link Body.SLEEPY} and {@link Body.SLEEPING}.
      *
      * The body is initially Body.AWAKE. If its velocity norm is below .sleepSpeedLimit, the sleepState will become Body.SLEEPY. If the body continues to be Body.SLEEPY for .sleepTimeLimit seconds, it will fall asleep (Body.SLEEPY).
      *
@@ -1044,7 +1044,7 @@ export class Body extends EventEmitter<BodyEventMap> {
 
     /**
      * Wake the body up. Normally you should not need this, as the body is automatically awoken at events such as collisions.
-     * Sets the sleepState to {{#crossLink "Body/AWAKE:property"}}Body.AWAKE{{/crossLink}} and emits the wakeUp event if the body wasn't awake before.
+     * Sets the sleepState to {@link Body.AWAKE} and emits the wakeUp event if the body wasn't awake before.
      * @method wakeUp
      */
     wakeUp(): void {

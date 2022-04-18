@@ -11,6 +11,7 @@ const tmp = vec2.create()
 
 /**
  * Axis aligned bounding box class
+ *
  * @example
  *     var aabb = new AABB({
  *         upperBound: [1, 1],
@@ -18,23 +19,19 @@ const tmp = vec2.create()
  *     });
  */
 export class AABB {
+    /**
+     * The lower bound of the bounding box.
+     */
     lowerBound: Vec2
+
+    /**
+     * The upper bound of the bounding box.
+     */
     upperBound: Vec2
     constructor(options?: AABBOptions) {
         options = options || {}
 
-        /**
-         * The lower bound of the bounding box.
-         * @property lowerBound
-         * @type {Array}
-         */
         this.lowerBound = options.lowerBound ? vec2.clone(options.lowerBound) : vec2.create()
-
-        /**
-         * The upper bound of the bounding box.
-         * @property upperBound
-         * @type {Array}
-         */
         this.upperBound = options.upperBound ? vec2.clone(options.upperBound) : vec2.create()
     }
 

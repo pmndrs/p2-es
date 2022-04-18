@@ -1,8 +1,4 @@
-# p2-es
-
-`ps-es` is a 2D rigid body physics engine written in JavaScript. Includes collision detection, contacts, friction, restitution, motors, springs, advanced constraints and various shape types.
-
-## Getting started
+`p2-es` is a 2D rigid body physics engine written in JavaScript. Includes collision detection, contacts, friction, restitution, motors, springs, advanced constraints and various shape types.
 
 **Usage with NPM**
 
@@ -10,66 +6,43 @@
 yarn add p2-es
 ```
 
-**Download**
+**CDN**
 
-You can also download the esm flatbundle directly and import it as a module - [`p2-es.js`](dist/p2-es.js)
+You can also import the esm flatbundle via unpkg
 
 ```html
 <script type="module">
-    import * as p2 from 'p2-es.js'
+    import * as p2 from 'https://www.unpkg.com/browse/p2-es@0.8.0/dist/p2-es.js';
 </script>
 ```
 
-If you would like to use ordinary `Array` instead of `Float32Array`, define `P2_ARRAY_TYPE` globally before loading the library.
+If you would like to use ordinary ```Array``` instead of ```Float32Array```, define ```P2_ARRAY_TYPE``` globally before loading the library.
 
 ```html
-<script type="text/javascript">
-    P2_ARRAY_TYPE = Array
-</script>
+<script type="text/javascript">P2_ARRAY_TYPE = Array;</script>
 <script type="module">
-    import * as p2 from 'p2-es.js'
+    import * as p2 from 'p2-es.js';
 </script>
 ```
 
 ## Contents
 
-- [p2-es](#p2-es)
-  - [Getting started](#getting-started)
-  - [Contents](#contents)
-  - [Core concepts](#core-concepts)
-  - [Hello p2-es!](#hello-p2-es)
-  - [Math](#math)
-  - [Collision](#collision)
-  - [Dynamics](#dynamics)
-  - [Shapes](#shapes)
-    - [Filtering shape collisions](#filtering-shape-collisions)
-  - [Bodies](#bodies)
-    - [Body types](#body-types)
-    - [Mass properties](#mass-properties)
-  - [Constraints](#constraints)
-    - [RevoluteConstraint](#revoluteconstraint)
-    - [DistanceConstraint](#distanceconstraint)
-    - [GearConstraint](#gearconstraint)
-    - [HingeConstraint](#hingeconstraint)
-    - [PrismaticConstraint](#prismaticconstraint)
-  - [Equations](#equations)
-  - [Events](#events)
-    - [postStep](#poststep)
-    - [Events fired during step](#events-fired-during-step)
-  - [Materials](#materials)
-  - [World](#world)
-    - [Gravity](#gravity)
-    - [Stepping the world](#stepping-the-world)
-    - [fixedTimeStep size](#fixedtimestep-size)
-    - [Interpolation](#interpolation)
-    - [Example](#example)
-  - [Solvers](#solvers)
-    - [GSSolver](#gssolver)
-    - [Island solving](#island-solving)
-    - [Solver parameters](#solver-parameters)
-  - [The Demo framework](#the-demo-framework)
-  - [Limitations](#limitations)
-  - [References](#references)
+- [Core concepts](#core-concepts)
+- [Hello p2-es!](#hello-p2-es)
+- [Math](#math)
+- [Collision](#collision)
+- [Dynamics](#dynamics)
+- [Shapes](#shapes)
+- [Bodies](#bodies)
+- [Constraints](#constraints)
+- [Equations](#equations)
+- [Events](#events)
+- [Materials](#materials)
+- [World](#world)
+- [Solvers](#solvers)
+- [The Demo framework](#the-demo-framework)
+- [Limitations](#limitations)
+- [References](#references)
 
 Welcome to the p2-es manual. This manual is supposed to cover the things that the automatically generated documentation don't. It should cover the majority of the p2-es API from the latest release (see releases).
 
@@ -79,7 +52,7 @@ If you have questions or feedback, please create a new issue.
 
 ## Core concepts
 
-Shape A geometrical shape, such as a sphere or a box.
+**Shape** A geometrical shape, such as a sphere or a box.
 
 **Rigid body** A piece of matter that is assumed indefinitely stiff. Any two points in a rigid body are assumed to always be at a constant distance from each other. We may refer to a rigid body by just saying "body". A rigid body has got a shape and a number of physical properties such as mass and inertia.
 

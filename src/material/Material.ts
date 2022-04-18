@@ -1,7 +1,7 @@
 /**
  * Defines a physics material.
  *
- * To be used with {{#crossLink "ContactMaterial"}}{{/crossLink}}.
+ * To be used with {@link ContactMaterial}.
  *
  * @example
  *     // Create a wooden box

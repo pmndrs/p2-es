@@ -6,8 +6,20 @@ import type { Vec2 } from '../types'
 import type { SharedShapeOptions } from './Shape'
 import { Shape } from './Shape'
 
+/**
+ * Options for creating a {@link Capsule}
+ */
 export interface CapsuleOptions extends SharedShapeOptions {
+    /**
+     * The distance between the end points, extends along the X axis.
+     * @see {@link Capsule.length}
+     */
     length?: number
+
+    /**
+     * Radius of the capsule.
+     * @see @see {@link Capsule.radius}
+     */
     radius?: number
 }
 

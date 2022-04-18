@@ -28,7 +28,6 @@ body {
 /* Hide "Class" text */
 .tsd-page-title .tsd-breadcrumb + h1 {
   overflow: hidden;
-  text-indent: -90px;
 }
 
 /* Easier to read line-height */

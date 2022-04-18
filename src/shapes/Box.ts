@@ -8,7 +8,7 @@ import type { SharedShapeOptions } from './Shape'
 import { Shape } from './Shape'
 
 /**
- * (Note that this options object will be passed on to the {{#crossLink "Shape"}}{{/crossLink}} constructor.)
+ * (Note that this options object will be passed on to the {@link Shape} constructor.)
  */
 export interface BoxOptions extends SharedShapeOptions {
     /**

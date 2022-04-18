@@ -11,7 +11,7 @@ export interface SpringOptions {
 }
 
 /**
- * Base class for {{#crossLink "LinearSpring"}}{{/crossLink}} and {{#crossLink "RotationalSpring"}}{{/crossLink}}. Not supposed to be used directly.
+ * Base class for {@link LinearSpring} and {@link RotationalSpring}. Not supposed to be used directly.
  */
 export abstract class Spring {
     /**

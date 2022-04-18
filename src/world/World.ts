@@ -120,22 +120,22 @@ export class World extends EventEmitter<WorldEventMap> {
     static BODY_SLEEPING: 2
 
     /**
-     * Deactivates bodies that are in contact, if all of them are sleepy. Note that you must enable {{#crossLink "World/islandSplit:property"}}.islandSplit{{/crossLink}} for this to work.
+     * Deactivates bodies that are in contact, if all of them are sleepy. Note that you must enable {@link World.islandSplit} for this to work.
      */
     static ISLAND_SLEEPING: 4
 
     /**
-     * All springs in the world. To add a spring to the world, use {{#crossLink "World/addSpring:method"}}{{/crossLink}}.
+     * All springs in the world. To add a spring to the world, use {@link World.addSpring}.
      */
     springs: Spring[] = []
 
     /**
-     * All bodies in the world. To add a body to the world, use {{#crossLink "World/addBody:method"}}{{/crossLink}}.
+     * All bodies in the world. To add a body to the world, use {@link World.addBody}.
      */
     bodies: Body[] = []
 
     /**
-     * The solver used to satisfy constraints and contacts. Default is {{#crossLink "GSSolver"}}{{/crossLink}}.
+     * The solver used to satisfy constraints and contacts. Default is {@link GSSolver}.
      */
     solver: Solver
 
@@ -250,8 +250,9 @@ export class World extends EventEmitter<WorldEventMap> {
     emitImpactEvent = true
 
     /**
-     * How to deactivate bodies during simulation. Possible modes are: {{#crossLink "World/NO_SLEEPING:property"}}World.NO_SLEEPING{{/crossLink}}, {{#crossLink "World/BODY_SLEEPING:property"}}World.BODY_SLEEPING{{/crossLink}} and {{#crossLink "World/ISLAND_SLEEPING:property"}}World.ISLAND_SLEEPING{{/crossLink}}.
-     * If sleeping is enabled, you might need to {{#crossLink "Body/wakeUp:method"}}wake up{{/crossLink}} the bodies if they fall asleep when they shouldn't. If you want to enable sleeping in the world, but want to disable it for a particular body, see {{#crossLink "Body/allowSleep:property"}}Body.allowSleep{{/crossLink}}.
+     * How to deactivate bodies during simulation. Possible modes are: {@link World,NO_SLEEPING}, {@link World.BODY_SLEEPING} and {@link World.ISLAND_SLEEPING}.
+     * If sleeping is enabled, you might need to {@link Body.wakeUp} the bodies if they fall asleep when they shouldn't.
+     * If you want to enable sleeping in the world, but want to disable it for a particular body, see {@link Body.allowSleep}.
      * @default World.NO_SLEEPING
      */
     sleepMode: typeof World.NO_SLEEPING | typeof World.BODY_SLEEPING | typeof World.ISLAND_SLEEPING = World.NO_SLEEPING
@@ -262,7 +263,7 @@ export class World extends EventEmitter<WorldEventMap> {
     overlapKeeper = new OverlapKeeper()
     
     /**
-     * Disabled body collision pairs. See {{#crossLink "World/disableBodyCollision:method"}}.
+     * Disabled body collision pairs. See {@link World.disableBodyCollision}.
      */
     disabledBodyCollisionPairs: Body[] = []
 

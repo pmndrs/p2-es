@@ -15,6 +15,10 @@ export interface LockConstraintOptions extends ConstraintOptions {
      * The angle of bodyB in bodyA's frame. If not given, the angle is computed from current angles.
      */
     localAngleB?: number
+
+    /**
+     * The max force for the constraint
+     */
     maxForce?: number
 }
 

@@ -32,13 +32,24 @@ export interface PrismaticConstraintOptions extends ConstraintOptions {
      * If set to true, bodyB will be free to rotate around its anchor point.
      */
     disableRotationalLock?: boolean
+    
+    /**
+     * The upper limit for the constraint
+     */
     upperLimit?: number
+
+    /**
+     * The lower limit for the constraint
+     */
     lowerLimit?: number
 }
 
 /**
  * Constraint that only allows bodies to move along a line, relative to each other.
- * See <a href="http://www.iforce2d.net/b2dtut/joints-prismatic">this tutorial</a>. Also called "slider constraint".
+ * 
+ * Also called "slider constraint".
+ * 
+ * @see http://www.iforce2d.net/b2dtut/joints-prismatic
  *
  * @todo Ability to create using only a point and a worldAxis
  *

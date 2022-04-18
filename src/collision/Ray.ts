@@ -34,7 +34,8 @@ export interface RayOptions {
 }
 
 /**
- * A line with a start and end point that is used to intersect shapes. For an example, see {{#crossLink "World/raycast:method"}}World.raycast{{/crossLink}}
+ * A line with a start and end point that is used to intersect shapes.
+ * @see {@link World.raycast} for example usage
  */
 export class Ray {
     /**
@@ -54,49 +55,42 @@ export class Ray {
 
     /**
      * Ray start point.
-     * @property {array} from
      */
     from: Vec2
 
     /**
      * Ray end point
-     * @property {array} to
      */
     to: Vec2
 
     /**
      * Set to true if you want the Ray to take .collisionResponse flags into account on bodies and shapes.
-     * @property {Boolean} checkCollisionResponse
+     * @property checkCollisionResponse
      */
     checkCollisionResponse: boolean
 
     /**
      * If set to true, the ray skips any hits with normal.dot(rayDirection) < 0.
-     * @property {Boolean} skipBackfaces
      */
     skipBackfaces: boolean
 
     /**
-     * @property {number} collisionMask
      * @default -1
      */
     collisionMask: number
 
     /**
-     * @property {number} collisionGroup
      * @default -1
      */
     collisionGroup: number
 
     /**
-     * The intersection mode. Should be {{#crossLink "Ray/ANY:property"}}Ray.ANY{{/crossLink}}, {{#crossLink "Ray/ALL:property"}}Ray.ALL{{/crossLink}} or {{#crossLink "Ray/CLOSEST:property"}}Ray.CLOSEST{{/crossLink}}.
-     * @property {number} mode
+     * The intersection mode.
      */
     mode: typeof Ray.CLOSEST | typeof Ray.ANY | typeof Ray.ALL
 
     /**
      * Current, user-provided result callback. Will be used if mode is Ray.ALL.
-     * @property {Function} callback
      */
     callback: (result: RaycastResult) => void
 

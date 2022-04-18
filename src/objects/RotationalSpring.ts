@@ -9,7 +9,7 @@ export interface RotationalSpringOptions extends SpringOptions {
 /**
  * A rotational spring, connecting two bodies rotation. This spring explicitly adds angularForce (torque) to the bodies.
  *
- * The spring can be combined with a {{#crossLink "RevoluteConstraint"}}{{/crossLink}} to make, for example, a mouse trap.
+ * The spring can be combined with a {@link RevoluteConstraint} to make, for example, a mouse trap.
  *
  * @example
  *     var spring = new RotationalSpring(bodyA, bodyB, {

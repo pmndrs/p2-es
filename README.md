@@ -22,13 +22,13 @@ If you're using three.js in a React environment with react-three-fiber, check ou
 yarn add p2-es
 ```
 
-**Download**
+**CDN**
 
-You can also download the esm flatbundle directly and import it as a module - [`p2-es.js`](dist/p2-es.js)
+You can also import the esm flatbundle via unpkg
 
 ```html
 <script type="module">
-    import * as p2 from 'p2-es.js';
+    import * as p2 from 'https://www.unpkg.com/browse/p2-es@0.8.0/dist/p2-es.js';
 </script>
 ```
 
