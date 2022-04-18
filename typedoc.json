@@ -1,12 +1,11 @@
 {
   "entryPoints": "./src/p2-es.ts",
   "out": "docs/",
-  "readme": "./README.md",
+  "readme": "./getting-started.md",
   "customCss": "./docs-style.css",
   "cleanOutputDir": true,
   "excludePrivate": true,
   "excludeProtected": true,
   "excludeExternals": true,
-  "hideGenerator": true,
-  "excludeNotDocumented": true
+  "hideGenerator": true
 }
