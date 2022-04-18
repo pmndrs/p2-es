@@ -2,8 +2,6 @@ import { FrictionEquation } from '../equations/FrictionEquation'
 import { Body } from '../objects/Body'
 import { Pool } from './Pool'
 
-const tmpBody = new Body()
-
 export class FrictionEquationPool extends Pool<FrictionEquation> {
 	create(): FrictionEquation {
 		return new FrictionEquation(tmpBody, tmpBody, 0)
@@ -14,3 +12,5 @@ export class FrictionEquationPool extends Pool<FrictionEquation> {
 		return this
 	}
 }
+
+const tmpBody = new Body()

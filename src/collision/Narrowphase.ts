@@ -1681,9 +1681,9 @@ export class Narrowphase {
 
     /**
      * Convex/Convex Narrowphase.
-     * 
+     *
      * @see http://www.altdevblogaday.com/2011/05/13/contact-generation-between-3d-convex-meshes/
-     * 
+     *
      * @param bodyA
      * @param polyA
      * @param positionA
@@ -1707,10 +1707,10 @@ export class Narrowphase {
         justTest = false
     ): number => {
         const totalRadius = 0
-        const dist = collidePolygons_dist
+        const dist = convexConvex_dist
 
-        const tempVec = collidePolygons_tempVec
-        const tmpVec = collidePolygons_tmpVec
+        const tempVec = convexConvex_tempVec
+        const tmpVec = convexConvex_tmpVec
 
         const edgeA = findMaxSeparation(tempVec, polyA, positionA, angleA, polyB, positionB, angleB)
         const separationA = tempVec[0]
@@ -1758,7 +1758,7 @@ export class Narrowphase {
             edge1 = edgeA
         }
 
-        const incidentEdge = collidePolygons_incidentEdge
+        const incidentEdge = convexConvex_incidentEdge
         findIncidentEdge(incidentEdge, poly1, position1, angle1, edge1, poly2, position2, angle2)
 
         const count1 = poly1.vertices.length
@@ -1767,24 +1767,24 @@ export class Narrowphase {
         const iv1 = edge1
         const iv2 = edge1 + 1 < count1 ? edge1 + 1 : 0
 
-        const v11 = collidePolygons_v11
-        const v12 = collidePolygons_v12
+        const v11 = convexConvex_v11
+        const v12 = convexConvex_v12
         vec2.copy(v11, vertices1[iv1])
         vec2.copy(v12, vertices1[iv2])
 
-        const localTangent = collidePolygons_localTangent
+        const localTangent = convexConvex_localTangent
         vec2.subtract(localTangent, v12, v11)
         vec2.normalize(localTangent, localTangent)
 
-        const localNormal = collidePolygons_localNormal
+        const localNormal = convexConvex_localNormal
         vec2.crossVZ(localNormal, localTangent, 1.0)
-        const planePoint = collidePolygons_planePoint
+        const planePoint = convexConvex_planePoint
         vec2.add(planePoint, v11, v12)
         vec2.scale(planePoint, planePoint, 0.5)
 
-        const tangent = collidePolygons_tangent // tangent in world space
+        const tangent = convexConvex_tangent // tangent in world space
         vec2.rotate(tangent, localTangent, angle1)
-        const normal = collidePolygons_normal // normal in world space
+        const normal = convexConvex_normal // normal in world space
         vec2.crossVZ(normal, tangent, 1.0)
 
         vec2.toGlobalFrame(v11, v11, position1, angle1)
@@ -1798,12 +1798,12 @@ export class Narrowphase {
         const sideOffset2 = vec2.dot(tangent, v12) + totalRadius
 
         // Clip incident edge against extruded edge1 side edges.
-        const clipPoints1 = collidePolygons_clipPoints1
-        const clipPoints2 = collidePolygons_clipPoints2
+        const clipPoints1 = convexConvex_clipPoints1
+        const clipPoints2 = convexConvex_clipPoints2
         let np = 0
 
         // Clip to box side 1
-        const negativeTangent = collidePolygons_negativeTangent
+        const negativeTangent = convexConvex_negativeTangent
         vec2.scale(negativeTangent, tangent, -1)
         np = clipSegmentToLine(clipPoints1, incidentEdge, negativeTangent, sideOffset1)
 
@@ -2192,26 +2192,20 @@ const tmpArray: Vec2[] = []
 const bodiesOverlap_shapePositionA = vec2.create()
 const bodiesOverlap_shapePositionB = vec2.create()
 
-// Find edge normal of max separation on A - return if separating axis is found
-// Find edge normal of max separation on B - return if separation axis is found
-// Choose reference edge as min(minA, minB)
-// Find incident edge
-// Clip
-// The normal points from 1 to 2
-const collidePolygons_tempVec = vec2.create()
-const collidePolygons_tmpVec = vec2.create()
-const collidePolygons_localTangent = vec2.create()
-const collidePolygons_localNormal = vec2.create()
-const collidePolygons_planePoint = vec2.create()
-const collidePolygons_tangent = vec2.create()
-const collidePolygons_normal = vec2.create()
-const collidePolygons_negativeTangent = vec2.create()
-const collidePolygons_v11 = vec2.create()
-const collidePolygons_v12 = vec2.create()
-const collidePolygons_dist = vec2.create()
-const collidePolygons_clipPoints1 = [vec2.create(), vec2.create()]
-const collidePolygons_clipPoints2 = [vec2.create(), vec2.create()]
-const collidePolygons_incidentEdge = [vec2.create(), vec2.create()]
+const convexConvex_tempVec = vec2.create()
+const convexConvex_tmpVec = vec2.create()
+const convexConvex_localTangent = vec2.create()
+const convexConvex_localNormal = vec2.create()
+const convexConvex_planePoint = vec2.create()
+const convexConvex_tangent = vec2.create()
+const convexConvex_normal = vec2.create()
+const convexConvex_negativeTangent = vec2.create()
+const convexConvex_v11 = vec2.create()
+const convexConvex_v12 = vec2.create()
+const convexConvex_dist = vec2.create()
+const convexConvex_clipPoints1 = [vec2.create(), vec2.create()]
+const convexConvex_clipPoints2 = [vec2.create(), vec2.create()]
+const convexConvex_incidentEdge = [vec2.create(), vec2.create()]
 const maxManifoldPoints = 2
 
 const circleHeightfield_candidate = vec2.create()
@@ -2239,17 +2233,17 @@ const capsuleCapsule_tempVec1 = vec2.create()
 const capsuleCapsule_tempVec2 = vec2.create()
 const capsuleCapsule_tempRect1 = new Box({ width: 1, height: 1 })
 
-const pic_localPoint = vec2.create()
-const pic_r0 = vec2.create()
-const pic_r1 = vec2.create()
+const pointInConvex_localPoint = vec2.create()
+const pointInConvex_r0 = vec2.create()
+const pointInConvex_r1 = vec2.create()
 
 /*
  * Check if a point is in a polygon
  */
 function pointInConvex(worldPoint: Vec2, convexShape: Convex, convexOffset: Vec2, convexAngle: number): boolean {
-    const localPoint = pic_localPoint
-    const r0 = pic_r0
-    const r1 = pic_r1
+    const localPoint = pointInConvex_localPoint
+    const r0 = pointInConvex_r0
+    const r1 = pointInConvex_r1
     const verts = convexShape.vertices
     let lastCross = null
 
@@ -2286,8 +2280,8 @@ function addsubtract(out: Vec2, a: Vec2, b: Vec2, c: Vec2): void {
  * Check if a point is in a polygon
  */
 function pointInConvexLocal(localPoint: Vec2, convexShape: Convex) {
-    const r0 = pic_r0
-    const r1 = pic_r1
+    const r0 = pointInConvex_r0
+    const r1 = pointInConvex_r1
     const verts = convexShape.vertices
     const numVerts = verts.length
     let lastCross = null
@@ -2446,9 +2440,9 @@ function clipSegmentToLine(vOut: Vec2[], vIn: Vec2[], normal: Vec2, offset: numb
     return numOut
 }
 
-const convexHeightfield_v0 = vec2.create(),
-    convexHeightfield_v1 = vec2.create(),
-    convexHeightfield_tilePos = vec2.create(),
-    convexHeightfield_tempConvexShape = new Convex({
-        vertices: [vec2.create(), vec2.create(), vec2.create(), vec2.create()],
-    })
+const convexHeightfield_v0 = vec2.create()
+const convexHeightfield_v1 = vec2.create()
+const convexHeightfield_tilePos = vec2.create()
+const convexHeightfield_tempConvexShape = new Convex({
+    vertices: [vec2.create(), vec2.create(), vec2.create(), vec2.create()],
+})

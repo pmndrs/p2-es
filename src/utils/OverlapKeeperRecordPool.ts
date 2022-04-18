@@ -3,9 +3,6 @@ import { Circle } from '../shapes/Circle'
 import { OverlapKeeperRecord } from './OverlapKeeperRecord'
 import { Pool } from './Pool'
 
-const tmpShape = new Circle({ radius: 1 })
-const tmpBody = new Body()
-
 export class OverlapKeeperRecordPool extends Pool<OverlapKeeperRecord> {
     create(): OverlapKeeperRecord {
         return new OverlapKeeperRecord(tmpBody, tmpShape, tmpBody, tmpShape)
@@ -16,3 +13,6 @@ export class OverlapKeeperRecordPool extends Pool<OverlapKeeperRecord> {
         return this
     }
 }
+
+const tmpShape = new Circle({ radius: 1 })
+const tmpBody = new Body()

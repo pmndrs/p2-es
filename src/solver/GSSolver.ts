@@ -4,40 +4,6 @@ import type { World } from '../world/World'
 import type { SolverOptions } from './Solver'
 import { Solver } from './Solver'
 
-// Sets the .multiplier property of each equation
-function updateMultipliers(equations: Equation[], invDt: number) {
-    let l = equations.length
-    while (l--) {
-        const eq = equations[l]
-        eq.multiplier = eq.lambda * invDt
-    }
-}
-
-function iterateEquation(eq: Equation) {
-    // Compute iteration
-    const B = eq.B,
-        eps = eq.epsilon,
-        invC = eq.invC,
-        lambdaj = eq.lambda,
-        GWlambda = eq.computeGWlambda(),
-        maxForce_dt = eq.maxForceDt,
-        minForce_dt = eq.minForceDt
-
-    let deltalambda = invC * (B - GWlambda - eps * lambdaj)
-
-    // Clamp if we are not within the min/max interval
-    const lambdaj_plus_deltalambda = lambdaj + deltalambda
-    if (lambdaj_plus_deltalambda < minForce_dt) {
-        deltalambda = minForce_dt - lambdaj
-    } else if (lambdaj_plus_deltalambda > maxForce_dt) {
-        deltalambda = maxForce_dt - lambdaj
-    }
-    eq.lambda += deltalambda
-    eq.addToWlambda(deltalambda)
-
-    return deltalambda
-}
-
 export interface GSSolverOptions extends SolverOptions {
     iterations?: number
     tolerance?: number
@@ -207,4 +173,38 @@ export class GSSolver extends Solver {
             updateMultipliers(equations, 1 / h)
         }
     }
+}
+
+// Sets the .multiplier property of each equation
+function updateMultipliers(equations: Equation[], invDt: number) {
+    let l = equations.length
+    while (l--) {
+        const eq = equations[l]
+        eq.multiplier = eq.lambda * invDt
+    }
+}
+
+function iterateEquation(eq: Equation) {
+    // Compute iteration
+    const B = eq.B,
+        eps = eq.epsilon,
+        invC = eq.invC,
+        lambdaj = eq.lambda,
+        GWlambda = eq.computeGWlambda(),
+        maxForce_dt = eq.maxForceDt,
+        minForce_dt = eq.minForceDt
+
+    let deltalambda = invC * (B - GWlambda - eps * lambdaj)
+
+    // Clamp if we are not within the min/max interval
+    const lambdaj_plus_deltalambda = lambdaj + deltalambda
+    if (lambdaj_plus_deltalambda < minForce_dt) {
+        deltalambda = minForce_dt - lambdaj
+    } else if (lambdaj_plus_deltalambda > maxForce_dt) {
+        deltalambda = maxForce_dt - lambdaj
+    }
+    eq.lambda += deltalambda
+    eq.addToWlambda(deltalambda)
+
+    return deltalambda
 }

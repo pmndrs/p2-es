@@ -236,32 +236,32 @@ export class RevoluteConstraint extends Constraint {
 
         /*
 
-    The constraint violation is
+        The constraint violation is
 
-        g = xj + rj - xi - ri
+            g = xj + rj - xi - ri
 
-    ...where xi and xj are the body positions and ri and rj world-oriented offset vectors. Differentiate:
+        ...where xi and xj are the body positions and ri and rj world-oriented offset vectors. Differentiate:
 
-        gdot = vj + wj x rj - vi - wi x ri
+            gdot = vj + wj x rj - vi - wi x ri
 
-    We split this into x and y directions. (let x and y be unit vectors along the respective axes)
+        We split this into x and y directions. (let x and y be unit vectors along the respective axes)
 
-        gdot * x = ( vj + wj x rj - vi - wi x ri ) * x
-                 = ( vj*x + (wj x rj)*x -vi*x -(wi x ri)*x
-                 = ( vj*x + (rj x x)*wj -vi*x -(ri x x)*wi
-                 = [ -x   -(ri x x)   x   (rj x x)] * [vi wi vj wj]
-                 = G*W
+            gdot * x = ( vj + wj x rj - vi - wi x ri ) * x
+                    = ( vj*x + (wj x rj)*x -vi*x -(wi x ri)*x
+                    = ( vj*x + (rj x x)*wj -vi*x -(ri x x)*wi
+                    = [ -x   -(ri x x)   x   (rj x x)] * [vi wi vj wj]
+                    = G*W
 
-    ...and similar for y. We have then identified the jacobian entries for x and y directions:
+        ...and similar for y. We have then identified the jacobian entries for x and y directions:
 
-        Gx = [ x   (rj x x)   -x   -(ri x x)]
-        Gy = [ y   (rj x y)   -y   -(ri x y)]
+            Gx = [ x   (rj x x)   -x   -(ri x x)]
+            Gy = [ y   (rj x y)   -y   -(ri x y)]
 
-    So for example, in the X direction we would get in 2 dimensions
+        So for example, in the X direction we would get in 2 dimensions
 
-        G = [ [1   0   (rj x [1,0])   -1   0   -(ri x [1,0])]
-              [0   1   (rj x [0,1])    0  -1   -(ri x [0,1])]
-     */
+            G = [ [1   0   (rj x [1,0])   -1   0   -(ri x [1,0])]
+                [0   1   (rj x [0,1])    0  -1   -(ri x [0,1])]
+        */
 
         vec2.rotate(worldPivotA, pivotA, bodyA.angle)
         vec2.rotate(worldPivotB, pivotB, bodyB.angle)

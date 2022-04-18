@@ -2,8 +2,6 @@ import { ContactEquation } from '../equations/ContactEquation'
 import { Body } from '../objects/Body'
 import { Pool } from './Pool'
 
-const tmpBody = new Body()
-
 export class ContactEquationPool extends Pool<ContactEquation> {
 	create(): ContactEquation {
 		return new ContactEquation(tmpBody, tmpBody)
@@ -14,3 +12,5 @@ export class ContactEquationPool extends Pool<ContactEquation> {
 		return this
 	}
 }
+
+const tmpBody = new Body()

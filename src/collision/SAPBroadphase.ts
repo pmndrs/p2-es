@@ -4,24 +4,6 @@ import { Utils } from '../utils/Utils'
 import type { AddBodyEvent, RemoveBodyEvent, World } from '../world/World'
 import { Broadphase } from './Broadphase'
 
-function sortAxisList(a: Body[], axisIndex: number) {
-    axisIndex = axisIndex | 0
-    for (let i = 1, l = a.length; i < l; i++) {
-        const v = a[i]
-
-        let j: number
-        for (j = i - 1; j >= 0; j--) {
-            if (a[j].aabb.lowerBound[axisIndex] <= v.aabb.lowerBound[axisIndex]) {
-                break
-            }
-            a[j + 1] = a[j]
-        }
-
-        a[j + 1] = v
-    }
-    return a
-}
-
 /**
  * Sweep and prune broadphase along one axis.
  */
@@ -151,4 +133,22 @@ export class SAPBroadphase extends Broadphase {
 
         return result
     }
+}
+
+function sortAxisList(a: Body[], axisIndex: number) {
+    axisIndex = axisIndex | 0
+    for (let i = 1, l = a.length; i < l; i++) {
+        const v = a[i]
+
+        let j: number
+        for (j = i - 1; j >= 0; j--) {
+            if (a[j].aabb.lowerBound[axisIndex] <= v.aabb.lowerBound[axisIndex]) {
+                break
+            }
+            a[j + 1] = a[j]
+        }
+
+        a[j + 1] = v
+    }
+    return a
 }

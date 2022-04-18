@@ -3,23 +3,6 @@ import type { Body } from '../objects/Body'
 import type { Vec2 } from '../types'
 import { Utils } from '../utils/Utils'
 
-const qi = createVec2()
-const qj = createVec2()
-const iMfi = createVec2()
-const iMfj = createVec2()
-
-function addToVLambda(
-    vlambda: Vec2,
-    Gx: number,
-    Gy: number,
-    invMass: number,
-    deltalambda: number,
-    massMultiplier: Vec2
-) {
-    vlambda[0] += Gx * invMass * deltalambda * massMultiplier[0]
-    vlambda[1] += Gy * invMass * deltalambda * massMultiplier[1]
-}
-
 /**
  * Base class for constraint equations.
  */
@@ -294,4 +277,21 @@ export class Equation {
         const invC = 1 / (this.computeGiMGt() + eps)
         return invC
     }
+}
+
+const qi = createVec2()
+const qj = createVec2()
+const iMfi = createVec2()
+const iMfj = createVec2()
+
+function addToVLambda(
+    vlambda: Vec2,
+    Gx: number,
+    Gy: number,
+    invMass: number,
+    deltalambda: number,
+    massMultiplier: Vec2
+) {
+    vlambda[0] += Gx * invMass * deltalambda * massMultiplier[0]
+    vlambda[1] += Gy * invMass * deltalambda * massMultiplier[1]
 }

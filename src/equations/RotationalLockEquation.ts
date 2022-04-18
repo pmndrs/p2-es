@@ -2,11 +2,6 @@ import * as vec2 from '../math/vec2'
 import type { Body } from '../objects/Body'
 import { Equation } from './Equation'
 
-const worldVectorA = vec2.create()
-const worldVectorB = vec2.create()
-const xAxis = vec2.fromValues(1, 0)
-const yAxis = vec2.fromValues(0, 1)
-
 export interface RotationalLockEquationOptions {
     angle?: number
 }
@@ -34,3 +29,8 @@ export class RotationalLockEquation extends Equation {
         return vec2.dot(worldVectorA, worldVectorB)
     }
 }
+
+const worldVectorA = vec2.create()
+const worldVectorB = vec2.create()
+const xAxis = vec2.fromValues(1, 0)
+const yAxis = vec2.fromValues(0, 1)

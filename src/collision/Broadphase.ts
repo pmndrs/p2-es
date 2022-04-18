@@ -146,18 +146,13 @@ export abstract class Broadphase {
      * @param bodyB
      */
     boundingVolumeCheck(bodyA: Body, bodyB: Body): boolean {
-        let result
-
         switch (this.boundingVolumeType) {
             case Broadphase.BOUNDING_CIRCLE:
-                result = Broadphase.boundingRadiusCheck(bodyA, bodyB)
-                break
+                return Broadphase.boundingRadiusCheck(bodyA, bodyB)
             case Broadphase.AABB:
-                result = Broadphase.aabbCheck(bodyA, bodyB)
-                break
+                return Broadphase.aabbCheck(bodyA, bodyB)
             default:
                 throw new Error('Bounding volume type not recognized: ' + this.boundingVolumeType)
         }
-        return result
     }
 }

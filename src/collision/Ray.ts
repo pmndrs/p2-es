@@ -5,23 +5,6 @@ import type { Vec2 } from '../types'
 import type { AABB } from './AABB'
 import type { RaycastResult } from './RaycastResult'
 
-const v0 = vec2.create()
-const intersect = vec2.create()
-
-function distanceFromIntersectionSquared(from: Vec2, direction: Vec2, position: Vec2) {
-    // v0 is vector from from to position
-    vec2.subtract(v0, position, from)
-    const dot = vec2.dot(v0, direction)
-
-    // intersect = direction * dot + from
-    vec2.scale(intersect, direction, dot)
-    vec2.add(intersect, intersect, from)
-
-    return vec2.squaredDistance(position, intersect)
-}
-
-const intersectBody_worldPosition = vec2.create()
-
 export interface RayOptions {
     from?: Vec2
     to?: Vec2
@@ -273,3 +256,20 @@ export class Ray {
         }
     }
 }
+
+const v0 = vec2.create()
+const intersect = vec2.create()
+
+function distanceFromIntersectionSquared(from: Vec2, direction: Vec2, position: Vec2) {
+    // v0 is vector from from to position
+    vec2.subtract(v0, position, from)
+    const dot = vec2.dot(v0, direction)
+
+    // intersect = direction * dot + from
+    vec2.scale(intersect, direction, dot)
+    vec2.add(intersect, intersect, from)
+
+    return vec2.squaredDistance(position, intersect)
+}
+
+const intersectBody_worldPosition = vec2.create()

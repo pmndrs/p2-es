@@ -14,8 +14,6 @@ export interface AABBOptions {
     lowerBound?: Vec2
 }
 
-const tmp = vec2.create()
-
 /**
  * Axis aligned bounding box class
  *
@@ -51,10 +49,8 @@ export class AABB {
      * @param skinSize Some margin to be added to the AABB.
      */
     setFromPoints(points: Vec2[], position: Vec2, angle = 0, skinSize = 0): void {
-        const l = this.lowerBound,
-            u = this.upperBound
-
-        angle = angle || 0
+        const l = this.lowerBound
+        const u = this.upperBound
 
         // Set to the first point
         if (angle !== 0) {
@@ -65,8 +61,8 @@ export class AABB {
         vec2.copy(u, l)
 
         // Compute cosines and sines just once
-        const cosAngle = Math.cos(angle),
-            sinAngle = Math.sin(angle)
+        const cosAngle = Math.cos(angle)
+        const sinAngle = Math.sin(angle)
         for (let i = 1; i < points.length; i++) {
             let p = points[i]
 
@@ -217,3 +213,5 @@ export class AABB {
         return tmin / ray.length
     }
 }
+
+const tmp = vec2.create()

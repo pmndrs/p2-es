@@ -4,16 +4,6 @@ import type { Body } from './Body'
 import type { SpringOptions } from './Spring'
 import { Spring } from './Spring'
 
-const applyForce_r = vec2.create(),
-    applyForce_r_unit = vec2.create(),
-    applyForce_u = vec2.create(),
-    applyForce_f = vec2.create(),
-    applyForce_worldAnchorA = vec2.create(),
-    applyForce_worldAnchorB = vec2.create(),
-    applyForce_ri = vec2.create(),
-    applyForce_rj = vec2.create(),
-    applyForce_tmp = vec2.create()
-
 export interface LinearSpringOptions extends SpringOptions {
     /**
      * A number > 0. Default is the current distance between the world anchor points.
@@ -192,3 +182,13 @@ export class LinearSpring extends Spring {
         bodyB.angularForce += rj_x_f
     }
 }
+
+const applyForce_r = vec2.create()
+const applyForce_r_unit = vec2.create()
+const applyForce_u = vec2.create()
+const applyForce_f = vec2.create()
+const applyForce_worldAnchorA = vec2.create()
+const applyForce_worldAnchorB = vec2.create()
+const applyForce_ri = vec2.create()
+const applyForce_rj = vec2.create()
+const applyForce_tmp = vec2.create()
