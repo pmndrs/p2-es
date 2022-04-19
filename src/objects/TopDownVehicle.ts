@@ -36,13 +36,13 @@ export class WheelConstraint extends Constraint {
     localPosition: Vec2
 
     constructor(vehicle: TopDownVehicle, options: WheelConstraintOptions = {}) {
-        super(vehicle.chassisBody, vehicle.groundBody, Constraint.OTHER)
+        super(vehicle.chassisBody, vehicle.groundBody)
 
         this.vehicle = vehicle
 
-        this.forwardEquation = new FrictionEquation(vehicle.chassisBody, vehicle.groundBody, 0)
+        this.forwardEquation = new FrictionEquation(vehicle.chassisBody, vehicle.groundBody)
 
-        this.sideEquation = new FrictionEquation(vehicle.chassisBody, vehicle.groundBody, 0)
+        this.sideEquation = new FrictionEquation(vehicle.chassisBody, vehicle.groundBody)
 
         this.steerValue = 0
 
@@ -153,8 +153,6 @@ export class TopDownVehicle {
     wheels: WheelConstraint[]
     world: World | null
 
-    postStepCallback: () => void
-
     constructor(chassisBody: Body) {
         this.chassisBody = chassisBody
         this.wheels = []
@@ -163,16 +161,11 @@ export class TopDownVehicle {
         this.groundBody = new Body({ mass: 0 })
 
         this.world = null
-
-        this.postStepCallback = () => {
-            this.update()
-        }
     }
 
     addToWorld(world: World): void {
         this.world = world
         world.addBody(this.groundBody)
-        world.on('postStep', this.postStepCallback)
         for (let i = 0; i < this.wheels.length; i++) {
             const wheel = this.wheels[i]
             world.addConstraint(wheel)
@@ -185,7 +178,6 @@ export class TopDownVehicle {
         }
 
         this.world.removeBody(this.groundBody)
-        this.world.off('postStep', this.postStepCallback)
         for (let i = 0; i < this.wheels.length; i++) {
             const wheel = this.wheels[i]
             this.world.removeConstraint(wheel)
@@ -197,12 +189,6 @@ export class TopDownVehicle {
         const wheel = new WheelConstraint(this, wheelOptions)
         this.wheels.push(wheel)
         return wheel
-    }
-
-    update(): void {
-        for (let i = 0; i < this.wheels.length; i++) {
-            this.wheels[i].update()
-        }
     }
 }
 const worldVelocity = vec2.create()
