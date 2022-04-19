@@ -207,14 +207,11 @@ export class Body extends EventEmitter<BodyEventMap> {
 
     /**
      * Set to true if you want to fix the body movement along the Y axis. The body will still be able to move along X. See .fixedX
-     * @property {Boolean} fixedY
      */
     fixedY: boolean
 
     /**
      * The position of the body in the world. Don't use this for rendering, instead use .interpolatedPosition
-     * @property position
-     * @type {Array}
      */
     position: Vec2
 
@@ -300,7 +297,6 @@ export class Body extends EventEmitter<BodyEventMap> {
 
     /**
      * The angular force acting on the body. See {@link Body.force}.
-     * @property angularForce
      */
     angularForce: number
 

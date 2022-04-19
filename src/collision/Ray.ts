@@ -48,7 +48,6 @@ export class Ray {
 
     /**
      * Set to true if you want the Ray to take .collisionResponse flags into account on bodies and shapes.
-     * @property checkCollisionResponse
      */
     checkCollisionResponse: boolean
 
@@ -79,14 +78,12 @@ export class Ray {
 
     /**
      * @readOnly
-     * @property direction
      */
     direction: Vec2
 
     /**
      * Length of the ray
-     * @readOnly
-     * @property {number} length
+     * @readonly
      */
     length: number
 

@@ -5,8 +5,22 @@ import type { SolverOptions } from './Solver'
 import { Solver } from './Solver'
 
 export interface GSSolverOptions extends SolverOptions {
+    /**
+     * The max number of iterations to do when solving. More gives better results, but is more expensive.
+     * see {@link GSSolver.iterations}
+     */
     iterations?: number
+
+    /**
+     * The error tolerance, per constraint.
+     * see {@link GSSolver.tolerance}
+     */
     tolerance?: number
+
+    /**
+     * Number of solver iterations that are used to approximate normal forces used for friction
+     * @see {@link GSSolver.frictionIterations}
+     */
     frictionIterations?: number
 }
 
@@ -37,7 +51,6 @@ export class GSSolver extends Solver {
 
     /**
      * The number of iterations that were made during the last solve. If .tolerance is zero, this value will always be equal to .iterations, but if .tolerance is larger than zero, and the solver can quit early, then this number will be somewhere between 1 and .iterations.
-     * @property {Number} usedIterations
      */
     usedIterations: number
 

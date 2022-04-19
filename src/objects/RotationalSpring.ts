@@ -3,6 +3,9 @@ import type { SpringOptions } from './Spring'
 import { Spring } from './Spring'
 
 export interface RotationalSpringOptions extends SpringOptions {
+    /**
+     * Rest angle of the spring.
+     */
     restAngle?: number
 }
 

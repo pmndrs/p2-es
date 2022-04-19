@@ -46,15 +46,11 @@ export class GearConstraint extends Constraint {
 
         /**
          * The gear ratio.
-         * @property ratio
-         * @type {Number}
          */
         this.ratio = options.ratio !== undefined ? options.ratio : 1
 
         /**
          * The relative angle
-         * @property angle
-         * @type {Number}
          */
         this.angle = options.angle !== undefined ? options.angle : bodyB.angle - this.ratio * bodyA.angle
 

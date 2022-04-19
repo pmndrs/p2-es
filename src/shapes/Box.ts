@@ -36,15 +36,11 @@ export interface BoxOptions extends SharedShapeOptions {
 export class Box extends Convex {
     /**
      * Total width of the box
-     * @property width
-     * @type {Number}
      */
     width: number
 
     /**
      * Total height of the box
-     * @property height
-     * @type {Number}
      */
     height: number
 

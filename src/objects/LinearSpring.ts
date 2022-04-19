@@ -14,8 +14,20 @@ export interface LinearSpringOptions extends SpringOptions {
      * Where to hook the spring to body A, in local body coordinates. Defaults to the body center.
      */
     localAnchorA?: Vec2
+
+    /**
+     * Where to hook the spring to body B, in local body coordinates. Defaults to the body center.
+     */
     localAnchorB?: Vec2
+
+    /**
+     * Where to hook the spring to body A, using world coordinates.
+     */
     worldAnchorA?: Vec2
+
+    /**
+     * Where to hook the spring to body B, using world coordinates.
+     */
     worldAnchorB?: Vec2
 
     /**
@@ -46,22 +58,16 @@ export interface LinearSpringOptions extends SpringOptions {
 export class LinearSpring extends Spring {
     /**
      * Anchor for bodyA in local bodyA coordinates.
-     * @property localAnchorA
-     * @type {Array}
      */
     localAnchorA: Vec2
 
     /**
      * Anchor for bodyB in local bodyB coordinates.
-     * @property localAnchorB
-     * @type {Array}
      */
     localAnchorB: Vec2
 
     /**
      * Rest length of the spring. Can be set dynamically.
-     * @property restLength
-     * @type {number}
      */
     restLength: number
 

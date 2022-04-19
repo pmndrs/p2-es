@@ -2,6 +2,9 @@ import type { Equation } from '../equations/Equation'
 import type { World } from '../world/World'
 
 export interface SolverOptions {
+    /**
+     * Function that is used to sort all equations before each solve.
+     */
     equationSortFunction?: (a: Equation, b: Equation) => number
 }
 
@@ -15,7 +18,7 @@ export abstract class Solver {
     static GS: 1
 
     /**
-     * The type of solver
+     * The type of solver.
      */
     type: number
 

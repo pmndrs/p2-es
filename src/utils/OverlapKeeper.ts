@@ -10,7 +10,7 @@ export class OverlapKeeper {
     overlappingShapesLastState: TupleDictionary<OverlapKeeperRecord>
     overlappingShapesCurrentState: TupleDictionary<OverlapKeeperRecord>
     tmpDict: TupleDictionary<OverlapKeeperRecord>
-    tmpArray1: any[]
+    tmpArray1: OverlapKeeperRecord[]
 
     constructor() {
         this.overlappingShapesLastState = new TupleDictionary()
