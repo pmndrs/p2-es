@@ -7,6 +7,10 @@ import type { SharedShapeOptions } from './Shape'
 import { Shape } from './Shape'
 
 export interface LineOptions extends SharedShapeOptions {
+    /**
+     * Length of the line
+     * @see {@link Line.length}
+     */
     length?: number
 }
 
@@ -22,7 +26,7 @@ export interface LineOptions extends SharedShapeOptions {
  */
 export class Line extends Shape {
     /**
-     * Length of this line
+     * Length of the line
      * @default 1
      */
     length: number

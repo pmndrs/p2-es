@@ -13,6 +13,7 @@ export class RaycastResult {
      * The normal of the hit, oriented in world space.
      */
     normal: Vec2
+
     /**
      * The hit shape, or null.
      */

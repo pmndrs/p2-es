@@ -92,9 +92,28 @@ export type WorldEventMap = {
 }
 
 export interface WorldOptions {
+    /**
+     * The solver used to satisfy constraints and contacts.
+     * @see {@link World.solver}
+     */
     solver?: Solver
+
+    /**
+     * Gravity in the world.
+     * @see {@link World.gravity}
+     */
     gravity?: Vec2
+
+    /**
+     * The broadphase algorithm to use.
+     * @see {@link World.broadphase}
+     */
     broadphase?: Broadphase
+
+    /**
+     * Whether to enable island splitting.
+     * @see {@link World.islandSplit}
+     */
     islandSplit?: boolean
 }
 
@@ -1106,8 +1125,8 @@ export class World extends EventEmitter<WorldEventMap> {
             const eqs = c.equations
             for (let j = 0; j !== eqs.length; j++) {
                 const eq = eqs[j]
-                eq.relaxation = parameters.relaxation !== undefined ? parameters.relaxation : eq.relaxation
-                eq.stiffness = parameters.stiffness !== undefined ? parameters.stiffness : eq.stiffness
+                eq.relaxation = parameters.relaxation ?? eq.relaxation
+                eq.stiffness = parameters.stiffness ?? eq.stiffness
                 eq.needsUpdate = true
             }
         }

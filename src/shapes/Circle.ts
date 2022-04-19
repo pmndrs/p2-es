@@ -10,6 +10,10 @@ import { Shape } from './Shape'
  * (Note that this options object will be passed on to the {@link Shape} constructor.)
  */
 export interface CircleOptions extends SharedShapeOptions {
+    /**
+     * The radius of the circle.
+     * @see {@link Circle.radius}
+     */
     radius?: number
 }
 
@@ -25,7 +29,7 @@ export interface CircleOptions extends SharedShapeOptions {
  */
 export class Circle extends Shape {
     /**
-     * The radius of the circle
+     * The radius of the circle.
      */
     radius: number
 

@@ -2,7 +2,7 @@ import type { Ray } from '../collision/Ray'
 import * as vec2 from '../math/vec2'
 import type { Vec2 } from '../types'
 
-export interface AABBOptions {
+export type AABBOptions = {
     /**
      * The upper bound of the bounding box.
      */
@@ -34,7 +34,9 @@ export class AABB {
      */
     lowerBound: Vec2
 
-    constructor(options: AABBOptions = {}) {
+    constructor(
+        options: AABBOptions = {}
+    ) {
         this.lowerBound = options.lowerBound ? vec2.clone(options.lowerBound) : vec2.create()
         this.upperBound = options.upperBound ? vec2.clone(options.upperBound) : vec2.create()
     }

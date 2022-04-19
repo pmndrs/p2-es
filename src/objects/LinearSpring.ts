@@ -96,7 +96,7 @@ export class LinearSpring extends Spring {
         this.getWorldAnchorB(worldAnchorB)
         const worldDistance = vec2.distance(worldAnchorA, worldAnchorB)
 
-        this.restLength = options.restLength !== undefined ? options.restLength : worldDistance
+        this.restLength = options.restLength ?? worldDistance
     }
 
     /**

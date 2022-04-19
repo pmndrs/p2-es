@@ -8,8 +8,21 @@ import type { SharedShapeOptions } from './Shape'
 import { Shape } from './Shape'
 
 export interface ConvexOptions extends SharedShapeOptions {
+    /**
+     * Vertices defined in the local frame.
+     * @see {@link Convex.vertices}
+     */
     vertices?: Vec2[]
+
+    /**
+     * Axes.
+     * @see {@link Convex.axes}
+     */
     axes?: Vec2[]
+
+    /**
+     * The shape type.
+     */
     type?: number
 }
 

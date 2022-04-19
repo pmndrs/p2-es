@@ -5,15 +5,46 @@ import type { Vec2 } from '../types'
 import type { AABB } from './AABB'
 import type { RaycastResult } from './RaycastResult'
 
-export interface RayOptions {
+export type RayOptions = {
+    /**
+     * Ray start point.
+     */
     from?: Vec2
+
+    /**
+     * Ray end point.
+     */
     to?: Vec2
+
+    /**
+     * Set to true if you want the Ray to take .collisionResponse flags into account on bodies and shapes.
+     */
     checkCollisionResponse?: boolean
+
+    /**
+     * If set to true, the ray skips any hits with normal.dot(rayDirection) < 0.
+     */
     skipBackfaces?: boolean
+
+    /**
+     * Collision mask
+     */
     collisionMask?: number
+
+    /**
+     * Collision group
+     */
     collisionGroup?: number
+
+    /**
+     * The intersection mode.
+     */
     mode?: typeof Ray.CLOSEST | typeof Ray.ANY | typeof Ray.ALL
-    callback?: ((result: RaycastResult) => void)
+
+    /**
+     * Current, user-provided result callback. Will be used if mode is Ray.ALL.
+     */
+    callback?: (result: RaycastResult) => void
 }
 
 /**
@@ -57,11 +88,13 @@ export class Ray {
     skipBackfaces: boolean
 
     /**
+     * Collision mask.
      * @default -1
      */
     collisionMask: number
 
     /**
+     * Collision group.
      * @default -1
      */
     collisionGroup: number
@@ -79,13 +112,13 @@ export class Ray {
     /**
      * @readOnly
      */
-    direction: Vec2
+    direction: Vec2 = vec2.create()
 
     /**
      * Length of the ray
      * @readonly
      */
-    length: number
+    length = 1
 
     private _currentBody: Body | null = null
     private _currentShape: Shape | null = null
@@ -94,28 +127,21 @@ export class Ray {
      * Constructor for a new Ray
      * @param options
      */
-    constructor(options?: RayOptions) {
-        this.from = options?.from ? vec2.clone(options.from) : vec2.create()
+    constructor(options: RayOptions = {}) {
+        this.from = options.from ? vec2.clone(options.from) : vec2.create()
+        this.to = options.to ? vec2.clone(options.to) : vec2.create()
 
-        this.to = options?.to ? vec2.clone(options.to) : vec2.create()
+        this.checkCollisionResponse = options.checkCollisionResponse ?? true
 
-        this.checkCollisionResponse =
-            options?.checkCollisionResponse !== undefined ? options.checkCollisionResponse : true
+        this.skipBackfaces = !!options.skipBackfaces
 
-        this.skipBackfaces = !!options?.skipBackfaces
+        this.collisionMask = options.collisionMask ?? -1
+        this.collisionGroup = options.collisionGroup ?? -1
 
-        this.collisionMask = options?.collisionMask !== undefined ? options.collisionMask : -1
-
-        this.collisionGroup = options?.collisionGroup !== undefined ? options.collisionGroup : -1
-
-        this.mode = options?.mode !== undefined ? options.mode : Ray.ANY
+        this.mode = options.mode ?? Ray.ANY
 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         this.callback = options?.callback || function (/*result*/) {}
-
-        this.direction = vec2.create()
-    
-        this.length = 1
 
         this.update()
     }

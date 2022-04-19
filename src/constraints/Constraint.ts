@@ -1,8 +1,15 @@
 import type { Equation } from '../equations/Equation'
 import type { Body } from '../objects/Body'
 
-export interface ConstraintOptions {
+export type ConstraintOptions = {
+    /**
+     * Set to true if you want the connected bodies to collide.
+     */
     collideConnected?: boolean
+
+    /**
+     * Whether the constraint should wake up bodies when connected
+     */
     wakeUpBodies?: boolean
 }
 
@@ -65,7 +72,7 @@ export class Constraint {
         this.equations = []
         this.bodyA = bodyA
         this.bodyB = bodyB
-        this.collideConnected = options.collideConnected !== undefined ? options.collideConnected : true
+        this.collideConnected = options.collideConnected ?? true
 
         // Wake up bodies when connected
         if (options.wakeUpBodies !== false) {
@@ -87,7 +94,7 @@ export class Constraint {
 
     /**
      * Set stiffness for this constraint.
-     * @param stiffness 
+     * @param stiffness
      */
     setStiffness(stiffness: number): void {
         const eqs = this.equations
@@ -109,7 +116,7 @@ export class Constraint {
             eq.relaxation = relaxation
             eq.needsUpdate = true
         }
-    }        
+    }
 
     /**
      * Set max bias for this constraint.

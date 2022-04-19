@@ -12,27 +12,111 @@ import type { Vec2 } from '../types'
 import type { World } from '../world/World'
 
 export interface BodyOptions {
+    /**
+     * @see {@link Body.type}
+     */
     type?: typeof Body.DYNAMIC | typeof Body.STATIC | typeof Body.KINEMATIC
+    
+    /**
+     * @see {@link Body.force}
+     */
     force?: Vec2
+    
+    /**
+     * @see {@link Body.position}
+     */
     position?: Vec2
+    
+    /**
+     * @see {@link Body.velocity}
+     */
     velocity?: Vec2
+    
+    /**
+     * @see {@link Body.allowSleep}
+     */
     allowSleep?: boolean
+    
+    /**
+     * @see {@link Body.collisionResponse}
+     */
     collisionResponse?: boolean
+    
+    /**
+     * @see {@link Body.angle}
+     */
     angle?: number
+    
+    /**
+     * @see {@link Body.angularDamping}
+     */
     angularDamping?: number
+    
+    /**
+     * @see {@link Body.angularForce}
+     */
     angularForce?: number
+    
+    /**
+     * @see {@link Body.angularVelocity}
+     */
     angularVelocity?: number
+    
+    /**
+     * @see {@link Body.ccdIterations}
+     */
     ccdIterations?: number
+    
+    /**
+     * @see {@link Body.ccdSpeedThreshold}
+     */
     ccdSpeedThreshold?: number
+    
+    /**
+     * @see {@link Body.damping}
+     */
     damping?: number
+    
+    /**
+     * @see {@link Body.fixedRotation}
+     */
     fixedRotation?: boolean
+    
+    /**
+     * @see {@link Body.gravityScale}
+     */
     gravityScale?: number
+    
+    /**
+     * @see {@link Body.id}
+     */
     id?: number
+    
+    /**
+     * @see {@link Body.mass}
+     */
     mass?: number
+    
+    /**
+     * @see {@link Body.sleepSpeedLimit}
+     */
     sleepSpeedLimit?: number
+    
+    /**
+     * @see {@link Body.sleepTimeLimit}
+     */
     sleepTimeLimit?: number
+    
+    /**
+     * @see {@link Body.fixedX}
+     */
     fixedX?: boolean
+    
+    /**
+     * @see {@link Body.fixedY}
+     */
     fixedY?: boolean
+
 }
 
 export type SleepyEvent = {
@@ -431,12 +515,24 @@ export class Body extends EventEmitter<BodyEventMap> {
      */
     ccdIterations: number
 
+    /**
+     * @internal
+     */
     massMultiplier: Vec2
 
+    /**
+     * @internal
+     */
     islandId: number
 
-    concavePath: Vec2[] | null
+    /**
+     * @internal
+     */
+    private concavePath: Vec2[] | null
 
+    /**
+     * @internal
+     */
     _wakeUpAfterNarrowphase: boolean
 
     constructor(options: BodyOptions = {}) {
@@ -478,8 +574,8 @@ export class Body extends EventEmitter<BodyEventMap> {
         this.force = options.force ? vec2.clone(options.force) : vec2create()
         this.angularForce = options.angularForce || 0
 
-        this.damping = options.damping !== undefined ? options.damping : 0.1
-        this.angularDamping = options.angularDamping !== undefined ? options.angularDamping : 0.1
+        this.damping = options.damping ?? 0.1
+        this.angularDamping = options.angularDamping ?? 0.1
 
         this.type = Body.STATIC
 
@@ -495,25 +591,21 @@ export class Body extends EventEmitter<BodyEventMap> {
         this.aabb = new AABB()
         this.aabbNeedsUpdate = true
 
-        this.allowSleep = options.allowSleep !== undefined ? options.allowSleep : true
+        this.allowSleep = options.allowSleep ?? true
         this.wantsToSleep = false
         this.sleepState = Body.AWAKE
-        this.sleepSpeedLimit = options.sleepSpeedLimit !== undefined ? options.sleepSpeedLimit : 0.2
-        this.sleepTimeLimit = options.sleepTimeLimit !== undefined ? options.sleepTimeLimit : 1
+        this.sleepSpeedLimit = options.sleepSpeedLimit ?? 0.2
+        this.sleepTimeLimit = options.sleepTimeLimit ?? 1
         this.idleTime = 0
         this.timeLastSleepy = 0
+        
+        this.collisionResponse = options.collisionResponse ?? true
+        this.ccdSpeedThreshold = options.ccdSpeedThreshold ?? -1
+        this.ccdIterations = options.ccdIterations ?? 10
 
-        this.gravityScale = options.gravityScale !== undefined ? options.gravityScale : 1
-
-        this.collisionResponse = options.collisionResponse !== undefined ? options.collisionResponse : true
-
-        this.ccdSpeedThreshold = options.ccdSpeedThreshold !== undefined ? options.ccdSpeedThreshold : -1
-        this.ccdIterations = options.ccdIterations !== undefined ? options.ccdIterations : 10
-
+        this.gravityScale = options.gravityScale ?? 1
         this.islandId = -1
-
         this.concavePath = null
-
         this._wakeUpAfterNarrowphase = false
 
         this.updateMassProperties()
@@ -568,7 +660,7 @@ export class Body extends EventEmitter<BodyEventMap> {
     updateAABB(): void {
         const shapes = this.shapes,
             N = shapes.length,
-            offset = tmp,
+            offset = updateAABB_tmp,
             bodyAngle = this.angle
 
         for (let i = 0; i !== N; i++) {
@@ -579,12 +671,12 @@ export class Body extends EventEmitter<BodyEventMap> {
             vec2.toGlobalFrame(offset, shape.position, this.position, bodyAngle)
 
             // Get shape AABB
-            shape.computeAABB(shapeAABB, offset, angle)
+            shape.computeAABB(updateAABB_shapeAABB, offset, angle)
 
             if (i === 0) {
-                this.aabb.copy(shapeAABB)
+                this.aabb.copy(updateAABB_shapeAABB)
             } else {
-                this.aabb.extend(shapeAABB)
+                this.aabb.extend(updateAABB_shapeAABB)
             }
         }
 
@@ -760,9 +852,9 @@ export class Body extends EventEmitter<BodyEventMap> {
      */
 
     applyForceLocal(localForce: Vec2, localPoint?: Vec2): void {
-        localPoint = localPoint || Body_applyForce_pointLocal
-        const worldForce = Body_applyForce_forceWorld
-        const worldPoint = Body_applyForce_pointWorld
+        localPoint = localPoint || applyForce_pointLocal
+        const worldForce = applyForce_forceWorld
+        const worldPoint = applyForce_pointWorld
         this.vectorToWorldFrame(worldForce, localForce)
         this.vectorToWorldFrame(worldPoint, localPoint)
         this.applyForce(worldForce, worldPoint)
@@ -786,7 +878,7 @@ export class Body extends EventEmitter<BodyEventMap> {
         }
 
         // Compute produced central impulse velocity
-        const velo = Body_applyImpulse_velo
+        const velo = applyImpulse_velo
         vec2.scale(velo, impulseVector, this.invMass)
         vec2.multiply(velo, this.massMultiplier, velo)
 
@@ -816,9 +908,9 @@ export class Body extends EventEmitter<BodyEventMap> {
      *     console.log(body.angularVelocity); // 1
      */
     applyImpulseLocal(localImpulse: Vec2, localPoint?: Vec2): void {
-        localPoint = localPoint || Body_applyImpulse_pointLocal
-        const worldImpulse = Body_applyImpulse_impulseWorld
-        const worldPoint = Body_applyImpulse_pointWorld
+        localPoint = localPoint || applyImpulse_pointLocal
+        const worldImpulse = applyImpulse_impulseWorld
+        const worldPoint = applyImpulse_pointWorld
         this.vectorToWorldFrame(worldImpulse, localImpulse)
         this.vectorToWorldFrame(worldPoint, localPoint)
         this.applyImpulse(worldImpulse, worldPoint)
@@ -1192,28 +1284,28 @@ export class Body extends EventEmitter<BodyEventMap> {
             }
         }
 
-        vec2.normalize(direction, this.velocity)
+        vec2.normalize(integrateToTimeOfImpact_direction, this.velocity)
 
-        vec2.scale(end, this.velocity, dt)
-        add(end, end, this.position)
+        vec2.scale(integrateToTimeOfImpact_end, this.velocity, dt)
+        add(integrateToTimeOfImpact_end, integrateToTimeOfImpact_end, this.position)
 
-        subtract(startToEnd, end, this.position)
+        subtract(integrateToTimeOfImpact_startToEnd, integrateToTimeOfImpact_end, this.position)
         const startToEndAngle = this.angularVelocity * dt
-        const len = vec2.length(startToEnd)
+        const len = vec2.length(integrateToTimeOfImpact_startToEnd)
 
         let timeOfImpact = 1
 
         let hitBody: Body | null = null
-        vec2.copy(ray.from, this.position)
-        vec2.copy(ray.to, end)
-        ray.update()
+        vec2.copy(integrateToTimeOfImpact_ray.from, this.position)
+        vec2.copy(integrateToTimeOfImpact_ray.to, integrateToTimeOfImpact_end)
+        integrateToTimeOfImpact_ray.update()
         for (let i = 0; i < this.shapes.length; i++) {
             const shape = this.shapes[i]
-            result.reset()
-            ray.collisionGroup = shape.collisionGroup
-            ray.collisionMask = shape.collisionMask
-            this.world.raycast(result, ray)
-            hitBody = result.body
+            integrateToTimeOfImpact_result.reset()
+            integrateToTimeOfImpact_ray.collisionGroup = shape.collisionGroup
+            integrateToTimeOfImpact_ray.collisionMask = shape.collisionMask
+            this.world.raycast(integrateToTimeOfImpact_result, integrateToTimeOfImpact_ray)
+            hitBody = integrateToTimeOfImpact_result.body
 
             if (hitBody !== null && (hitBody === this || ignoreBodies.indexOf(hitBody) !== -1)) {
                 hitBody = null
@@ -1227,12 +1319,12 @@ export class Body extends EventEmitter<BodyEventMap> {
         if (!hitBody || !timeOfImpact) {
             return false
         }
-        result.getHitPoint(end, ray)
-        subtract(startToEnd, end, this.position)
-        timeOfImpact = vec2.distance(end, this.position) / len // guess
+        integrateToTimeOfImpact_result.getHitPoint(integrateToTimeOfImpact_end, integrateToTimeOfImpact_ray)
+        subtract(integrateToTimeOfImpact_startToEnd, integrateToTimeOfImpact_end, this.position)
+        timeOfImpact = vec2.distance(integrateToTimeOfImpact_end, this.position) / len // guess
 
         const rememberAngle = this.angle
-        vec2.copy(rememberPosition, this.position)
+        vec2.copy(integrateToTimeOfImpact_rememberPosition, this.position)
 
         // Got a start and end point. Approximate time of impact using binary search
         let iter = 0
@@ -1246,8 +1338,8 @@ export class Body extends EventEmitter<BodyEventMap> {
             tmid = (tmax + tmin) / 2
 
             // Move the body to that point
-            vec2.scale(integrate_velodt, startToEnd, tmid)
-            add(this.position, rememberPosition, integrate_velodt)
+            vec2.scale(integrate_velodt, integrateToTimeOfImpact_startToEnd, tmid)
+            add(this.position, integrateToTimeOfImpact_rememberPosition, integrate_velodt)
             this.angle = rememberAngle + startToEndAngle * tmid
             this.updateAABB()
 
@@ -1266,11 +1358,11 @@ export class Body extends EventEmitter<BodyEventMap> {
 
         timeOfImpact = tmax // Need to guarantee overlap to resolve collisions
 
-        vec2.copy(this.position, rememberPosition)
+        vec2.copy(this.position, integrateToTimeOfImpact_rememberPosition)
         this.angle = rememberAngle
 
         // move to TOI
-        vec2.scale(integrate_velodt, startToEnd, timeOfImpact)
+        vec2.scale(integrate_velodt, integrateToTimeOfImpact_startToEnd, timeOfImpact)
         add(this.position, this.position, integrate_velodt)
         if (!this.fixedRotation) {
             this.angle += startToEndAngle * timeOfImpact
@@ -1292,18 +1384,18 @@ export class Body extends EventEmitter<BodyEventMap> {
     }
 }
 
-const shapeAABB = new AABB()
-const tmp = vec2create()
+const updateAABB_shapeAABB = new AABB()
+const updateAABB_tmp = vec2create()
 
-const Body_applyForce_forceWorld = vec2create()
-const Body_applyForce_pointWorld = vec2create()
-const Body_applyForce_pointLocal = vec2create()
+const applyForce_forceWorld = vec2create()
+const applyForce_pointWorld = vec2create()
+const applyForce_pointLocal = vec2create()
 
-const Body_applyImpulse_velo = vec2create()
+const applyImpulse_velo = vec2create()
 
-const Body_applyImpulse_impulseWorld = vec2create()
-const Body_applyImpulse_pointWorld = vec2create()
-const Body_applyImpulse_pointLocal = vec2create()
+const applyImpulse_impulseWorld = vec2create()
+const applyImpulse_pointWorld = vec2create()
+const applyImpulse_pointLocal = vec2create()
 
 const adjustCenterOfMass_tmp2 = vec2create()
 const adjustCenterOfMass_tmp3 = vec2create()
@@ -1312,12 +1404,12 @@ const adjustCenterOfMass_tmp4 = vec2create()
 const integrate_fhMinv = vec2create()
 const integrate_velodt = vec2create()
 
-const result = new RaycastResult()
-const ray = new Ray({
+const integrateToTimeOfImpact_result = new RaycastResult()
+const integrateToTimeOfImpact_ray = new Ray({
     mode: Ray.CLOSEST,
     skipBackfaces: true,
 })
-const direction = vec2create()
-const end = vec2create()
-const startToEnd = vec2create()
-const rememberPosition = vec2create()
+const integrateToTimeOfImpact_direction = vec2create()
+const integrateToTimeOfImpact_end = vec2create()
+const integrateToTimeOfImpact_startToEnd = vec2create()
+const integrateToTimeOfImpact_rememberPosition = vec2create()

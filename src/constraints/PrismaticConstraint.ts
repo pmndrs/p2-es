@@ -151,7 +151,7 @@ export class PrismaticConstraint extends Constraint {
 
      */
 
-        const maxForce = (this.maxForce = options.maxForce !== undefined ? options.maxForce : Number.MAX_VALUE)
+        const maxForce = (this.maxForce = options.maxForce ?? Number.MAX_VALUE)
 
         // Translational part
         const trans = new Equation(bodyA, bodyB, -maxForce, maxForce)
@@ -197,11 +197,11 @@ export class PrismaticConstraint extends Constraint {
         // Is this one used at all?
         this.velocity = 0
 
-        this.lowerLimitEnabled = options.lowerLimit !== undefined ? true : false
-        this.upperLimitEnabled = options.upperLimit !== undefined ? true : false
+        this.lowerLimitEnabled = options.lowerLimit !== undefined
+        this.upperLimitEnabled = options.upperLimit !== undefined
 
-        this.lowerLimit = options.lowerLimit !== undefined ? options.lowerLimit : 0
-        this.upperLimit = options.upperLimit !== undefined ? options.upperLimit : 1
+        this.lowerLimit = options.lowerLimit ?? 0
+        this.upperLimit = options.upperLimit ?? 1
 
         // Equations used for limits
         this.upperLimitEquation = new ContactEquation(bodyA, bodyB)

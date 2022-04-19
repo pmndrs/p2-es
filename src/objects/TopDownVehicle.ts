@@ -48,7 +48,7 @@ export class WheelConstraint extends Constraint {
 
         this.engineForce = 0
 
-        this.setSideFriction(options.sideFriction !== undefined ? options.sideFriction : 5)
+        this.setSideFriction(options.sideFriction ?? 5)
 
         this.localForwardVector = vec2.fromValues(0, 1)
         if (options.localForwardVector) {

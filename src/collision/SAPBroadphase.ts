@@ -12,9 +12,11 @@ export class SAPBroadphase extends Broadphase {
      * List of bodies currently in the broadphase.
      */
     axisList: Body[] = []
+
     axisIndex = 0
 
     private addBodyHandler: (e: AddBodyEvent) => void
+    
     private removeBodyHandler: (e: RemoveBodyEvent) => void
 
     constructor() {

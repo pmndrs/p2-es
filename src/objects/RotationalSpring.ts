@@ -29,7 +29,7 @@ export class RotationalSpring extends Spring {
 
     constructor(bodyA: Body, bodyB: Body, options: RotationalSpringOptions = {}) {
         super(bodyA, bodyB, options)
-        this.restAngle = options.restAngle !== undefined ? options.restAngle : bodyB.angle - bodyA.angle
+        this.restAngle = options.restAngle ?? bodyB.angle - bodyA.angle
     }
 
     /**

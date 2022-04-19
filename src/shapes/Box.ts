@@ -1,7 +1,6 @@
 import type { AABB } from '../collision/AABB'
 import * as vec2 from '../math/vec2'
 import type { Vec2 } from '../types'
-import { shallowClone } from './../utils/Utils'
 import type { ConvexOptions } from './Convex'
 import { Convex } from './Convex'
 import type { SharedShapeOptions } from './Shape'
@@ -13,11 +12,13 @@ import { Shape } from './Shape'
 export interface BoxOptions extends SharedShapeOptions {
     /**
      * Total width of the box
+     * @see {@link Box.width}
      */
     width?: number
 
     /**
      * Total height of the box
+     * @see {@link Box.height}
      */
     height?: number
 }
@@ -59,7 +60,7 @@ export class Box extends Convex {
             vec2.fromValues(-params.width / 2, params.height / 2),
         ]
 
-        const convexOptions: ConvexOptions = shallowClone(options)
+        const convexOptions: ConvexOptions = options
         convexOptions.vertices = verts
         convexOptions.type = Shape.BOX
 

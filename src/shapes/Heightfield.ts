@@ -7,9 +7,28 @@ import type { SharedShapeOptions } from './Shape'
 import { Shape } from './Shape'
 
 export interface HeightfieldOptions extends SharedShapeOptions {
+    /**
+     * An array of numbers, or height values, that are spread out along the x axis.
+     * @see {@link Heightfield.heights}
+     */
     heights?: number[]
+
+    /**
+     * Min value of the heights
+     * @see {@link Heightfield.minValue}
+     */
     minValue?: number
+
+    /**
+     * Max value of the heights
+     * @see {@link Heightfield.maxValue}
+     */
     maxValue?: number
+
+    /**
+     * The width of each element
+     * @see {@link Heightfield.elementWidth}
+     */
     elementWidth?: number
 }
 
@@ -47,7 +66,7 @@ export class Heightfield extends Shape {
     maxValue?: number
 
     /**
-     * Max value of the heights
+     * Min value of the heights
      */
     minValue?: number
 
@@ -71,7 +90,7 @@ export class Heightfield extends Shape {
         this.maxValue = params.maxValue
         this.minValue = params.minValue
 
-        this.elementWidth = params.elementWidth !== undefined ? params.elementWidth : 0.1
+        this.elementWidth = params.elementWidth ?? 0.1
 
         if (params.maxValue === undefined || params.minValue === undefined) {
             this.updateMaxMinValues()

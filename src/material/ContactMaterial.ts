@@ -2,12 +2,46 @@ import { Equation } from '../equations/Equation'
 import { Material } from './Material'
 
 export interface ContactMaterialOptions {
+    /**
+     * Friction coefficient to use in the contact of these two materials.
+     * @see {@link ContactMaterial.friction}
+     */
     friction?: number
+
+    /**
+     * Restitution, or "bounciness" to use in the contact of these two materials.
+     * @see {@link ContactMaterial.restitution}
+     */
     restitution?: number
+
+    /**
+     * Hardness of the contact.
+     * @see {@link ContactMaterial.stiffness}
+     */
     stiffness?: number
+
+    /**
+     * Relaxation of the resulting ContactEquation that this ContactMaterial will generate.
+     * @see {@link ContactMaterial.relaxation}
+     */
     relaxation?: number
+
+    /**
+     * Stiffness of the resulting friction force.
+     * @see {@link ContactMaterial.frictionStiffness}
+     */
     frictionStiffness?: number
+
+    /**
+     * Relaxation of the resulting friction force.
+     * @see {@link ContactMaterial.frictionRelaxation}
+     */
     frictionRelaxation?: number
+
+    /**
+     * Will add surface velocity to this material.
+     * @see {@link ContactMaterial.surfaceVelocity}
+     */
     surfaceVelocity?: number
 }
 
@@ -61,7 +95,7 @@ export class ContactMaterial {
     stiffness: number
 
     /**
-     * Relaxation of the resulting ContactEquation that this ContactMaterial generate.
+     * Relaxation of the resulting ContactEquation that this ContactMaterial will generate.
      * Default value is {@link Equation.DEFAULT_RELAXATION}
      */
     relaxation: number
@@ -88,6 +122,9 @@ export class ContactMaterial {
      */
     contactSkinSize: number
 
+    /**
+     * Id counter for created contact materials.
+     */
     static idCounter = 0
 
     constructor(materialA: Material, materialB: Material, options: ContactMaterialOptions = {}) {
@@ -96,19 +133,15 @@ export class ContactMaterial {
         }
 
         this.id = ContactMaterial.idCounter++
-
         this.materialA = materialA
         this.materialB = materialB
-
-        this.friction = options.friction !== undefined ? options.friction : 0.3
-        this.restitution = options.restitution !== undefined ? options.restitution : 0
-        this.stiffness = options.stiffness !== undefined ? options.stiffness : Equation.DEFAULT_STIFFNESS
-        this.relaxation = options.relaxation !== undefined ? options.relaxation : Equation.DEFAULT_RELAXATION
-        this.frictionStiffness =
-            options.frictionStiffness !== undefined ? options.frictionStiffness : Equation.DEFAULT_STIFFNESS
-        this.frictionRelaxation =
-            options.frictionRelaxation !== undefined ? options.frictionRelaxation : Equation.DEFAULT_RELAXATION
-        this.surfaceVelocity = options.surfaceVelocity !== undefined ? options.surfaceVelocity : 0
+        this.friction = options.friction ?? 0.3
+        this.restitution = options.restitution ?? 0
+        this.stiffness = options.stiffness ?? Equation.DEFAULT_STIFFNESS
+        this.relaxation = options.relaxation ?? Equation.DEFAULT_RELAXATION
+        this.frictionStiffness = options.frictionStiffness ?? Equation.DEFAULT_STIFFNESS
+        this.frictionRelaxation = options.frictionRelaxation ?? Equation.DEFAULT_RELAXATION
+        this.surfaceVelocity = options.surfaceVelocity ?? 0
         this.contactSkinSize = 0.005
     }
 }

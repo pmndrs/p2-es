@@ -17,6 +17,9 @@ export class Material {
      */
     readonly id: number
 
+    /**
+     * Id counter for materials
+     */
     static idCounter = 0
 
     constructor() {

@@ -47,12 +47,12 @@ export class GearConstraint extends Constraint {
         /**
          * The gear ratio.
          */
-        this.ratio = options.ratio !== undefined ? options.ratio : 1
+        this.ratio = options.ratio ?? 1
 
         /**
          * The relative angle
          */
-        this.angle = options.angle !== undefined ? options.angle : bodyB.angle - this.ratio * bodyA.angle
+        this.angle = options.angle ?? bodyB.angle - this.ratio * bodyA.angle
 
         // Send same parameters to the equation
         const angleLockOptions: AngleLockEquationOptions = shallowClone(options)

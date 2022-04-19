@@ -7,13 +7,13 @@ import { Solver } from './Solver'
 export interface GSSolverOptions extends SolverOptions {
     /**
      * The max number of iterations to do when solving. More gives better results, but is more expensive.
-     * see {@link GSSolver.iterations}
+     * @see {@link GSSolver.iterations}
      */
     iterations?: number
 
     /**
      * The error tolerance, per constraint.
-     * see {@link GSSolver.tolerance}
+     * @see {@link GSSolver.tolerance}
      */
     tolerance?: number
 
@@ -58,8 +58,8 @@ export class GSSolver extends Solver {
         super(options, Solver.GS)
 
         this.iterations = options.iterations || 10
-        this.tolerance = options.tolerance !== undefined ? options.tolerance : 1e-7
-        this.frictionIterations = options.frictionIterations !== undefined ? options.frictionIterations : 0
+        this.tolerance = options.tolerance ?? 1e-7
+        this.frictionIterations = options.frictionIterations ?? 0
         this.usedIterations = 0
     }
 

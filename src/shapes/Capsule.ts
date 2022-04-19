@@ -18,7 +18,7 @@ export interface CapsuleOptions extends SharedShapeOptions {
 
     /**
      * Radius of the capsule.
-     * @see @see {@link Capsule.radius}
+     * @see {@link Capsule.radius}
      */
     radius?: number
 }
