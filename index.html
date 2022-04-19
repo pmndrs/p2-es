@@ -1,73 +1,188 @@
-
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <title>p2-es</title>
-    <style type="text/css">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>p2-es</title>
+        <style type="text/css">
+            body {
+                font-family: Helvetica;
+                font-size: 16px;
+                color: #333;
+                line-height: 1.6em;
+                text-align: left;
+                background-color: #111;
+                margin: 0;
+            }
 
-        h1 {
-            font-size:28px;
-            font-family: Vera, Helvetica,Georgia;
-            padding:0;
-            margin-top:7px;
-            font-size:36px;
-            color:#FFF;
-            text-decoration:none;
-            line-height:1.2em;
-        }
+            main {
+                max-width: 500px;
+                margin: 0 auto;
+                border-left: 1px solid #e6e6e6;
+                border-right: 1px solid #e6e6e6;
+                background-color: #fefefe;
+                padding: 20px;
+            }
 
-        h1 a {
-            text-decoration:none;
-        }
+            section {
+                margin-bottom: 20px;
+            }
 
-        a {
-            color:white;
-            text-decoration:none;
-        }
+            a {
+                color: #339;
+            }
 
-        p {
-            margin-bottom: 40px;
-        }
+            ul {
+                padding-left: 20px;
+            }
 
-        a.button {
-            padding: 15px;
-            background-color: white;
-            color:black;
-            margin: 10px;
-            border-radius: 10px 10px 10px 10px;
-            -moz-border-radius: 10px 10px 10px 10px;
-            -webkit-border-radius: 10px 10px 10px 10px;
-        }
+            h1 {
+                font-size: 60px;
+                font-family: Vera, Helvetica, Georgia;
+                padding: 0;
+                margin-top: 7px;
+                margin-bottom: 0;
+                color: #333;
+                text-decoration: none;
+                line-height: 1.2em;
+                text-align: center;
+            }
 
-        body {
-            margin-top: 50px;
-            background-color:black;
-            font-family:Helvetica;
-            font-size:14px;
-            color:white;
-            line-height:1.6em;
-            text-align: center;
-        }
+            h1 .small {
+                font-size: 16px;
+                margin-left: 5px;
+            }
 
-        h1 .small {
-            font-size:16px;
-        }
-    </style>
-  </head>
+            h1 a {
+                text-decoration: none;
+            }
 
-  <body>
+            .links {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                font-size: 20px;
+            }
 
-    <h1>
-      p2-es
-      <span class="small">by <a href="https://github.com/schteppe">schteppe</a></span>
-    </h1>
+            .links a {
+              text-decoration: none;
+            }
 
-    <p>A 2D physics engine for JavaScript</p>
+            h3 {
+                margin: 0;
+                font-size: 16px;
+            }
 
-    <a class="button" href="https://github.com/pmndrs/p2-es">View on Github</a>
-    <a class="button" href="docs">Documentation</a>
+            .demos a,
+            .examples a {
+                display: block;
+            }
+        </style>
+    </head>
 
-  </body>
+    <body>
+        <main>
+            <h1>
+                p2-es<span class="small"> by <a href="https://github.com/schteppe">schteppe</a></span>
+            </h1>
 
+            <div class="links">
+                <a href="docs">Docs</a> | <a href="https://github.com/pmndrs/p2-es">GitHub</a> |
+                <a href="https://www.npmjs.com/package/p2-es">NPM</a>
+            </div>
+
+            <p>p2-es is a 2D rigid body physics engine written in JavaScript.</p>
+            <p>
+                Features include collision detection, contacts, friction, restitution, motors, springs, advanced
+                constraints and various shape types.
+            </p>
+
+            <h2>Featured projects using p2.js</h2>
+            <ul>
+                <li>
+                    <a href="http://www.chromeexperiments.com/detail/io-2015-experiment">Google I/O 2015 Experiment</a>
+                    by Instrument
+                </li>
+                <li>
+                    <a href="http://christmasexperiments.com/experiments/11">PixiLights, a Christmas Experiment</a> by
+                    Mat Groves
+                </li>
+                <li>
+                    <a href="https://github.com/schteppe/p2.js/wiki/Projects-using-p2.js">More...</a>
+                </li>
+            </ul>
+
+            <section id="examples">
+                <h2>Examples</h2>
+                <p>Examples showing how to use p2.js with your favorite renderer.</p>
+
+                <div class="examples">
+                    <h3>Canvas</h3>
+                    <ul>
+                        <li><a href="examples/canvas/asteroids.html">Asteroids game</a></li>
+                        <li><a href="examples/canvas/box.html">Box on plane</a></li>
+                        <li><a href="examples/canvas/character.html">Character demo</a></li>
+                        <li><a href="examples/canvas/circle.html">Circle on plane</a></li>
+                        <li><a href="examples/canvas/interpolation.html">Interpolation</a></li>
+                        <li><a href="examples/canvas/mouseJoint.html">Mousejoint</a></li>
+                        <li><a href="examples/canvas/raycasting.html">Raycasting</a></li>
+                        <li><a href="examples/canvas/rayreflect.html">Rayreflect</a></li>
+                        <li><a href="examples/canvas/sensors.html">Sensors</a></li>
+                        <li><a href="examples/canvas/sensors2.html">Sensors 2</a></li>
+                    </ul>
+
+                    <h3>PixiJS</h3>
+                    <ul>
+                        <li><a href="examples/pixijs/box.html">Box on plane</a></li>
+                    </ul>
+
+                    <h3>DOM</h3>
+                    <ul>
+                        <li><a href="examples/dom/index.html">DOM elements</a></li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="demos">
+                <h2>Demos</h2>
+                <p>These demos use the p2 Demo framework, which provides rendering and interactivity.</p>
+
+                <div class="demos">
+                    <ul>
+                        <li><a href="demos/buoyancy.html">Buoyancy</a></li>
+                        <li><a href="demos/car.html">Car</a></li>
+                        <li><a href="demos/ccd.html">CCD</a></li>
+                        <li><a href="demos/circles.html">Circle container</a></li>
+                        <li><a href="demos/collisions.html">Collision tests</a></li>
+                        <li><a href="demos/compound.html">Compound objects</a></li>
+                        <li><a href="demos/concave.html">Concave objects</a></li>
+                        <li><a href="demos/constraints.html">Constraints</a></li>
+                        <li><a href="demos/distanceConstraint.html">DistanceConstraint</a></li>
+                        <li><a href="demos/fixedRotation.html">Fixed rotation</a></li>
+                        <li><a href="demos/fixedXY.html">Fixed XY</a></li>
+                        <li><a href="demos/friction.html">Friction</a></li>
+                        <li><a href="demos/gearConstraint.html">Gear constraint</a></li>
+                        <li><a href="demos/heightfield.html">Heightfield</a></li>
+                        <li><a href="demos/islandSolver.html">Island solver</a></li>
+                        <li><a href="demos/kinematic.html">Kinematic body</a></li>
+                        <li><a href="demos/lock.html">Lock constraint</a></li>
+                        <li><a href="demos/piston.html">Piston</a></li>
+                        <li><a href="demos/prismatic.html">Prismatic constraint</a></li>
+                        <li><a href="demos/ragdoll.html">Ragdoll</a></li>
+                        <li><a href="demos/removeSensor.html">Sensor</a></li>
+                        <li><a href="demos/restitution.html">Restitution</a></li>
+                        <li><a href="demos/sleep.html">Sleep</a></li>
+                        <li><a href="demos/segway.html">Segway</a></li>
+                        <li><a href="demos/sleep.html">Sleep</a></li>
+                        <li><a href="demos/springs.html">Springs</a></li>
+                        <li><a href="demos/surfaceVelocity.html">Surface velocity</a></li>
+                        <li><a href="demos/suspension.html">Suspension</a></li>
+                        <li><a href="demos/tearable.html">Tearable constraints</a></li>
+                        <li><a href="demos/topDownVehicle.html">TopDownVehicle</a></li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </body>
 </html>

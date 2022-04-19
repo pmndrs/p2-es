@@ -11,7 +11,7 @@ If you're using three.js in a React environment with react-three-fiber, check ou
 
 2D rigid body physics engine written in JavaScript. Includes collision detection, contacts, friction, restitution, motors, springs, advanced constraints and various shape types.
 
-[Demos](#demos) | [Examples](#examples) | [Documentation](http://pmndrs.github.io/p2-es/docs/)
+[Demos](http://pmndrs.github.io/p2-es/#demos) | [Examples](http://pmndrs.github.io/p2-es/#examples) | [Documentation](http://pmndrs.github.io/p2-es/docs/)
 
 ### Getting Started
 
@@ -42,64 +42,8 @@ If you would like to use ordinary `Array` instead of `Float32Array`, define `P2_
 </script>
 ```
 
-### Featured projects using p2.js
-
-* [Google I/O 2015 Experiment](http://www.chromeexperiments.com/detail/io-2015-experiment) by Instrument
-* [PixiLights, a Christmas Experiment](http://christmasexperiments.com/experiments/11) by Mat Groves
-* [More...](https://github.com/schteppe/p2.js/wiki/Projects-using-p2.js)
-
-### Demos
-
-These demos use the p2 Demo framework, which provides rendering and interactivity. Use mouse/touch to throw or create objects. Use the right menu (or console!) to tweak parameters. Or just check the source to see how to programmatically build the current scene using p2.
-
-* [Buoyancy](http://pmndrs.github.io/p2-es/demos/buoyancy.html)
-* [Car](http://pmndrs.github.io/p2-es/demos/car.html)
-* [CCD](http://pmndrs.github.io/p2-es/demos/ccd.html)
-* [Circle container](http://pmndrs.github.io/p2-es/demos/circles.html)
-* [Collision tests](http://pmndrs.github.io/p2-es/demos/collisions.html)
-* [Compound objects](http://pmndrs.github.io/p2-es/demos/compound.html)
-* [Concave objects](http://pmndrs.github.io/p2-es/demos/concave.html)
-* [Constraints](http://pmndrs.github.io/p2-es/demos/constraints.html)
-* [DistanceConstraint](http://pmndrs.github.io/p2-es/demos/distanceConstraint.html)
-* [Fixed rotation](http://pmndrs.github.io/p2-es/demos/fixedRotation.html)
-* [Fixed XY](http://pmndrs.github.io/p2-es/demos/fixedXY.html)
-* [Friction](http://pmndrs.github.io/p2-es/demos/friction.html)
-* [Gear constraint](http://pmndrs.github.io/p2-es/demos/gearConstraint.html)
-* [Heightfield](http://pmndrs.github.io/p2-es/demos/heightfield.html)
-* [Island solver](http://pmndrs.github.io/p2-es/demos/islandSolver.html)
-* [Kinematic body](http://pmndrs.github.io/p2-es/demos/kinematic.html)
-* [Lock constraint](http://pmndrs.github.io/p2-es/demos/lock.html)
-* [Piston](http://pmndrs.github.io/p2-es/demos/piston.html)
-* [Prismatic constraint](http://pmndrs.github.io/p2-es/demos/prismatic.html)
-* [Ragdoll](http://pmndrs.github.io/p2-es/demos/ragdoll.html)
-* [Sensor](http://pmndrs.github.io/p2-es/demos/removeSensor.html)
-* [Restitution](http://pmndrs.github.io/p2-es/demos/restitution.html)
-* [Sleep](http://pmndrs.github.io/p2-es/demos/sleep.html)
-* [Segway](http://pmndrs.github.io/p2-es/demos/segway.html)
-* [Sleep](http://pmndrs.github.io/p2-es/demos/sleep.html)
-* [Springs](http://pmndrs.github.io/p2-es/demos/springs.html)
-* [Surface velocity](http://pmndrs.github.io/p2-es/demos/surfaceVelocity.html)
-* [Suspension](http://pmndrs.github.io/p2-es/demos/suspension.html)
-* [Tearable constraints](http://pmndrs.github.io/p2-es/demos/tearable.html)
-* [TopDownVehicle](http://pmndrs.github.io/p2-es/demos/topDownVehicle.html)
-
-### Examples
-
-Examples showing how to use p2.js with your favorite renderer.
-
-* [Canvas: Asteroids game](http://pmndrs.github.io/p2-es/examples/canvas/asteroids.html)
-* [Canvas: Box on plane](http://pmndrs.github.io/p2-es/examples/canvas/box.html)
-* [Canvas: Character demo](http://pmndrs.github.io/p2-es/examples/canvas/character.html)
-* [Canvas: Circle on plane](http://pmndrs.github.io/p2-es/examples/canvas/circle.html)
-* [Canvas: Interpolation](http://pmndrs.github.io/p2-es/examples/canvas/interpolation.html)
-* [Canvas: Mousejoint](http://pmndrs.github.io/p2-es/examples/canvas/mouseJoint.html)
-* [Canvas: Raycasting](http://pmndrs.github.io/p2-es/examples/canvas/raycasting.html)
-* [Canvas: Rayreflect](http://pmndrs.github.io/p2-es/examples/canvas/rayreflect.html)
-* [Canvas: Sensors](http://pmndrs.github.io/p2-es/examples/canvas/sensors.html)
-* [Canvas: Sensors 2](http://pmndrs.github.io/p2-es/examples/canvas/sensors2.html)
-* [Pixi.js: Box on plane](http://pmndrs.github.io/p2-es/examples/pixijs/box.html)
-
 ### Sample code
+
 The following example uses the [World](http://pmndrs.github.io/p2-es/docs/classes/World.html), [Circle](http://pmndrs.github.io/p2-es/docs/classes/Circle.html), [Body](http://pmndrs.github.io/p2-es/docs/classes/Body.html) and [Plane](http://pmndrs.github.io/p2-es/docs/classes/Plane.html) classes to set up a simple physics scene with a ball on a plane.
 
 ```js
