@@ -1,7 +1,7 @@
 import type { AngleLockEquationOptions } from '../equations/AngleLockEquation'
 import { AngleLockEquation } from '../equations/AngleLockEquation'
 import type { Body } from '../objects/Body'
-import { Utils } from '../utils/Utils'
+import { shallowClone } from '../utils/Utils'
 import type { ConstraintOptions } from './Constraint'
 import { Constraint } from './Constraint'
 
@@ -59,7 +59,7 @@ export class GearConstraint extends Constraint {
         this.angle = options.angle !== undefined ? options.angle : bodyB.angle - this.ratio * bodyA.angle
 
         // Send same parameters to the equation
-        const angleLockOptions: AngleLockEquationOptions = Utils.shallowClone(options)
+        const angleLockOptions: AngleLockEquationOptions = shallowClone(options)
         angleLockOptions.angle = this.angle
         angleLockOptions.ratio = this.ratio
 

@@ -1,89 +1,17 @@
-class Utils {
-  /**
-   * The array type to use for internal numeric computations throughout the library.
-   * Float32Array is used if it is available, but falls back on Array.
-   * If you want to set array type manually, inject it via the global variable P2_ARRAY_TYPE.
-   * See example below.
-   * @example
-   *     <script>
-   *         <!-- Inject your preferred array type before loading p2.js -->
-   *         P2_ARRAY_TYPE = Array;
-   *     </script>
-   *     <script src="p2.js"></script>
-   */
-
-  /**
-   * Append the values in array b to the array a.
-   * @param a the array to append to
-   * @param b the array to append values from
-   */
-  static appendArray(a, b) {
-    for (let i = 0, len = b.length; i !== len; ++i) {
-      a.push(b[i]);
-    }
-  }
-  /**
-   * Garbage free Array.splice(). Does not allocate a new array.
-   * @param array
-   * @param index
-   * @param howmany
-   */
-
-
-  static splice(array, index, howmany) {
-    if (howmany === void 0) {
-      howmany = 1;
-    }
-
-    const len = array.length - howmany;
-
-    for (let i = index; i < len; i++) {
-      array[i] = array[i + howmany];
-    }
-
-    array.length = len;
-  }
-  /**
-   * Remove an element from an array, if the array contains the element.
-   * @param array
-   * @param element
-   */
-
-
-  static arrayRemove(array, element) {
-    const idx = array.indexOf(element);
-
-    if (idx !== -1) {
-      Utils.splice(array, idx, 1);
-    }
-  }
-  /**
-   * Extend an object with the properties of another
-   * @param a
-   * @param b
-   */
-
-
-  static extend(a, b) {
-    for (const key in b) {
-      a[key] = b[key];
-    }
-  }
-  /**
-   * Shallow clone an object. Returns a new object instance with the same properties as the input instance.
-   * @param obj
-   */
-
-
-  static shallowClone(obj) {
-    const newObj = {};
-    Utils.extend(newObj, obj);
-    return newObj;
-  }
-
-}
-
-Utils.ARRAY_TYPE = (() => {
+/**
+ * The array type to use for internal numeric computations throughout the library.
+ * Float32Array is used if it is available, but falls back on Array.
+ * If you want to set array type manually, inject it via the global variable P2_ARRAY_TYPE.
+ * See example below.
+ *
+ * @example
+ *     <script>
+ *         <!-- Inject your preferred array type before loading p2-es -->
+ *         P2_ARRAY_TYPE = Array;
+ *     </script>
+ *     <script src="p2-es.js"></script>
+ */
+const ARRAY_TYPE = (() => {
   if (typeof P2_ARRAY_TYPE !== 'undefined') {
     return P2_ARRAY_TYPE;
   } else if (typeof Float32Array !== 'undefined') {
@@ -92,6 +20,79 @@ Utils.ARRAY_TYPE = (() => {
     return Array;
   }
 })();
+/**
+ * Append the values in array b to the array a.
+ * @param a the array to append to
+ * @param b the array to append values from
+ */
+
+const appendArray = (a, b) => {
+  for (let i = 0, len = b.length; i !== len; ++i) {
+    a.push(b[i]);
+  }
+};
+/**
+ * Garbage free Array.splice(). Does not allocate a new array.
+ * @param array
+ * @param index
+ * @param howmany
+ */
+
+const splice = function (array, index, howmany) {
+  if (howmany === void 0) {
+    howmany = 1;
+  }
+
+  const len = array.length - howmany;
+
+  for (let i = index; i < len; i++) {
+    array[i] = array[i + howmany];
+  }
+
+  array.length = len;
+};
+/**
+ * Remove an element from an array, if the array contains the element.
+ * @param array
+ * @param element
+ */
+
+const arrayRemove = (array, element) => {
+  const idx = array.indexOf(element);
+
+  if (idx !== -1) {
+    splice(array, idx, 1);
+  }
+};
+/**
+ * Extend an object with the properties of another
+ * @param a
+ * @param b
+ */
+
+const extend = (a, b) => {
+  return { ...a,
+    ...b
+  };
+};
+/**
+ * Shallow clone an object. Returns a new object instance with the same properties as the input instance.
+ * @param obj
+ */
+
+const shallowClone = obj => {
+  return extend({}, obj);
+};
+
+var Utils = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    ARRAY_TYPE: ARRAY_TYPE,
+    appendArray: appendArray,
+    splice: splice,
+    arrayRemove: arrayRemove,
+    extend: extend,
+    shallowClone: shallowClone
+});
 
 /* Copyright (c) 2013, Brandon Jones, Colin MacKenzie IV. All rights reserved.
 
@@ -273,7 +274,7 @@ function centroid(out, a, b, c) {
  */
 
 function create() {
-  const out = new Utils.ARRAY_TYPE(2);
+  const out = new ARRAY_TYPE(2);
   out[0] = 0;
   out[1] = 0;
   return out;
@@ -285,7 +286,7 @@ function create() {
  */
 
 function clone(a) {
-  const out = new Utils.ARRAY_TYPE(2);
+  const out = new ARRAY_TYPE(2);
   out[0] = a[0];
   out[1] = a[1];
   return out;
@@ -298,7 +299,7 @@ function clone(a) {
  */
 
 function fromValues(x, y) {
-  const out = new Utils.ARRAY_TYPE(2);
+  const out = new ARRAY_TYPE(2);
   out[0] = x;
   out[1] = y;
   return out;
@@ -566,39 +567,39 @@ function getLineSegmentsIntersectionFraction(p0, p1, p2, p3) {
 }
 
 var vec2 = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  crossLength: crossLength,
-  crossVZ: crossVZ,
-  crossZV: crossZV,
-  rotate: rotate,
-  rotate90cw: rotate90cw,
-  toLocalFrame: toLocalFrame,
-  toGlobalFrame: toGlobalFrame,
-  vectorToLocalFrame: vectorToLocalFrame,
-  vectorToGlobalFrame: vectorToGlobalFrame,
-  centroid: centroid,
-  create: create,
-  clone: clone,
-  fromValues: fromValues,
-  copy: copy,
-  set: set,
-  add: add,
-  subtract: subtract,
-  multiply: multiply,
-  divide: divide,
-  scale: scale,
-  distance: distance,
-  squaredDistance: squaredDistance,
-  length: length,
-  squaredLength: squaredLength,
-  negate: negate,
-  normalize: normalize,
-  dot: dot,
-  str: str,
-  lerp: lerp,
-  reflect: reflect,
-  getLineSegmentsIntersection: getLineSegmentsIntersection,
-  getLineSegmentsIntersectionFraction: getLineSegmentsIntersectionFraction
+    __proto__: null,
+    crossLength: crossLength,
+    crossVZ: crossVZ,
+    crossZV: crossZV,
+    rotate: rotate,
+    rotate90cw: rotate90cw,
+    toLocalFrame: toLocalFrame,
+    toGlobalFrame: toGlobalFrame,
+    vectorToLocalFrame: vectorToLocalFrame,
+    vectorToGlobalFrame: vectorToGlobalFrame,
+    centroid: centroid,
+    create: create,
+    clone: clone,
+    fromValues: fromValues,
+    copy: copy,
+    set: set,
+    add: add,
+    subtract: subtract,
+    multiply: multiply,
+    divide: divide,
+    scale: scale,
+    distance: distance,
+    squaredDistance: squaredDistance,
+    length: length,
+    squaredLength: squaredLength,
+    negate: negate,
+    normalize: normalize,
+    dot: dot,
+    str: str,
+    lerp: lerp,
+    reflect: reflect,
+    getLineSegmentsIntersection: getLineSegmentsIntersection,
+    getLineSegmentsIntersectionFraction: getLineSegmentsIntersectionFraction
 });
 
 /**
@@ -792,7 +793,7 @@ class AABB {
     const t3 = (lowerBound[1] - from[1]) * dirFracY;
     const t4 = (upperBound[1] - from[1]) * dirFracY;
     const tmin = Math.max(Math.max(Math.min(t1, t2), Math.min(t3, t4)));
-    const tmax = Math.min(Math.min(Math.max(t1, t2), Math.max(t3, t4))); // if tmax < 0, ray (line) is intersecting AABB, but whole AABB is behing us
+    const tmax = Math.min(Math.min(Math.max(t1, t2), Math.max(t3, t4))); // if tmax < 0, ray (line) is intersecting AABB, but whole AABB is behind us
 
     if (tmax < 0) {
       //t = tmax;
@@ -1828,7 +1829,6 @@ class RaycastResult {
  */
 class EventEmitter {
   constructor() {
-    this.tmpArray = [];
     this.listeners = {};
   }
 
@@ -1871,21 +1871,18 @@ class EventEmitter {
   off(type, listener) {
     const listeners = this.listeners[type];
 
-    if (!listeners) {
-      return this;
-    }
+    if (listeners) {
+      const index = listeners.indexOf(listener);
 
-    const index = listeners.indexOf(listener);
-
-    if (index !== -1) {
-      listeners.splice(index, 1);
+      if (index !== -1) {
+        listeners.splice(index, 1);
+      }
     }
 
     return this;
   }
   /**
    * Check if an event listener is added
-   * @method has
    * @param type
    * @param listener
    * @return
@@ -1929,26 +1926,16 @@ class EventEmitter {
       return this;
     }
 
-    const listeners = this.listeners;
-    const listenerArray = listeners[event.type];
+    const eventListeners = this.listeners[event.type];
 
-    if (listenerArray !== undefined) {
+    if (eventListeners !== undefined) {
       const toEmit = { ...event,
         target: this
-      }; // Need to copy the listener array, in case some listener was added/removed inside a listener
+      }; // only emit to current listeners, ignore listeners that might be added inside a listener function
 
-      const tmpArray = this.tmpArray;
-
-      for (let i = 0, l = listenerArray.length; i < l; i++) {
-        tmpArray[i] = listenerArray[i];
-      }
-
-      for (let i = 0, l = tmpArray.length; i < l; i++) {
-        const listener = tmpArray[i];
+      for (const listener of [...eventListeners]) {
         listener.call(listener.context, toEmit);
       }
-
-      tmpArray.length = 0;
     }
 
     return this;
@@ -3761,7 +3748,7 @@ class Box extends Convex {
       height: ((_options2 = options) == null ? void 0 : _options2.height) ?? 1
     };
     const verts = [fromValues(-params.width / 2, -params.height / 2), fromValues(params.width / 2, -params.height / 2), fromValues(params.width / 2, params.height / 2), fromValues(-params.width / 2, params.height / 2)];
-    const convexOptions = Utils.shallowClone(options);
+    const convexOptions = shallowClone(options);
     convexOptions.vertices = verts;
     convexOptions.type = Shape.BOX;
     super(convexOptions);
@@ -3967,7 +3954,7 @@ class Equation {
     this.maxBias = Number.MAX_VALUE;
     this.stiffness = Equation.DEFAULT_STIFFNESS;
     this.relaxation = Equation.DEFAULT_RELAXATION;
-    this.G = new Utils.ARRAY_TYPE(6);
+    this.G = new ARRAY_TYPE(6);
 
     for (let i = 0; i < 6; i++) {
       this.G[i] = 0;
@@ -4492,15 +4479,8 @@ class TupleDictionary {
 
 
   reset() {
-    const data = this.data,
-          keys = this.keys;
-    let l = keys.length;
-
-    while (l--) {
-      delete data[keys[l]];
-    }
-
-    keys.length = 0;
+    this.keys.length = 0;
+    this.data = {};
   }
   /**
    * Copy another TupleDictionary. Note that all data in this dictionary will be removed.
@@ -4511,7 +4491,7 @@ class TupleDictionary {
 
   copy(dict) {
     this.reset();
-    Utils.appendArray(this.keys, dict.keys);
+    appendArray(this.keys, dict.keys);
     let l = dict.keys.length;
 
     while (l--) {
@@ -6374,7 +6354,7 @@ class SAPBroadphase extends Broadphase {
     // Clear the old axis array
     this.axisList.length = 0; // Add all bodies from the new world
 
-    Utils.appendArray(this.axisList, world.bodies); // Remove old handlers, if any
+    appendArray(this.axisList, world.bodies); // Remove old handlers, if any
 
     world.off('addBody', this.addBodyHandler).off('removeBody', this.removeBodyHandler); // Add handlers to update the list of bodies.
 
@@ -6636,6 +6616,10 @@ class DistanceConstraint extends Constraint {
     }
 
     super(bodyA, bodyB, Constraint.DISTANCE, options);
+    this.upperLimit = options.upperLimit ?? 1;
+    this.upperLimitEnabled = options.upperLimit !== undefined;
+    this.lowerLimit = options.lowerLimit ?? 0;
+    this.lowerLimitEnabled = options.lowerLimit !== undefined;
     this.localAnchorA = options.localAnchorA ? clone(options.localAnchorA) : create();
     this.localAnchorB = options.localAnchorB ? clone(options.localAnchorB) : create();
     const localAnchorA = this.localAnchorA;
@@ -6707,10 +6691,6 @@ class DistanceConstraint extends Constraint {
 
 
     this.setMaxForce(maxForce);
-    this.upperLimitEnabled = false;
-    this.upperLimit = 1;
-    this.lowerLimitEnabled = false;
-    this.lowerLimit = 0;
     this.position = 0;
   }
   /**
@@ -6872,7 +6852,7 @@ class GearConstraint extends Constraint {
 
     this.angle = options.angle !== undefined ? options.angle : bodyB.angle - this.ratio * bodyA.angle; // Send same parameters to the equation
 
-    const angleLockOptions = Utils.shallowClone(options);
+    const angleLockOptions = shallowClone(options);
     angleLockOptions.angle = this.angle;
     angleLockOptions.ratio = this.ratio;
     this.equations = [new AngleLockEquation(bodyA, bodyB, angleLockOptions)]; // Set max torque
@@ -8678,7 +8658,7 @@ class Line extends Shape {
     set(l1, halfLen, 0);
     toGlobalFrame(l0, l0, position, angle);
     toGlobalFrame(l1, l1, position, angle);
-    const fraction = getLineSegmentsIntersectionFraction(l0, l1, from, to);
+    const fraction = getLineSegmentsIntersectionFraction(from, to, l0, l1);
 
     if (fraction >= 0) {
       const normal = raycast_normal;
@@ -9523,7 +9503,7 @@ class World extends EventEmitter {
 
 
   removeContactMaterial(cm) {
-    Utils.arrayRemove(this.contactMaterials, cm);
+    arrayRemove(this.contactMaterials, cm);
   }
   /**
    * Get a contact material given two materials
@@ -9557,7 +9537,7 @@ class World extends EventEmitter {
       throw new Error('Constraints cannot be removed during step.');
     }
 
-    Utils.arrayRemove(this.constraints, constraint);
+    arrayRemove(this.constraints, constraint);
   }
   /**
    * Step the physics world forward in time.
@@ -9612,15 +9592,11 @@ class World extends EventEmitter {
 
 
   step(dt, timeSinceLastCalled, maxSubSteps) {
-    if (timeSinceLastCalled === void 0) {
-      timeSinceLastCalled = 0;
-    }
-
     if (maxSubSteps === void 0) {
       maxSubSteps = 10;
     }
 
-    if (timeSinceLastCalled === 0) {
+    if (timeSinceLastCalled === undefined) {
       // Fixed, simple stepping
       this.internalStep(dt); // Increment time
 
@@ -9819,11 +9795,11 @@ class World extends EventEmitter {
     if (np.contactEquations.length || np.frictionEquations.length || Nconstraints) {
       // Get all equations
       let equations = [];
-      Utils.appendArray(equations, np.contactEquations);
-      Utils.appendArray(equations, np.frictionEquations);
+      appendArray(equations, np.contactEquations);
+      appendArray(equations, np.frictionEquations);
 
       for (let i = 0; i !== Nconstraints; i++) {
-        Utils.appendArray(equations, constraints[i].equations);
+        appendArray(equations, constraints[i].equations);
       }
 
       if (this.islandSplit) {
@@ -9993,7 +9969,7 @@ class World extends EventEmitter {
       throw new Error('Springs cannot be removed during step.');
     }
 
-    Utils.arrayRemove(this.springs, spring);
+    arrayRemove(this.springs, spring);
   }
   /**
    * Add a body to the simulation. Note that you can't add a body during step: you have to wait until after the step (see the postStep event).
@@ -10066,7 +10042,7 @@ class World extends EventEmitter {
 
     body.world = null;
     const bodies = this.bodies;
-    Utils.arrayRemove(bodies, body);
+    arrayRemove(bodies, body);
     body.index = -1;
     l = bodies.length;
 

@@ -8,12 +8,46 @@ import type { Body } from '../objects/Body'
 import type { Vec2 } from '../types'
 
 export interface SharedShapeOptions {
+    /**
+     * Body-local position of the shape.
+     * @see {@link Shape.position}
+     */
     position?: Vec2
+
+    /**
+     * Body-local angle of the shape.
+     * @see {@link Shape.angle}
+     */
     angle?: number
+
+    /**
+     * Collision group for the shape
+     * @see {@link Shape.collisionGroup}
+     */
     collisionGroup?: number
+
+    /**
+     * Collision mask for the shape
+     * @see {@link Shape.collisionMask}
+     */
     collisionMask?: number
+
+    /**
+     * Whether the shape is a sensor
+     * @see {@link Shape.sensor}
+     */
     sensor?: boolean
+
+    /**
+     * Whether to produce contact forces when in contact with other bodies.
+     * @see {@link Shape.collisionResponse}
+     */
     collisionResponse?: boolean
+
+    /**
+     * Material for the shape
+     * @see {@link Shape.material}
+     */
     material?: Material
 }
 
@@ -137,7 +171,8 @@ export abstract class Shape {
     area = 0
 
     /**
-     * Set to true if you want this shape to be a sensor. A sensor does not generate contacts, but it still reports contact events. This is good if you want to know if a shape is overlapping another shape, without them generating contacts.
+     * Set to true if you want this shape to be a sensor.
+     * A sensor does not generate contacts, but it still reports contact events. This is good if you want to know if a shape is overlapping another shape, without them generating contacts.
      */
     sensor: boolean
 

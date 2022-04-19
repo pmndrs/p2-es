@@ -1,17 +1,13 @@
 declare module "types/index" {
-    export type Point = [number, number];
-    export type Polygon = Point[];
     export type Vec2 = number[] | [number, number] | Float32Array;
 }
 declare module "utils/Utils" {
-    export class Utils {
-        static ARRAY_TYPE: new (n: number) => Float32Array | number[];
-        static appendArray(a: any[], b: any[]): void;
-        static splice(array: any[], index: number, howmany?: number): void;
-        static arrayRemove(array: any[], element: any): void;
-        static extend(a: any, b: any): void;
-        static shallowClone(obj: any): {};
-    }
+    export const ARRAY_TYPE: new (n: number) => Float32Array | number[];
+    export const appendArray: (a: unknown[], b: unknown[]) => void;
+    export const splice: (array: unknown[], index: number, howmany?: number) => void;
+    export const arrayRemove: (array: unknown[], element: unknown) => void;
+    export const extend: <A, B>(a: A, b: B) => A & B;
+    export const shallowClone: <T>(obj: T) => T;
 }
 declare module "math/vec2" {
     import type { Vec2 } from "types/index";
@@ -130,11 +126,10 @@ declare module "collision/RaycastResult" {
 }
 declare module "events/EventEmitter" {
     export class EventEmitter<EventMap extends Record<string, any>> {
-        private tmpArray;
         private listeners;
-        on<EventName extends keyof EventMap>(type: EventName, listener: (e: EventMap[EventName]) => void, context?: any): this;
-        off<EventName extends keyof EventMap>(type: EventName, listener: Function): EventEmitter<EventMap>;
-        has<EventName extends keyof EventMap>(type: EventName, listener?: Function): boolean;
+        on<E extends keyof EventMap>(type: E, listener: (e: EventMap[E]) => void, context?: any): this;
+        off<E extends keyof EventMap>(type: E, listener: Function): EventEmitter<EventMap>;
+        has<E extends keyof EventMap>(type: E, listener?: Function): boolean;
         emit<E extends keyof EventMap>(event: EventMap[E]): this;
     }
 }
@@ -1069,6 +1064,8 @@ declare module "constraints/DistanceConstraint" {
         localAnchorA?: Vec2;
         localAnchorB?: Vec2;
         maxForce?: number;
+        upperLimit?: number;
+        lowerLimit?: number;
     }
     export class DistanceConstraint extends Constraint {
         localAnchorA: Vec2;
@@ -1360,6 +1357,6 @@ declare module "p2-es" {
     export * from "utils/ContactEquationPool";
     export * from "utils/FrictionEquationPool";
     export * from "utils/Pool";
-    export * from "utils/Utils";
+    export * as Utils from "utils/Utils";
     export * from "world/World";
 }

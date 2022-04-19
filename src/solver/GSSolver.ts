@@ -18,15 +18,11 @@ export class GSSolver extends Solver {
 
     /**
      * The max number of iterations to do when solving. More gives better results, but is more expensive.
-     * @property iterations
-     * @type {Number}
      */
     iterations: number
 
     /**
      * The error tolerance, per constraint. If the total error is below this limit, the solver will stop iterating. Set to zero for as good solution as possible, but to something larger than zero to make computations faster.
-     * @property tolerance
-     * @type {Number}
      * @default 1e-7
      */
     tolerance: number
@@ -35,9 +31,6 @@ export class GSSolver extends Solver {
      * Number of solver iterations that are used to approximate normal forces used for friction (F_friction = mu * F_normal). These friction forces will override any other friction forces that are set. If you set frictionIterations = 0, then this feature will be disabled.
      *
      * Use only frictionIterations > 0 if the approximated normal force (F_normal = mass * gravity) is not good enough. Examples of where it can happen is in space games where gravity is zero, or in tall stacks where the normal force is large at bottom but small at top.
-     *
-     * @property frictionIterations
-     * @type {Number}
      * @default 0
      */
     frictionIterations: number

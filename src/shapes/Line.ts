@@ -71,7 +71,7 @@ export class Line extends Shape {
         vec2.toGlobalFrame(l0, l0, position, angle)
         vec2.toGlobalFrame(l1, l1, position, angle)
 
-        const fraction = vec2.getLineSegmentsIntersectionFraction(l0, l1, from, to)
+        const fraction = vec2.getLineSegmentsIntersectionFraction(from, to, l0, l1)
         if (fraction >= 0) {
             const normal = raycast_normal
             vec2.rotate(normal, raycast_unit_y, angle) // todo: this should depend on which side the ray comes from

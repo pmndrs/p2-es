@@ -14,8 +14,7 @@
  *     });
  */
 export class EventEmitter<EventMap extends Record<string, any>> {
-    private tmpArray: Function[] = []
-    private listeners: Partial<Record<keyof EventMap, Function[]>> = {}
+    private listeners: { [type: string]: Function[] } = {}
 
     /**
      * Add an event listener
@@ -27,16 +26,12 @@ export class EventEmitter<EventMap extends Record<string, any>> {
      *         console.log('myEvt was triggered!');
      *     });
      */
-    on<EventName extends keyof EventMap>(
-        type: EventName,
-        listener: (e: EventMap[EventName]) => void,
-        context?: any
-    ) {
+    on<E extends keyof EventMap>(type: E, listener: (e: EventMap[E]) => void, context?: any) {
         (listener as any).context = context || this
-        let listeners = this.listeners[type]
+        let listeners = this.listeners[type as string]
         if (listeners === undefined) {
             listeners = []
-            this.listeners[type] = listeners   
+            this.listeners[type as string] = listeners
         }
         if (listeners.indexOf(listener) === -1) {
             listeners.push(listener)
@@ -53,30 +48,28 @@ export class EventEmitter<EventMap extends Record<string, any>> {
      *     emitter.on('myEvent', handler); // Add handler
      *     emitter.off('myEvent', handler); // Remove handler
      */
-    off<EventName extends keyof EventMap>(type: EventName, listener: Function): EventEmitter<EventMap> {
-        const listeners = this.listeners[type]
-        if (!listeners) {
-            return this
-        }
-        const index = listeners.indexOf(listener)
-        if (index !== -1) {
-            listeners.splice(index, 1)
+    off<E extends keyof EventMap>(type: E, listener: Function): EventEmitter<EventMap> {
+        const listeners = this.listeners[type as string]
+        if (listeners) {
+            const index = listeners.indexOf(listener)
+            if (index !== -1) {
+                listeners.splice(index, 1)
+            }
         }
         return this
     }
 
     /**
      * Check if an event listener is added
-     * @method has
      * @param type
      * @param listener
      * @return
      */
-    has<EventName extends keyof EventMap>(type: EventName, listener?: Function): boolean {
+    has<E extends keyof EventMap>(type: E, listener?: Function): boolean {
         if (this.listeners === undefined) {
             return false
         }
-        const listeners = this.listeners[type]
+        const listeners = this.listeners[type as string]
         if (listener) {
             if (listeners !== undefined && listeners.indexOf(listener) !== -1) {
                 return true
@@ -105,25 +98,18 @@ export class EventEmitter<EventMap extends Record<string, any>> {
         if (this.listeners === undefined) {
             return this
         }
-        const listeners = this.listeners
-        const listenerArray = listeners[event.type]
+        const eventListeners = this.listeners[event.type]
 
-        if (listenerArray !== undefined) {
+        if (eventListeners !== undefined) {
             const toEmit = {
                 ...event,
                 target: this,
             }
 
-            // Need to copy the listener array, in case some listener was added/removed inside a listener
-            const tmpArray = this.tmpArray
-            for (let i = 0, l = listenerArray.length; i < l; i++) {
-                tmpArray[i] = listenerArray[i]
-            }
-            for (let i = 0, l = tmpArray.length; i < l; i++) {
-                const listener = tmpArray[i]
+            // only emit to current listeners, ignore listeners that might be added inside a listener function
+            for (const listener of [...eventListeners]) {
                 listener.call((listener as any).context, toEmit)
             }
-            tmpArray.length = 0
         }
         return this
     }

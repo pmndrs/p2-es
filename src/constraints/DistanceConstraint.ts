@@ -6,10 +6,35 @@ import type { ConstraintOptions } from './Constraint'
 import { Constraint } from './Constraint'
 
 export interface DistanceConstraintOptions extends ConstraintOptions {
+    /**
+     * The distance to keep between the anchor points. Defaults to the current distance between the bodies.
+     */
     distance?: number
+
+    /**
+     * The anchor point for bodyA, defined locally in bodyA frame. Defaults to [0,0].
+     */
     localAnchorA?: Vec2
+
+    /**
+     * The anchor point for bodyB, defined locally in bodyB frame. Defaults to [0,0].
+     */
     localAnchorB?: Vec2
+
+    /**
+     * Maximum force to apply.
+     */
     maxForce?: number
+
+    /**
+     * The upper constraint limit.
+     */
+    upperLimit?: number
+
+    /**
+     * The lower constraint limit.
+     */
+    lowerLimit?: number
 }
 
 /**
@@ -81,8 +106,13 @@ export class DistanceConstraint extends Constraint {
     constructor(bodyA: Body, bodyB: Body, options: DistanceConstraintOptions = {}) {
         super(bodyA, bodyB, Constraint.DISTANCE, options)
 
-        this.localAnchorA = options.localAnchorA ? vec2.clone(options.localAnchorA) : vec2.create()
+        this.upperLimit = options.upperLimit ?? 1
+        this.upperLimitEnabled = options.upperLimit !== undefined
 
+        this.lowerLimit = options.lowerLimit ?? 0
+        this.lowerLimitEnabled = options.lowerLimit !== undefined
+
+        this.localAnchorA = options.localAnchorA ? vec2.clone(options.localAnchorA) : vec2.create()
         this.localAnchorB = options.localAnchorB ? vec2.clone(options.localAnchorB) : vec2.create()
 
         const localAnchorA = this.localAnchorA
@@ -162,10 +192,6 @@ export class DistanceConstraint extends Constraint {
         // Make the contact constraint bilateral
         this.setMaxForce(maxForce)
 
-        this.upperLimitEnabled = false
-        this.upperLimit = 1
-        this.lowerLimitEnabled = false
-        this.lowerLimit = 0
         this.position = 0
     }
 

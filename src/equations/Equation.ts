@@ -1,7 +1,7 @@
 import { create as createVec2, multiply, scale } from '../math/vec2'
 import type { Body } from '../objects/Body'
 import type { Vec2 } from '../types'
-import { Utils } from '../utils/Utils'
+import { ARRAY_TYPE } from '../utils/Utils'
 
 /**
  * Base class for constraint equations.
@@ -108,7 +108,7 @@ export class Equation {
         this.stiffness = Equation.DEFAULT_STIFFNESS
         this.relaxation = Equation.DEFAULT_RELAXATION
 
-        this.G = new Utils.ARRAY_TYPE(6)
+        this.G = new ARRAY_TYPE(6)
         for (let i = 0; i < 6; i++) {
             this.G[i] = 0
         }

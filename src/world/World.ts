@@ -20,7 +20,7 @@ import type { Solver } from '../solver/Solver'
 import type { Vec2 } from '../types'
 import { OverlapKeeper } from '../utils/OverlapKeeper'
 import type { OverlapKeeperRecord } from '../utils/OverlapKeeperRecord'
-import { Utils } from '../utils/Utils'
+import { appendArray, arrayRemove } from '../utils/Utils'
 import { UnionFind } from './UnionFind'
 
 export type PostStepEvent = {
@@ -334,7 +334,7 @@ export class World extends EventEmitter<WorldEventMap> {
      * @param cm
      */
     removeContactMaterial(cm: ContactMaterial): void {
-        Utils.arrayRemove(this.contactMaterials, cm)
+        arrayRemove(this.contactMaterials, cm)
     }
 
     /**
@@ -365,7 +365,7 @@ export class World extends EventEmitter<WorldEventMap> {
         if (this.stepping) {
             throw new Error('Constraints cannot be removed during step.')
         }
-        Utils.arrayRemove(this.constraints, constraint)
+        arrayRemove(this.constraints, constraint)
     }
 
     /**
@@ -418,8 +418,8 @@ export class World extends EventEmitter<WorldEventMap> {
      *
      * @see http://bulletphysics.org/mediawiki-1.5.8/index.php/Stepping_The_World
      */
-    step(dt: number, timeSinceLastCalled = 0, maxSubSteps = 10): void {
-        if (timeSinceLastCalled === 0) {
+    step(dt: number, timeSinceLastCalled?: number, maxSubSteps = 10): void {
+        if (timeSinceLastCalled === undefined) {
             // Fixed, simple stepping
             this.internalStep(dt)
 
@@ -631,10 +631,10 @@ export class World extends EventEmitter<WorldEventMap> {
         if (np.contactEquations.length || np.frictionEquations.length || Nconstraints) {
             // Get all equations
             let equations: Equation[] = []
-            Utils.appendArray(equations, np.contactEquations)
-            Utils.appendArray(equations, np.frictionEquations)
+            appendArray(equations, np.contactEquations)
+            appendArray(equations, np.frictionEquations)
             for (let i = 0; i !== Nconstraints; i++) {
-                Utils.appendArray(equations, constraints[i].equations)
+                appendArray(equations, constraints[i].equations)
             }
 
             if (this.islandSplit) {
@@ -801,7 +801,7 @@ export class World extends EventEmitter<WorldEventMap> {
         if (this.stepping) {
             throw new Error('Springs cannot be removed during step.')
         }
-        Utils.arrayRemove(this.springs, spring)
+        arrayRemove(this.springs, spring)
     }
 
     /**
@@ -872,7 +872,7 @@ export class World extends EventEmitter<WorldEventMap> {
 
         body.world = null
         const bodies = this.bodies
-        Utils.arrayRemove(bodies, body)
+        arrayRemove(bodies, body)
         body.index = -1
         l = bodies.length
         while (l--) {

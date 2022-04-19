@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
  */
 
 import type { Vec2 } from '../types'
-import { Utils } from '../utils/Utils'
+import { ARRAY_TYPE } from '../utils/Utils'
 
 /**
  * Make a cross product and only return the z component
@@ -181,7 +181,7 @@ export function centroid(out: Vec2, a: Vec2, b: Vec2, c: Vec2): Vec2 {
  * @return a new 2D vector
  */
 export function create(): Vec2 {
-    const out = new Utils.ARRAY_TYPE(2)
+    const out = new ARRAY_TYPE(2)
     out[0] = 0
     out[1] = 0
     return out as Vec2 | Float32Array
@@ -193,7 +193,7 @@ export function create(): Vec2 {
  * @return a new 2D vector
  */
 export function clone(a: Vec2): Vec2 {
-    const out = new Utils.ARRAY_TYPE(2) as Vec2
+    const out = new ARRAY_TYPE(2) as Vec2
     out[0] = a[0]
     out[1] = a[1]
     return out
@@ -206,7 +206,7 @@ export function clone(a: Vec2): Vec2 {
  * @return a new 2D vector
  */
 export function fromValues(x: number, y: number): Vec2 {
-    const out = new Utils.ARRAY_TYPE(2) as Vec2
+    const out = new ARRAY_TYPE(2) as Vec2
     out[0] = x
     out[1] = y
     return out

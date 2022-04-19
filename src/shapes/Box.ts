@@ -1,7 +1,7 @@
 import type { AABB } from '../collision/AABB'
 import * as vec2 from '../math/vec2'
 import type { Vec2 } from '../types'
-import { Utils } from './../utils/Utils'
+import { shallowClone } from './../utils/Utils'
 import type { ConvexOptions } from './Convex'
 import { Convex } from './Convex'
 import type { SharedShapeOptions } from './Shape'
@@ -63,7 +63,7 @@ export class Box extends Convex {
             vec2.fromValues(-params.width / 2, params.height / 2),
         ]
 
-        const convexOptions: ConvexOptions = Utils.shallowClone(options)
+        const convexOptions: ConvexOptions = shallowClone(options)
         convexOptions.vertices = verts
         convexOptions.type = Shape.BOX
 

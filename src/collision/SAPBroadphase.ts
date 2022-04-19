@@ -1,6 +1,6 @@
 import type { AABB } from '../collision/AABB'
 import type { Body } from '../objects/Body'
-import { Utils } from '../utils/Utils'
+import { appendArray } from '../utils/Utils'
 import type { AddBodyEvent, RemoveBodyEvent, World } from '../world/World'
 import { Broadphase } from './Broadphase'
 
@@ -42,7 +42,7 @@ export class SAPBroadphase extends Broadphase {
         this.axisList.length = 0
 
         // Add all bodies from the new world
-        Utils.appendArray(this.axisList, world.bodies)
+        appendArray(this.axisList, world.bodies)
 
         // Remove old handlers, if any
         world.off('addBody', this.addBodyHandler).off('removeBody', this.removeBodyHandler)

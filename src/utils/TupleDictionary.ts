@@ -1,4 +1,4 @@
-import { Utils } from './Utils'
+import { appendArray } from './Utils'
 
 export class TupleDictionary<T> {
     /**
@@ -76,15 +76,8 @@ export class TupleDictionary<T> {
      * Remove all data.
      */
     reset(): void {
-        const data = this.data,
-            keys = this.keys
-
-        let l = keys.length
-        while (l--) {
-            delete data[keys[l]]
-        }
-
-        keys.length = 0
+        this.keys.length = 0
+        this.data = {}
     }
 
     /**
@@ -94,7 +87,7 @@ export class TupleDictionary<T> {
      */
     copy(dict: TupleDictionary<T>): void {
         this.reset()
-        Utils.appendArray(this.keys, dict.keys)
+        appendArray(this.keys, dict.keys)
         let l = dict.keys.length
         while (l--) {
             const key = dict.keys[l]
