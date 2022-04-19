@@ -208,3 +208,6 @@ yarn serve
 - [ ] Evaluate PRs in p2.js repo
   - [ ] [Refactoring Springs](https://github.com/schteppe/p2.js/pull/148)
   - [ ] [Adjustments to the buoyancy demo to make the code more easily reusable](https://github.com/schteppe/p2.js/pull/263)
+
+
+commit "remove @static and @method jsdoc tags"

@@ -616,7 +616,6 @@ export class Body extends EventEmitter<BodyEventMap> {
      * so that the shape gets an offset and angle relative to the body center of mass.
      * Will automatically update the mass properties and bounding radius.
      *
-     * @method addShape
      * @param shape
      * @param offset Local body offset of the shape.
      * @param angle Local body angle.
@@ -863,7 +862,6 @@ export class Body extends EventEmitter<BodyEventMap> {
 
     /**
      * Reads a polygon shape path, and assembles convex shapes from that and puts them at proper offset points.
-     * @method fromPolygon
      * @param path An array of 2d vectors, e.g. [[0,0],[0,1],...] that resembles a concave or convex polygon. The shape must be simple and without holes.
      * @param options
      * @param options.optimalDecomp=false   Set to true if you need optimal decomposition. Warning: very slow for polygons with more than 10 vertices.
@@ -1037,7 +1035,6 @@ export class Body extends EventEmitter<BodyEventMap> {
     /**
      * Wake the body up. Normally you should not need this, as the body is automatically awoken at events such as collisions.
      * Sets the sleepState to {@link Body.AWAKE} and emits the wakeUp event if the body wasn't awake before.
-     * @method wakeUp
      */
     wakeUp(): void {
         const s = this.sleepState
@@ -1104,7 +1101,6 @@ export class Body extends EventEmitter<BodyEventMap> {
 
     /**
      * Check if the body is overlapping another body. Note that this method only works if the body was added to a World and if at least one step was taken.
-     * @method overlaps
      * @param body
      * @return if the body overlaps the given body
      */

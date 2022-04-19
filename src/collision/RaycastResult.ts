@@ -52,7 +52,6 @@ export class RaycastResult {
 
     /**
      * Reset all result data. Must be done before re-using the result object.
-     * @method reset
      */
     reset(): void {
         vec2.set(this.normal, 0, 0)
@@ -96,23 +95,10 @@ export class RaycastResult {
         this.isStopped = true
     }
 
-    /**
-     * @method shouldSto
-     * @param ray
-     * @return
-     */
     shouldStop(ray: Ray): boolean {
         return this.isStopped || (this.fraction !== -1 && ray.mode === Ray.ANY)
     }
 
-    /**
-     * @method set
-     * @param normal
-     * @param shape
-     * @param body
-     * @param fraction
-     * @param faceIndex
-     */
     set(normal: Vec2, shape: Shape, body: Body, fraction: number, faceIndex: number) {
         vec2.copy(this.normal, normal)
         this.shape = shape

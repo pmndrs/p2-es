@@ -125,7 +125,6 @@ export class LinearSpring extends Spring {
 
     /**
      * Set the anchor point on body B, using world coordinates.
-     * @method setWorldAnchorB
      * @param result
      */
     getWorldAnchorB(result: Vec2): void {

@@ -216,7 +216,6 @@ function toLocalFrame(out, worldPoint, framePosition, frameAngle) {
 }
 /**
  * Transform a point position to global frame.
- * @method toGlobalFrame
  * @param out
  * @param localPoint
  * @param framePosition
@@ -257,8 +256,6 @@ function vectorToLocalFrame(out, worldVector, frameAngle) {
 const vectorToGlobalFrame = rotate;
 /**
  * Compute centroid of a triangle spanned by vectors a,b,c. See http://easycalculation.com/analytical/learn-centroid.php
- * @method centroid
- * @static
  * @param out
  * @param a
  * @param b
@@ -738,7 +735,6 @@ class AABB {
   }
   /**
    * Returns true if the given AABB overlaps this AABB.
-   * @method overlaps
    * @param aabb
    * @return
    */
@@ -1603,7 +1599,7 @@ class Ray {
     }
   }
   /**
-   * @method intersectShape
+   * Shoot a ray at a shape, get back information about the hit
    * @param shape
    * @param angle
    * @param position
@@ -1737,7 +1733,6 @@ class RaycastResult {
   }
   /**
    * Reset all result data. Must be done before re-using the result object.
-   * @method reset
    */
 
 
@@ -1786,25 +1781,10 @@ class RaycastResult {
   stop() {
     this.isStopped = true;
   }
-  /**
-   * @method shouldSto
-   * @param ray
-   * @return
-   */
-
 
   shouldStop(ray) {
     return this.isStopped || this.fraction !== -1 && ray.mode === Ray.ANY;
   }
-  /**
-   * @method set
-   * @param normal
-   * @param shape
-   * @param body
-   * @param fraction
-   * @param faceIndex
-   */
-
 
   set(normal, shape, body, fraction, faceIndex) {
     copy(this.normal, normal);
@@ -2168,9 +2148,8 @@ class Shape {
   raycast(_result, _ray, _position, _angle) {}
   /**
    * Test if a point is inside this shape.
-   * @method pointTest
-   * @param {array} localPoint
-   * @return {boolean}
+   * @param localPoint
+   * @return whether a point is inside this shape
    */
 
 
@@ -2448,7 +2427,6 @@ class Convex extends Shape {
   }
   /**
    * Update the .area
-   * @method updateArea
    */
 
 
@@ -2800,7 +2778,6 @@ class Body extends EventEmitter {
    * so that the shape gets an offset and angle relative to the body center of mass.
    * Will automatically update the mass properties and bounding radius.
    *
-   * @method addShape
    * @param shape
    * @param offset Local body offset of the shape.
    * @param angle Local body angle.
@@ -3055,7 +3032,6 @@ class Body extends EventEmitter {
   }
   /**
    * Reads a polygon shape path, and assembles convex shapes from that and puts them at proper offset points.
-   * @method fromPolygon
    * @param path An array of 2d vectors, e.g. [[0,0],[0,1],...] that resembles a concave or convex polygon. The shape must be simple and without holes.
    * @param options
    * @param options.optimalDecomp=false   Set to true if you need optimal decomposition. Warning: very slow for polygons with more than 10 vertices.
@@ -3228,7 +3204,6 @@ class Body extends EventEmitter {
   /**
    * Wake the body up. Normally you should not need this, as the body is automatically awoken at events such as collisions.
    * Sets the sleepState to {@link Body.AWAKE} and emits the wakeUp event if the body wasn't awake before.
-   * @method wakeUp
    */
 
 
@@ -3298,7 +3273,6 @@ class Body extends EventEmitter {
   }
   /**
    * Check if the body is overlapping another body. Note that this method only works if the body was added to a World and if at least one step was taken.
-   * @method overlaps
    * @param body
    * @return if the body overlaps the given body
    */
@@ -3681,7 +3655,6 @@ class NaiveBroadphase extends Broadphase {
   }
   /**
    * Returns all the bodies within an AABB.
-   * @method aabbQuery
    * @param world
    * @param aabb
    * @param result An array to store resulting bodies in.
@@ -3730,14 +3703,10 @@ class NaiveBroadphase extends Broadphase {
 class Box extends Convex {
   /**
    * Total width of the box
-   * @property width
-   * @type {Number}
    */
 
   /**
    * Total height of the box
-   * @property height
-   * @type {Number}
    */
   constructor(options) {
     var _options, _options2;
@@ -3942,10 +3911,10 @@ class Equation {
 
   /**
    * Constructor for an Equation
-   * @param bodyA  * @param {Body} bodyA First body participating in the equation
-   * @param {Body} bodyB Second body participating in the equation
-   * @param {number} minForce Minimum force to apply. Default: -Number.MAX_VALUE
-   * @param {number} maxForce Maximum force to apply. Default: Number.MAX_VALUE
+   * @param bodyA First body participating in the equation
+   * @param bodyB Second body participating in the equation
+   * @param minForce Minimum force to apply. Default: -Number.MAX_VALUE
+   * @param maxForce Maximum force to apply. Default: Number.MAX_VALUE
    * @param bodyB
    * @param minForce
    * @param maxForce
@@ -4488,8 +4457,7 @@ class TupleDictionary {
   }
   /**
    * Copy another TupleDictionary. Note that all data in this dictionary will be removed.
-   * @method copy
-   * @param {TupleDictionary} dict The TupleDictionary to copy into this one.
+   * @param dict The TupleDictionary to copy into this one.
    */
 
 
@@ -6843,15 +6811,11 @@ class GearConstraint extends Constraint {
     super(bodyA, bodyB, Constraint.GEAR, options);
     /**
      * The gear ratio.
-     * @property ratio
-     * @type {Number}
      */
 
     this.ratio = options.ratio !== undefined ? options.ratio : 1;
     /**
      * The relative angle
-     * @property angle
-     * @type {Number}
      */
 
     this.angle = options.angle !== undefined ? options.angle : bodyB.angle - this.ratio * bodyA.angle; // Send same parameters to the equation
@@ -7850,20 +7814,14 @@ class Spring {
 class LinearSpring extends Spring {
   /**
    * Anchor for bodyA in local bodyA coordinates.
-   * @property localAnchorA
-   * @type {Array}
    */
 
   /**
    * Anchor for bodyB in local bodyB coordinates.
-   * @property localAnchorB
-   * @type {Array}
    */
 
   /**
    * Rest length of the spring. Can be set dynamically.
-   * @property restLength
-   * @type {number}
    */
   constructor(bodyA, bodyB, options) {
     if (options === void 0) {
@@ -7926,7 +7884,6 @@ class LinearSpring extends Spring {
   }
   /**
    * Set the anchor point on body B, using world coordinates.
-   * @method setWorldAnchorB
    * @param result
    */
 
@@ -8814,7 +8771,7 @@ class Solver {
    */
 
   /**
-   * The type of solver
+   * The type of solver.
    */
 
   /**
@@ -8835,7 +8792,6 @@ class Solver {
   }
   /**
    * Method to be implemented in each subclass
-   * @method solve
    * @param dt
    * @param world
    */
@@ -9548,7 +9504,6 @@ class World extends EventEmitter {
    *
    * There are two modes. The simple mode is fixed timestepping without interpolation. In this case you only use the first argument. The second case uses interpolation. In that you also provide the time since the function was last used, as well as the maximum fixed timesteps to take.
    *
-   * @method step
    * @param dt The fixed time step size to use.
    * @param timeSinceLastCalled The time elapsed since the function was last called.
    * @param maxSubSteps Maximum number of fixed steps to take per function call.

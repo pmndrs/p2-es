@@ -267,7 +267,6 @@ export class Convex extends Shape {
 
     /**
      * Update the .area
-     * @method updateArea
      */
     updateArea(): void {
         this.updateTriangles()

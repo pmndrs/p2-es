@@ -2,61 +2,6 @@ import * as PIXI from '../../demos/js/pixi.min.mjs'
 import * as p2 from '../../dist/p2-es.js'
 import * as dat from './dat.gui.module.js'
 
-const disableSelectionCSS = [
-    '-ms-user-select: none',
-    '-moz-user-select: -moz-none',
-    '-khtml-user-select: none',
-    '-webkit-user-select: none',
-    'user-select: none',
-]
-
-const init_containerPosition = p2.vec2.create()
-const init_physicsPosition = p2.vec2.create()
-
-const X = p2.vec2.fromValues(1, 0)
-const distVec = p2.vec2.fromValues(0, 0)
-let worldAnchorA = p2.vec2.fromValues(0, 0)
-let worldAnchorB = p2.vec2.fromValues(0, 0)
-
-/**
- * Component to hex
- * @param {number} c
- * @returns
- */
-const componentToHex = (c) => {
-    const hex = c.toString(16)
-    return hex.length === 1 ? `0${hex}` : hex
-}
-
-/**
- * RGB to hex
- * @param {number} r
- * @param {number} g
- * @param {number} b
- * @returns
- */
-const rgbToHex = (r, g, b) => {
-    return componentToHex(r) + componentToHex(g) + componentToHex(b)
-}
-
-/**
- * Returns a random pastel color hex
- * @returns {number} random pastel color hex
- */
-const randomPastelHex = () => {
-    const mix = [255, 255, 255]
-    let red = Math.floor(Math.random() * 256)
-    let green = Math.floor(Math.random() * 256)
-    let blue = Math.floor(Math.random() * 256)
-
-    // mix the color
-    red = Math.floor((red + 3 * mix[0]) / 4)
-    green = Math.floor((green + 3 * mix[1]) / 4)
-    blue = Math.floor((blue + 3 * mix[2]) / 4)
-
-    return rgbToHex(red, green, blue)
-}
-
 export class Demo extends p2.EventEmitter {
     get drawContacts() {
         return this.settings['drawContacts [c]']
@@ -94,6 +39,7 @@ export class Demo extends p2.EventEmitter {
         // Expose app and p2 in window
         window.app = this
         window.p2 = p2
+        window.PIXI = PIXI
 
         // Get input scenes
         if (scenes.setup) {
@@ -257,7 +203,7 @@ export class Demo extends p2.EventEmitter {
                 path2.push([v[0], v[1]])
             }
 
-            Demo.drawPath(g, path2, 0xff0000, false, this.lineWidth, false)
+            this.drawPath(g, path2, 0xff0000, false, this.lineWidth, false)
         })
 
         // Update draw circle
@@ -266,7 +212,7 @@ export class Demo extends p2.EventEmitter {
             g.clear()
             const center = this.drawCircleCenter
             const R = p2.vec2.distance(center, this.drawCirclePoint)
-            Demo.drawCircle(g, center[0], center[1], 0, R, false, this.lineWidth)
+            this.drawCircle(g, center[0], center[1], 0, R, false, this.lineWidth)
         })
 
         // Update draw circle
@@ -277,7 +223,7 @@ export class Demo extends p2.EventEmitter {
             const end = this.drawRectEnd
             const width = start[0] - end[0]
             const height = start[1] - end[1]
-            Demo.drawRectangle(
+            this.drawRectangle(
                 g,
                 start[0] - width / 2,
                 start[1] - height / 2,
@@ -304,14 +250,19 @@ export class Demo extends p2.EventEmitter {
     init() {
         const s = this.settings
 
-        this.application = new PIXI.Application({ width: s.width, height: s.height, backgroundColor: 0xffffff })
-        this.view = this.application.view
-        this.renderer = this.application.renderer
-        this.container = new PIXI.Container()
-        this.stage = this.application.stage
+        PIXI.GRAPHICS_CURVES.minSegments = 20
+        this.renderer = PIXI.autoDetectRenderer({
+            width: s.width,
+            height: s.height,
+            backgroundColor: 0xffffff,
+            antialias: true,
+        })
+        this.stage = new PIXI.Container()
         this.stage.interactive = true
 
-        const el = (this.element = this.application.view)
+        this.container = new PIXI.Container()
+
+        const el = (this.element = this.renderer.view)
         el.tabIndex = 1
         el.classList.add(Demo.elementClass)
         el.setAttribute('style', 'width:100%;')
@@ -344,10 +295,10 @@ export class Demo extends p2.EventEmitter {
         this.pickGraphics = new PIXI.Graphics()
         this.container.addChild(this.pickGraphics)
 
-        this.stage.addChild(this.container)
+        this.container.scale.x = 200
+        this.container.scale.y = -200 // Flip Y direction.
 
-        this.container.scale.x = 200 // Flip Y direction.
-        this.container.scale.y = -200
+        this.stage.addChild(this.container)
 
         let lastX
         let lastY
@@ -377,7 +328,7 @@ export class Demo extends p2.EventEmitter {
                 const touchA = this.container.interactionManager.touchs[0]
                 const touchB = this.container.interactionManager.touchs[1]
 
-                let pos = touchA.getLocalPosition(this.container) // todo - was `stage` 
+                let pos = touchA.getLocalPosition(this.container) // todo - was `stage`
                 p2.vec2.set(stagePos, pos.x, pos.y)
                 this.stagePositionToPhysics(physicsPosA, stagePos)
 
@@ -1061,7 +1012,7 @@ export class Demo extends p2.EventEmitter {
                     const v = obj.concavePath[j]
                     path.push([v[0], v[1]])
                 }
-                Demo.drawPath(graphics, path, lineColor, color, lw, isSleeping, this.sleepOpacity)
+                this.drawPath(graphics, path, lineColor, color, lw, isSleeping)
             } else {
                 for (let i = 0; i < obj.shapes.length; i++) {
                     const child = obj.shapes[i]
@@ -1069,16 +1020,16 @@ export class Demo extends p2.EventEmitter {
                     const { angle } = child
 
                     if (child instanceof p2.Circle) {
-                        Demo.drawCircle(graphics, offset[0], offset[1], angle, child.radius, color, lw, isSleeping, this.sleepOpacity)
+                        this.drawCircle(graphics, offset[0], offset[1], angle, child.radius, color, lw, isSleeping)
                     } else if (child instanceof p2.Particle) {
-                        Demo.drawCircle(graphics, offset[0], offset[1], angle, 2 * lw, lineColor, 0, this.sleepOpacity)
+                        this.drawCircle(graphics, offset[0], offset[1], angle, 2 * lw, lineColor, 0)
                     } else if (child instanceof p2.Plane) {
                         // TODO use shape angle
-                        Demo.drawPlane(graphics, -10, 10, color, lineColor, lw, lw * 10, lw * 10, 100)
+                        this.drawPlane(graphics, -10, 10, color, lineColor, lw, lw * 10, lw * 10, 100)
                     } else if (child instanceof p2.Line) {
-                        Demo.drawLine(graphics, offset, angle, child.length, lineColor, lw)
+                        this.drawLine(graphics, offset, angle, child.length, lineColor, lw)
                     } else if (child instanceof p2.Box) {
-                        Demo.drawRectangle(
+                        this.drawRectangle(
                             graphics,
                             offset[0],
                             offset[1],
@@ -1088,11 +1039,10 @@ export class Demo extends p2.EventEmitter {
                             lineColor,
                             color,
                             lw,
-                            isSleeping,
-                            this.sleepOpacity
+                            isSleeping
                         )
                     } else if (child instanceof p2.Capsule) {
-                        Demo.drawCapsule(
+                        this.drawCapsule(
                             graphics,
                             offset[0],
                             offset[1],
@@ -1102,8 +1052,7 @@ export class Demo extends p2.EventEmitter {
                             lineColor,
                             color,
                             lw,
-                            isSleeping,
-                            this.sleepOpacity
+                            isSleeping
                         )
                     } else if (child instanceof p2.Convex) {
                         // Scale verts
@@ -1114,7 +1063,7 @@ export class Demo extends p2.EventEmitter {
                             p2.vec2.rotate(vrot, v, angle)
                             verts.push([vrot[0] + offset[0], vrot[1] + offset[1]])
                         }
-                        Demo.drawConvex(
+                        this.drawConvex(
                             graphics,
                             verts,
                             child.triangles,
@@ -1123,8 +1072,7 @@ export class Demo extends p2.EventEmitter {
                             lw,
                             this.debugPolygons,
                             offset,
-                            isSleeping,
-                            this.sleepOpacity
+                            isSleeping
                         )
                     } else if (child instanceof p2.Heightfield) {
                         const path = [[0, -100]]
@@ -1133,13 +1081,13 @@ export class Demo extends p2.EventEmitter {
                             path.push([j * child.elementWidth, v])
                         }
                         path.push([child.heights.length * child.elementWidth, -100])
-                        Demo.drawPath(graphics, path, lineColor, color, lw, isSleeping)
+                        this.drawPath(graphics, path, lineColor, color, lw, isSleeping)
                     }
                 }
             }
         } else if (obj instanceof p2.Spring) {
             const restLengthPixels = obj.restLength
-            Demo.drawSpring(graphics, restLengthPixels, 0x000000, lw)
+            this.drawSpring(graphics, restLengthPixels, 0x000000, lw)
         }
     }
 
@@ -1205,7 +1153,7 @@ export class Demo extends p2.EventEmitter {
     resizeBackground() {
         this.background.clear()
         this.background.beginFill(0xffffff)
-        this.background.drawRect(0, 0, this.view.width, this.view.height)
+        this.background.drawRect(0, 0, this.element.width, this.element.height)
         this.background.endFill()
     }
 
@@ -1542,6 +1490,300 @@ export class Demo extends p2.EventEmitter {
             ].join('\n')
         )
     }
+
+    /**
+     * Draw a circle onto a graphics object
+     * @method drawCircle
+     * @static
+     * @param  {PIXI.Graphics} g
+     * @param  {Number} x
+     * @param  {Number} y
+     * @param  {Number} radius
+     * @param  {Number} color
+     * @param  {Number} lineWidth
+     */
+    drawCircle(g, x, y, angle, radius, color, lineWidth, isSleeping) {
+        lineWidth = typeof lineWidth === 'number' ? lineWidth : 1
+
+        lineWidth *= Demo.RES_SCALAR
+        x *= Demo.RES_SCALAR
+        y *= Demo.RES_SCALAR
+        radius *= Demo.RES_SCALAR
+
+        color = typeof color === 'number' ? color : 0xffffff
+        g.lineStyle(lineWidth, 0x000000, 1)
+        g.beginFill(color, isSleeping ? this.sleepOpacity : 1.0)
+        g.drawCircle(x, y, radius)
+        g.endFill()
+
+        // line from center to edge
+        g.moveTo(x, y)
+        g.lineTo(x + radius * Math.cos(angle), y + radius * Math.sin(angle))
+
+        g.scale.set(1 / Demo.RES_SCALAR)
+    }
+
+    drawSpring(g, restLength, color, lineWidth) {
+        lineWidth = typeof lineWidth === 'number' ? lineWidth : 1
+        color = typeof color === 'undefined' ? 0xffffff : color
+        g.lineStyle(lineWidth, color, 1)
+        if (restLength < lineWidth * 10) {
+            restLength = lineWidth * 10
+        }
+        const M = 12
+        const dx = restLength / M
+        g.moveTo(-restLength / 2, 0)
+        for (let i = 1; i < M; i++) {
+            const x = -restLength / 2 + dx * i
+            let y = 0
+            if (i <= 1 || i >= M - 1) {
+                // Do nothing
+            } else if (i % 2 === 0) {
+                y -= 0.1 * restLength
+            } else {
+                y += 0.1 * restLength
+            }
+            g.lineTo(x, y)
+        }
+        g.lineTo(restLength / 2, 0)
+    }
+
+    /**
+     * Draw a finite plane onto a PIXI.Graphics.
+     * @method drawPlane
+     * @param  {PIXI.Graphics} g
+     * @param  {Number} x0
+     * @param  {Number} x1
+     * @param  {Number} color
+     * @param  {Number} lineWidth
+     * @param  {Number} diagMargin
+     * @param  {Number} diagSize
+     * @todo Should consider an angle
+     */
+    drawPlane(g, x0, x1, color, lineColor, lineWidth, diagMargin, diagSize, maxLength) {
+        lineWidth = typeof lineWidth === 'number' ? lineWidth : 1
+        color = typeof color === 'undefined' ? 0xffffff : color
+        g.lineStyle(lineWidth, lineColor, 1)
+
+        // Draw a fill color
+        g.lineStyle(0, 0, 0)
+        g.beginFill(color)
+        const max = maxLength
+        g.moveTo(-max, 0)
+        g.lineTo(max, 0)
+        g.lineTo(max, -max)
+        g.lineTo(-max, -max)
+        g.endFill()
+
+        // Draw the actual plane
+        g.lineStyle(lineWidth, lineColor)
+        g.moveTo(-max, 0)
+        g.lineTo(max, 0)
+    }
+
+    drawLine(g, offset, angle, len, color, lineWidth) {
+        lineWidth = typeof lineWidth === 'number' ? lineWidth : 1
+        color = typeof color === 'undefined' ? 0x000000 : color
+        g.lineStyle(lineWidth, color, 1)
+
+        const startPoint = p2.vec2.fromValues(-len / 2, 0)
+        const endPoint = p2.vec2.fromValues(len / 2, 0)
+
+        p2.vec2.rotate(startPoint, startPoint, angle)
+        p2.vec2.rotate(endPoint, endPoint, angle)
+
+        p2.vec2.add(startPoint, startPoint, offset)
+        p2.vec2.add(endPoint, endPoint, offset)
+
+        g.moveTo(startPoint[0], startPoint[1])
+        g.lineTo(endPoint[0], endPoint[1])
+    }
+
+    drawCapsule(g, x, y, angle, len, radius, color, fillColor, lineWidth, isSleeping) {
+        lineWidth = typeof lineWidth === 'number' ? lineWidth : 1
+        color = typeof color === 'undefined' ? 0x000000 : color
+        g.lineStyle(lineWidth, color, 1)
+
+        const { vec2 } = p2
+
+        // Draw circles at ends
+        const hl = len / 2
+        g.beginFill(fillColor, isSleeping ? this.sleepOpacity : 1.0)
+        const localPos = vec2.fromValues(x, y)
+        const p0 = vec2.fromValues(-hl, 0)
+        const p1 = vec2.fromValues(hl, 0)
+        vec2.rotate(p0, p0, angle)
+        vec2.rotate(p1, p1, angle)
+        vec2.add(p0, p0, localPos)
+        vec2.add(p1, p1, localPos)
+        g.drawCircle(p0[0], p0[1], radius)
+        g.drawCircle(p1[0], p1[1], radius)
+        g.endFill()
+
+        // Draw rectangle
+        const pp2 = vec2.create()
+        const p3 = vec2.create()
+        vec2.set(p0, -hl, radius)
+        vec2.set(p1, hl, radius)
+        vec2.set(pp2, hl, -radius)
+        vec2.set(p3, -hl, -radius)
+
+        vec2.rotate(p0, p0, angle)
+        vec2.rotate(p1, p1, angle)
+        vec2.rotate(pp2, pp2, angle)
+        vec2.rotate(p3, p3, angle)
+
+        vec2.add(p0, p0, localPos)
+        vec2.add(p1, p1, localPos)
+        vec2.add(pp2, pp2, localPos)
+        vec2.add(p3, p3, localPos)
+
+        g.lineStyle(lineWidth, color, 0)
+        g.beginFill(fillColor, isSleeping ? this.sleepOpacity : 1.0)
+        g.moveTo(p0[0], p0[1])
+        g.lineTo(p1[0], p1[1])
+        g.lineTo(pp2[0], pp2[1])
+        g.lineTo(p3[0], p3[1])
+        // g.lineTo( hl*c - radius*s + x,  hl*s - radius*c + y);
+        // g.lineTo(-hl*c - radius*s + x, -hl*s - radius*c + y);
+        g.endFill()
+
+        // Draw lines in between
+        for (let i = 0; i < 2; i++) {
+            g.lineStyle(lineWidth, color, 1)
+            const sign = i === 0 ? 1 : -1
+            vec2.set(p0, -hl, sign * radius)
+            vec2.set(p1, hl, sign * radius)
+            vec2.rotate(p0, p0, angle)
+            vec2.rotate(p1, p1, angle)
+            vec2.add(p0, p0, localPos)
+            vec2.add(p1, p1, localPos)
+            g.moveTo(p0[0], p0[1])
+            g.lineTo(p1[0], p1[1])
+        }
+    }
+
+    drawRectangle(g, x, y, angle, w, h, color, fillColor, lineWidth, isSleeping) {
+        const path = [
+            [w / 2, h / 2],
+            [-w / 2, h / 2],
+            [-w / 2, -h / 2],
+            [w / 2, -h / 2],
+        ]
+
+        // Rotate and add position
+        for (let i = 0; i < path.length; i++) {
+            const v = path[i]
+            p2.vec2.rotate(v, v, angle)
+            p2.vec2.add(v, v, [x, y])
+        }
+
+        this.drawPath(g, path, color, fillColor, lineWidth, isSleeping)
+    }
+
+    drawConvex(g, verts, triangles, color, fillColor, lineWidth, debug, offset, isSleeping) {
+        lineWidth = typeof lineWidth === 'number' ? lineWidth : 1
+
+        lineWidth *= Demo.RES_SCALAR
+        verts.map((v) => {
+            v[0] *= Demo.RES_SCALAR
+            v[1] *= Demo.RES_SCALAR
+        })
+
+        color = typeof color === 'undefined' ? 0x000000 : color
+        if (!debug) {
+            g.lineStyle(lineWidth, color, 1)
+            g.beginFill(fillColor, isSleeping ? this.sleepOpacity : 1.0)
+            for (let i = 0; i !== verts.length; i++) {
+                const v = verts[i]
+                const x = v[0]
+                const y = v[1]
+                if (i === 0) {
+                    g.moveTo(x, y)
+                } else {
+                    g.lineTo(x, y)
+                }
+            }
+            g.endFill()
+            if (verts.length > 2) {
+                g.moveTo(verts[verts.length - 1][0], verts[verts.length - 1][1])
+                g.lineTo(verts[0][0], verts[0][1])
+            }
+        } else {
+            // convexes
+            const colors = [0xff0000, 0x00ff00, 0x0000ff]
+            for (let i = 0; i !== verts.length + 1; i++) {
+                const v0 = verts[i % verts.length]
+                const v1 = verts[(i + 1) % verts.length]
+                const x0 = v0[0]
+                const y0 = v0[1]
+                const x1 = v1[0]
+                const y1 = v1[1]
+                g.lineStyle(lineWidth, colors[i % colors.length], 1)
+                g.moveTo(x0, y0)
+                g.lineTo(x1, y1)
+                g.drawCircle(x0, y0, lineWidth * 2)
+            }
+
+            g.lineStyle(lineWidth, 0xff0000, 1)
+            g.drawCircle(offset[0], offset[1], lineWidth * 2)
+        }
+
+        g.scale.set(1 / Demo.RES_SCALAR)
+    }
+
+    drawPath(g, path, color, fillColor, lineWidth, isSleeping) {
+        lineWidth = typeof lineWidth === 'number' ? lineWidth : 1
+
+        lineWidth *= Demo.RES_SCALAR
+        path.map((p) => {
+            p[0] *= Demo.RES_SCALAR
+            p[1] *= Demo.RES_SCALAR
+        })
+
+        color = typeof color === 'undefined' ? 0x000000 : color
+        g.lineStyle(lineWidth, color, 1)
+        if (typeof fillColor === 'number') {
+            g.beginFill(fillColor, isSleeping ? this.sleepOpacity : 1.0)
+        }
+        let lastx = null
+        let lasty = null
+        for (let i = 0; i < path.length; i++) {
+            const v = path[i]
+            const x = v[0]
+            const y = v[1]
+            if (x !== lastx || y !== lasty) {
+                if (i === 0) {
+                    g.moveTo(x, y)
+                } else {
+                    // Check if the lines are parallel
+                    const p1x = lastx
+                    const p1y = lasty
+                    const p2x = x
+                    const p2y = y
+                    const p3x = path[(i + 1) % path.length][0]
+                    const p3y = path[(i + 1) % path.length][1]
+                    const area = (p2x - p1x) * (p3y - p1y) - (p3x - p1x) * (p2y - p1y)
+                    if (area !== 0) {
+                        g.lineTo(x, y)
+                    }
+                }
+                lastx = x
+                lasty = y
+            }
+        }
+        if (typeof fillColor === 'number') {
+            g.endFill()
+        }
+
+        // Close the path
+        if (path.length > 2 && typeof fillColor === 'number') {
+            g.moveTo(path[path.length - 1][0], path[path.length - 1][1])
+            g.lineTo(path[0][0], path[0][1])
+        }
+
+        g.scale.set(1 / Demo.RES_SCALAR)
+    }
 }
 
 Demo.elementClass = 'p2-canvas'
@@ -1555,6 +1797,8 @@ Demo.DRAWCIRCLE = 6
 Demo.DRAWINGCIRCLE = 7
 Demo.DRAWRECTANGLE = 8
 Demo.DRAWINGRECTANGLE = 9
+
+Demo.RES_SCALAR = 20
 
 Demo.toolStateMap = {
     'pick/pan [q]': Demo.DEFAULT,
@@ -1587,270 +1831,57 @@ Demo.zoomOutEvent = {
     type: 'zoomout',
 }
 
+const disableSelectionCSS = [
+    '-ms-user-select: none',
+    '-moz-user-select: -moz-none',
+    '-khtml-user-select: none',
+    '-webkit-user-select: none',
+    'user-select: none',
+]
+
+const init_containerPosition = p2.vec2.create()
+const init_physicsPosition = p2.vec2.create()
+
+const X = p2.vec2.fromValues(1, 0)
+const distVec = p2.vec2.fromValues(0, 0)
+let worldAnchorA = p2.vec2.fromValues(0, 0)
+let worldAnchorB = p2.vec2.fromValues(0, 0)
+
 /**
- * Draw a circle onto a graphics object
- * @method drawCircle
- * @static
- * @param  {PIXI.Graphics} g
- * @param  {Number} x
- * @param  {Number} y
- * @param  {Number} radius
- * @param  {Number} color
- * @param  {Number} lineWidth
+ * Component to hex
+ * @param {number} c
+ * @returns
  */
-Demo.drawCircle = (g, x, y, angle, radius, color, lineWidth, isSleeping, sleepOpacity) => {
-    lineWidth = typeof lineWidth === 'number' ? lineWidth : 1
-    color = typeof color === 'number' ? color : 0xffffff
-    g.lineStyle(lineWidth, 0x000000, 1)
-    g.beginFill(color, isSleeping ? sleepOpacity : 1.0)
-    g.drawCircle(x, y, radius)
-    g.endFill()
-
-    // line from center to edge
-    g.moveTo(x, y)
-    g.lineTo(x + radius * Math.cos(angle), y + radius * Math.sin(angle))
-}
-
-Demo.drawSpring = (g, restLength, color, lineWidth) => {
-    lineWidth = typeof lineWidth === 'number' ? lineWidth : 1
-    color = typeof color === 'undefined' ? 0xffffff : color
-    g.lineStyle(lineWidth, color, 1)
-    if (restLength < lineWidth * 10) {
-        restLength = lineWidth * 10
-    }
-    const M = 12
-    const dx = restLength / M
-    g.moveTo(-restLength / 2, 0)
-    for (let i = 1; i < M; i++) {
-        const x = -restLength / 2 + dx * i
-        let y = 0
-        if (i <= 1 || i >= M - 1) {
-            // Do nothing
-        } else if (i % 2 === 0) {
-            y -= 0.1 * restLength
-        } else {
-            y += 0.1 * restLength
-        }
-        g.lineTo(x, y)
-    }
-    g.lineTo(restLength / 2, 0)
+const componentToHex = (c) => {
+    const hex = c.toString(16)
+    return hex.length === 1 ? `0${hex}` : hex
 }
 
 /**
- * Draw a finite plane onto a PIXI.Graphics.
- * @method drawPlane
- * @param  {PIXI.Graphics} g
- * @param  {Number} x0
- * @param  {Number} x1
- * @param  {Number} color
- * @param  {Number} lineWidth
- * @param  {Number} diagMargin
- * @param  {Number} diagSize
- * @todo Should consider an angle
+ * RGB to hex
+ * @param {number} r
+ * @param {number} g
+ * @param {number} b
+ * @returns
  */
-Demo.drawPlane = (g, x0, x1, color, lineColor, lineWidth, diagMargin, diagSize, maxLength) => {
-    lineWidth = typeof lineWidth === 'number' ? lineWidth : 1
-    color = typeof color === 'undefined' ? 0xffffff : color
-    g.lineStyle(lineWidth, lineColor, 1)
-
-    // Draw a fill color
-    g.lineStyle(0, 0, 0)
-    g.beginFill(color)
-    const max = maxLength
-    g.moveTo(-max, 0)
-    g.lineTo(max, 0)
-    g.lineTo(max, -max)
-    g.lineTo(-max, -max)
-    g.endFill()
-
-    // Draw the actual plane
-    g.lineStyle(lineWidth, lineColor)
-    g.moveTo(-max, 0)
-    g.lineTo(max, 0)
+const rgbToHex = (r, g, b) => {
+    return componentToHex(r) + componentToHex(g) + componentToHex(b)
 }
 
-Demo.drawLine = (g, offset, angle, len, color, lineWidth) => {
-    lineWidth = typeof lineWidth === 'number' ? lineWidth : 1
-    color = typeof color === 'undefined' ? 0x000000 : color
-    g.lineStyle(lineWidth, color, 1)
+/**
+ * Returns a random pastel color hex
+ * @returns {number} random pastel color hex
+ */
+const randomPastelHex = () => {
+    const mix = [255, 255, 255]
+    let red = Math.floor(Math.random() * 256)
+    let green = Math.floor(Math.random() * 256)
+    let blue = Math.floor(Math.random() * 256)
 
-    const startPoint = p2.vec2.fromValues(-len / 2, 0)
-    const endPoint = p2.vec2.fromValues(len / 2, 0)
+    // mix the color
+    red = Math.floor((red + 3 * mix[0]) / 4)
+    green = Math.floor((green + 3 * mix[1]) / 4)
+    blue = Math.floor((blue + 3 * mix[2]) / 4)
 
-    p2.vec2.rotate(startPoint, startPoint, angle)
-    p2.vec2.rotate(endPoint, endPoint, angle)
-
-    p2.vec2.add(startPoint, startPoint, offset)
-    p2.vec2.add(endPoint, endPoint, offset)
-
-    g.moveTo(startPoint[0], startPoint[1])
-    g.lineTo(endPoint[0], endPoint[1])
-}
-
-Demo.drawCapsule = (g, x, y, angle, len, radius, color, fillColor, lineWidth, isSleeping, sleepOpacity) => {
-    lineWidth = typeof lineWidth === 'number' ? lineWidth : 1
-    color = typeof color === 'undefined' ? 0x000000 : color
-    g.lineStyle(lineWidth, color, 1)
-
-    const { vec2 } = p2
-
-    // Draw circles at ends
-    const hl = len / 2
-    g.beginFill(fillColor, isSleeping ? sleepOpacity : 1.0)
-    const localPos = vec2.fromValues(x, y)
-    const p0 = vec2.fromValues(-hl, 0)
-    const p1 = vec2.fromValues(hl, 0)
-    vec2.rotate(p0, p0, angle)
-    vec2.rotate(p1, p1, angle)
-    vec2.add(p0, p0, localPos)
-    vec2.add(p1, p1, localPos)
-    g.drawCircle(p0[0], p0[1], radius)
-    g.drawCircle(p1[0], p1[1], radius)
-    g.endFill()
-
-    // Draw rectangle
-    const pp2 = vec2.create()
-    const p3 = vec2.create()
-    vec2.set(p0, -hl, radius)
-    vec2.set(p1, hl, radius)
-    vec2.set(pp2, hl, -radius)
-    vec2.set(p3, -hl, -radius)
-
-    vec2.rotate(p0, p0, angle)
-    vec2.rotate(p1, p1, angle)
-    vec2.rotate(pp2, pp2, angle)
-    vec2.rotate(p3, p3, angle)
-
-    vec2.add(p0, p0, localPos)
-    vec2.add(p1, p1, localPos)
-    vec2.add(pp2, pp2, localPos)
-    vec2.add(p3, p3, localPos)
-
-    g.lineStyle(lineWidth, color, 0)
-    g.beginFill(fillColor, isSleeping ? sleepOpacity : 1.0)
-    g.moveTo(p0[0], p0[1])
-    g.lineTo(p1[0], p1[1])
-    g.lineTo(pp2[0], pp2[1])
-    g.lineTo(p3[0], p3[1])
-    // g.lineTo( hl*c - radius*s + x,  hl*s - radius*c + y);
-    // g.lineTo(-hl*c - radius*s + x, -hl*s - radius*c + y);
-    g.endFill()
-
-    // Draw lines in between
-    for (let i = 0; i < 2; i++) {
-        g.lineStyle(lineWidth, color, 1)
-        const sign = i === 0 ? 1 : -1
-        vec2.set(p0, -hl, sign * radius)
-        vec2.set(p1, hl, sign * radius)
-        vec2.rotate(p0, p0, angle)
-        vec2.rotate(p1, p1, angle)
-        vec2.add(p0, p0, localPos)
-        vec2.add(p1, p1, localPos)
-        g.moveTo(p0[0], p0[1])
-        g.lineTo(p1[0], p1[1])
-    }
-}
-
-Demo.drawRectangle = (g, x, y, angle, w, h, color, fillColor, lineWidth, isSleeping, sleepOpacity) => {
-    const path = [
-        [w / 2, h / 2],
-        [-w / 2, h / 2],
-        [-w / 2, -h / 2],
-        [w / 2, -h / 2],
-    ]
-
-    // Rotate and add position
-    for (let i = 0; i < path.length; i++) {
-        const v = path[i]
-        p2.vec2.rotate(v, v, angle)
-        p2.vec2.add(v, v, [x, y])
-    }
-
-    Demo.drawPath(g, path, color, fillColor, lineWidth, isSleeping, sleepOpacity)
-}
-
-Demo.drawConvex = (g, verts, triangles, color, fillColor, lineWidth, debug, offset, isSleeping, sleepOpacity) => {
-    lineWidth = typeof lineWidth === 'number' ? lineWidth : 1
-    color = typeof color === 'undefined' ? 0x000000 : color
-    if (!debug) {
-        g.lineStyle(lineWidth, color, 1)
-        g.beginFill(fillColor, isSleeping ? sleepOpacity : 1.0)
-        for (let i = 0; i !== verts.length; i++) {
-            const v = verts[i]
-            const x = v[0]
-            const y = v[1]
-            if (i === 0) {
-                g.moveTo(x, y)
-            } else {
-                g.lineTo(x, y)
-            }
-        }
-        g.endFill()
-        if (verts.length > 2) {
-            g.moveTo(verts[verts.length - 1][0], verts[verts.length - 1][1])
-            g.lineTo(verts[0][0], verts[0][1])
-        }
-    } else {
-        // convexes
-        const colors = [0xff0000, 0x00ff00, 0x0000ff]
-        for (let i = 0; i !== verts.length + 1; i++) {
-            const v0 = verts[i % verts.length]
-            const v1 = verts[(i + 1) % verts.length]
-            const x0 = v0[0]
-            const y0 = v0[1]
-            const x1 = v1[0]
-            const y1 = v1[1]
-            g.lineStyle(lineWidth, colors[i % colors.length], 1)
-            g.moveTo(x0, y0)
-            g.lineTo(x1, y1)
-            g.drawCircle(x0, y0, lineWidth * 2)
-        }
-
-        g.lineStyle(lineWidth, 0xff0000, 1)
-        g.drawCircle(offset[0], offset[1], lineWidth * 2)
-    }
-}
-
-Demo.drawPath = (g, path, color, fillColor, lineWidth, isSleeping, sleepOpacity) => {
-    lineWidth = typeof lineWidth === 'number' ? lineWidth : 1
-    color = typeof color === 'undefined' ? 0x000000 : color
-    g.lineStyle(lineWidth, color, 1)
-    if (typeof fillColor === 'number') {
-        g.beginFill(fillColor, isSleeping ? sleepOpacity : 1.0)
-    }
-    let lastx = null
-    let lasty = null
-    for (let i = 0; i < path.length; i++) {
-        const v = path[i]
-        const x = v[0]
-        const y = v[1]
-        if (x !== lastx || y !== lasty) {
-            if (i === 0) {
-                g.moveTo(x, y)
-            } else {
-                // Check if the lines are parallel
-                const p1x = lastx
-                const p1y = lasty
-                const p2x = x
-                const p2y = y
-                const p3x = path[(i + 1) % path.length][0]
-                const p3y = path[(i + 1) % path.length][1]
-                const area = (p2x - p1x) * (p3y - p1y) - (p3x - p1x) * (p2y - p1y)
-                if (area !== 0) {
-                    g.lineTo(x, y)
-                }
-            }
-            lastx = x
-            lasty = y
-        }
-    }
-    if (typeof fillColor === 'number') {
-        g.endFill()
-    }
-
-    // Close the path
-    if (path.length > 2 && typeof fillColor === 'number') {
-        g.moveTo(path[path.length - 1][0], path[path.length - 1][1])
-        g.lineTo(path[0][0], path[0][1])
-    }
+    return rgbToHex(red, green, blue)
 }

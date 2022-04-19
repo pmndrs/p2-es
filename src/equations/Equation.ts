@@ -91,10 +91,10 @@ export class Equation {
 
     /**
      * Constructor for an Equation
-     * @param bodyA  * @param {Body} bodyA First body participating in the equation
-     * @param {Body} bodyB Second body participating in the equation
-     * @param {number} minForce Minimum force to apply. Default: -Number.MAX_VALUE
-     * @param {number} maxForce Maximum force to apply. Default: Number.MAX_VALUE
+     * @param bodyA First body participating in the equation
+     * @param bodyB Second body participating in the equation
+     * @param minForce Minimum force to apply. Default: -Number.MAX_VALUE
+     * @param maxForce Maximum force to apply. Default: Number.MAX_VALUE
      * @param bodyB
      * @param minForce
      * @param maxForce

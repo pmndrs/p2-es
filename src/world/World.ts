@@ -373,7 +373,6 @@ export class World extends EventEmitter<WorldEventMap> {
      *
      * There are two modes. The simple mode is fixed timestepping without interpolation. In this case you only use the first argument. The second case uses interpolation. In that you also provide the time since the function was last used, as well as the maximum fixed timesteps to take.
      *
-     * @method step
      * @param dt The fixed time step size to use.
      * @param timeSinceLastCalled The time elapsed since the function was last called.
      * @param maxSubSteps Maximum number of fixed steps to take per function call.

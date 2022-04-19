@@ -289,9 +289,8 @@ export abstract class Shape {
 
     /**
      * Test if a point is inside this shape.
-     * @method pointTest
-     * @param {array} localPoint
-     * @return {boolean}
+     * @param localPoint
+     * @return whether a point is inside this shape
      */
     pointTest(_localPoint: Vec2): boolean {
         return false

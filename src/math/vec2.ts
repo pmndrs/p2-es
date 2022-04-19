@@ -120,7 +120,6 @@ export function toLocalFrame(out: Vec2, worldPoint: Vec2, framePosition: Vec2, f
 
 /**
  * Transform a point position to global frame.
- * @method toGlobalFrame
  * @param out
  * @param localPoint
  * @param framePosition
@@ -161,8 +160,6 @@ export const vectorToGlobalFrame = rotate
 
 /**
  * Compute centroid of a triangle spanned by vectors a,b,c. See http://easycalculation.com/analytical/learn-centroid.php
- * @method centroid
- * @static
  * @param out
  * @param a
  * @param b

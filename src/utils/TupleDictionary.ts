@@ -82,8 +82,7 @@ export class TupleDictionary<T> {
 
     /**
      * Copy another TupleDictionary. Note that all data in this dictionary will be removed.
-     * @method copy
-     * @param {TupleDictionary} dict The TupleDictionary to copy into this one.
+     * @param dict The TupleDictionary to copy into this one.
      */
     copy(dict: TupleDictionary<T>): void {
         this.reset()

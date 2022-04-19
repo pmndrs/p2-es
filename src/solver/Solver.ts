@@ -40,7 +40,6 @@ export abstract class Solver {
 
     /**
      * Method to be implemented in each subclass
-     * @method solve
      * @param dt
      * @param world
      */

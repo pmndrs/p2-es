@@ -39,7 +39,6 @@ export class NaiveBroadphase extends Broadphase {
 
     /**
      * Returns all the bodies within an AABB.
-     * @method aabbQuery
      * @param world
      * @param aabb
      * @param result An array to store resulting bodies in.

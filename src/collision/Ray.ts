@@ -185,7 +185,7 @@ export class Ray {
     }
 
     /**
-     * @method intersectShape
+     * Shoot a ray at a shape, get back information about the hit
      * @param shape
      * @param angle
      * @param position

@@ -132,7 +132,6 @@ export class AABB {
 
     /**
      * Returns true if the given AABB overlaps this AABB.
-     * @method overlaps
      * @param aabb
      * @return
      */
