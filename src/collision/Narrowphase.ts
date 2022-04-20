@@ -188,8 +188,8 @@ export class Narrowphase {
             this.collidingBodiesLastStep.set(id1, id2, true)
         }
 
-        const ce = this.contactEquations,
-            fe = this.frictionEquations
+        const ce = this.contactEquations
+        const fe = this.frictionEquations
         for (let i = 0; i < ce.length; i++) {
             this.contactEquationPool.release(ce[i])
         }
@@ -261,7 +261,7 @@ export class Narrowphase {
      * @param c
      */
     createFrictionFromContact(c: ContactEquation): FrictionEquation {
-        const eq = this.createFrictionEquation(c.bodyA, c.bodyB, c.shapeA!, c.shapeB!)
+        const eq = this.createFrictionEquation(c.bodyA, c.bodyB, c.shapeA, c.shapeB)
         vec2.copy(eq.contactPointA, c.contactPointA)
         vec2.copy(eq.contactPointB, c.contactPointB)
         vec2.rotate90cw(eq.t, c.normalA)
@@ -271,7 +271,7 @@ export class Narrowphase {
 
     createFrictionFromAverage(numContacts: number): FrictionEquation {
         let c = this.contactEquations[this.contactEquations.length - 1]
-        const eq = this.createFrictionEquation(c.bodyA, c.bodyB, c.shapeA!, c.shapeB!)
+        const eq = this.createFrictionEquation(c.bodyA, c.bodyB, c.shapeA, c.shapeB)
         const bodyA = c.bodyA
         vec2.set(eq.contactPointA, 0, 0)
         vec2.set(eq.contactPointB, 0, 0)
@@ -790,7 +790,6 @@ export class Narrowphase {
         lineRadius = 0,
         circleRadius = circleShape.radius
     ): number => {
-
         const orthoDist = tmp1
         const lineToCircleOrthoUnit = tmp2
         const projectedPoint = tmp3
@@ -949,7 +948,7 @@ export class Narrowphase {
         aj: number,
         justTest = false
     ): number => {
-        return this.circleLine(bi, si, xi, ai, bj, sj, xj, aj, justTest, si.radius, sj.radius)
+        return this.circleLine(bi, si, xi, ai, bj, sj, xj, aj, justTest, sj.radius)
     }
 
     /**
@@ -1620,7 +1619,7 @@ export class Narrowphase {
         planeShape: Plane,
         planeOffset: Vec2,
         planeAngle: number,
-        justTest = false,
+        justTest = false
     ): number => {
         const circleRadius = circleShape.radius
 
