@@ -72,9 +72,9 @@ export class Circle extends Shape {
     }
 
     raycast(result: RaycastResult, ray: Ray, position: Vec2): void {
-        const from = ray.from,
-            to = ray.to,
-            r = this.radius
+        const from = ray.from
+        const to = ray.to
+        const r = this.radius
 
         const a = Math.pow(to[0] - from[0], 2) + Math.pow(to[1] - from[1], 2)
         const b = 2 * ((to[0] - from[0]) * (from[0] - position[0]) + (to[1] - from[1]) * (from[1] - position[1]))

@@ -1,7 +1,7 @@
 import { Equation } from '../../src/equations/Equation'
 import { Body } from '../../src/objects/Body'
 
-describe('Equations: Equation', () => {
+describe('Equation', () => {
     test('construct', () => {
         const bodyA = new Body()
         const bodyB = new Body()

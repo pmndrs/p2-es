@@ -65,7 +65,7 @@ export class Constraint {
             | typeof Constraint.LOCK
             | typeof Constraint.PRISMATIC
             | typeof Constraint.REVOLUTE
-            | typeof Constraint.OTHER,
+            | typeof Constraint.OTHER = Constraint.OTHER,
         options: ConstraintOptions = {}
     ) {
         this.type = type
@@ -89,7 +89,7 @@ export class Constraint {
      * Updates the internal constraint parameters before solve.
      */
     update(): void {
-        throw new Error('method update() not implmemented in this Constraint subclass!')
+        throw new Error('method update() not implemented in this Constraint subclass!')
     }
 
     /**

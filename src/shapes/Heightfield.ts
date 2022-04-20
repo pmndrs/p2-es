@@ -86,11 +86,9 @@ export class Heightfield extends Shape {
         super(params)
 
         this.heights = params.heights
-
         this.maxValue = params.maxValue
         this.minValue = params.minValue
-
-        this.elementWidth = params.elementWidth ?? 0.1
+        this.elementWidth = params.elementWidth
 
         if (params.maxValue === undefined || params.minValue === undefined) {
             this.updateMaxMinValues()

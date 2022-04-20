@@ -8,7 +8,7 @@ import { Convex } from '../../src/shapes/Convex'
 import { Plane } from '../../src/shapes/Plane'
 import { World } from '../../src/world/World'
 
-describe('World: World', () => {
+describe('World', () => {
     test('construct', () => {
         let world = new World()
 

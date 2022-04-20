@@ -3,7 +3,7 @@ import { DistanceConstraint } from '../../src/constraints/DistanceConstraint'
 import { Body, } from '../../src/objects/Body'
 import { World } from '../../src/world/World'
 
-describe('Constraints: Constraint', () => {
+describe('Constraint', () => {
     test('construct', () => {
         new Constraint(new Body(), new Body(), 1)
     })

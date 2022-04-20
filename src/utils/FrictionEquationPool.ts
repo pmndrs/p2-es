@@ -4,7 +4,7 @@ import { Pool } from './Pool'
 
 export class FrictionEquationPool extends Pool<FrictionEquation> {
 	create(): FrictionEquation {
-		return new FrictionEquation(tmpBody, tmpBody, 0)
+		return new FrictionEquation(tmpBody, tmpBody)
 	}
 
 	destroy(equation: FrictionEquation): FrictionEquationPool {

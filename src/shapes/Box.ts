@@ -49,8 +49,8 @@ export class Box extends Convex {
         const params = {
             ...options,
             type: Shape.BOX,
-            width: options?.width ?? 1,
-            height: options?.height ?? 1,
+            width: options.width ?? 1,
+            height: options.height ?? 1,
         }
 
         const verts = [

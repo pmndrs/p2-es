@@ -2,7 +2,7 @@ import { Body } from '../../src/objects/Body'
 import { Circle } from '../../src/shapes/Circle'
 import { OverlapKeeper } from '../../src/utils/OverlapKeeper'
 
-describe('OverlapKeeper', () => {
+describe('Utils: OverlapKeeper', () => {
     test('construct', () => {
         new OverlapKeeper()
     })

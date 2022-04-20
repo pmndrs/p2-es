@@ -2,7 +2,7 @@ import { RevoluteConstraint } from '../../src/constraints/RevoluteConstraint'
 import { Body } from '../../src/objects/Body'
 import { World } from '../../src/world/World'
 
-describe('Constraint: RevoluteConstraint', () => {
+describe('Constraints: RevoluteConstraint', () => {
     test('worldPivot', () => {
         const world = new World()
 

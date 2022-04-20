@@ -106,19 +106,17 @@ export class DistanceConstraint extends Constraint {
     constructor(bodyA: Body, bodyB: Body, options: DistanceConstraintOptions = {}) {
         super(bodyA, bodyB, Constraint.DISTANCE, options)
 
-        this.upperLimit = options.upperLimit ?? 1
-        this.upperLimitEnabled = options.upperLimit !== undefined
-
-        this.lowerLimit = options.lowerLimit ?? 0
-        this.lowerLimitEnabled = options.lowerLimit !== undefined
-
         this.localAnchorA = options.localAnchorA ? vec2.clone(options.localAnchorA) : vec2.create()
         this.localAnchorB = options.localAnchorB ? vec2.clone(options.localAnchorB) : vec2.create()
 
         const localAnchorA = this.localAnchorA
         const localAnchorB = this.localAnchorB
 
-        this.distance = 0
+        this.upperLimit = options.upperLimit ?? 1
+        this.upperLimitEnabled = options.upperLimit !== undefined
+
+        this.lowerLimit = options.lowerLimit ?? 0
+        this.lowerLimitEnabled = options.lowerLimit !== undefined
 
         if (typeof options.distance === 'number') {
             this.distance = options.distance

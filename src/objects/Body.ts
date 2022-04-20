@@ -850,7 +850,6 @@ export class Body extends EventEmitter<BodyEventMap> {
      *     console.log(body.force); // [0, 1]
      *     console.log(body.angularForce); // 1
      */
-
     applyForceLocal(localForce: Vec2, localPoint?: Vec2): void {
         localPoint = localPoint || applyForce_pointLocal
         const worldForce = applyForce_forceWorld

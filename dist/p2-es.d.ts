@@ -274,7 +274,7 @@ declare module "equations/Equation" {
         index: number;
         minForceDt: number;
         maxForceDt: number;
-        constructor(bodyA: Body, bodyB: Body, minForce: number, maxForce: number);
+        constructor(bodyA: Body, bodyB: Body, minForce?: number, maxForce?: number);
         update(): void;
         gmult(G: Vec2, vi: Vec2, wi: number, vj: Vec2, wj: number): number;
         computeB(a: number, b: number, h: number): number;
@@ -320,7 +320,7 @@ declare module "equations/FrictionEquation" {
         shapeA: Shape | null;
         shapeB: Shape | null;
         frictionCoefficient: number;
-        constructor(bodyA: Body, bodyB: Body, slipForce: number);
+        constructor(bodyA: Body, bodyB: Body, slipForce?: number);
         setSlipForce(slipForce: number): void;
         getSlipForce(): number;
         computeB(a: number, b: number, h: number): number;
@@ -575,10 +575,10 @@ declare module "collision/SAPBroadphase" {
 declare module "constraints/Constraint" {
     import type { Equation } from "equations/Equation";
     import type { Body } from "objects/Body";
-    export interface ConstraintOptions {
+    export type ConstraintOptions = {
         collideConnected?: boolean;
         wakeUpBodies?: boolean;
-    }
+    };
     export class Constraint {
         static OTHER: -1;
         static DISTANCE: 1;
@@ -591,7 +591,7 @@ declare module "constraints/Constraint" {
         bodyA: Body;
         bodyB: Body;
         collideConnected: boolean;
-        constructor(bodyA: Body, bodyB: Body, type: typeof Constraint.DISTANCE | typeof Constraint.GEAR | typeof Constraint.LOCK | typeof Constraint.PRISMATIC | typeof Constraint.REVOLUTE | typeof Constraint.OTHER, options?: ConstraintOptions);
+        constructor(bodyA: Body, bodyB: Body, type?: typeof Constraint.DISTANCE | typeof Constraint.GEAR | typeof Constraint.LOCK | typeof Constraint.PRISMATIC | typeof Constraint.REVOLUTE | typeof Constraint.OTHER, options?: ConstraintOptions);
         update(): void;
         setStiffness(stiffness: number): void;
         setRelaxation(relaxation: number): void;
@@ -944,7 +944,7 @@ declare module "objects/Body" {
         ccdIterations: number;
         massMultiplier: Vec2;
         islandId: number;
-        concavePath: Vec2[] | null;
+        private concavePath;
         _wakeUpAfterNarrowphase: boolean;
         constructor(options?: BodyOptions);
         updateSolveMassProperties(): void;
@@ -989,7 +989,7 @@ declare module "collision/Ray" {
     import type { Vec2 } from "types/index";
     import type { AABB } from "collision/AABB";
     import type { RaycastResult } from "collision/RaycastResult";
-    export interface RayOptions {
+    export type RayOptions = {
         from?: Vec2;
         to?: Vec2;
         checkCollisionResponse?: boolean;
@@ -997,8 +997,8 @@ declare module "collision/Ray" {
         collisionMask?: number;
         collisionGroup?: number;
         mode?: typeof Ray.CLOSEST | typeof Ray.ANY | typeof Ray.ALL;
-        callback?: ((result: RaycastResult) => void);
-    }
+        callback?: (result: RaycastResult) => void;
+    };
     export class Ray {
         static CLOSEST: number;
         static ANY: number;
@@ -1027,10 +1027,10 @@ declare module "collision/Ray" {
 declare module "collision/AABB" {
     import type { Ray } from "collision/Ray";
     import type { Vec2 } from "types/index";
-    export interface AABBOptions {
+    export type AABBOptions = {
         upperBound?: Vec2;
         lowerBound?: Vec2;
-    }
+    };
     export class AABB {
         upperBound: Vec2;
         lowerBound: Vec2;
@@ -1306,12 +1306,10 @@ declare module "objects/TopDownVehicle" {
         groundBody: Body;
         wheels: WheelConstraint[];
         world: World | null;
-        postStepCallback: () => void;
         constructor(chassisBody: Body);
         addToWorld(world: World): void;
         removeFromWorld(): void;
         addWheel(wheelOptions?: WheelConstraintOptions): WheelConstraint;
-        update(): void;
     }
 }
 declare module "p2-es" {

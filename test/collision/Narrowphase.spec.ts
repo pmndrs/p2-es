@@ -27,7 +27,7 @@ let rect: Box,
 const position = [0, 0]
 const angle = 0
 
-describe('collision: Narrowphase', () => {
+describe('Collision: Narrowphase', () => {
     beforeEach(() => {
         // Rect
         rect = new Box()

@@ -2,7 +2,7 @@ import { AABB } from '../../src/collision/AABB'
 import { Ray } from '../../src/collision/Ray'
 import * as vec2 from '../../src/math/vec2'
 
-describe('AABB', () => {
+describe('Collison: AABB', () => {
     test('construct', () => {
         const aabb = new AABB({
             lowerBound: [-1, -2],

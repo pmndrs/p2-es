@@ -145,14 +145,14 @@ export class OverlapKeeper {
             const data: OverlapKeeperRecord = overlaps[l]
 
             // Since we use body id's for the accumulator, these will be a subset of the original one
-            accumulator.set(data.bodyA!.id | 0, data.bodyB!.id | 0, data)
+            accumulator.set(data.bodyA.id | 0, data.bodyB.id | 0, data)
         }
 
         l = accumulator.keys.length
         while (l--) {
             const data = accumulator.getByKey(accumulator.keys[l])
             if (data) {
-                result.push(data.bodyA!, data.bodyB!)
+                result.push(data.bodyA, data.bodyB)
             }
         }
 

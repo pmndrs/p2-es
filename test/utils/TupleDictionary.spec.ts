@@ -1,6 +1,6 @@
 import { TupleDictionary } from '../../src/utils/TupleDictionary'
 
-describe('TupleDictionary', () => {
+describe('Utils: TupleDictionary', () => {
     test('construct', () => {
         new TupleDictionary()
     })

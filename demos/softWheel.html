@@ -119,6 +119,7 @@
                     0
                 )
                 world.addBody(chassisBody)
+                window.chassisBody = chassisBody
 
                 // Constrain wheels to chassis: let them move vertically and rotate using a prismatic
                 var c1 = new p2.PrismaticConstraint(chassisBody, wheelBodyA, {

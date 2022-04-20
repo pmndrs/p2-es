@@ -54,6 +54,7 @@ export abstract class Pool<T> {
     }
 
     /**
+     * Release an object back to the pool.
      * @param object
      * @return Self for chaining
      */

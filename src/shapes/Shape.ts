@@ -228,29 +228,17 @@ export abstract class Shape {
         this.id = Shape.idCounter++
         this.body = null
 
-        const params = {
-            ...options,
-            angle: options.angle ?? 0,
-            type: options.type,
-            collisionGroup: options.collisionGroup ?? 1,
-            collisionResponse: options.collisionResponse ?? true,
-            collisionMask: options.collisionMask ?? 1,
-            sensor: options.sensor ?? false,
+        if (options.position) {
+            vec2.copy(this.position, options.position)
         }
 
-        if (params.position) {
-            vec2.copy(this.position, params.position)
-        }
-
-        this.angle = params.angle
-        this.type = params.type
-
-        this.collisionGroup = params.collisionGroup
-        this.collisionResponse = params.collisionResponse
-        this.collisionMask = params.collisionMask
-
-        this.material = params.material || null
-        this.sensor = params.sensor
+        this.type = options.type
+        this.angle = options.angle ?? 0
+        this.collisionGroup = options.collisionGroup ?? 1
+        this.collisionResponse = options.collisionResponse ?? true
+        this.collisionMask = options.collisionMask ?? 1
+        this.sensor = options.sensor ?? false
+        this.material = options.material ?? null
     }
 
     /**
@@ -289,7 +277,7 @@ export abstract class Shape {
 
     /**
      * Test if a point is inside this shape.
-     * @param localPoint
+     * @param _localPoint
      * @return whether a point is inside this shape
      */
     pointTest(_localPoint: Vec2): boolean {

@@ -666,9 +666,9 @@ class AABB {
       if (angle !== 0) {
         const x = p[0],
               y = p[1];
-        tmp$2[0] = cosAngle * x - sinAngle * y;
-        tmp$2[1] = sinAngle * x + cosAngle * y;
-        p = tmp$2;
+        tmp$1[0] = cosAngle * x - sinAngle * y;
+        tmp$1[1] = sinAngle * x + cosAngle * y;
+        p = tmp$1;
       }
 
       for (let j = 0; j < 2; j++) {
@@ -810,7 +810,7 @@ class AABB {
   }
 
 }
-const tmp$2 = create();
+const tmp$1 = create();
 
 const tmpPoint1 = [0, 0];
 const tmpPoint2 = [0, 0];
@@ -1512,26 +1512,41 @@ class Ray {
    */
 
   /**
+   * @readOnly
+   */
+
+  /**
+   * Length of the ray
+   * @readonly
+   */
+
+  /**
    * Constructor for a new Ray
    * @param options
    */
   constructor(options) {
-    this._currentBody = null;
-    this._currentShape = null;
-    this.from = options != null && options.from ? clone(options.from) : create();
-    this.to = options != null && options.to ? clone(options.to) : create();
-    this.checkCollisionResponse = (options == null ? void 0 : options.checkCollisionResponse) !== undefined ? options.checkCollisionResponse : true;
-    this.skipBackfaces = !!(options != null && options.skipBackfaces);
-    this.collisionMask = (options == null ? void 0 : options.collisionMask) !== undefined ? options.collisionMask : -1;
-    this.collisionGroup = (options == null ? void 0 : options.collisionGroup) !== undefined ? options.collisionGroup : -1;
-    this.mode = (options == null ? void 0 : options.mode) !== undefined ? options.mode : Ray.ANY; // eslint-disable-next-line @typescript-eslint/no-empty-function
+    var _options;
 
-    this.callback = (options == null ? void 0 : options.callback) || function
-      /*result*/
-    () {};
+    if (options === void 0) {
+      options = {};
+    }
 
     this.direction = create();
     this.length = 1;
+    this._currentBody = null;
+    this._currentShape = null;
+    this.from = options.from ? clone(options.from) : create();
+    this.to = options.to ? clone(options.to) : create();
+    this.checkCollisionResponse = options.checkCollisionResponse ?? true;
+    this.skipBackfaces = !!options.skipBackfaces;
+    this.collisionMask = options.collisionMask ?? -1;
+    this.collisionGroup = options.collisionGroup ?? -1;
+    this.mode = options.mode ?? Ray.ANY; // eslint-disable-next-line @typescript-eslint/no-empty-function
+
+    this.callback = ((_options = options) == null ? void 0 : _options.callback) || function
+      /*result*/
+    () {};
+
     this.update();
   }
   /**
@@ -2098,26 +2113,18 @@ class Shape {
     this.area = 0;
     this.id = Shape.idCounter++;
     this.body = null;
-    const params = { ...options,
-      angle: options.angle ?? 0,
-      type: options.type,
-      collisionGroup: options.collisionGroup ?? 1,
-      collisionResponse: options.collisionResponse ?? true,
-      collisionMask: options.collisionMask ?? 1,
-      sensor: options.sensor ?? false
-    };
 
-    if (params.position) {
-      copy(this.position, params.position);
+    if (options.position) {
+      copy(this.position, options.position);
     }
 
-    this.angle = params.angle;
-    this.type = params.type;
-    this.collisionGroup = params.collisionGroup;
-    this.collisionResponse = params.collisionResponse;
-    this.collisionMask = params.collisionMask;
-    this.material = params.material || null;
-    this.sensor = params.sensor;
+    this.type = options.type;
+    this.angle = options.angle ?? 0;
+    this.collisionGroup = options.collisionGroup ?? 1;
+    this.collisionResponse = options.collisionResponse ?? true;
+    this.collisionMask = options.collisionMask ?? 1;
+    this.sensor = options.sensor ?? false;
+    this.material = options.material ?? null;
   }
   /**
    * Should return the moment of inertia around the Z axis of the body.
@@ -2643,8 +2650,8 @@ class Body extends EventEmitter {
     this.angularVelocity = options.angularVelocity || 0;
     this.force = options.force ? clone(options.force) : create();
     this.angularForce = options.angularForce || 0;
-    this.damping = options.damping !== undefined ? options.damping : 0.1;
-    this.angularDamping = options.angularDamping !== undefined ? options.angularDamping : 0.1;
+    this.damping = options.damping ?? 0.1;
+    this.angularDamping = options.angularDamping ?? 0.1;
     this.type = Body.STATIC;
 
     if (options.type !== undefined) {
@@ -2658,17 +2665,17 @@ class Body extends EventEmitter {
     this.boundingRadius = 0;
     this.aabb = new AABB();
     this.aabbNeedsUpdate = true;
-    this.allowSleep = options.allowSleep !== undefined ? options.allowSleep : true;
+    this.allowSleep = options.allowSleep ?? true;
     this.wantsToSleep = false;
     this.sleepState = Body.AWAKE;
-    this.sleepSpeedLimit = options.sleepSpeedLimit !== undefined ? options.sleepSpeedLimit : 0.2;
-    this.sleepTimeLimit = options.sleepTimeLimit !== undefined ? options.sleepTimeLimit : 1;
+    this.sleepSpeedLimit = options.sleepSpeedLimit ?? 0.2;
+    this.sleepTimeLimit = options.sleepTimeLimit ?? 1;
     this.idleTime = 0;
     this.timeLastSleepy = 0;
-    this.gravityScale = options.gravityScale !== undefined ? options.gravityScale : 1;
-    this.collisionResponse = options.collisionResponse !== undefined ? options.collisionResponse : true;
-    this.ccdSpeedThreshold = options.ccdSpeedThreshold !== undefined ? options.ccdSpeedThreshold : -1;
-    this.ccdIterations = options.ccdIterations !== undefined ? options.ccdIterations : 10;
+    this.collisionResponse = options.collisionResponse ?? true;
+    this.ccdSpeedThreshold = options.ccdSpeedThreshold ?? -1;
+    this.ccdIterations = options.ccdIterations ?? 10;
+    this.gravityScale = options.gravityScale ?? 1;
     this.islandId = -1;
     this.concavePath = null;
     this._wakeUpAfterNarrowphase = false;
@@ -2731,7 +2738,7 @@ class Body extends EventEmitter {
   updateAABB() {
     const shapes = this.shapes,
           N = shapes.length,
-          offset = tmp$1,
+          offset = updateAABB_tmp,
           bodyAngle = this.angle;
 
     for (let i = 0; i !== N; i++) {
@@ -2740,12 +2747,12 @@ class Body extends EventEmitter {
 
       toGlobalFrame(offset, shape.position, this.position, bodyAngle); // Get shape AABB
 
-      shape.computeAABB(shapeAABB, offset, angle);
+      shape.computeAABB(updateAABB_shapeAABB, offset, angle);
 
       if (i === 0) {
-        this.aabb.copy(shapeAABB);
+        this.aabb.copy(updateAABB_shapeAABB);
       } else {
-        this.aabb.extend(shapeAABB);
+        this.aabb.extend(updateAABB_shapeAABB);
       }
     }
 
@@ -2927,9 +2934,9 @@ class Body extends EventEmitter {
 
 
   applyForceLocal(localForce, localPoint) {
-    localPoint = localPoint || Body_applyForce_pointLocal;
-    const worldForce = Body_applyForce_forceWorld;
-    const worldPoint = Body_applyForce_pointWorld;
+    localPoint = localPoint || applyForce_pointLocal;
+    const worldForce = applyForce_forceWorld;
+    const worldPoint = applyForce_pointWorld;
     this.vectorToWorldFrame(worldForce, localForce);
     this.vectorToWorldFrame(worldPoint, localPoint);
     this.applyForce(worldForce, worldPoint);
@@ -2954,7 +2961,7 @@ class Body extends EventEmitter {
     } // Compute produced central impulse velocity
 
 
-    const velo = Body_applyImpulse_velo;
+    const velo = applyImpulse_velo;
     scale(velo, impulseVector, this.invMass);
     multiply(velo, this.massMultiplier, velo); // Add linear impulse
 
@@ -2983,9 +2990,9 @@ class Body extends EventEmitter {
 
 
   applyImpulseLocal(localImpulse, localPoint) {
-    localPoint = localPoint || Body_applyImpulse_pointLocal;
-    const worldImpulse = Body_applyImpulse_impulseWorld;
-    const worldPoint = Body_applyImpulse_pointWorld;
+    localPoint = localPoint || applyImpulse_pointLocal;
+    const worldImpulse = applyImpulse_impulseWorld;
+    const worldPoint = applyImpulse_pointWorld;
     this.vectorToWorldFrame(worldImpulse, localImpulse);
     this.vectorToWorldFrame(worldPoint, localPoint);
     this.applyImpulse(worldImpulse, worldPoint);
@@ -3370,25 +3377,25 @@ class Body extends EventEmitter {
       }
     }
 
-    normalize(direction, this.velocity);
-    scale(end, this.velocity, dt);
-    add(end, end, this.position);
-    subtract(startToEnd, end, this.position);
+    normalize(integrateToTimeOfImpact_direction, this.velocity);
+    scale(integrateToTimeOfImpact_end, this.velocity, dt);
+    add(integrateToTimeOfImpact_end, integrateToTimeOfImpact_end, this.position);
+    subtract(integrateToTimeOfImpact_startToEnd, integrateToTimeOfImpact_end, this.position);
     const startToEndAngle = this.angularVelocity * dt;
-    const len = length(startToEnd);
+    const len = length(integrateToTimeOfImpact_startToEnd);
     let timeOfImpact = 1;
     let hitBody = null;
-    copy(ray.from, this.position);
-    copy(ray.to, end);
-    ray.update();
+    copy(integrateToTimeOfImpact_ray.from, this.position);
+    copy(integrateToTimeOfImpact_ray.to, integrateToTimeOfImpact_end);
+    integrateToTimeOfImpact_ray.update();
 
     for (let i = 0; i < this.shapes.length; i++) {
       const shape = this.shapes[i];
-      result.reset();
-      ray.collisionGroup = shape.collisionGroup;
-      ray.collisionMask = shape.collisionMask;
-      this.world.raycast(result, ray);
-      hitBody = result.body;
+      integrateToTimeOfImpact_result.reset();
+      integrateToTimeOfImpact_ray.collisionGroup = shape.collisionGroup;
+      integrateToTimeOfImpact_ray.collisionMask = shape.collisionMask;
+      this.world.raycast(integrateToTimeOfImpact_result, integrateToTimeOfImpact_ray);
+      hitBody = integrateToTimeOfImpact_result.body;
 
       if (hitBody !== null && (hitBody === this || ignoreBodies.indexOf(hitBody) !== -1)) {
         hitBody = null;
@@ -3403,12 +3410,12 @@ class Body extends EventEmitter {
       return false;
     }
 
-    result.getHitPoint(end, ray);
-    subtract(startToEnd, end, this.position);
-    timeOfImpact = distance(end, this.position) / len; // guess
+    integrateToTimeOfImpact_result.getHitPoint(integrateToTimeOfImpact_end, integrateToTimeOfImpact_ray);
+    subtract(integrateToTimeOfImpact_startToEnd, integrateToTimeOfImpact_end, this.position);
+    timeOfImpact = distance(integrateToTimeOfImpact_end, this.position) / len; // guess
 
     const rememberAngle = this.angle;
-    copy(rememberPosition, this.position); // Got a start and end point. Approximate time of impact using binary search
+    copy(integrateToTimeOfImpact_rememberPosition, this.position); // Got a start and end point. Approximate time of impact using binary search
 
     let iter = 0;
     let tmin = 0;
@@ -3420,8 +3427,8 @@ class Body extends EventEmitter {
 
       tmid = (tmax + tmin) / 2; // Move the body to that point
 
-      scale(integrate_velodt, startToEnd, tmid);
-      add(this.position, rememberPosition, integrate_velodt);
+      scale(integrate_velodt, integrateToTimeOfImpact_startToEnd, tmid);
+      add(this.position, integrateToTimeOfImpact_rememberPosition, integrate_velodt);
       this.angle = rememberAngle + startToEndAngle * tmid;
       this.updateAABB(); // check overlap
 
@@ -3438,10 +3445,10 @@ class Body extends EventEmitter {
 
     timeOfImpact = tmax; // Need to guarantee overlap to resolve collisions
 
-    copy(this.position, rememberPosition);
+    copy(this.position, integrateToTimeOfImpact_rememberPosition);
     this.angle = rememberAngle; // move to TOI
 
-    scale(integrate_velodt, startToEnd, timeOfImpact);
+    scale(integrate_velodt, integrateToTimeOfImpact_startToEnd, timeOfImpact);
     add(this.position, this.position, integrate_velodt);
 
     if (!this.fixedRotation) {
@@ -3471,29 +3478,29 @@ Body.AWAKE = 0;
 Body.SLEEPY = 1;
 Body.SLEEPING = 2;
 Body._idCounter = 0;
-const shapeAABB = new AABB();
-const tmp$1 = create();
-const Body_applyForce_forceWorld = create();
-const Body_applyForce_pointWorld = create();
-const Body_applyForce_pointLocal = create();
-const Body_applyImpulse_velo = create();
-const Body_applyImpulse_impulseWorld = create();
-const Body_applyImpulse_pointWorld = create();
-const Body_applyImpulse_pointLocal = create();
+const updateAABB_shapeAABB = new AABB();
+const updateAABB_tmp = create();
+const applyForce_forceWorld = create();
+const applyForce_pointWorld = create();
+const applyForce_pointLocal = create();
+const applyImpulse_velo = create();
+const applyImpulse_impulseWorld = create();
+const applyImpulse_pointWorld = create();
+const applyImpulse_pointLocal = create();
 const adjustCenterOfMass_tmp2 = create();
 const adjustCenterOfMass_tmp3 = create();
 const adjustCenterOfMass_tmp4 = create();
 const integrate_fhMinv = create();
 const integrate_velodt = create();
-const result = new RaycastResult();
-const ray = new Ray({
+const integrateToTimeOfImpact_result = new RaycastResult();
+const integrateToTimeOfImpact_ray = new Ray({
   mode: Ray.CLOSEST,
   skipBackfaces: true
 });
-const direction = create();
-const end = create();
-const startToEnd = create();
-const rememberPosition = create();
+const integrateToTimeOfImpact_direction = create();
+const integrateToTimeOfImpact_end = create();
+const integrateToTimeOfImpact_startToEnd = create();
+const integrateToTimeOfImpact_rememberPosition = create();
 
 /**
  * Base class for broadphase implementations. Don't use this class directly.
@@ -3721,7 +3728,7 @@ class Box extends Convex {
       height: ((_options2 = options) == null ? void 0 : _options2.height) ?? 1
     };
     const verts = [fromValues(-params.width / 2, -params.height / 2), fromValues(params.width / 2, -params.height / 2), fromValues(params.width / 2, params.height / 2), fromValues(-params.width / 2, params.height / 2)];
-    const convexOptions = shallowClone(options);
+    const convexOptions = options;
     convexOptions.vertices = verts;
     convexOptions.type = Shape.BOX;
     super(convexOptions);
@@ -3800,7 +3807,7 @@ class Box extends Convex {
  */
 class Circle extends Shape {
   /**
-   * The radius of the circle
+   * The radius of the circle.
    */
   constructor(options) {
     if (options === void 0) {
@@ -3842,9 +3849,9 @@ class Circle extends Shape {
   }
 
   raycast(result, ray, position) {
-    const from = ray.from,
-          to = ray.to,
-          r = this.radius;
+    const from = ray.from;
+    const to = ray.to;
+    const r = this.radius;
     const a = Math.pow(to[0] - from[0], 2) + Math.pow(to[1] - from[1], 2);
     const b = 2 * ((to[0] - from[0]) * (from[0] - position[0]) + (to[1] - from[1]) * (from[1] - position[1]));
     const c = Math.pow(from[0] - position[0], 2) + Math.pow(from[1] - position[1], 2) - Math.pow(r, 2);
@@ -3922,8 +3929,8 @@ class Equation {
   constructor(bodyA, bodyB, minForce, maxForce) {
     this.bodyA = bodyA;
     this.bodyB = bodyB;
-    this.minForce = minForce === undefined ? -Number.MAX_VALUE : minForce;
-    this.maxForce = maxForce === undefined ? Number.MAX_VALUE : maxForce;
+    this.minForce = minForce ?? -Number.MAX_VALUE;
+    this.maxForce = maxForce ?? Number.MAX_VALUE;
     this.maxBias = Number.MAX_VALUE;
     this.stiffness = Equation.DEFAULT_STIFFNESS;
     this.relaxation = Equation.DEFAULT_RELAXATION;
@@ -4315,6 +4322,10 @@ class FrictionEquation extends Equation {
    * The friction coefficient to use.
    */
   constructor(bodyA, bodyB, slipForce) {
+    if (slipForce === void 0) {
+      slipForce = Number.MAX_VALUE;
+    }
+
     super(bodyA, bodyB, -slipForce, slipForce);
     this.contactPointA = create();
     this.contactPointB = create();
@@ -4368,7 +4379,7 @@ class FrictionEquation extends Equation {
 
 class FrictionEquationPool extends Pool {
   create() {
-    return new FrictionEquation(tmpBody$1, tmpBody$1, 0);
+    return new FrictionEquation(tmpBody$1, tmpBody$1);
   }
 
   destroy(equation) {
@@ -4899,7 +4910,7 @@ class Narrowphase {
         justTest = false;
       }
 
-      return _this.circleLine(bi, si, xi, ai, bj, sj, xj, aj, justTest, si.radius, sj.radius);
+      return _this.circleLine(bi, si, xi, ai, bj, sj, xj, aj, justTest, sj.radius);
     };
 
     this.circleConvex = function (circleBody, circleShape, circleOffset, _circleAngle, convexBody, convexShape, convexOffset, convexAngle, justTest, circleRadius) {
@@ -5902,8 +5913,8 @@ class Narrowphase {
       this.collidingBodiesLastStep.set(id1, id2, true);
     }
 
-    const ce = this.contactEquations,
-          fe = this.frictionEquations;
+    const ce = this.contactEquations;
+    const fe = this.frictionEquations;
 
     for (let i = 0; i < ce.length; i++) {
       this.contactEquationPool.release(ce[i]);
@@ -6445,6 +6456,10 @@ function sortAxisList(a, axisIndex) {
  */
 class Constraint {
   constructor(bodyA, bodyB, type, options) {
+    if (type === void 0) {
+      type = Constraint.OTHER;
+    }
+
     if (options === void 0) {
       options = {};
     }
@@ -6453,7 +6468,7 @@ class Constraint {
     this.equations = [];
     this.bodyA = bodyA;
     this.bodyB = bodyB;
-    this.collideConnected = options.collideConnected !== undefined ? options.collideConnected : true; // Wake up bodies when connected
+    this.collideConnected = options.collideConnected ?? true; // Wake up bodies when connected
 
     if (options.wakeUpBodies !== false) {
       if (bodyA) {
@@ -6471,11 +6486,11 @@ class Constraint {
 
 
   update() {
-    throw new Error('method update() not implmemented in this Constraint subclass!');
+    throw new Error('method update() not implemented in this Constraint subclass!');
   }
   /**
    * Set stiffness for this constraint.
-   * @param stiffness 
+   * @param stiffness
    */
 
 
@@ -6588,15 +6603,14 @@ class DistanceConstraint extends Constraint {
     }
 
     super(bodyA, bodyB, Constraint.DISTANCE, options);
-    this.upperLimit = options.upperLimit ?? 1;
-    this.upperLimitEnabled = options.upperLimit !== undefined;
-    this.lowerLimit = options.lowerLimit ?? 0;
-    this.lowerLimitEnabled = options.lowerLimit !== undefined;
     this.localAnchorA = options.localAnchorA ? clone(options.localAnchorA) : create();
     this.localAnchorB = options.localAnchorB ? clone(options.localAnchorB) : create();
     const localAnchorA = this.localAnchorA;
     const localAnchorB = this.localAnchorB;
-    this.distance = 0;
+    this.upperLimit = options.upperLimit ?? 1;
+    this.upperLimitEnabled = options.upperLimit !== undefined;
+    this.lowerLimit = options.lowerLimit ?? 0;
+    this.lowerLimitEnabled = options.lowerLimit !== undefined;
 
     if (typeof options.distance === 'number') {
       this.distance = options.distance;
@@ -6766,7 +6780,7 @@ class AngleLockEquation extends Equation {
 
     super(bodyA, bodyB, -Number.MAX_VALUE, Number.MAX_VALUE);
     this.angle = options.angle || 0;
-    this.ratio = options.ratio !== undefined ? options.ratio : 1;
+    this.ratio = options.ratio ?? 1;
     this.setRatio(this.ratio);
   }
 
@@ -6813,12 +6827,12 @@ class GearConstraint extends Constraint {
      * The gear ratio.
      */
 
-    this.ratio = options.ratio !== undefined ? options.ratio : 1;
+    this.ratio = options.ratio ?? 1;
     /**
      * The relative angle
      */
 
-    this.angle = options.angle !== undefined ? options.angle : bodyB.angle - this.ratio * bodyA.angle; // Send same parameters to the equation
+    this.angle = options.angle ?? bodyB.angle - this.ratio * bodyA.angle; // Send same parameters to the equation
 
     const angleLockOptions = shallowClone(options);
     angleLockOptions.angle = this.angle;
@@ -7104,9 +7118,9 @@ class PrismaticConstraint extends Constraint {
 
     super(bodyA, bodyB, Constraint.PRISMATIC, options); // Get anchors
 
-    const localAnchorA = create(),
-          localAxisA = fromValues(1, 0),
-          localAnchorB = create();
+    const localAnchorA = create();
+    const localAxisA = fromValues(1, 0);
+    const localAnchorB = create();
 
     if (options.localAnchorA) {
       copy(localAnchorA, options.localAnchorA);
@@ -7133,7 +7147,7 @@ class PrismaticConstraint extends Constraint {
     The rotational part is just a rotation lock.
     */
 
-    const maxForce = this.maxForce = options.maxForce !== undefined ? options.maxForce : Number.MAX_VALUE; // Translational part
+    const maxForce = this.maxForce = options.maxForce ?? Number.MAX_VALUE; // Translational part
 
     const trans = new Equation(bodyA, bodyB, -maxForce, maxForce);
     const ri = create(),
@@ -7175,17 +7189,17 @@ class PrismaticConstraint extends Constraint {
     this.position = 0; // Is this one used at all?
 
     this.velocity = 0;
-    this.lowerLimitEnabled = options.lowerLimit !== undefined ? true : false;
-    this.upperLimitEnabled = options.upperLimit !== undefined ? true : false;
-    this.lowerLimit = options.lowerLimit !== undefined ? options.lowerLimit : 0;
-    this.upperLimit = options.upperLimit !== undefined ? options.upperLimit : 1; // Equations used for limits
+    this.lowerLimitEnabled = options.lowerLimit !== undefined;
+    this.upperLimitEnabled = options.upperLimit !== undefined;
+    this.lowerLimit = options.lowerLimit ?? 0;
+    this.upperLimit = options.upperLimit ?? 1; // Equations used for limits
 
     this.upperLimitEquation = new ContactEquation(bodyA, bodyB);
     this.lowerLimitEquation = new ContactEquation(bodyA, bodyB); // Set max/min forces
 
     this.upperLimitEquation.minForce = this.lowerLimitEquation.minForce = 0;
     this.upperLimitEquation.maxForce = this.lowerLimitEquation.maxForce = maxForce;
-    this.motorEquation = new Equation(bodyA, bodyB, 0, 0);
+    this.motorEquation = new Equation(bodyA, bodyB);
     this.motorEnabled = false;
     this.motorSpeed = 0; // eslint-disable-next-line @typescript-eslint/no-this-alias
 
@@ -7460,7 +7474,7 @@ class RevoluteConstraint extends Constraint {
     }
 
     super(bodyA, bodyB, Constraint.REVOLUTE, options);
-    const maxForce = this.maxForce = options.maxForce !== undefined ? options.maxForce : Number.MAX_VALUE;
+    const maxForce = this.maxForce = options.maxForce ?? Number.MAX_VALUE;
     const pivotA = this.pivotA = create();
     const pivotB = this.pivotB = create();
 
@@ -7664,6 +7678,10 @@ class Material {
   /**
    * The material identifier. Read only.
    */
+
+  /**
+   * Id counter for materials
+   */
   constructor() {
     this.id = Material.idCounter++;
   }
@@ -7715,7 +7733,7 @@ class ContactMaterial {
    */
 
   /**
-   * Relaxation of the resulting ContactEquation that this ContactMaterial generate.
+   * Relaxation of the resulting ContactEquation that this ContactMaterial will generate.
    * Default value is {@link Equation.DEFAULT_RELAXATION}
    */
 
@@ -7736,6 +7754,10 @@ class ContactMaterial {
   /**
    * Offset to be set on ContactEquations. A positive value will make the bodies penetrate more into each other. Can be useful in scenes where contacts need to be more persistent, for example when stacking. Aka "cure for nervous contacts".
    */
+
+  /**
+   * Id counter for created contact materials.
+   */
   constructor(materialA, materialB, options) {
     if (options === void 0) {
       options = {};
@@ -7748,13 +7770,13 @@ class ContactMaterial {
     this.id = ContactMaterial.idCounter++;
     this.materialA = materialA;
     this.materialB = materialB;
-    this.friction = options.friction !== undefined ? options.friction : 0.3;
-    this.restitution = options.restitution !== undefined ? options.restitution : 0;
-    this.stiffness = options.stiffness !== undefined ? options.stiffness : Equation.DEFAULT_STIFFNESS;
-    this.relaxation = options.relaxation !== undefined ? options.relaxation : Equation.DEFAULT_RELAXATION;
-    this.frictionStiffness = options.frictionStiffness !== undefined ? options.frictionStiffness : Equation.DEFAULT_STIFFNESS;
-    this.frictionRelaxation = options.frictionRelaxation !== undefined ? options.frictionRelaxation : Equation.DEFAULT_RELAXATION;
-    this.surfaceVelocity = options.surfaceVelocity !== undefined ? options.surfaceVelocity : 0;
+    this.friction = options.friction ?? 0.3;
+    this.restitution = options.restitution ?? 0;
+    this.stiffness = options.stiffness ?? Equation.DEFAULT_STIFFNESS;
+    this.relaxation = options.relaxation ?? Equation.DEFAULT_RELAXATION;
+    this.frictionStiffness = options.frictionStiffness ?? Equation.DEFAULT_STIFFNESS;
+    this.frictionRelaxation = options.frictionRelaxation ?? Equation.DEFAULT_RELAXATION;
+    this.surfaceVelocity = options.surfaceVelocity ?? 0;
     this.contactSkinSize = 0.005;
   }
 
@@ -7785,8 +7807,8 @@ class Spring {
       options = {};
     }
 
-    this.stiffness = options.stiffness !== undefined ? options.stiffness : 100;
-    this.damping = options.damping !== undefined ? options.damping : 1;
+    this.stiffness = options.stiffness ?? 100;
+    this.damping = options.damping ?? 1;
     this.bodyA = bodyA;
     this.bodyB = bodyB;
   }
@@ -7853,7 +7875,7 @@ class LinearSpring extends Spring {
     this.getWorldAnchorA(worldAnchorA);
     this.getWorldAnchorB(worldAnchorB);
     const worldDistance = distance(worldAnchorA, worldAnchorB);
-    this.restLength = options.restLength !== undefined ? options.restLength : worldDistance;
+    this.restLength = options.restLength ?? worldDistance;
   }
   /**
    * Set the anchor point on body A, using world coordinates.
@@ -7972,7 +7994,7 @@ class RotationalSpring extends Spring {
     }
 
     super(bodyA, bodyB, options);
-    this.restAngle = options.restAngle !== undefined ? options.restAngle : bodyB.angle - bodyA.angle;
+    this.restAngle = options.restAngle ?? bodyB.angle - bodyA.angle;
   }
   /**
    * Apply the spring force to the connected bodies.
@@ -8003,13 +8025,13 @@ class WheelConstraint extends Constraint {
       options = {};
     }
 
-    super(vehicle.chassisBody, vehicle.groundBody, Constraint.OTHER);
+    super(vehicle.chassisBody, vehicle.groundBody);
     this.vehicle = vehicle;
-    this.forwardEquation = new FrictionEquation(vehicle.chassisBody, vehicle.groundBody, 0);
-    this.sideEquation = new FrictionEquation(vehicle.chassisBody, vehicle.groundBody, 0);
+    this.forwardEquation = new FrictionEquation(vehicle.chassisBody, vehicle.groundBody);
+    this.sideEquation = new FrictionEquation(vehicle.chassisBody, vehicle.groundBody);
     this.steerValue = 0;
     this.engineForce = 0;
-    this.setSideFriction(options.sideFriction !== undefined ? options.sideFriction : 5);
+    this.setSideFriction(options.sideFriction ?? 5);
     this.localForwardVector = fromValues(0, 1);
 
     if (options.localForwardVector) {
@@ -8112,16 +8134,11 @@ class TopDownVehicle {
       mass: 0
     });
     this.world = null;
-
-    this.postStepCallback = () => {
-      this.update();
-    };
   }
 
   addToWorld(world) {
     this.world = world;
     world.addBody(this.groundBody);
-    world.on('postStep', this.postStepCallback);
 
     for (let i = 0; i < this.wheels.length; i++) {
       const wheel = this.wheels[i];
@@ -8135,7 +8152,6 @@ class TopDownVehicle {
     }
 
     this.world.removeBody(this.groundBody);
-    this.world.off('postStep', this.postStepCallback);
 
     for (let i = 0; i < this.wheels.length; i++) {
       const wheel = this.wheels[i];
@@ -8149,12 +8165,6 @@ class TopDownVehicle {
     const wheel = new WheelConstraint(this, wheelOptions);
     this.wheels.push(wheel);
     return wheel;
-  }
-
-  update() {
-    for (let i = 0; i < this.wheels.length; i++) {
-      this.wheels[i].update();
-    }
   }
 
 }
@@ -8419,7 +8429,7 @@ class Heightfield extends Shape {
    */
 
   /**
-   * Max value of the heights
+   * Min value of the heights
    */
 
   /**
@@ -8439,7 +8449,7 @@ class Heightfield extends Shape {
     this.heights = params.heights;
     this.maxValue = params.maxValue;
     this.minValue = params.minValue;
-    this.elementWidth = params.elementWidth !== undefined ? params.elementWidth : 0.1;
+    this.elementWidth = params.elementWidth ?? 0.1;
 
     if (params.maxValue === undefined || params.minValue === undefined) {
       this.updateMaxMinValues();
@@ -8575,7 +8585,7 @@ const intersectHeightfield_localTo = create();
  */
 class Line extends Shape {
   /**
-   * Length of this line
+   * Length of the line
    * @default 1
    */
   constructor(options) {
@@ -8866,9 +8876,9 @@ class GSSolver extends Solver {
 
     super(options, Solver.GS);
     this.type = Solver.GS;
-    this.iterations = options.iterations || 10;
-    this.tolerance = options.tolerance !== undefined ? options.tolerance : 1e-7;
-    this.frictionIterations = options.frictionIterations !== undefined ? options.frictionIterations : 0;
+    this.iterations = options.iterations ?? 10;
+    this.tolerance = options.tolerance ?? 1e-7;
+    this.frictionIterations = options.frictionIterations ?? 0;
     this.usedIterations = 0;
   }
 
@@ -9316,6 +9326,16 @@ class World extends EventEmitter {
    */
 
   /**
+   * Set to true if you want .frictionGravity to be automatically set to the length of .gravity.
+   * @default true
+   */
+
+  /**
+   * If the length of .gravity is zero, and .useWorldGravityAsFrictionGravity=true, then switch to using .frictionGravity for friction instead. This fallback is useful for gravityless games.
+   * @default true
+   */
+
+  /**
    * For keeping track of what time step size we used last step
    */
 
@@ -9389,6 +9409,8 @@ class World extends EventEmitter {
     this.springs = [];
     this.bodies = [];
     this.narrowphase = new Narrowphase();
+    this.useWorldGravityAsFrictionGravity = true;
+    this.useFrictionGravityOnZeroGravity = true;
     this.lastTimeStep = 1 / 60;
     this.applySpringForces = true;
     this.applyDamping = true;
@@ -9411,8 +9433,6 @@ class World extends EventEmitter {
     }
 
     this.frictionGravity = length(this.gravity) || 10;
-    this.useWorldGravityAsFrictionGravity = true;
-    this.useFrictionGravityOnZeroGravity = true;
     this.broadphase = options.broadphase || new SAPBroadphase();
     this.broadphase.setWorld(this);
     this.constraints = [];
@@ -9686,18 +9706,18 @@ class World extends EventEmitter {
     const frictionGravity = this.frictionGravity;
 
     for (let i = 0, Nresults = result.length; i !== Nresults; i += 2) {
-      const bi = result[i],
-            bj = result[i + 1]; // Loop over all shapes of body i
+      const bi = result[i];
+      const bj = result[i + 1]; // Loop over all shapes of body i
 
       for (let k = 0, Nshapesi = bi.shapes.length; k !== Nshapesi; k++) {
-        const si = bi.shapes[k],
-              xi = si.position,
-              ai = si.angle; // All shapes of body j
+        const si = bi.shapes[k];
+        const xi = si.position;
+        const ai = si.angle; // All shapes of body j
 
         for (let l = 0, Nshapesj = bj.shapes.length; l !== Nshapesj; l++) {
-          const sj = bj.shapes[l],
-                xj = sj.position,
-                aj = sj.angle;
+          const sj = bj.shapes[l];
+          const xj = sj.position;
+          const aj = sj.angle;
           let contactMaterial = null;
 
           if (si.material && sj.material) {
@@ -10253,8 +10273,8 @@ class World extends EventEmitter {
 
       for (let j = 0; j !== eqs.length; j++) {
         const eq = eqs[j];
-        eq.relaxation = parameters.relaxation !== undefined ? parameters.relaxation : eq.relaxation;
-        eq.stiffness = parameters.stiffness !== undefined ? parameters.stiffness : eq.stiffness;
+        eq.relaxation = parameters.relaxation ?? eq.relaxation;
+        eq.stiffness = parameters.stiffness ?? eq.stiffness;
         eq.needsUpdate = true;
       }
     }

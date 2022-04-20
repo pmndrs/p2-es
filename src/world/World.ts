@@ -177,13 +177,13 @@ export class World extends EventEmitter<WorldEventMap> {
      * Set to true if you want .frictionGravity to be automatically set to the length of .gravity.
      * @default true
      */
-    useWorldGravityAsFrictionGravity: boolean
+    useWorldGravityAsFrictionGravity = true
 
     /**
      * If the length of .gravity is zero, and .useWorldGravityAsFrictionGravity=true, then switch to using .frictionGravity for friction instead. This fallback is useful for gravityless games.
      * @default true
      */
-    useFrictionGravityOnZeroGravity: boolean
+    useFrictionGravityOnZeroGravity = true
 
     /**
      * The broadphase algorithm to use.
@@ -301,9 +301,8 @@ export class World extends EventEmitter<WorldEventMap> {
         if (options.gravity) {
             vec2.copy(this.gravity, options.gravity)
         }
+
         this.frictionGravity = vec2.length(this.gravity) || 10
-        this.useWorldGravityAsFrictionGravity = true
-        this.useFrictionGravityOnZeroGravity = true
 
         this.broadphase = options.broadphase || new SAPBroadphase()
         this.broadphase.setWorld(this)
@@ -569,20 +568,20 @@ export class World extends EventEmitter<WorldEventMap> {
         const defaultContactMaterial = this.defaultContactMaterial
         const frictionGravity = this.frictionGravity
         for (let i = 0, Nresults = result.length; i !== Nresults; i += 2) {
-            const bi = result[i],
-                bj = result[i + 1]
+            const bi = result[i]
+            const bj = result[i + 1]
 
             // Loop over all shapes of body i
             for (let k = 0, Nshapesi = bi.shapes.length; k !== Nshapesi; k++) {
-                const si = bi.shapes[k],
-                    xi = si.position,
-                    ai = si.angle
+                const si = bi.shapes[k]
+                const xi = si.position
+                const ai = si.angle
 
                 // All shapes of body j
                 for (let l = 0, Nshapesj = bj.shapes.length; l !== Nshapesj; l++) {
-                    const sj = bj.shapes[l],
-                        xj = sj.position,
-                        aj = sj.angle
+                    const sj = bj.shapes[l]
+                    const xj = sj.position
+                    const aj = sj.angle
 
                     let contactMaterial = null
                     if (si.material && sj.material) {

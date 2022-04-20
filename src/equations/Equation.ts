@@ -99,11 +99,11 @@ export class Equation {
      * @param minForce
      * @param maxForce
      */
-    constructor(bodyA: Body, bodyB: Body, minForce: number, maxForce: number) {
+    constructor(bodyA: Body, bodyB: Body, minForce?: number, maxForce?: number) {
         this.bodyA = bodyA
         this.bodyB = bodyB
-        this.minForce = minForce === undefined ? -Number.MAX_VALUE : minForce
-        this.maxForce = maxForce === undefined ? Number.MAX_VALUE : maxForce
+        this.minForce = minForce ?? -Number.MAX_VALUE
+        this.maxForce = maxForce ?? Number.MAX_VALUE
         this.maxBias = Number.MAX_VALUE
         this.stiffness = Equation.DEFAULT_STIFFNESS
         this.relaxation = Equation.DEFAULT_RELAXATION

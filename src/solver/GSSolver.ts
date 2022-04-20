@@ -57,7 +57,7 @@ export class GSSolver extends Solver {
     constructor(options: GSSolverOptions = {}) {
         super(options, Solver.GS)
 
-        this.iterations = options.iterations || 10
+        this.iterations = options.iterations ?? 10
         this.tolerance = options.tolerance ?? 1e-7
         this.frictionIterations = options.frictionIterations ?? 0
         this.usedIterations = 0

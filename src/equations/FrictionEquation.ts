@@ -46,7 +46,7 @@ export class FrictionEquation extends Equation {
      */
     frictionCoefficient: number
 
-    constructor(bodyA: Body, bodyB: Body, slipForce: number) {
+    constructor(bodyA: Body, bodyB: Body, slipForce = Number.MAX_VALUE) {
         super(bodyA, bodyB, -slipForce, slipForce)
         this.contactPointA = vec2.create()
         this.contactPointB = vec2.create()
