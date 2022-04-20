@@ -2155,7 +2155,7 @@ class Shape {
   raycast(_result, _ray, _position, _angle) {}
   /**
    * Test if a point is inside this shape.
-   * @param localPoint
+   * @param _localPoint
    * @return whether a point is inside this shape
    */
 
@@ -3716,16 +3716,14 @@ class Box extends Convex {
    * Total height of the box
    */
   constructor(options) {
-    var _options, _options2;
-
     if (options === void 0) {
       options = {};
     }
 
     const params = { ...options,
       type: Shape.BOX,
-      width: ((_options = options) == null ? void 0 : _options.width) ?? 1,
-      height: ((_options2 = options) == null ? void 0 : _options2.height) ?? 1
+      width: options.width ?? 1,
+      height: options.height ?? 1
     };
     const verts = [fromValues(-params.width / 2, -params.height / 2), fromValues(params.width / 2, -params.height / 2), fromValues(params.width / 2, params.height / 2), fromValues(-params.width / 2, params.height / 2)];
     const convexOptions = options;
@@ -4261,6 +4259,7 @@ class Pool {
     return objects.length ? objects.pop() : this.create();
   }
   /**
+   * Release an object back to the pool.
    * @param object
    * @return Self for chaining
    */
@@ -8449,7 +8448,7 @@ class Heightfield extends Shape {
     this.heights = params.heights;
     this.maxValue = params.maxValue;
     this.minValue = params.minValue;
-    this.elementWidth = params.elementWidth ?? 0.1;
+    this.elementWidth = params.elementWidth;
 
     if (params.maxValue === undefined || params.minValue === undefined) {
       this.updateMaxMinValues();
