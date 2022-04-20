@@ -37,7 +37,10 @@
     "eslint": "eslint .",
     "eslint-fix": "eslint --fix .",
     "prettier": "prettier --list-different .",
-    "prettier-fix": "prettier --write ."
+    "prettier-fix": "prettier --write .",
+    "change": "yarn changeset",
+    "bump": "yarn changeset version",
+    "publish": "yarn changeset publish"
   },
   "repository": {
     "type": "git",
@@ -50,6 +53,7 @@
     "@babel/core": "^7.16.5",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-typescript": "^7.16.5",
+    "@changesets/cli": "^2.22.0",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.1.1",

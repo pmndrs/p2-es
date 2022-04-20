@@ -144,11 +144,12 @@ yarn serve
 
 ### Release process
 
-1. Bump version number.
-2. Build and commit files in `dist/` and `docs/`.
-3. Tag the commit with the version number e.g. vX.Y.Z
-4. Add release notes to github
-5. Publish to NPM
+1. Create changesets as you make changes with `yarn run change`
+2. Bump version number with `yarn run bump`
+3. Build and generate docs, commit files in `dist/` and `docs/`.
+4. Tag the commit with the version number e.g. vX.Y.Z
+5. Add release notes to github
+6. Publish to NPM with `yarn run publish`
 
 ### TODO
 
