@@ -1,5 +1,9 @@
 # `p2-es` Changelog
 
+## v1.0.1
+
+- Update version export
+
 ## v1.0.0
 
 - Use typescript, include generated type definitions (@isaac-mason)
