@@ -3,75 +3,48 @@ p2-es
 
 This is a maintained fork of [p2.js](https://github.com/schteppe/p2.js), originally created by Stefan Hedman [@schteppe](https://github.com/schteppe).
 
-It will be a type-safe flatbundle (esm and cjs) which allows for **tree shaking** and usage in modern environments.
+It is a type-safe flatbundle (esm and cjs) which allows for **tree shaking** and usage in modern environments.
 
-For now we forked this repository and updated typescript definitions to develop a React-hook for three.js [use-p2](https://github.com/pmndrs/use-p2)
-
-### TODO
-- [ ] add hasActiveBodies to World and use in use-p2 (see [cannon-es](https://github.com/pmndrs/cannon-es/blob/master/src/world/World.ts#L868)) 
+If you're using three.js in a React environment with react-three-fiber, check out [use-p2](https://github.com/pmndrs/use-p2)! It's a wrapper around p2-es that runs in a web worker.
 
 ---
 
 2D rigid body physics engine written in JavaScript. Includes collision detection, contacts, friction, restitution, motors, springs, advanced constraints and various shape types.
 
-[Demos](#demos) | [Examples](#examples) | [Documentation](http://schteppe.github.io/p2.js/docs/) | [Download](https://raw.github.com/schteppe/p2.js/master/build/p2.js) | [CDN](http://cdnjs.com/libraries/p2.js) | [Wiki](https://github.com/schteppe/p2.js/wiki)
+[Demos](http://pmndrs.github.io/p2-es/#demos) | [Examples](http://pmndrs.github.io/p2-es/#examples) | [Documentation](http://pmndrs.github.io/p2-es/docs/)
 
-### Featured projects using p2.js
-* [Google I/O 2015 Experiment](http://www.chromeexperiments.com/detail/io-2015-experiment) by Instrument
-* [PixiLights, a Christmas Experiment](http://christmasexperiments.com/experiments/11) by Mat Groves
-* [More...](https://github.com/schteppe/p2.js/wiki/Projects-using-p2.js)
+### Getting Started
 
-### Demos
-These demos use the p2 Demo framework, which provides rendering and interactivity. Use mouse/touch to throw or create objects. Use the right menu (or console!) to tweak parameters. Or just check the source to see how to programmatically build the current scene using p2.
+**Usage with NPM**
 
-* [Buoyancy](http://schteppe.github.io/p2.js/demos/buoyancy.html)
-* [Car](http://schteppe.github.io/p2.js/demos/car.html)
-* [CCD](http://schteppe.github.io/p2.js/demos/ccd.html)
-* [Circle container](http://schteppe.github.io/p2.js/demos/circles.html)
-* [Collision tests](http://schteppe.github.io/p2.js/demos/collisions.html)
-* [Compound objects](http://schteppe.github.io/p2.js/demos/compound.html)
-* [Concave objects](http://schteppe.github.io/p2.js/demos/concave.html)
-* [Constraints](http://schteppe.github.io/p2.js/demos/constraints.html)
-* [DistanceConstraint](http://schteppe.github.io/p2.js/demos/distanceConstraint.html)
-* [Fixed rotation](http://schteppe.github.io/p2.js/demos/fixedRotation.html)
-* [Fixed XY](http://schteppe.github.io/p2.js/demos/fixedXY.html)
-* [Friction](http://schteppe.github.io/p2.js/demos/friction.html)
-* [Gear constraint](http://schteppe.github.io/p2.js/demos/gearConstraint.html)
-* [Heightfield](http://schteppe.github.io/p2.js/demos/heightfield.html)
-* [Island solver](http://schteppe.github.io/p2.js/demos/islandSolver.html)
-* [Kinematic body](http://schteppe.github.io/p2.js/demos/kinematic.html)
-* [Lock constraint](http://schteppe.github.io/p2.js/demos/lock.html)
-* [Piston](http://schteppe.github.io/p2.js/demos/piston.html)
-* [Prismatic constraint](http://schteppe.github.io/p2.js/demos/prismatic.html)
-* [Ragdoll](http://schteppe.github.io/p2.js/demos/ragdoll.html)
-* [Sensor](http://schteppe.github.io/p2.js/demos/removeSensor.html)
-* [Restitution](http://schteppe.github.io/p2.js/demos/restitution.html)
-* [Sleep](http://schteppe.github.io/p2.js/demos/sleep.html)
-* [Segway](http://schteppe.github.io/p2.js/demos/segway.html)
-* [Sleep](http://schteppe.github.io/p2.js/demos/sleep.html)
-* [Springs](http://schteppe.github.io/p2.js/demos/springs.html)
-* [Surface velocity](http://schteppe.github.io/p2.js/demos/surfaceVelocity.html)
-* [Suspension](http://schteppe.github.io/p2.js/demos/suspension.html)
-* [Tearable constraints](http://schteppe.github.io/p2.js/demos/tearable.html)
-* [TopDownVehicle](http://schteppe.github.io/p2.js/demos/topDownVehicle.html)
+```ts
+yarn add p2-es
+```
 
-### Examples
-Examples showing how to use p2.js with your favorite renderer.
+**CDN**
 
-* [Canvas: Asteroids game](http://schteppe.github.io/p2.js/examples/canvas/asteroids.html)
-* [Canvas: Box on plane](http://schteppe.github.io/p2.js/examples/canvas/box.html)
-* [Canvas: Character demo](http://schteppe.github.io/p2.js/examples/canvas/character.html)
-* [Canvas: Circle on plane](http://schteppe.github.io/p2.js/examples/canvas/circle.html)
-* [Canvas: Interpolation](http://schteppe.github.io/p2.js/examples/canvas/interpolation.html)
-* [Canvas: Mousejoint](http://schteppe.github.io/p2.js/examples/canvas/mouseJoint.html)
-* [Canvas: Raycasting](http://schteppe.github.io/p2.js/examples/canvas/raycasting.html)
-* [Canvas: Rayreflect](http://schteppe.github.io/p2.js/examples/canvas/rayreflect.html)
-* [Canvas: Sensors](http://schteppe.github.io/p2.js/examples/canvas/sensors.html)
-* [Canvas: Sensors 2](http://schteppe.github.io/p2.js/examples/canvas/sensors2.html)
-* [Pixi.js: Box on plane](http://schteppe.github.io/p2.js/examples/pixijs/box.html)
+You can also import the esm flatbundle via unpkg
+
+```html
+<script type="module">
+    import * as p2 from 'https://www.unpkg.com/browse/p2-es@0.8.0/dist/p2-es.js';
+</script>
+```
+
+---
+
+If you would like to use ordinary `Array` instead of `Float32Array`, define `P2_ARRAY_TYPE` globally before loading the library.
+
+```html
+<script type="text/javascript">P2_ARRAY_TYPE = Array;</script>
+<script type="module">
+    import * as p2 from 'p2-es.js';
+</script>
+```
 
 ### Sample code
-The following example uses the [World](http://schteppe.github.io/p2.js/docs/classes/World.html), [Circle](http://schteppe.github.io/p2.js/docs/classes/Circle.html), [Body](http://schteppe.github.io/p2.js/docs/classes/Body.html) and [Plane](http://schteppe.github.io/p2.js/docs/classes/Plane.html) classes to set up a simple physics scene with a ball on a plane.
+
+The following example uses the [World](http://pmndrs.github.io/p2-es/docs/classes/World.html), [Circle](http://pmndrs.github.io/p2-es/docs/classes/Circle.html), [Body](http://pmndrs.github.io/p2-es/docs/classes/Body.html) and [Plane](http://pmndrs.github.io/p2-es/docs/classes/Plane.html) classes to set up a simple physics scene with a ball on a plane.
 
 ```js
 // Create a physics world, where bodies and constraints live
@@ -136,66 +109,46 @@ world.on('postStep', function(event){
 });
 ```
 
-### Install
-##### Browser
-Download either [p2.js](build/p2.js) or the minified [p2.min.js](build/p2.min.js) and include the script in your HTML:
-```html
-<script src="p2.js" type="text/javascript"></script>
-```
-
-If you would like to use ordinary ```Array``` instead of ```Float32Array```, define ```P2_ARRAY_TYPE``` globally before loading the library.
-
-```html
-<script type="text/javascript">P2_ARRAY_TYPE = Array;</script>
-<script src="p2.js" type="text/javascript"></script>
-```
-
-##### Node.js
-```
-npm install p2
-```
-Then require it like so:
-```js
-var p2 = require('p2');
-```
-
 ### Supported collision pairs
+
 |                                                                              | Circle | Plane | Box       | Convex | Particle | Line   | Capsule | Heightfield | Ray    |
 | :--------------------------------------------------------------------------: |:------:|:-----:|:---------:|:------:|:--------:|:------:|:-------:|:-----------:|:------:|
-| [Circle](http://schteppe.github.io/p2.js/docs/classes/Circle.html)           | Yes    | -     | -         | -      | -        | -      | -       | -           | -      |
-| [Plane](http://schteppe.github.io/p2.js/docs/classes/Plane.html)             | Yes    | -     | -         | -      | -        | -      | -       | -           | -      |
-| [Box](http://schteppe.github.io/p2.js/docs/classes/Box.html)                 | Yes    | Yes   | Yes       | -      | -        | -      | -       | -           | -      |
-| [Convex](http://schteppe.github.io/p2.js/docs/classes/Convex.html)           | Yes    | Yes   | Yes       | Yes    | -        | -      | -       | -           | -      |
-| [Particle](http://schteppe.github.io/p2.js/docs/classes/Particle.html)       | Yes    | Yes   | Yes       | Yes    | -        | -      | -       | -           | -      |
-| [Line](http://schteppe.github.io/p2.js/docs/classes/Line.html)               | Yes    | Yes   | (todo)    | (todo) | -        | -      | -       | -           | -      |
-| [Capsule](http://schteppe.github.io/p2.js/docs/classes/Capsule.html)         | Yes    | Yes   | Yes       | Yes    | Yes      | (todo) | Yes     | -           | -      |
-| [Heightfield](http://schteppe.github.io/p2.js/docs/classes/Heightfield.html) | Yes    | -     | Yes       | Yes    | (todo)   | (todo) | (todo)  | -           | -      |
-| [Ray](http://schteppe.github.io/p2.js/docs/classes/Ray.html)                 | Yes    | Yes   | Yes       | Yes    | -        | Yes    | Yes     | Yes         | -      |
+| [Circle](http://pmndrs.github.io/p2-es/docs/classes/Circle.html)           | Yes    | -     | -         | -      | -        | -      | -       | -           | -      |
+| [Plane](http://pmndrs.github.io/p2-es/docs/classes/Plane.html)             | Yes    | -     | -         | -      | -        | -      | -       | -           | -      |
+| [Box](http://pmndrs.github.io/p2-es/docs/classes/Box.html)                 | Yes    | Yes   | Yes       | -      | -        | -      | -       | -           | -      |
+| [Convex](http://pmndrs.github.io/p2-es/docs/classes/Convex.html)           | Yes    | Yes   | Yes       | Yes    | -        | -      | -       | -           | -      |
+| [Particle](http://pmndrs.github.io/p2-es/docs/classes/Particle.html)       | Yes    | Yes   | Yes       | Yes    | -        | -      | -       | -           | -      |
+| [Line](http://pmndrs.github.io/p2-es/docs/classes/Line.html)               | Yes    | Yes   | (todo)    | (todo) | -        | -      | -       | -           | -      |
+| [Capsule](http://pmndrs.github.io/p2-es/docs/classes/Capsule.html)         | Yes    | Yes   | Yes       | Yes    | Yes      | (todo) | Yes     | -           | -      |
+| [Heightfield](http://pmndrs.github.io/p2-es/docs/classes/Heightfield.html) | Yes    | -     | Yes       | Yes    | (todo)   | (todo) | (todo)  | -           | -      |
+| [Ray](http://pmndrs.github.io/p2-es/docs/classes/Ray.html)                 | Yes    | Yes   | Yes       | Yes    | -        | Yes    | Yes     | Yes         | -      |
 
-Note that concave polygon shapes can be created using [Body.fromPolygon](http://schteppe.github.io/p2.js/docs/classes/Body.html#method_fromPolygon).
+Note that concave polygon shapes can be created using [Body.fromPolygon](http://pmndrs.github.io/p2-es/docs/classes/Body.html#method_fromPolygon).
 
-### Install
-Make sure you have git, [Node.js](http://nodejs.org), NPM and [grunt](http://gruntjs.com/) installed.
-```
-git clone https://github.com/schteppe/p2.js.git;
-cd p2.js;
-npm install; # Install dependencies
-grunt;
-```
+### How to build
 
-### Grunt tasks
-List all tasks using ```grunt --help```.
-```
-grunt        # Run tests, build, minify
-grunt dev    # Run tests, build
-grunt test   # Run tests
-grunt yuidoc # Build docs
-grunt watch  # Watch for changes and run the "dev" task
+Make sure you have git, [Node.js](http://nodejs.org) and Yarn installed
+
+```sh
+git clone https://github.com/pmndrs/p2-es.git;
+cd p2-es;
+yarn install
+yarn build
+yarn generate-docs
+yarn serve
 ```
 
 ### Release process
+
 1. Bump version number.
-2. Build and commit files in ```build/``` and ```docs/```.
+2. Build and commit files in ```dist/``` and ```docs/```.
 3. Tag the commit with the version number e.g. vX.Y.Z
-4. Add relase notes to github
+4. Add release notes to github
 5. Publish to NPM
+
+### TODO
+
+- [ ] add hasActiveBodies to World and use in use-p2 (see [cannon-es](https://github.com/pmndrs/cannon-es/blob/master/src/world/World.ts#L868)) 
+- [ ] Evaluate PRs in p2.js repo
+  - [ ] [Refactoring Springs](https://github.com/schteppe/p2.js/pull/148)
+  - [ ] [Adjustments to the buoyancy demo to make the code more easily reusable](https://github.com/schteppe/p2.js/pull/263)

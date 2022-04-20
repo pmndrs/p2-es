@@ -3,21 +3,19 @@
   <head>
     <title>p2.js Canvas Box example</title>
     <meta charset="utf-8">
-    <script src="../../build/p2.js"></script>
   </head>
   <body>
 
     <!-- The canvas, where we draw stuff -->
     <canvas width="600" height="400" id="myCanvas"></canvas>
 
-    <script>
+    <script type="module">
+      import * as p2 from '../../dist/p2-es.js'
+
       var canvas, ctx, w, h,
-          world, boxBody, planeBody;
+          world, boxShape, boxBody, planeBody;
 
-      init();
-      requestAnimationFrame(animate);
-
-      function init(){
+      const init = () => {
 
         // Init canvas
         canvas = document.getElementById("myCanvas");
@@ -44,13 +42,13 @@
         world.addBody(boxBody);
 
         // Add a plane
-        planeShape = new p2.Plane();
+        const planeShape = new p2.Plane();
         planeBody = new p2.Body();
         planeBody.addShape(planeShape);
         world.addBody(planeBody);
       }
 
-      function drawbox(){
+      const drawbox = () => {
         ctx.beginPath();
         var x = boxBody.interpolatedPosition[0],
             y = boxBody.interpolatedPosition[1];
@@ -62,14 +60,14 @@
         ctx.restore();
       }
 
-      function drawPlane(){
+      const drawPlane = () => {
         var y = planeBody.interpolatedPosition[1];
         ctx.moveTo(-w, y);
         ctx.lineTo( w, y);
         ctx.stroke();
       }
 
-      function render(){
+      const render = () => {
         // Clear the canvas
         ctx.clearRect(0,0,w,h);
 
@@ -92,7 +90,7 @@
       var lastTime;
       var maxSubSteps = 5; // Max physics ticks per render frame
       var fixedDeltaTime = 1 / 60; // Physics "tick" delta time
-      function animate(time){
+      const animate = (time) => {
         requestAnimationFrame(animate);
 
         // Get the elapsed time since last frame, in seconds
@@ -108,6 +106,9 @@
         // Render scene
         render();
       }
+
+      init();
+      requestAnimationFrame(animate);
     </script>
 
   </body>

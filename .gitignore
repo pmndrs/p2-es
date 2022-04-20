@@ -1,16 +1,16 @@
-# Temp files
-*~
-*#
-
-# Node Modules
-node_modules/*
-
-# File system
+node_modules/
+coverage/
+yarn-error.log
+.size-snapshot.json
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
 .DS_Store
-
-# Sublime Text
-*.sublime-project
-*.sublime-workspace
-
-.idea
+.vscode
+.docz/
 package-lock.json
+coverage/
+.idea
+.rpt2_cache/
+.eslintcache

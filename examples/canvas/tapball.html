@@ -7,9 +7,6 @@
     <!-- No zooming, and device width viewport -->
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
-    <!-- include the physics library -->
-    <script src="../../build/p2.js"></script>
-
     <style>
 
       /* Full screen canvas */
@@ -40,7 +37,8 @@
 
     <div id="counter">Tap ball to start</div>
 
-    <script>
+    <script type="module">
+      import * as p2 from '../../dist/p2-es.js'
 
       // Globals
       var canvas, ctx, w, h, zoom, world, ballBody, bottomPlaneBody;

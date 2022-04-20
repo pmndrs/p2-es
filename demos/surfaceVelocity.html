@@ -1,85 +1,83 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Surface velocity demo - p2.js physics engine</title>
-    <script src="../build/p2.js"></script>
-    <script src="../build/p2.renderer.js"></script>
-    <link href="css/demo.css" rel="stylesheet"/>
-    <meta name="description" content="How to create a ContactMaterial with surface velocity.">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-</head>
-<body>
-    <script>
+    <head>
+        <title>Surface velocity demo - p2.js physics engine</title>
+        <link href="css/demo.css" rel="stylesheet" />
+        <meta name="description" content="How to create a ContactMaterial with surface velocity." />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    </head>
+    <body>
+        <script type="module">
+            import * as p2 from '../../dist/p2-es.js'
+            import { Demo } from './js/Demo.js'
 
-        // Create demo application
-        var app = new p2.WebGLRenderer(function(){
+            // Create demo application
+            new Demo(function () {
+                // Create a World
+                var world = new p2.World({
+                    gravity: [0, -10],
+                })
 
-            // Create a World
-            var world = new p2.World({
-                gravity : [0,-10]
-            });
+                this.setWorld(world)
 
-            this.setWorld(world);
+                // Create ground
+                var planeShape = new p2.Plane()
+                var plane = new p2.Body()
+                plane.addShape(planeShape)
+                world.addBody(plane)
 
-            // Create ground
-            planeShape = new p2.Plane();
-            plane = new p2.Body();
-            plane.addShape(planeShape);
-            world.addBody(plane);
-
-            // Create moving box
-            var boxBody = new p2.Body({
+                // Create moving box
+                var boxBody = new p2.Body({
                     mass: 1,
-                    position: [1,4]
-                }),
-                boxShape = new p2.Box({
+                    position: [1, 4],
+                })
+                var boxShape = new p2.Box({
                     width: 0.5,
                     height: 0.5,
-                    material: new p2.Material()
-                });
-            boxBody.addShape(boxShape);
-            world.addBody(boxBody);
+                    material: new p2.Material(),
+                })
+                boxBody.addShape(boxShape)
+                world.addBody(boxBody)
 
-            // Create static platform box
-            var platformBody1 = new p2.Body({
+                // Create static platform box
+                var platformBody1 = new p2.Body({
                     mass: 0, // static
-                    position: [-0.5,1]
-                }),
-                platformShape1 = new p2.Box({
+                    position: [-0.5, 1],
+                })
+                var platformShape1 = new p2.Box({
                     width: 3,
                     height: 0.2,
-                    material: new p2.Material()
-                });
-            platformBody1.addShape(platformShape1);
-            world.addBody(platformBody1);
+                    material: new p2.Material(),
+                })
+                platformBody1.addShape(platformShape1)
+                world.addBody(platformBody1)
 
-            // Create static platform box
-            var platformBody2 = new p2.Body({
+                // Create static platform box
+                var platformBody2 = new p2.Body({
                     mass: 0, // static
-                    position: [0.5, 2]
-                }),
-                platformShape2 = new p2.Box({
+                    position: [0.5, 2],
+                })
+                var platformShape2 = new p2.Box({
                     width: 3,
                     height: 0.2,
-                    material: new p2.Material()
-                });
-            platformBody2.addShape(platformShape2);
-            world.addBody(platformBody2);
+                    material: new p2.Material(),
+                })
+                platformBody2.addShape(platformShape2)
+                world.addBody(platformBody2)
 
-            var contactMaterial1 = new p2.ContactMaterial(boxShape.material,platformShape1.material,{
-                surfaceVelocity:-0.5,
-            });
-            world.addContactMaterial(contactMaterial1);
+                var contactMaterial1 = new p2.ContactMaterial(boxShape.material, platformShape1.material, {
+                    surfaceVelocity: -0.5,
+                })
+                world.addContactMaterial(contactMaterial1)
 
-            var contactMaterial2 = new p2.ContactMaterial(boxShape.material,platformShape2.material,{
-                surfaceVelocity:0.5,
-            });
-            world.addContactMaterial(contactMaterial2);
+                var contactMaterial2 = new p2.ContactMaterial(boxShape.material, platformShape2.material, {
+                    surfaceVelocity: 0.5,
+                })
+                world.addContactMaterial(contactMaterial2)
 
-            this.frame(0,1,4,4);
-        });
-
-    </script>
-</body>
+                this.frame(0, 1, 4, 4)
+            })
+        </script>
+    </body>
 </html>
