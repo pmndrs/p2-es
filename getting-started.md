@@ -8,11 +8,15 @@ yarn add p2-es
 
 **CDN**
 
-You can also import the esm flatbundle via unpkg
+You can also import the esm bundle with unpkg:
 
 ```html
 <script type="module">
-    import * as p2 from 'https://www.unpkg.com/browse/p2-es@0.8.0/dist/p2-es.js';
+    // import a specific version
+    import * as p2 from 'https://www.unpkg.com/browse/p2-es@1.0.0/dist/p2-es.js';
+
+    // or import latest
+    import * as p2 from 'https://www.unpkg.com/browse/p2-es/dist/p2-es.js';
 </script>
 ```
 

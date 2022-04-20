@@ -1,5 +1,4 @@
-p2-es
-=====
+# p2-es
 
 This is a maintained fork of [p2.js](https://github.com/schteppe/p2.js), originally created by Stefan Hedman [@schteppe](https://github.com/schteppe).
 
@@ -23,22 +22,27 @@ yarn add p2-es
 
 **CDN**
 
-You can also import the esm flatbundle via unpkg
+You can also import the esm bundle with unpkg:
 
 ```html
 <script type="module">
-    import * as p2 from 'https://www.unpkg.com/browse/p2-es@0.8.0/dist/p2-es.js';
+    // import a specific version
+    import * as p2 from 'https://www.unpkg.com/browse/p2-es@1.0.0/dist/p2-es.js';
+
+    // or import latest
+    import * as p2 from 'https://www.unpkg.com/browse/p2-es/dist/p2-es.js';
 </script>
 ```
-
 ---
 
 If you would like to use ordinary `Array` instead of `Float32Array`, define `P2_ARRAY_TYPE` globally before loading the library.
 
 ```html
-<script type="text/javascript">P2_ARRAY_TYPE = Array;</script>
+<script type="text/javascript">
+    P2_ARRAY_TYPE = Array
+</script>
 <script type="module">
-    import * as p2 from 'p2-es.js';
+    import * as p2 from 'p2-es.js'
 </script>
 ```
 
@@ -49,79 +53,79 @@ The following example uses the [World](http://pmndrs.github.io/p2-es/docs/classe
 ```js
 // Create a physics world, where bodies and constraints live
 var world = new p2.World({
-    gravity:[0, -9.82]
-});
+    gravity: [0, -9.82],
+})
 
 // Create an empty dynamic body
 var circleBody = new p2.Body({
     mass: 5,
-    position: [0, 10]
-});
+    position: [0, 10],
+})
 
 // Add a circle shape to the body
-var circleShape = new p2.Circle({ radius: 1 });
-circleBody.addShape(circleShape);
+var circleShape = new p2.Circle({ radius: 1 })
+circleBody.addShape(circleShape)
 
 // ...and add the body to the world.
 // If we don't add it to the world, it won't be simulated.
-world.addBody(circleBody);
+world.addBody(circleBody)
 
 // Create an infinite ground plane body
 var groundBody = new p2.Body({
-    mass: 0 // Setting mass to 0 makes it static
-});
-var groundShape = new p2.Plane();
-groundBody.addShape(groundShape);
-world.addBody(groundBody);
+    mass: 0, // Setting mass to 0 makes it static
+})
+var groundShape = new p2.Plane()
+groundBody.addShape(groundShape)
+world.addBody(groundBody)
 
 // To animate the bodies, we must step the world forward in time, using a fixed time step size.
 // The World will run substeps and interpolate automatically for us, to get smooth animation.
-var fixedTimeStep = 1 / 60; // seconds
-var maxSubSteps = 10; // Max sub steps to catch up with the wall clock
-var lastTime;
+var fixedTimeStep = 1 / 60 // seconds
+var maxSubSteps = 10 // Max sub steps to catch up with the wall clock
+var lastTime
 
 // Animation loop
-function animate(time){
-	requestAnimationFrame(animate);
+function animate(time) {
+    requestAnimationFrame(animate)
 
     // Compute elapsed time since last render frame
-    var deltaTime = lastTime ? (time - lastTime) / 1000 : 0;
+    var deltaTime = lastTime ? (time - lastTime) / 1000 : 0
 
     // Move bodies forward in time
-    world.step(fixedTimeStep, deltaTime, maxSubSteps);
+    world.step(fixedTimeStep, deltaTime, maxSubSteps)
 
     // Render the circle at the current interpolated position
-    renderCircleAtPosition(circleBody.interpolatedPosition);
+    renderCircleAtPosition(circleBody.interpolatedPosition)
 
-    lastTime = time;
+    lastTime = time
 }
 
 // Start the animation loop
-requestAnimationFrame(animate);
+requestAnimationFrame(animate)
 ```
 
-To interact with bodies, you need to do it *after each internal step*. Simply attach a *"postStep"* listener to the world, and make sure to use ```body.position``` here - ```body.interpolatedPosition``` is only for rendering.
+To interact with bodies, you need to do it _after each internal step_. Simply attach a _"postStep"_ listener to the world, and make sure to use `body.position` here - `body.interpolatedPosition` is only for rendering.
 
 ```js
-world.on('postStep', function(event){
+world.on('postStep', function (event) {
     // Add horizontal spring force
-    circleBody.force[0] -= 100 * circleBody.position[0];
-});
+    circleBody.force[0] -= 100 * circleBody.position[0]
+})
 ```
 
 ### Supported collision pairs
 
-|                                                                              | Circle | Plane | Box       | Convex | Particle | Line   | Capsule | Heightfield | Ray    |
-| :--------------------------------------------------------------------------: |:------:|:-----:|:---------:|:------:|:--------:|:------:|:-------:|:-----------:|:------:|
-| [Circle](http://pmndrs.github.io/p2-es/docs/classes/Circle.html)           | Yes    | -     | -         | -      | -        | -      | -       | -           | -      |
-| [Plane](http://pmndrs.github.io/p2-es/docs/classes/Plane.html)             | Yes    | -     | -         | -      | -        | -      | -       | -           | -      |
-| [Box](http://pmndrs.github.io/p2-es/docs/classes/Box.html)                 | Yes    | Yes   | Yes       | -      | -        | -      | -       | -           | -      |
-| [Convex](http://pmndrs.github.io/p2-es/docs/classes/Convex.html)           | Yes    | Yes   | Yes       | Yes    | -        | -      | -       | -           | -      |
-| [Particle](http://pmndrs.github.io/p2-es/docs/classes/Particle.html)       | Yes    | Yes   | Yes       | Yes    | -        | -      | -       | -           | -      |
-| [Line](http://pmndrs.github.io/p2-es/docs/classes/Line.html)               | Yes    | Yes   | (todo)    | (todo) | -        | -      | -       | -           | -      |
-| [Capsule](http://pmndrs.github.io/p2-es/docs/classes/Capsule.html)         | Yes    | Yes   | Yes       | Yes    | Yes      | (todo) | Yes     | -           | -      |
-| [Heightfield](http://pmndrs.github.io/p2-es/docs/classes/Heightfield.html) | Yes    | -     | Yes       | Yes    | (todo)   | (todo) | (todo)  | -           | -      |
-| [Ray](http://pmndrs.github.io/p2-es/docs/classes/Ray.html)                 | Yes    | Yes   | Yes       | Yes    | -        | Yes    | Yes     | Yes         | -      |
+|                                                                            | Circle | Plane |  Box   | Convex | Particle |  Line  | Capsule | Heightfield | Ray |
+| :------------------------------------------------------------------------: | :----: | :---: | :----: | :----: | :------: | :----: | :-----: | :---------: | :-: |
+|      [Circle](http://pmndrs.github.io/p2-es/docs/classes/Circle.html)      |  Yes   |   -   |   -    |   -    |    -     |   -    |    -    |      -      |  -  |
+|       [Plane](http://pmndrs.github.io/p2-es/docs/classes/Plane.html)       |  Yes   |   -   |   -    |   -    |    -     |   -    |    -    |      -      |  -  |
+|         [Box](http://pmndrs.github.io/p2-es/docs/classes/Box.html)         |  Yes   |  Yes  |  Yes   |   -    |    -     |   -    |    -    |      -      |  -  |
+|      [Convex](http://pmndrs.github.io/p2-es/docs/classes/Convex.html)      |  Yes   |  Yes  |  Yes   |  Yes   |    -     |   -    |    -    |      -      |  -  |
+|    [Particle](http://pmndrs.github.io/p2-es/docs/classes/Particle.html)    |  Yes   |  Yes  |  Yes   |  Yes   |    -     |   -    |    -    |      -      |  -  |
+|        [Line](http://pmndrs.github.io/p2-es/docs/classes/Line.html)        |  Yes   |  Yes  | (todo) | (todo) |    -     |   -    |    -    |      -      |  -  |
+|     [Capsule](http://pmndrs.github.io/p2-es/docs/classes/Capsule.html)     |  Yes   |  Yes  |  Yes   |  Yes   |   Yes    | (todo) |   Yes   |      -      |  -  |
+| [Heightfield](http://pmndrs.github.io/p2-es/docs/classes/Heightfield.html) |  Yes   |   -   |  Yes   |  Yes   |  (todo)  | (todo) | (todo)  |      -      |  -  |
+|         [Ray](http://pmndrs.github.io/p2-es/docs/classes/Ray.html)         |  Yes   |  Yes  |  Yes   |  Yes   |    -     |  Yes   |   Yes   |     Yes     |  -  |
 
 Note that concave polygon shapes can be created using [Body.fromPolygon](http://pmndrs.github.io/p2-es/docs/classes/Body.html#method_fromPolygon).
 
@@ -141,14 +145,14 @@ yarn serve
 ### Release process
 
 1. Bump version number.
-2. Build and commit files in ```dist/``` and ```docs/```.
+2. Build and commit files in `dist/` and `docs/`.
 3. Tag the commit with the version number e.g. vX.Y.Z
 4. Add release notes to github
 5. Publish to NPM
 
 ### TODO
 
-- [ ] add hasActiveBodies to World and use in use-p2 (see [cannon-es](https://github.com/pmndrs/cannon-es/blob/master/src/world/World.ts#L868)) 
-- [ ] Evaluate PRs in p2.js repo
-  - [ ] [Refactoring Springs](https://github.com/schteppe/p2.js/pull/148)
-  - [ ] [Adjustments to the buoyancy demo to make the code more easily reusable](https://github.com/schteppe/p2.js/pull/263)
+-   [ ] add hasActiveBodies to World and use in use-p2 (see [cannon-es](https://github.com/pmndrs/cannon-es/blob/master/src/world/World.ts#L868))
+-   [ ] Evaluate PRs in p2.js repo
+    -   [ ] [Refactoring Springs](https://github.com/schteppe/p2.js/pull/148)
+    -   [ ] [Adjustments to the buoyancy demo to make the code more easily reusable](https://github.com/schteppe/p2.js/pull/263)
