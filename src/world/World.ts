@@ -193,7 +193,7 @@ export class World extends EventEmitter<WorldEventMap> {
     /**
      * User-added constraints.
      */
-    constraints: Constraint[]
+    constraints: Constraint[] = []
 
     /**
      * Dummy default material in the world, used in .defaultContactMaterial
@@ -307,12 +307,10 @@ export class World extends EventEmitter<WorldEventMap> {
         this.broadphase = options.broadphase || new SAPBroadphase()
         this.broadphase.setWorld(this)
 
-        this.constraints = []
-
         this.defaultMaterial = new Material()
         this.defaultContactMaterial = new ContactMaterial(this.defaultMaterial, this.defaultMaterial)
 
-        this.islandSplit = options.islandSplit !== undefined ? !!options.islandSplit : true
+        this.islandSplit = options.islandSplit ?? true
     }
 
     /**
