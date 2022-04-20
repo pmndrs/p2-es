@@ -51,19 +51,21 @@ If you would like to use ordinary `Array` instead of `Float32Array`, define `P2_
 The following example uses the [World](http://pmndrs.github.io/p2-es/docs/classes/World.html), [Circle](http://pmndrs.github.io/p2-es/docs/classes/Circle.html), [Body](http://pmndrs.github.io/p2-es/docs/classes/Body.html) and [Plane](http://pmndrs.github.io/p2-es/docs/classes/Plane.html) classes to set up a simple physics scene with a ball on a plane.
 
 ```js
+import * as p2 from 'p2-es'
+
 // Create a physics world, where bodies and constraints live
-var world = new p2.World({
+const world = new p2.World({
     gravity: [0, -9.82],
 })
 
 // Create an empty dynamic body
-var circleBody = new p2.Body({
+const circleBody = new p2.Body({
     mass: 5,
     position: [0, 10],
 })
 
 // Add a circle shape to the body
-var circleShape = new p2.Circle({ radius: 1 })
+const circleShape = new p2.Circle({ radius: 1 })
 circleBody.addShape(circleShape)
 
 // ...and add the body to the world.
@@ -71,25 +73,25 @@ circleBody.addShape(circleShape)
 world.addBody(circleBody)
 
 // Create an infinite ground plane body
-var groundBody = new p2.Body({
+const groundBody = new p2.Body({
     mass: 0, // Setting mass to 0 makes it static
 })
-var groundShape = new p2.Plane()
+const groundShape = new p2.Plane()
 groundBody.addShape(groundShape)
 world.addBody(groundBody)
 
 // To animate the bodies, we must step the world forward in time, using a fixed time step size.
 // The World will run substeps and interpolate automatically for us, to get smooth animation.
-var fixedTimeStep = 1 / 60 // seconds
-var maxSubSteps = 10 // Max sub steps to catch up with the wall clock
-var lastTime
+const fixedTimeStep = 1 / 60 // seconds
+const maxSubSteps = 10 // Max sub steps to catch up with the wall clock
+let lastTime = 0
 
 // Animation loop
 function animate(time) {
     requestAnimationFrame(animate)
 
     // Compute elapsed time since last render frame
-    var deltaTime = lastTime ? (time - lastTime) / 1000 : 0
+    const deltaTime = (time - lastTime) / 1000
 
     // Move bodies forward in time
     world.step(fixedTimeStep, deltaTime, maxSubSteps)
