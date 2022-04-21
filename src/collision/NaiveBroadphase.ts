@@ -16,7 +16,7 @@ export class NaiveBroadphase extends Broadphase {
      * @param world
      * @return
      */
-    getCollisionPairs(world: World) {
+    getCollisionPairs(world: World): Body[] {
         const bodies = world.bodies
         const result = this.result
 

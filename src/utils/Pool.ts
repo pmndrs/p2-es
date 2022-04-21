@@ -30,7 +30,7 @@ export abstract class Pool<T> {
      * @param size
      * @return Self, for chaining
      */
-    resize(size: number) {
+    resize(size: number): Pool<T> {
         const objects = this.objects
 
         while (objects.length > size) {
@@ -58,7 +58,7 @@ export abstract class Pool<T> {
      * @param object
      * @return Self for chaining
      */
-    release(object: T) {
+    release(object: T): Pool<T> {
         this.destroy(object)
         this.objects.push(object)
         return this

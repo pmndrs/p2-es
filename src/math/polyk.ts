@@ -36,7 +36,7 @@ export function getArea(p: number[]): number {
     return -sum * 0.5
 }
 
-export function triangulate(p: number[]) {
+export function triangulate(p: number[]): number[] {
     const n = p.length >> 1
     if (n < 3) return []
     const tgs = []

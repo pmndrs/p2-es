@@ -9335,6 +9335,10 @@ class World extends EventEmitter {
    */
 
   /**
+   * User-added constraints.
+   */
+
+  /**
    * For keeping track of what time step size we used last step
    */
 
@@ -9410,6 +9414,7 @@ class World extends EventEmitter {
     this.narrowphase = new Narrowphase();
     this.useWorldGravityAsFrictionGravity = true;
     this.useFrictionGravityOnZeroGravity = true;
+    this.constraints = [];
     this.lastTimeStep = 1 / 60;
     this.applySpringForces = true;
     this.applyDamping = true;
@@ -9434,10 +9439,9 @@ class World extends EventEmitter {
     this.frictionGravity = length(this.gravity) || 10;
     this.broadphase = options.broadphase || new SAPBroadphase();
     this.broadphase.setWorld(this);
-    this.constraints = [];
     this.defaultMaterial = new Material();
     this.defaultContactMaterial = new ContactMaterial(this.defaultMaterial, this.defaultMaterial);
-    this.islandSplit = options.islandSplit !== undefined ? !!options.islandSplit : true;
+    this.islandSplit = options.islandSplit ?? true;
   }
   /**
    * Add a constraint to the simulation. Note that both bodies connected to the constraint must be added to the world first. Also note that you can't run this method during step.
@@ -10405,7 +10409,7 @@ const endOverlaps = [];
 const hitTest_tmp1 = create(),
       hitTest_tmp2 = create();
 
-const version = '0.7.3';
+const version = '1.0.1';
 
 exports.AABB = AABB;
 exports.AngleLockEquation = AngleLockEquation;

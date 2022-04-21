@@ -61,7 +61,7 @@ export class Line extends Shape {
         out.setFromPoints(points, position, angle, 0)
     }
 
-    raycast(result: RaycastResult, ray: Ray, position: Vec2, angle: number) {
+    raycast(result: RaycastResult, ray: Ray, position: Vec2, angle: number): void {
         const from = ray.from
         const to = ray.to
 

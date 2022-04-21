@@ -289,7 +289,7 @@ export abstract class Shape {
      * @param out
      * @param worldPoint
      */
-    worldPointToLocal(out: Vec2, worldPoint: Vec2) {
+    worldPointToLocal(out: Vec2, worldPoint: Vec2): Vec2 {
         const body = this.body
 
         vec2.rotate(shapeWorldPosition, this.position, body!.angle)

@@ -13,7 +13,7 @@ export class UnionFind {
         this.resize(size)
     }
 
-    resize(size: number) {
+    resize(size: number): void {
         this.count = this.size = size
         const sz = this.sz
         const id = this.id
@@ -37,7 +37,7 @@ export class UnionFind {
      * @param p
      * @param q
      */
-    union(p: number, q: number) {
+    union(p: number, q: number): void {
         const i = this.find(p),
             j = this.find(q)
 

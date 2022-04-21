@@ -100,7 +100,7 @@ export class RaycastResult {
         return this.isStopped || (this.fraction !== -1 && ray.mode === Ray.ANY)
     }
 
-    set(normal: Vec2, shape: Shape, body: Body, fraction: number, faceIndex: number) {
+    set(normal: Vec2, shape: Shape, body: Body, fraction: number, faceIndex: number): void {
         vec2.copy(this.normal, normal)
         this.shape = shape
         this.body = body

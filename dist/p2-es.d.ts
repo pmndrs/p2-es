@@ -127,10 +127,10 @@ declare module "collision/RaycastResult" {
 declare module "events/EventEmitter" {
     export class EventEmitter<EventMap extends Record<string, any>> {
         private listeners;
-        on<E extends keyof EventMap>(type: E, listener: (e: EventMap[E]) => void, context?: any): this;
+        on<E extends keyof EventMap>(type: E, listener: (e: EventMap[E]) => void, context?: any): EventEmitter<EventMap>;
         off<E extends keyof EventMap>(type: E, listener: Function): EventEmitter<EventMap>;
         has<E extends keyof EventMap>(type: E, listener?: Function): boolean;
-        emit<E extends keyof EventMap>(event: EventMap[E]): this;
+        emit<E extends keyof EventMap>(event: EventMap[E]): EventEmitter<EventMap>;
     }
 }
 declare module "math/polyk" {
@@ -452,9 +452,9 @@ declare module "utils/Pool" {
         constructor(options?: PoolOptions);
         abstract create(): T;
         abstract destroy(object: T): void;
-        resize(size: number): this;
+        resize(size: number): Pool<T>;
         get(): T;
-        release(object: T): this;
+        release(object: T): Pool<T>;
     }
 }
 declare module "utils/ContactEquationPool" {
@@ -1313,7 +1313,7 @@ declare module "objects/TopDownVehicle" {
     }
 }
 declare module "p2-es" {
-    export const version = "0.7.3";
+    export const version = "1.0.1";
     export * from "collision/AABB";
     export * from "collision/Broadphase";
     export * from "collision/NaiveBroadphase";

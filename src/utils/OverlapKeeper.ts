@@ -78,11 +78,11 @@ export class OverlapKeeper {
         }
     }
 
-    getNewOverlaps(result?: OverlapKeeperRecord[]) {
+    getNewOverlaps(result?: OverlapKeeperRecord[]): OverlapKeeperRecord[] {
         return this.getDiff(this.overlappingShapesLastState, this.overlappingShapesCurrentState, result)
     }
 
-    getEndOverlaps(result?: OverlapKeeperRecord[]) {
+    getEndOverlaps(result?: OverlapKeeperRecord[]) : OverlapKeeperRecord[]{
         return this.getDiff(this.overlappingShapesCurrentState, this.overlappingShapesLastState, result)
     }
 
@@ -90,7 +90,7 @@ export class OverlapKeeper {
         dictA: TupleDictionary<OverlapKeeperRecord>,
         dictB: TupleDictionary<OverlapKeeperRecord>,
         result: OverlapKeeperRecord[] = []
-    ) {
+    ): OverlapKeeperRecord[] {
         const last = dictA
         const current = dictB
 

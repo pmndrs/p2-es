@@ -1130,11 +1130,11 @@ export class World extends EventEmitter<WorldEventMap> {
     }
 }
 
-function sortBodiesByIsland(a: Body, b: Body) {
+function sortBodiesByIsland(a: Body, b: Body): number {
     return a.islandId - b.islandId
 }
 
-function sortEquationsByIsland(equationA: Equation, equationB: Equation) {
+function sortEquationsByIsland(equationA: Equation, equationB: Equation): number {
     const islandA = equationA.bodyA.islandId > 0 ? equationA.bodyA.islandId : equationA.bodyB.islandId
     const islandB = equationB.bodyA.islandId > 0 ? equationB.bodyA.islandId : equationB.bodyB.islandId
 

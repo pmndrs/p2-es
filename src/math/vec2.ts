@@ -363,7 +363,7 @@ export function negate(out: Vec2, a: Vec2): Vec2 {
  * @param a vector to normalize
  * @return out
  */
-export function normalize(out: Vec2, a: Vec2) {
+export function normalize(out: Vec2, a: Vec2): Vec2 {
     const x = a[0]
     const y = a[1]
     let len = x * x + y * y
@@ -402,7 +402,7 @@ export function str(a: Vec2): string {
  * @param b Second vector
  * @param t Lerp factor
  */
-export function lerp(out: Vec2, a: Vec2, b: Vec2, t: number) {
+export function lerp(out: Vec2, a: Vec2, b: Vec2, t: number): Vec2 {
     const ax = a[0]
     const ay = a[1]
     out[0] = ax + t * (b[0] - ax)

@@ -26,7 +26,7 @@ export class EventEmitter<EventMap extends Record<string, any>> {
      *         console.log('myEvt was triggered!');
      *     });
      */
-    on<E extends keyof EventMap>(type: E, listener: (e: EventMap[E]) => void, context?: any) {
+    on<E extends keyof EventMap>(type: E, listener: (e: EventMap[E]) => void, context?: any): EventEmitter<EventMap> {
         (listener as any).context = context || this
         let listeners = this.listeners[type as string]
         if (listeners === undefined) {
@@ -94,7 +94,7 @@ export class EventEmitter<EventMap extends Record<string, any>> {
      *         customData: 123
      *     });
      */
-    emit<E extends keyof EventMap>(event: EventMap[E]) {
+    emit<E extends keyof EventMap>(event: EventMap[E]): EventEmitter<EventMap> {
         if (this.listeners === undefined) {
             return this
         }

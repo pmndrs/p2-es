@@ -181,7 +181,7 @@ export class GSSolver extends Solver {
 }
 
 // Sets the .multiplier property of each equation
-function updateMultipliers(equations: Equation[], invDt: number) {
+function updateMultipliers(equations: Equation[], invDt: number): void {
     let l = equations.length
     while (l--) {
         const eq = equations[l]
@@ -189,7 +189,7 @@ function updateMultipliers(equations: Equation[], invDt: number) {
     }
 }
 
-function iterateEquation(eq: Equation) {
+function iterateEquation(eq: Equation): number {
     // Compute iteration
     const B = eq.B,
         eps = eq.epsilon,
