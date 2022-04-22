@@ -155,7 +155,8 @@ yarn serve
 
 ### TODO
 
--   [ ] add hasActiveBodies to World and use in use-p2 (see [cannon-es](https://github.com/pmndrs/cannon-es/blob/master/src/world/World.ts#L868))
+-   [ ] Add hasActiveBodies to World and use in use-p2 (see [cannon-es](https://github.com/pmndrs/cannon-es/blob/master/src/world/World.ts#L868))
+-   [ ] Convert demo framework to typescript and include in lib
 -   [ ] Evaluate PRs in p2.js repo
     -   [ ] [Refactoring Springs](https://github.com/schteppe/p2.js/pull/148)
     -   [ ] [Adjustments to the buoyancy demo to make the code more easily reusable](https://github.com/schteppe/p2.js/pull/263)

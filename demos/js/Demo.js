@@ -308,38 +308,9 @@ export class Demo extends p2.EventEmitter {
         let startY
         let down = false
 
-        const physicsPosA = p2.vec2.create()
-        const physicsPosB = p2.vec2.create()
-        const stagePos = p2.vec2.create()
-        let initPinchLength = 0
-        const initScaleX = 1
-        const initScaleY = 1
-        let lastNumTouches = 0
-
         this.stage.mousedown = this.stage.touchstart = (e) => {
             lastMoveX = e.data.global.x
             lastMoveY = e.data.global.y
-
-            if (e.data.touches) {
-                lastNumTouches = e.data.touches.length
-            }
-
-            if (e.data.touches && e.data.touches.length === 2) {
-                const touchA = this.container.interactionManager.touchs[0]
-                const touchB = this.container.interactionManager.touchs[1]
-
-                let pos = touchA.getLocalPosition(this.container) // todo - was `stage`
-                p2.vec2.set(stagePos, pos.x, pos.y)
-                this.stagePositionToPhysics(physicsPosA, stagePos)
-
-                pos = touchB.getLocalPosition(this.container)
-                p2.vec2.set(stagePos, pos.x, pos.y)
-                this.stagePositionToPhysics(physicsPosB, stagePos)
-
-                initPinchLength = p2.vec2.distance(physicsPosA, physicsPosB)
-
-                return
-            }
 
             lastX = e.data.global.x
             lastY = e.data.global.y
@@ -356,47 +327,8 @@ export class Demo extends p2.EventEmitter {
         }
 
         this.stage.mousemove = this.stage.touchmove = (e) => {
-            if (e.data.touches) {
-                if (lastNumTouches !== e.data.touches.length) {
-                    lastX = e.data.global.x
-                    lastY = e.data.global.y
-                    startX = this.stage.position.x
-                    startY = this.stage.position.y
-                }
-
-                lastNumTouches = e.data.touches.length
-            }
-
             lastMoveX = e.data.global.x
             lastMoveY = e.data.global.y
-
-            if (e.data.touches && e.data.touches.length === 2) {
-                const touchA = this.stage.interactionManager.touchs[0]
-                const touchB = this.stage.interactionManager.touchs[1]
-
-                let pos = touchA.getLocalPosition(this.stage)
-                p2.vec2.set(stagePos, pos.x, pos.y)
-                this.stagePositionToPhysics(physicsPosA, stagePos)
-
-                pos = touchB.getLocalPosition(this.stage)
-                p2.vec2.set(stagePos, pos.x, pos.y)
-                this.stagePositionToPhysics(physicsPosB, stagePos)
-
-                const pinchLength = p2.vec2.distance(physicsPosA, physicsPosB)
-
-                // Get center
-                p2.vec2.add(physicsPosA, physicsPosA, physicsPosB)
-                p2.vec2.scale(physicsPosA, physicsPosA, 0.5)
-                this.zoom(
-                    (touchA.global.x + touchB.global.x) * 0.5,
-                    (touchA.global.y + touchB.global.y) * 0.5,
-                    null,
-                    (pinchLength / initPinchLength) * initScaleX, // zoom relative to the initial scale
-                    (pinchLength / initPinchLength) * initScaleY
-                )
-
-                return
-            }
 
             if (down && this.state === Demo.PANNING) {
                 this.container.position.x = e.data.global.x - lastX + startX
@@ -412,10 +344,6 @@ export class Demo extends p2.EventEmitter {
         }
 
         this.stage.mouseup = this.stage.touchend = (e) => {
-            if (e.data.touches) {
-                lastNumTouches = e.data.touches.length
-            }
-
             down = false
             lastMoveX = e.data.global.x
             lastMoveY = e.data.global.y
