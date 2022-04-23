@@ -1,5 +1,3 @@
-export const version = '1.0.1'
-
 export * from './collision/AABB'
 export * from './collision/Broadphase'
 export * from './collision/NaiveBroadphase'
