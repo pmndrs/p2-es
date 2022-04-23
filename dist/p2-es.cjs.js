@@ -2615,6 +2615,10 @@ class Body extends EventEmitter {
    */
 
   /**
+   * Id counter for Body instances
+   */
+
+  /**
    * The world that this body is added to (read only). This property is set to NULL if the body is not added to any world.
    * @readonly
    */
@@ -9313,6 +9317,14 @@ class World extends EventEmitter {
    */
 
   /**
+   * Deactivate individual bodies if they are sleepy.
+   */
+
+  /**
+   * Deactivates bodies that are in contact, if all of them are sleepy. Note that you must enable {@link World.islandSplit} for this to work.
+   */
+
+  /**
    * All springs in the world. To add a spring to the world, use {@link World.addSpring}.
    */
 
@@ -10285,6 +10297,8 @@ class World extends EventEmitter {
 
 }
 World.NO_SLEEPING = 1;
+World.BODY_SLEEPING = 2;
+World.ISLAND_SLEEPING = 4;
 
 function sortBodiesByIsland(a, b) {
   return a.islandId - b.islandId;

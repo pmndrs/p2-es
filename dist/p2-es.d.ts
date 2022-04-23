@@ -797,8 +797,8 @@ declare module "world/World" {
     }
     export class World extends EventEmitter<WorldEventMap> {
         static NO_SLEEPING: number;
-        static BODY_SLEEPING: 2;
-        static ISLAND_SLEEPING: 4;
+        static BODY_SLEEPING: number;
+        static ISLAND_SLEEPING: number;
         springs: Spring[];
         bodies: Body[];
         solver: Solver;
@@ -1352,6 +1352,7 @@ declare module "p2-es" {
     export * from "shapes/Shape";
     export * from "solver/GSSolver";
     export * from "solver/Solver";
+    export * from "types/index";
     export * from "utils/ContactEquationPool";
     export * from "utils/FrictionEquationPool";
     export * from "utils/Pool";

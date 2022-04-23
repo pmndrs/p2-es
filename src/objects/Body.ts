@@ -210,6 +210,9 @@ export class Body extends EventEmitter<BodyEventMap> {
      */
     static SLEEPING = 2
 
+    /**
+     * Id counter for Body instances
+     */
     static _idCounter = 0
 
     /**
