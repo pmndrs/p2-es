@@ -136,12 +136,12 @@ export class World extends EventEmitter<WorldEventMap> {
     /**
      * Deactivate individual bodies if they are sleepy.
      */
-    static BODY_SLEEPING: 2
+    static BODY_SLEEPING = 2
 
     /**
      * Deactivates bodies that are in contact, if all of them are sleepy. Note that you must enable {@link World.islandSplit} for this to work.
      */
-    static ISLAND_SLEEPING: 4
+    static ISLAND_SLEEPING = 4
 
     /**
      * All springs in the world. To add a spring to the world, use {@link World.addSpring}.
