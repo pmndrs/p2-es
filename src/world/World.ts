@@ -154,6 +154,11 @@ export class World extends EventEmitter<WorldEventMap> {
     bodies: Body[] = []
 
     /**
+     * True if any bodies are not sleeping, false if every body is sleeping.
+     */
+    hasActiveBodies = false
+
+    /**
      * The solver used to satisfy constraints and contacts. Default is {@link GSSolver}.
      */
     solver: Solver
@@ -581,7 +586,7 @@ export class World extends EventEmitter<WorldEventMap> {
                     const xj = sj.position
                     const aj = sj.angle
 
-                    let contactMaterial = null
+                    let contactMaterial: ContactMaterial | false = false
                     if (si.material && sj.material) {
                         contactMaterial = this.getContactMaterial(si.material, sj.material)
                     }
@@ -743,9 +748,18 @@ export class World extends EventEmitter<WorldEventMap> {
         }
 
         // Sleeping update
+        let hasActiveBodies = true
         if (this.sleepMode === World.BODY_SLEEPING) {
+            hasActiveBodies = false
+
             for (let i = 0; i !== Nbodies; i++) {
-                bodies[i].sleepTick(this.time, false, dt)
+                const body = bodies[i]
+                body.sleepTick(this.time, false, dt)
+
+                // Check if the body is not sleeping
+                if (body.sleepState !== Body.SLEEPING && body.type !== Body.STATIC) {
+                    hasActiveBodies = true
+                }
             }
         } else if (this.sleepMode === World.ISLAND_SLEEPING && this.islandSplit) {
             // Tell all bodies to sleep tick but dont sleep yet
@@ -778,13 +792,25 @@ export class World extends EventEmitter<WorldEventMap> {
                         break
                     }
                 }
+
                 if (islandShouldSleep) {
                     for (let i = islandStart; i < islandEnd; i++) {
                         bodiesSortedByIsland[i].sleep()
                     }
                 }
             }
+
+            // Check if any bodies are not sleeping
+            hasActiveBodies = false
+            for (let i = 0; i !== Nbodies; i++) {
+                const body = bodies[i]
+                if (body.sleepState !== Body.SLEEPING && body.type !== Body.STATIC) {
+                    hasActiveBodies = true
+                    break
+                }
+            }
         }
+        this.hasActiveBodies = hasActiveBodies
 
         this.stepping = false
 

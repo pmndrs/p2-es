@@ -377,4 +377,157 @@ describe('World', () => {
             expect(endContactHits).toEqual(2)
         })
     })
+
+    describe('hasActiveBodies', () => {
+        test('no sleeping', () => {
+            const world = new World({
+                gravity: [0, -10],
+            })
+
+            // Disable sleeping
+            world.sleepMode = World.NO_SLEEPING
+
+            // Create circle
+            const circleBody = new Body({
+                mass: 1,
+                position: [0, 0.3],
+                damping: 0.01,
+            })
+            circleBody.addShape(
+                new Circle({
+                    radius: 0.15,
+                })
+            )
+            circleBody.allowSleep = true
+            circleBody.sleepSpeedLimit = 1
+            circleBody.sleepTimeLimit = 1
+            circleBody.damping = 0.2
+            world.addBody(circleBody)
+
+            // Create ground
+            const planeShape = new Plane()
+            const plane = new Body({
+                position: [0, -1],
+            })
+            plane.addShape(planeShape)
+            world.addBody(plane)
+
+            world.step(1 / 60)
+
+            // Circle should be falling
+            expect(world.hasActiveBodies).toBe(true)
+
+            // Wait until circle has landed and is at rest
+            world.step(1 / 60, 5 * 1000, 5 * 60)
+
+            // Sleeping should be disabled for the world
+            expect(world.hasActiveBodies).toBe(true)
+        })
+
+        test('body sleeping', () => {
+            const world = new World({
+                gravity: [0, -10],
+            })
+
+            // Body sleeping
+            world.sleepMode = World.BODY_SLEEPING
+
+            // Create ball
+            const circleBody = new Body({
+                mass: 1,
+                position: [0, 0.3],
+                damping: 0.01,
+            })
+            circleBody.addShape(
+                new Circle({
+                    radius: 0.15,
+                })
+            )
+            circleBody.allowSleep = true
+            circleBody.sleepSpeedLimit = 1
+            circleBody.sleepTimeLimit = 1
+            circleBody.damping = 0.2
+            world.addBody(circleBody)
+
+            // Create ground
+            const plane = new Body({
+                position: [0, -1],
+            })
+            plane.addShape(new Plane())
+            world.addBody(plane)
+
+            world.step(1 / 60)
+
+            // Circle should be falling
+            expect(world.hasActiveBodies).toBe(true)
+
+            // Wait until circle has landed and is at rest
+            world.step(1 / 60, 5 * 1000, 5 * 60)
+
+            // Circle should be sleeping
+            expect(world.hasActiveBodies).toBe(false)
+        })
+
+        test('island sleeping', () => {
+            const world = new World({
+                gravity: [0, -10],
+                islandSplit: true,
+            })
+
+            // Island sleeping
+            world.sleepMode = World.ISLAND_SLEEPING
+
+            // Create circles
+            const circleBodyOne = new Body({
+                mass: 1,
+                position: [0, 0.6],
+                damping: 0.01,
+            })
+            circleBodyOne.addShape(
+                new Circle({
+                    radius: 0.15,
+                })
+            )
+            circleBodyOne.allowSleep = true
+            circleBodyOne.sleepSpeedLimit = 1
+            circleBodyOne.sleepTimeLimit = 1
+            circleBodyOne.damping = 0.2
+            world.addBody(circleBodyOne)
+
+            const circleBodyTwo = new Body({
+                mass: 1,
+                position: [0, 0.3],
+                damping: 0.01,
+            })
+            circleBodyTwo.addShape(
+                new Circle({
+                    radius: 0.15,
+                })
+            )
+            circleBodyTwo.allowSleep = true
+            circleBodyTwo.sleepSpeedLimit = 1
+            circleBodyTwo.sleepTimeLimit = 1
+            circleBodyTwo.damping = 0.2
+            world.addBody(circleBodyTwo)
+
+            // Create ground
+            const planeShape = new Plane()
+            const plane = new Body({
+                position: [0, -1],
+            })
+            plane.addShape(planeShape)
+            world.addBody(plane)
+
+            world.step(1 / 60)
+
+            // Circles should be falling
+            expect(world.hasActiveBodies).toBe(true)
+
+            // Wait until circles have landed and are at rest
+            world.step(1 / 60, 5 * 1000, 5 * 60)
+
+            // Circles should be sleeping
+            expect(world.hasActiveBodies).toBe(false)
+        })
+    })
 })
