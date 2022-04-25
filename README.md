@@ -129,7 +129,7 @@ world.on('postStep', function (event) {
 | [Heightfield](http://pmndrs.github.io/p2-es/docs/classes/Heightfield.html) |  Yes   |   -   |  Yes   |  Yes   |  (todo)  | (todo) | (todo)  |      -      |  -  |
 |         [Ray](http://pmndrs.github.io/p2-es/docs/classes/Ray.html)         |  Yes   |  Yes  |  Yes   |  Yes   |    -     |  Yes   |   Yes   |     Yes     |  -  |
 
-Note that concave polygon shapes can be created using [Body.fromPolygon](http://pmndrs.github.io/p2-es/docs/classes/Body.html#method_fromPolygon).
+Note that concave polygon shapes can be created using [Body.fromPolygon](https://pmndrs.github.io/p2-es/docs/classes/Body.html#fromPolygon).
 
 ### How to build
 
