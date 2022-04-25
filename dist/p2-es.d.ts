@@ -801,6 +801,7 @@ declare module "world/World" {
         static ISLAND_SLEEPING: number;
         springs: Spring[];
         bodies: Body[];
+        hasActiveBodies: boolean;
         solver: Solver;
         narrowphase: Narrowphase;
         gravity: Vec2;
@@ -1313,7 +1314,6 @@ declare module "objects/TopDownVehicle" {
     }
 }
 declare module "p2-es" {
-    export const version = "1.0.1";
     export * from "collision/AABB";
     export * from "collision/Broadphase";
     export * from "collision/NaiveBroadphase";

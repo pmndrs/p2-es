@@ -9329,6 +9329,10 @@ class World extends EventEmitter {
    */
 
   /**
+   * True if any bodies are not sleeping, false if every body is sleeping.
+   */
+
+  /**
    * The narrowphase to use to generate contacts.
    */
 
@@ -9419,6 +9423,7 @@ class World extends EventEmitter {
     super();
     this.springs = [];
     this.bodies = [];
+    this.hasActiveBodies = false;
     this.narrowphase = new Narrowphase();
     this.useWorldGravityAsFrictionGravity = true;
     this.useFrictionGravityOnZeroGravity = true;
@@ -9729,7 +9734,7 @@ class World extends EventEmitter {
           const sj = bj.shapes[l];
           const xj = sj.position;
           const aj = sj.angle;
-          let contactMaterial = null;
+          let contactMaterial = false;
 
           if (si.material && sj.material) {
             contactMaterial = this.getContactMaterial(si.material, sj.material);
@@ -9884,9 +9889,18 @@ class World extends EventEmitter {
     } // Sleeping update
 
 
+    let hasActiveBodies = true;
+
     if (this.sleepMode === World.BODY_SLEEPING) {
+      hasActiveBodies = false;
+
       for (let i = 0; i !== Nbodies; i++) {
-        bodies[i].sleepTick(this.time, false, dt);
+        const body = bodies[i];
+        body.sleepTick(this.time, false, dt); // Check if the body is not sleeping
+
+        if (body.sleepState !== Body.SLEEPING && body.type !== Body.STATIC) {
+          hasActiveBodies = true;
+        }
       }
     } else if (this.sleepMode === World.ISLAND_SLEEPING && this.islandSplit) {
       // Tell all bodies to sleep tick but dont sleep yet
@@ -9923,9 +9937,22 @@ class World extends EventEmitter {
             bodiesSortedByIsland[i].sleep();
           }
         }
+      } // Check if any bodies are not sleeping
+
+
+      hasActiveBodies = false;
+
+      for (let i = 0; i !== Nbodies; i++) {
+        const body = bodies[i];
+
+        if (body.sleepState !== Body.SLEEPING && body.type !== Body.STATIC) {
+          hasActiveBodies = true;
+          break;
+        }
       }
     }
 
+    this.hasActiveBodies = hasActiveBodies;
     this.stepping = false;
     this.emit({
       type: 'postStep'
@@ -10419,6 +10446,4 @@ const endOverlaps = [];
 const hitTest_tmp1 = create(),
       hitTest_tmp2 = create();
 
-const version = '1.0.1';
-
-export { AABB, AngleLockEquation, Body, Box, Broadphase, Capsule, Circle, Constraint, ContactEquation, ContactEquationPool, ContactMaterial, Convex, DistanceConstraint, Equation, EventEmitter, FrictionEquation, FrictionEquationPool, GSSolver, GearConstraint, Heightfield, Line, LinearSpring, LockConstraint, Material, NaiveBroadphase, Narrowphase, Particle, Plane, Pool, PrismaticConstraint, Ray, RaycastResult, RevoluteConstraint, RotationalSpring, RotationalVelocityEquation, SAPBroadphase, Shape, Solver, Spring, TopDownVehicle, Utils, WheelConstraint, World, vec2, version };
+export { AABB, AngleLockEquation, Body, Box, Broadphase, Capsule, Circle, Constraint, ContactEquation, ContactEquationPool, ContactMaterial, Convex, DistanceConstraint, Equation, EventEmitter, FrictionEquation, FrictionEquationPool, GSSolver, GearConstraint, Heightfield, Line, LinearSpring, LockConstraint, Material, NaiveBroadphase, Narrowphase, Particle, Plane, Pool, PrismaticConstraint, Ray, RaycastResult, RevoluteConstraint, RotationalSpring, RotationalVelocityEquation, SAPBroadphase, Shape, Solver, Spring, TopDownVehicle, Utils, WheelConstraint, World, vec2 };

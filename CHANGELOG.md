@@ -1,5 +1,15 @@
 # `p2-es` Changelog
 
+## 1.1.0
+
+### Minor Changes
+
+-   9a6207c: Add hasActiveBodies to World
+
+### Patch Changes
+
+-   ed401dc: Remove version export
+
 ## 1.0.2
 
 ### Patch Changes

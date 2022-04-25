@@ -27,7 +27,7 @@ You can also import the esm bundle with unpkg:
 ```html
 <script type="module">
     // import a specific version
-    import * as p2 from 'https://www.unpkg.com/browse/p2-es@1.0.1/dist/p2-es.js';
+    import * as p2 from 'https://www.unpkg.com/browse/p2-es@1.1.0/dist/p2-es.js';
 
     // or import latest
     import * as p2 from 'https://www.unpkg.com/browse/p2-es/dist/p2-es.js';
@@ -155,7 +155,6 @@ yarn serve
 
 ### TODO
 
--   [ ] Add hasActiveBodies to World and use in use-p2 (see [cannon-es](https://github.com/pmndrs/cannon-es/blob/master/src/world/World.ts#L868))
 -   [ ] Convert demo framework to typescript and include in lib
 -   [ ] Evaluate PRs in p2.js repo
     -   [ ] [Refactoring Springs](https://github.com/schteppe/p2.js/pull/148)
