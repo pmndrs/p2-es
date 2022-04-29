@@ -25,11 +25,11 @@
 -   ead1402: Fix undefined World sleep type statics
 -   f5f257c: Export Vec2 type
 
-## v1.0.1
+## 1.0.1
 
 -   Update version export
 
-## v1.0.0
+## 1.0.0
 
 -   Use typescript, include generated type definitions (@isaac-mason)
 -   Export as esm and cjs flatbundle (@isaac-mason)
@@ -40,7 +40,7 @@
 -   Fix typo in AABB docs (@yzpeninsula) (https://github.com/schteppe/p2.js/pull/331)
 -   Fix incorrect fraction in `Line.raycast` (@palra) (https://github.com/schteppe/p2.js/pull/342)
 
-## v0.7.3
+## 0.7.3
 
 -   Update type definitions (@joergjaeckel)
 -   Add MaterialOptions type (@joergjaeckel)
