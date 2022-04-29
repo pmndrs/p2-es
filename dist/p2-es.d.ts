@@ -125,7 +125,7 @@ declare module "collision/RaycastResult" {
     }
 }
 declare module "events/EventEmitter" {
-    export class EventEmitter<EventMap extends Record<string, any>> {
+    export class EventEmitter<EventMap extends Record<string, any> = Record<string, any>> {
         private listeners;
         on<E extends keyof EventMap>(type: E, listener: (e: EventMap[E]) => void, context?: any): EventEmitter<EventMap>;
         off<E extends keyof EventMap>(type: E, listener: Function): EventEmitter<EventMap>;

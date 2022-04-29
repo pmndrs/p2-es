@@ -1,5 +1,11 @@
 # `p2-es` Changelog
 
+## 1.1.1
+
+### Patch Changes
+
+-   b0c1dcb: Add default generic type to EventEmitter
+
 ## 1.1.0
 
 ### Minor Changes
