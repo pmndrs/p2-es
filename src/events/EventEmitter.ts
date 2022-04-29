@@ -13,7 +13,7 @@
  *         message: 'Hello world!'
  *     });
  */
-export class EventEmitter<EventMap extends Record<string, any>> {
+export class EventEmitter<EventMap extends Record<string, any> = Record<string, any>> {
     private listeners: { [type: string]: Function[] } = {}
 
     /**
