@@ -742,7 +742,8 @@ export class World extends EventEmitter<WorldEventMap> {
                         bodyB: eq.bodyB,
                         shapeA: eq.shapeA,
                         shapeB: eq.shapeB,
-                    } as ImpactEvent)
+                        contactEquation: eq,
+                    })
                 }
             }
         }
