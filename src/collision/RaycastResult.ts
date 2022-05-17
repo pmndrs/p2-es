@@ -38,7 +38,6 @@ export class RaycastResult {
 
     /**
      * If the ray should stop traversing.
-     * @readonly
      */
     isStopped: boolean
 

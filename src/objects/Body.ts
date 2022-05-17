@@ -216,20 +216,17 @@ export class Body extends EventEmitter<BodyEventMap> {
     static _idCounter = 0
 
     /**
-     * The body identifier. Read only!
-     * @readonly
+     * The body identifier
      */
     id: number
 
     /**
      * Index of the body in the World .bodies array. Is set to -1 if the body isn't added to a World.
-     * @readonly
      */
     index: number
 
     /**
      * The world that this body is added to (read only). This property is set to NULL if the body is not added to any world.
-     * @readonly
      */
     world: World | null = null
 
@@ -249,19 +246,16 @@ export class Body extends EventEmitter<BodyEventMap> {
 
     /**
      * The inverse mass of the body.
-     * @readonly
      */
     invMass: number
 
     /**
      * The inertia of the body around the Z axis.
-     * @readonly
      */
     inertia: number
 
     /**
      * The inverse inertia of the body.
-     * @readonly
      */
     invInertia: number
 
@@ -304,7 +298,6 @@ export class Body extends EventEmitter<BodyEventMap> {
 
     /**
      * The interpolated position of the body. Use this for rendering.
-     * @readonly
      */
     interpolatedPosition: Vec2
 
@@ -320,13 +313,11 @@ export class Body extends EventEmitter<BodyEventMap> {
 
     /**
      * Constraint velocity that was added to the body during the last step.
-     * @readonly
      */
     vlambda: Vec2
 
     /**
      * Angular constraint velocity that was added to the body during last step.
-     * @readonly
      */
     wlambda: number
 
@@ -348,13 +339,11 @@ export class Body extends EventEmitter<BodyEventMap> {
 
     /**
      * The previous angle of the body.
-     * @readonly
      */
     previousAngle: number
 
     /**
      * The interpolated angle of the body. Use this for rendering.
-     * @readonly
      */
     interpolatedAngle: number
 
@@ -429,7 +418,6 @@ export class Body extends EventEmitter<BodyEventMap> {
 
     /**
      * Bounding circle radius. Update with {@link Body.updateBoundingRadius}.
-     * @readonly
      */
     boundingRadius: number
 
@@ -478,13 +466,11 @@ export class Body extends EventEmitter<BodyEventMap> {
 
     /**
      * Whether the body wants to sleep
-     * @readonly
      */
     wantsToSleep: boolean
 
     /**
      * The last time when the body went to SLEEPY state.
-     * @readonly
      */
     timeLastSleepy: number
 
@@ -501,7 +487,6 @@ export class Body extends EventEmitter<BodyEventMap> {
 
     /**
      * How long the body has been sleeping.
-     * @readonly
      */
     idleTime: number
 

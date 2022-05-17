@@ -107,13 +107,12 @@ export abstract class Shape {
         | typeof Shape.HEIGHTFIELD
 
     /**
-     * Shape object identifier. Read only.
+     * Shape object identifier
      */
-    readonly id: number
+    id: number
 
     /**
      * Bounding circle radius of this shape
-     * @readonly
      */
     boundingRadius = 0
 

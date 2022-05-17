@@ -100,7 +100,6 @@ export abstract class Broadphase {
 
     /**
      * The world to search for collision pairs in. To change it, use .setWorld()
-     * @readOnly
      */
     world?: World
 

@@ -110,13 +110,12 @@ export class Ray {
     callback: (result: RaycastResult) => void
 
     /**
-     * @readOnly
+     * The direction of the ray
      */
     direction: Vec2 = vec2.create()
 
     /**
      * Length of the ray
-     * @readonly
      */
     length = 1
 
