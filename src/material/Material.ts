@@ -15,7 +15,7 @@ export class Material {
     /**
      * The material identifier. Read only.
      */
-    readonly id: number
+    id: number
 
     /**
      * Id counter for materials

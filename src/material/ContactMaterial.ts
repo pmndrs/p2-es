@@ -64,7 +64,7 @@ export class ContactMaterial {
     /**
      * The contact material identifier. Read only.
      */
-    readonly id: number
+    id: number
 
     /**
      * First material participating in the contact material
