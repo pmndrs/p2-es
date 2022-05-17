@@ -1,5 +1,11 @@
 # `p2-es` Changelog
 
+## 1.1.3
+
+### Patch Changes
+
+-   cfa6eea: Remove readonly from Material and ContactMaterial ids
+
 ## 1.1.2
 
 ### Patch Changes

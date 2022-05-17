@@ -46,7 +46,7 @@ declare module "math/vec2" {
 }
 declare module "material/Material" {
     export class Material {
-        readonly id: number;
+        id: number;
         static idCounter: number;
         constructor();
     }
@@ -338,7 +338,7 @@ declare module "material/ContactMaterial" {
         surfaceVelocity?: number;
     }
     export class ContactMaterial {
-        readonly id: number;
+        id: number;
         materialA: Material;
         materialB: Material;
         friction: number;
