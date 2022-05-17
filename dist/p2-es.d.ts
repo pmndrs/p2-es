@@ -75,7 +75,7 @@ declare module "shapes/Shape" {
         position: Vec2;
         angle: number;
         type: typeof Shape.CIRCLE | typeof Shape.PARTICLE | typeof Shape.PLANE | typeof Shape.CONVEX | typeof Shape.LINE | typeof Shape.BOX | typeof Shape.CAPSULE | typeof Shape.HEIGHTFIELD;
-        readonly id: number;
+        id: number;
         boundingRadius: number;
         collisionGroup: number;
         collisionResponse: boolean;

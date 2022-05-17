@@ -1508,12 +1508,11 @@ class Ray {
    */
 
   /**
-   * @readOnly
+   * The direction of the ray
    */
 
   /**
    * Length of the ray
-   * @readonly
    */
 
   /**
@@ -1732,7 +1731,6 @@ class RaycastResult {
 
   /**
    * If the ray should stop traversing.
-   * @readonly
    */
   constructor() {
     this.normal = create();
@@ -2055,7 +2053,6 @@ class Shape {
 
   /**
    * Bounding circle radius of this shape
-   * @readonly
    */
 
   /**
@@ -2616,7 +2613,6 @@ class Body extends EventEmitter {
 
   /**
    * The world that this body is added to (read only). This property is set to NULL if the body is not added to any world.
-   * @readonly
    */
   constructor(options) {
     if (options === void 0) {
@@ -4145,7 +4141,6 @@ class ContactEquation extends Equation {
 
   /**
    * This property is set to true if this is the first impact between the bodies (not persistant contact).
-   * @readOnly
    */
 
   /**

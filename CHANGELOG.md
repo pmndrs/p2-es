@@ -1,5 +1,11 @@
 # `p2-es` Changelog
 
+## 1.1.4
+
+### Patch Changes
+
+-   69ebd1e: Remove readonly jsdoc annotations, remove readonly from Shape id
+
 ## 1.1.3
 
 ### Patch Changes
