@@ -27,7 +27,7 @@ You can also import the esm bundle with unpkg:
 ```html
 <script type="module">
     // import a specific version
-    import * as p2 from 'https://www.unpkg.com/browse/p2-es@1.1.1/dist/p2-es.js';
+    import * as p2 from 'https://www.unpkg.com/browse/p2-es@1.1.2/dist/p2-es.js';
 
     // or import latest
     import * as p2 from 'https://www.unpkg.com/browse/p2-es/dist/p2-es.js';

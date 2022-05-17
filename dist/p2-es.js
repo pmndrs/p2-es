@@ -9882,7 +9882,8 @@ class World extends EventEmitter {
             bodyA: eq.bodyA,
             bodyB: eq.bodyB,
             shapeA: eq.shapeA,
-            shapeB: eq.shapeB
+            shapeB: eq.shapeB,
+            contactEquation: eq
           });
         }
       }

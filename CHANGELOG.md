@@ -1,5 +1,11 @@
 # `p2-es` Changelog
 
+## 1.1.2
+
+### Patch Changes
+
+-   ae61ad3: Add missing contactEquation to impact event
+
 ## 1.1.1
 
 ### Patch Changes
