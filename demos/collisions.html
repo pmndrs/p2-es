@@ -16,10 +16,12 @@
             const dropHeight = size * 2
             const dist = size * 2
 
-            const createShapes = (demo) => {
+            const setup = (demo) => {
                 const world = new p2.World({
                     gravity: [0, -10],
                 })
+
+                world.on('beginContact', (e) => console.log(e))
 
                 demo.setWorld(world)
 
@@ -116,7 +118,7 @@
             new Demo({
                 'Plane Ground': {
                     setup: (demo) => {
-                        createShapes(demo)
+                        setup(demo)
                         demo.frame(0, 0, 12, 2)
 
                         // Create plane ground
@@ -130,7 +132,7 @@
                 },
                 'Heightfield Ground': {
                     setup: (demo) => {
-                        createShapes(demo)
+                        setup(demo)
                         demo.frame(0, 0, 12, 2)
 
                         // Create heightfield ground
