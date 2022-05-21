@@ -55,17 +55,17 @@ export class Ray {
     /**
      * This raycasting mode will make the Ray traverse through all intersection points and only return the closest one.
      */
-    static CLOSEST = 1
+    static CLOSEST: 1 = 1
 
     /**
      * This raycasting mode will make the Ray stop when it finds the first intersection point.
      */
-    static ANY = 2
+    static ANY: 2 = 2
 
     /**
      * This raycasting mode will traverse all intersection points and executes a callback for each one.
      */
-    static ALL = 4
+    static ALL: 4 = 4
 
     /**
      * Ray start point.

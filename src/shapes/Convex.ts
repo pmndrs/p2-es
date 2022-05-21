@@ -114,8 +114,6 @@ export class Convex extends Shape {
         }
     }
 
-    // static triangleArea(a: number[], b: number[], c: number[]): number
-
     updateNormals(): void {
         for (let i = 0; i < this.vertices.length; i++) {
             const worldPoint0 = this.vertices[i]
