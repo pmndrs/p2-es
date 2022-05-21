@@ -23,7 +23,7 @@ export interface ConvexOptions extends SharedShapeOptions {
     /**
      * The shape type.
      */
-    type?: number
+    type?: Shape['type']
 }
 
 /**
@@ -75,7 +75,7 @@ export class Convex extends Shape {
     constructor(options: ConvexOptions = {}) {
         const params = {
             ...options,
-            type: Shape.CONVEX,
+            type: options.type ?? Shape.CONVEX,
             vertices: options.vertices ?? [],
             axes: options.axes ?? []
         }
