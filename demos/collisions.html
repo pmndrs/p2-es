@@ -12,17 +12,16 @@
             import * as p2 from '../dist/p2-es.js'
             import { Demo } from './js/Demo.js'
 
-            var size = 0.23,
-                dropHeight = size * 2,
-                dist = size * 2
+            const size = 0.23
+            const dropHeight = size * 2
+            const dist = size * 2
 
-            // Create demo application
-            new Demo(function () {
-                var world = new p2.World({
+            const createShapes = (demo) => {
+                const world = new p2.World({
                     gravity: [0, -10],
                 })
 
-                this.setWorld(world)
+                demo.setWorld(world)
 
                 world.islandSplit = true
                 world.sleepMode = p2.World.ISLAND_SLEEPING
@@ -33,51 +32,50 @@
                 world.setGlobalStiffness(1e4)
 
                 // Create all testable shapes
-                var particle = function () {
+                const particle = () => {
                     return new p2.Particle()
                 }
-                var circle = function () {
+                const circle = () => {
                     return new p2.Circle({ radius: size / 2 })
                 }
-                var rectangle = function () {
+                const rectangle = () => {
                     return new p2.Box({ width: size, height: size })
                 }
-                var line = function () {
+                const line = () => {
                     return new p2.Line({ length: size })
                 }
-                var capsule = function () {
+                const capsule = () => {
                     return new p2.Capsule({ length: size * 2, radius: size / 4 })
                 }
-                var plane = function () {
+                const plane = () => {
                     return null
                 }
-
-                var convex = function () {
+                const convex = () => {
                     // Create a convex shape.
-                    var vertices = []
-                    for (var i = 0, N = 5; i < N; i++) {
-                        var a = ((2 * Math.PI) / N) * i
-                        var vertex = [size * 0.5 * Math.cos(a), size * 0.5 * Math.sin(a)] // Note: vertices are added counter-clockwise
+                    const vertices = []
+                    for (let i = 0, N = 5; i < N; i++) {
+                        const a = ((2 * Math.PI) / N) * i
+                        const vertex = [size * 0.5 * Math.cos(a), size * 0.5 * Math.sin(a)] // Note: vertices are added counter-clockwise
                         vertices.push(vertex)
                     }
                     return new p2.Convex({ vertices: vertices })
                 }
 
-                var opts = {
+                const opts = {
                     mass: 1,
                     position: [0, 1],
                 }
 
-                var numAdded = 0
+                let numAdded = 0
 
                 function add(shapeA, shapeB) {
                     if (shapeA) {
-                        var bodyA = new p2.Body(opts)
+                        const bodyA = new p2.Body(opts)
                         bodyA.addShape(shapeA)
                         world.addBody(bodyA)
                     }
                     if (shapeB) {
-                        var bodyB = new p2.Body(opts)
+                        const bodyB = new p2.Body(opts)
                         bodyB.addShape(shapeB)
                         world.addBody(bodyB)
                         bodyB.position[1] = dropHeight
@@ -109,19 +107,53 @@
                 add(circle(), capsule())
                 add(capsule(), particle())
 
-                for (var i = 0; i < world.bodies.length; i++) {
+                for (let i = 0; i < world.bodies.length; i++) {
                     world.bodies[i].position[0] -= ((numAdded - 1) * dist) / 2
                 }
+            }
 
-                // Create ground
-                var planeShape = new p2.Plane()
-                var plane = new p2.Body({
-                    position: [0, 0],
-                })
-                plane.addShape(planeShape)
-                world.addBody(plane)
+            // Create demo application
+            new Demo({
+                'Plane Ground': {
+                    setup: (demo) => {
+                        createShapes(demo)
+                        demo.frame(0, 0, 12, 2)
 
-                this.frame(0, 0, 12, 2)
+                        // Create plane ground
+                        const planeShape = new p2.Plane()
+                        const plane = new p2.Body({
+                            position: [0, 0],
+                        })
+                        plane.addShape(planeShape)
+                        world.addBody(plane)
+                    },
+                },
+                'Heightfield Ground': {
+                    setup: (demo) => {
+                        createShapes(demo)
+                        demo.frame(0, 0, 12, 2)
+
+                        // Create heightfield ground
+                        const data = []
+                        const numDataPoints = 30
+                        for (let i = 0; i < numDataPoints; i++) {
+                            data.push(
+                                0.1 * Math.cos(0.2 * i) * Math.sin(0.5 * i) +
+                                    0.1 * Math.sin(0.1 * i) * Math.sin(0.05 * i)
+                            )
+                        }
+
+                        const heightfieldShape = new p2.Heightfield({
+                            heights: data,
+                            elementWidth: 0.5,
+                        })
+                        const heightfield = new p2.Body({
+                            position: [-8, 0],
+                        })
+                        heightfield.addShape(heightfieldShape)
+                        world.addBody(heightfield)
+                    },
+                },
             })
         </script>
     </body>

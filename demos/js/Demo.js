@@ -53,6 +53,8 @@ export class Demo extends p2.EventEmitter {
                     setup: scenes,
                 },
             }
+        } else {
+            this.scenes = scenes
         }
 
         const settings = {
@@ -568,7 +570,7 @@ export class Demo extends p2.EventEmitter {
 
         this.currentScene = sceneDefinition
         this.world = null
-        sceneDefinition.setup.call(this)
+        sceneDefinition.setup.call(this, this)
         if (!this.world) {
             throw new Error('The .setup function in the scene definition must run this.setWorld(world);')
         }
