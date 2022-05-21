@@ -1,5 +1,13 @@
 # `p2-es` Changelog
 
+## 1.1.5
+
+### Patch Changes
+
+-   c2793e4: Fix undefined Broadphase class static variables
+-   9e2221f: Change typing for static class variables to be consistent
+-   5ae8abf: Fix incorrect shape type for Box shape
+
 ## 1.1.4
 
 ### Patch Changes

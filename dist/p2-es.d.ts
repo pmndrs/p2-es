@@ -147,7 +147,7 @@ declare module "shapes/Convex" {
     export interface ConvexOptions extends SharedShapeOptions {
         vertices?: Vec2[];
         axes?: Vec2[];
-        type?: number;
+        type?: Shape['type'];
     }
     export class Convex extends Shape {
         vertices: Vec2[];
@@ -796,9 +796,9 @@ declare module "world/World" {
         islandSplit?: boolean;
     }
     export class World extends EventEmitter<WorldEventMap> {
-        static NO_SLEEPING: number;
-        static BODY_SLEEPING: number;
-        static ISLAND_SLEEPING: number;
+        static NO_SLEEPING: 1;
+        static BODY_SLEEPING: 2;
+        static ISLAND_SLEEPING: 4;
         springs: Spring[];
         bodies: Body[];
         hasActiveBodies: boolean;
@@ -894,12 +894,12 @@ declare module "objects/Body" {
         wakeup: WakeUpEvent;
     };
     export class Body extends EventEmitter<BodyEventMap> {
-        static DYNAMIC: number;
-        static STATIC: number;
-        static KINEMATIC: number;
-        static AWAKE: number;
-        static SLEEPY: number;
-        static SLEEPING: number;
+        static DYNAMIC: 1;
+        static STATIC: 2;
+        static KINEMATIC: 4;
+        static AWAKE: 0;
+        static SLEEPY: 1;
+        static SLEEPING: 2;
         static _idCounter: number;
         id: number;
         index: number;
@@ -1001,9 +1001,9 @@ declare module "collision/Ray" {
         callback?: (result: RaycastResult) => void;
     };
     export class Ray {
-        static CLOSEST: number;
-        static ANY: number;
-        static ALL: number;
+        static CLOSEST: 1;
+        static ANY: 2;
+        static ALL: 4;
         from: Vec2;
         to: Vec2;
         checkCollisionResponse: boolean;

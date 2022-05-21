@@ -2233,7 +2233,7 @@ class Convex extends Shape {
     }
 
     const params = { ...options,
-      type: Shape.CONVEX,
+      type: options.type ?? Shape.CONVEX,
       vertices: options.vertices ?? [],
       axes: options.axes ?? []
     };
@@ -2268,8 +2268,7 @@ class Convex extends Shape {
     if (this.area < 0) {
       throw new Error('Convex vertices must be given in counter-clockwise winding.');
     }
-  } // static triangleArea(a: number[], b: number[], c: number[]): number
-
+  }
 
   updateNormals() {
     for (let i = 0; i < this.vertices.length; i++) {
@@ -3625,6 +3624,10 @@ class Broadphase {
   }
 
 }
+Broadphase.AABB = 1;
+Broadphase.BOUNDING_CIRCLE = 2;
+Broadphase.NAIVE = 1;
+Broadphase.SAP = 2;
 
 /**
  * Naive broadphase implementation. Does N^2 tests.
