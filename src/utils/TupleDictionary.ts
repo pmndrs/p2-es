@@ -76,7 +76,7 @@ export class TupleDictionary<T> {
      * Remove all data.
      */
     reset(): void {
-        this.keys.length = 0
+        this.keys = []
         this.data = {}
     }
 
@@ -86,11 +86,7 @@ export class TupleDictionary<T> {
      */
     copy(dict: TupleDictionary<T>): void {
         this.reset()
-        appendArray(this.keys, dict.keys)
-        let l = dict.keys.length
-        while (l--) {
-            const key = dict.keys[l]
-            this.data[key] = dict.data[key]
-        }
+        this.keys = dict.keys;
+        this.data = dict.data;
     }
 }
