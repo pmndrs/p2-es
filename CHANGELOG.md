@@ -1,5 +1,11 @@
 # `p2-es` Changelog
 
+## 1.1.6
+
+### Patch Changes
+
+-   copy by reference instead of reconstructing tuples in TupleDictionary (@issy123)
+
 ## 1.1.5
 
 ### Patch Changes

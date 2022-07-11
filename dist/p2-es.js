@@ -4460,7 +4460,7 @@ class TupleDictionary {
 
 
   reset() {
-    this.keys.length = 0;
+    this.keys = [];
     this.data = {};
   }
   /**
@@ -4470,14 +4470,8 @@ class TupleDictionary {
 
 
   copy(dict) {
-    this.reset();
-    appendArray(this.keys, dict.keys);
-    let l = dict.keys.length;
-
-    while (l--) {
-      const key = dict.keys[l];
-      this.data[key] = dict.data[key];
-    }
+    this.keys = dict.keys;
+    this.data = dict.data;
   }
 
 }
@@ -9099,10 +9093,8 @@ class OverlapKeeper {
         // The record is only used in the "last" dict, and will be removed. We might as well pool it.
         this.recordPool.release(lastObject);
       }
-    } // Clear last object
+    } // Transfer from new object to old
 
-
-    last.reset(); // Transfer from new object to old
 
     last.copy(current); // Clear current object
 
