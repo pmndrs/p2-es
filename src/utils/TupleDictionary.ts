@@ -1,5 +1,3 @@
-import { appendArray } from './Utils'
-
 export class TupleDictionary<T> {
     /**
      * The data storage
@@ -85,8 +83,7 @@ export class TupleDictionary<T> {
      * @param dict The TupleDictionary to copy into this one.
      */
     copy(dict: TupleDictionary<T>): void {
-        this.reset()
-        this.keys = dict.keys;
-        this.data = dict.data;
+        this.keys = dict.keys
+        this.data = dict.data
     }
 }
