@@ -38,9 +38,6 @@ export class OverlapKeeper {
             }
         }
 
-        // Clear last object
-        last.reset()
-
         // Transfer from new object to old
         last.copy(current)
 
