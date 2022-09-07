@@ -1233,15 +1233,15 @@ export class Body extends EventEmitter<BodyEventMap> {
      * 
      * @example
      *     var body = new Body({
-         *         mass: 1,
-         *         velocity: [1, 0],
-         *         angularVelocity: 1
-         *     });
-         *     var result = [];
-         *     var point = [1, 0];
-         *     body.getVelocityAtPoint(result, point);
-         *     console.log(result); // [1, 1]
-         */
+     *         mass: 1,
+     *         velocity: [1, 0],
+     *         angularVelocity: 1
+     *     });
+     *     var result = [];
+     *     var point = [1, 0];
+     *     body.getVelocityAtPoint(result, point);
+     *     console.log(result); // [1, 1]
+     */
     getVelocityAtPoint(result: Vec2, relativePoint: Vec2): Vec2 {
         vec2.crossVZ(result, relativePoint, this.angularVelocity)
         vec2.subtract(result, this.velocity, result)
