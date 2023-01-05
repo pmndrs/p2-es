@@ -1,0 +1,100 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": ["prettier", "eslint:recommended"],
+    "overrides": [
+        {
+            "extends": "plugin:@typescript-eslint/recommended",
+            "files": ["*.ts", "*.spec.ts"],
+            "parser": "@typescript-eslint/parser",
+            "parserOptions": {
+                "project": ["tsconfig.test.json"]
+            },
+            "plugins": ["@typescript-eslint", "typescript-enum"],
+            "rules": {
+                // no-explicit-any off while typescript migration in progress
+                "@typescript-eslint/no-explicit-any": "off",
+                "@typescript-eslint/ban-types": [
+                    "error",
+                    {
+                        "extendDefaults": true,
+                        "types": {
+                            "{}": false
+                        }
+                    }
+                ],
+                "@typescript-eslint/consistent-type-imports": "error",
+                "@typescript-eslint/explicit-module-boundary-types": "off",
+                "@typescript-eslint/no-namespace": [
+                    "error",
+                    {
+                        "allowDeclarations": true
+                    }
+                ],
+                "@typescript-eslint/no-non-null-assertion": "off",
+                "@typescript-eslint/no-unused-vars": [
+                    "error",
+                    {
+                        "ignoreRestSiblings": true,
+                        "argsIgnorePattern": "^_"
+                    }
+                ],
+                "@typescript-eslint/quotes": [
+                    "error",
+                    "single",
+                    {
+                        "allowTemplateLiterals": true,
+                        "avoidEscape": true
+                    }
+                ],
+                "@typescript-eslint/semi": ["error", "never"],
+                "typescript-enum/no-enum": "error",
+                "no-var": "error"
+            }
+        },
+        {
+            "files": ["*.js"],
+            "rules": {
+                "no-var": "error",
+                "import/prefer-default-export": "off",
+                "camelcase": "off",
+                "import/extensions": "off",
+                "no-param-reassign": "off",
+                "no-plusplus": "off",
+                "no-multi-assign": "off",
+                "no-restricted-syntax": "off",
+                "class-methods-use-this": "off",
+                "no-nested-ternary": "off",
+                "no-cond-assign": "off",
+                "prefer-destructuring": "off",
+                "max-len": "off",
+                "guard-for-in": "off",
+                "no-case-declarations": "off"
+            }
+        }
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": ["es", "simple-import-sort"],
+    "rules": {
+        "eol-last": ["error", "always"],
+        "es/no-logical-assignment-operators": "error",
+        "no-debugger": "error",
+        "no-unused-vars": [
+            "error",
+            {
+                "ignoreRestSiblings": true
+            }
+        ],
+        "semi": ["error", "never"],
+        "simple-import-sort/exports": "error",
+        "simple-import-sort/imports": "error"
+    }
+}

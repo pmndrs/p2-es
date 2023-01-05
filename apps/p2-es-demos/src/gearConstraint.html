@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>GearConstraint demo - p2.js physics engine</title>
+        <link href="css/demo.css" rel="stylesheet" />
+        <meta
+            name="description"
+            content="Demonstrates the GearConstraint that syncs the rotation of two bodies with some gear ratio." />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    </head>
+    <body>
+        <script type="module">
+            import * as p2 from 'p2-es'
+            import { Demo } from './js/Demo.js'
+
+            // Create demo application
+            new Demo(function () {
+                var world = new p2.World({
+                    gravity: [0, -10],
+                })
+
+                this.setWorld(world)
+
+                // Create first circle
+                var bodyA = new p2.Body({
+                    mass: 1,
+                    position: [-2, 0],
+                    angle: Math.PI / 2,
+                    angularVelocity: -5,
+                })
+                bodyA.addShape(new p2.Circle({ radius: 1 }))
+                world.addBody(bodyA)
+
+                // Create second circle
+                var bodyB = new p2.Body({
+                    mass: 1,
+                    position: [2, 0],
+                })
+                bodyB.addShape(new p2.Circle({ radius: 1 }))
+                world.addBody(bodyB)
+
+                // Create a dummy body that we can hinge them to
+                var dummyBody = new p2.Body()
+                world.addBody(dummyBody)
+
+                // Hinge em
+                var revoluteA = new p2.RevoluteConstraint(dummyBody, bodyA, {
+                    worldPivot: bodyA.position,
+                })
+                var revoluteB = new p2.RevoluteConstraint(dummyBody, bodyB, {
+                    worldPivot: bodyB.position,
+                })
+                world.addConstraint(revoluteA)
+                world.addConstraint(revoluteB)
+
+                // Add gear
+                var gearConstraint = new p2.GearConstraint(bodyA, bodyB, { ratio: 2 })
+                world.addConstraint(gearConstraint)
+            })
+        </script>
+    </body>
+</html>

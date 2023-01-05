@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>p2.js worker example</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+</head>
+<body>
+
+	<!-- The canvas, where we draw stuff -->
+	<canvas width="600" height="400" id="myCanvas"></canvas>
+
+	<!-- Main thread script -->
+	<script type="module">
+
+		// Parameters
+		let dt = 1/60,
+			N = 100,
+			boxWidth = 0.5,
+			boxHeight = 0.5,
+			zoom = 20,
+			array = null,
+			worker,
+			canvas,
+			ctx,
+			w,
+			h;
+
+		const initWorker = () => {
+
+			// Data array. Contains all our data we need for rendering: a 2D position and an angle per body.
+			// It will be sent back and forth from the main thread and the worker thread. When
+			// it's sent from the worker, it's filled with position data of all bodies.
+			array = new Float32Array(N * 3);
+
+			// Create worker
+			worker = new Worker(new URL('./js/worker.js', import.meta.url))
+
+			worker.postMessage = worker.webkitPostMessage || worker.postMessage;
+			
+			worker.onmessage = function(e) {
+				// When we get a message from the worker, store it
+				array = e.data;
+			}
+
+			// Start the worker by sending an initial message
+			worker.postMessage({
+				N: N,
+				dt: dt,
+				boxWidth: boxWidth,
+				boxHeight: boxHeight,
+			});
+
+			sendBuffer();
+		}
+
+		const init = () => {
+			// Init canvas
+			canvas = document.getElementById("myCanvas");
+			w = canvas.width;
+			h = canvas.height;
+
+			ctx = canvas.getContext("2d");
+			ctx.lineWidth = 0.05;
+		}
+
+		const drawBodies = () => {
+			// Draw all bodies. Skip the first one, it's the ground plane
+			for(var i=1; i < N; i++){
+				ctx.beginPath();
+				var x = array[i * 3 + 0],
+					y = array[i * 3 + 1],
+					angle = array[i * 3 + 2];
+				ctx.save();
+				ctx.translate(x, y);        // Translate to the center of the box
+				ctx.rotate(angle);  // Rotate to the box body frame
+				ctx.rect(-boxWidth/2, -boxHeight/2, boxWidth, boxHeight);
+				ctx.stroke();
+				ctx.restore();
+			}
+		}
+
+		const render = () => {
+			// Clear the canvas
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+			// Transform the canvas
+			// Note that we need to flip the y axis since Canvas pixel coordinates
+			// goes from top to bottom, while physics does the opposite.
+			ctx.save();
+			ctx.translate(canvas.width / 2, canvas.height / 2);  // Translate to the center
+			ctx.scale(zoom, -zoom);       // Zoom in and flip y axis
+
+			// Draw all bodies
+			drawBodies();
+
+			// Restore transform
+			ctx.restore();
+		}
+
+		const sendBuffer = () => {
+			worker.postMessage(array, [array.buffer]);
+			array = null;
+		}
+
+		// Animation loop
+		const animate = () => {
+			requestAnimationFrame(animate);
+
+			// Render scene
+			if(array){
+				render();
+				sendBuffer();
+			}
+		}
+
+		initWorker();
+		init();
+		animate();
+
+	 </script>
+</body>
+</html>

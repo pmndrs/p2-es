@@ -1,0 +1,83 @@
+{
+    "name": "p2-es",
+    "version": "1.1.6",
+    "license": "MIT",
+    "description": "A JavaScript 2D physics engine.",
+    "homepage": "https://github.com/pmndrs/p2-es",
+    "author": "Stefan Hedman <schteppe@gmail.com> (http://steffe.se)",
+    "contributors": [
+        "Jörg Jäckel (https://github.com/joergjaeckel)",
+        "Isaac Mason <isaac@isaacmason.com> (https://github.com/isaac-mason)"
+    ],
+    "keywords": [
+        "p2.js",
+        "p2",
+        "physics",
+        "engine",
+        "2d"
+    ],
+    "main": "./dist/p2-es.cjs.js",
+    "module": "./dist/p2-es.js",
+    "react-native": "./dist/p2-es.js",
+    "types": "./dist/p2-es.d.ts",
+    "sideEffects": false,
+    "files": [
+        "dist/"
+    ],
+    "scripts": {
+        "start": "npx serve",
+        "prebuild": "rimraf dist",
+        "build": "npm run typegen && rollup -c",
+        "prepublishOnly": "npm run build && npm run test",
+        "typecheck": "tsc --noEmit --emitDeclarationOnly false --strict",
+        "typegen": "tsc --outFile dist/p2-es.d.ts",
+        "test": "jest",
+        "eslint": "eslint .",
+        "eslint-fix": "eslint --fix .",
+        "prettier": "prettier --list-different .",
+        "prettier-fix": "prettier --write ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/pmndrs/p2-es.git"
+    },
+    "bugs": {
+        "url": "https://github.com/pmndrs/p2-es/issues"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.16.5",
+        "@babel/preset-env": "^7.16.5",
+        "@babel/preset-typescript": "^7.16.5",
+        "@changesets/cli": "^2.22.0",
+        "@rollup/plugin-babel": "^5.3.0",
+        "@rollup/plugin-json": "^4.1.0",
+        "@rollup/plugin-node-resolve": "^13.1.1",
+        "@rollup/plugin-replace": "^3.0.0",
+        "@types/jest": "^27.0.3",
+        "@types/node": "^17.0.4",
+        "@typescript-eslint/eslint-plugin": "^5.7.0",
+        "@typescript-eslint/parser": "^5.7.0",
+        "eslint": "^8.5.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-es": "^4.1.0",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-simple-import-sort": "^7.0.0",
+        "eslint-plugin-typescript-enum": "^2.1.0",
+        "jest": "^27.4.5",
+        "lint-staged": "^12.1.4",
+        "prettier": "^2.5.1",
+        "rimraf": "^3.0.2",
+        "rollup": "^2.62.0",
+        "rollup-plugin-filesize": "^9.1.1",
+        "ts-jest": "^27.1.2",
+        "ts-node": "^10.4.0",
+        "typedoc": "^0.22.10",
+        "typescript": "^4.5.4"
+    },
+    "dependencies": {
+        "poly-decomp-es": "0.4.1"
+    },
+    "lint-staged": {
+        "*.{js,json,jsx,ts,tsx,md,yaml,yml}": "prettier --write"
+    }
+}

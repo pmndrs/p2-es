@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "module": "es2022",
+        "target": "es2022"
+    },
+    "ts-node": {
+        "esm": true
+    }
+}
