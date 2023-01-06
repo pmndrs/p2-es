@@ -10,6 +10,7 @@
         "Isaac Mason <isaac@isaacmason.com> (https://github.com/isaac-mason)"
     ],
     "devDependencies": {
+        "@changesets/cli": "^2.22.0",
         "husky": "^7.0.4"
     },
     "scripts": {
