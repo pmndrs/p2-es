@@ -1,0 +1,12 @@
+{
+    "entryPoints": "../../packages/p2-es/src/p2-es.ts",
+    "out": "dist/",
+    "readme": "./getting-started.md",
+    "customCss": "./docs-style.css",
+    "cleanOutputDir": true,
+    "excludePrivate": true,
+    "excludeProtected": true,
+    "excludeExternals": true,
+    "excludeInternal": true,
+    "hideGenerator": true
+}
