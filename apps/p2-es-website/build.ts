@@ -3,7 +3,9 @@ import { promises as fs } from 'fs'
 console.log('Building p2-es-website')
 
 console.log('Cleaning dist...')
-await fs.rm('./dist', { recursive: true })
+try {
+    await fs.rm('./dist', { recursive: true })
+} catch (e) {}
 
 console.log('Creating dist directories...')
 await fs.mkdir('./dist')
