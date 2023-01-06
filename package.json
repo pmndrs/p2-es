@@ -16,9 +16,10 @@
     "scripts": {
         "prepare": "husky install",
         "build": "yarn workspaces run build",
+        "test": "(cd packages/p2-es && yarn test)",
         "change": "yarn changeset",
         "bump": "yarn changeset version",
-        "publish": "yarn changeset publish"
+        "release": "yarn build && yarn test && changeset publish"
     },
     "workspaces": [
         "packages/p2-es",
