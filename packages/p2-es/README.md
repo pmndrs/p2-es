@@ -10,7 +10,7 @@ If you're using three.js in a React environment with react-three-fiber, check ou
 
 2D rigid body physics engine written in JavaScript. Includes collision detection, contacts, friction, restitution, motors, springs, advanced constraints and various shape types.
 
-[Demos](http://pmndrs.github.io/p2-es/#demos) | [Examples](http://pmndrs.github.io/p2-es/#examples) | [Documentation](http://pmndrs.github.io/p2-es/docs/)
+[Demos](https://p2-es.pmnd.rs/#demos) | [Examples](https://p2-es.pmnd.rs/#examples) | [Documentation](https://p2-es.pmnd.rs/docs/)
 
 ### Getting Started
 
@@ -49,7 +49,7 @@ If you would like to use ordinary `Array` instead of `Float32Array`, define `P2_
 
 ### Sample code
 
-The following example uses the [World](http://pmndrs.github.io/p2-es/docs/classes/World.html), [Circle](http://pmndrs.github.io/p2-es/docs/classes/Circle.html), [Body](http://pmndrs.github.io/p2-es/docs/classes/Body.html) and [Plane](http://pmndrs.github.io/p2-es/docs/classes/Plane.html) classes to set up a simple physics scene with a ball on a plane.
+The following example uses the [World](https://p2-es.pmnd.rs/docs/classes/World.html), [Circle](https://p2-es.pmnd.rs/docs/classes/Circle.html), [Body](https://p2-es.pmnd.rs/docs/classes/Body.html) and [Plane](https://p2-es.pmnd.rs/docs/classes/Plane.html) classes to set up a simple physics scene with a ball on a plane.
 
 ```js
 import * as p2 from 'p2-es'
@@ -120,17 +120,17 @@ world.on('postStep', function (event) {
 
 |                                                                            | Circle | Plane |  Box   | Convex | Particle |  Line  | Capsule | Heightfield | Ray |
 | :------------------------------------------------------------------------: | :----: | :---: | :----: | :----: | :------: | :----: | :-----: | :---------: | :-: |
-|      [Circle](http://pmndrs.github.io/p2-es/docs/classes/Circle.html)      |  Yes   |   -   |   -    |   -    |    -     |   -    |    -    |      -      |  -  |
-|       [Plane](http://pmndrs.github.io/p2-es/docs/classes/Plane.html)       |  Yes   |   -   |   -    |   -    |    -     |   -    |    -    |      -      |  -  |
-|         [Box](http://pmndrs.github.io/p2-es/docs/classes/Box.html)         |  Yes   |  Yes  |  Yes   |   -    |    -     |   -    |    -    |      -      |  -  |
-|      [Convex](http://pmndrs.github.io/p2-es/docs/classes/Convex.html)      |  Yes   |  Yes  |  Yes   |  Yes   |    -     |   -    |    -    |      -      |  -  |
-|    [Particle](http://pmndrs.github.io/p2-es/docs/classes/Particle.html)    |  Yes   |  Yes  |  Yes   |  Yes   |    -     |   -    |    -    |      -      |  -  |
-|        [Line](http://pmndrs.github.io/p2-es/docs/classes/Line.html)        |  Yes   |  Yes  | (todo) | (todo) |    -     |   -    |    -    |      -      |  -  |
-|     [Capsule](http://pmndrs.github.io/p2-es/docs/classes/Capsule.html)     |  Yes   |  Yes  |  Yes   |  Yes   |   Yes    | (todo) |   Yes   |      -      |  -  |
-| [Heightfield](http://pmndrs.github.io/p2-es/docs/classes/Heightfield.html) |  Yes   |   -   |  Yes   |  Yes   |  (todo)  | (todo) | (todo)  |      -      |  -  |
-|         [Ray](http://pmndrs.github.io/p2-es/docs/classes/Ray.html)         |  Yes   |  Yes  |  Yes   |  Yes   |    -     |  Yes   |   Yes   |     Yes     |  -  |
+|      [Circle](https://p2-es.pmnd.rs/docs/classes/Circle.html)      |  Yes   |   -   |   -    |   -    |    -     |   -    |    -    |      -      |  -  |
+|       [Plane](https://p2-es.pmnd.rs/docs/classes/Plane.html)       |  Yes   |   -   |   -    |   -    |    -     |   -    |    -    |      -      |  -  |
+|         [Box](https://p2-es.pmnd.rs/docs/classes/Box.html)         |  Yes   |  Yes  |  Yes   |   -    |    -     |   -    |    -    |      -      |  -  |
+|      [Convex](https://p2-es.pmnd.rs/docs/classes/Convex.html)      |  Yes   |  Yes  |  Yes   |  Yes   |    -     |   -    |    -    |      -      |  -  |
+|    [Particle](https://p2-es.pmnd.rs/docs/classes/Particle.html)    |  Yes   |  Yes  |  Yes   |  Yes   |    -     |   -    |    -    |      -      |  -  |
+|        [Line](https://p2-es.pmnd.rs/docs/classes/Line.html)        |  Yes   |  Yes  | (todo) | (todo) |    -     |   -    |    -    |      -      |  -  |
+|     [Capsule](https://p2-es.pmnd.rs/docs/classes/Capsule.html)     |  Yes   |  Yes  |  Yes   |  Yes   |   Yes    | (todo) |   Yes   |      -      |  -  |
+| [Heightfield](https://p2-es.pmnd.rs/docs/classes/Heightfield.html) |  Yes   |   -   |  Yes   |  Yes   |  (todo)  | (todo) | (todo)  |      -      |  -  |
+|         [Ray](https://p2-es.pmnd.rs/docs/classes/Ray.html)         |  Yes   |  Yes  |  Yes   |  Yes   |    -     |  Yes   |   Yes   |     Yes     |  -  |
 
-Note that concave polygon shapes can be created using [Body.fromPolygon](https://pmndrs.github.io/p2-es/docs/classes/Body.html#fromPolygon).
+Note that concave polygon shapes can be created using [Body.fromPolygon](https://p2-es.pmnd.rs/docs/classes/Body.html#fromPolygon).
 
 ### How to build
 

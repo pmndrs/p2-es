@@ -148,7 +148,7 @@ Circle angle: 0
 
 ## Math
 
-p2-es uses an own, stripped version of the [glMatrix](http://glmatrix.net/) math library. The p2 vector methods are documented [here](https://pmndrs.github.io/p2-es/docs/modules/vec2.html). The glMatrix math functions are exposed through the library, so you can use them like this:
+p2-es uses an own, stripped version of the [glMatrix](http://glmatrix.net/) math library. The p2 vector methods are documented [here](https://p2-es.pmnd.rs/docs/modules/vec2.html). The glMatrix math functions are exposed through the library, so you can use them like this:
 
 ```ts
 var force = p2.vec2.fromValues(1, 0)
@@ -401,7 +401,7 @@ var iceSteelContactMaterial = new p2.ContactMaterial(iceMaterial, steelMaterial,
 world.addContactMaterial(iceSteelContactMaterial)
 ```
 
-The [`ContactMaterial`](http://pmndrs.github.io/p2-esjs/docs/classes/ContactMaterial.html) holds many other properties such as restitution and surface velocity.
+The [`ContactMaterial`](https://p2-es.pmnd.rs/docs/classes/ContactMaterial.html) holds many other properties such as restitution and surface velocity.
 
 If there is a contact between to shapes that don't have a ContactMaterial, then a default contact material is used. This contact material can be reached via world.defaultContactMaterial.
 
