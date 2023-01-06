@@ -1,16 +1,12 @@
 # p2-es
 
-This is a maintained fork of [p2.js](https://github.com/schteppe/p2.js), originally created by Stefan Hedman [@schteppe](https://github.com/schteppe).
-
-It is a type-safe flatbundle (esm and cjs) which allows for **tree shaking** and usage in modern environments.
-
-If you're using three.js in a React environment with react-three-fiber, check out [use-p2](https://github.com/pmndrs/use-p2)! It's a wrapper around p2-es that runs in a web worker.
-
----
-
 2D rigid body physics engine written in JavaScript. Includes collision detection, contacts, friction, restitution, motors, springs, advanced constraints and various shape types.
 
 [Demos](https://p2-es.pmnd.rs/#demos) | [Examples](https://p2-es.pmnd.rs/#examples) | [Documentation](https://p2-es.pmnd.rs/docs/)
+
+This is a maintained fork of [p2.js](https://github.com/schteppe/p2.js), originally created by Stefan Hedman [@schteppe](https://github.com/schteppe). It is a type-safe flatbundle (esm and cjs) which allows for **tree shaking** and usage in modern environments.
+
+If you're using three.js in a React environment with react-three-fiber, check out [use-p2](https://github.com/pmndrs/use-p2)! It's a wrapper around p2-es that runs in a web worker.
 
 ### Getting Started
 
@@ -132,12 +128,14 @@ world.on('postStep', function (event) {
 
 Note that concave polygon shapes can be created using [Body.fromPolygon](https://p2-es.pmnd.rs/docs/classes/Body.html#fromPolygon).
 
-### How to build
+### Building
 
-Make sure you have git, [Node.js](http://nodejs.org) v18 and Yarn installed
+Make sure you have git, [Node.js](http://nodejs.org) v14+ and Yarn installed
 
 ```sh
-git clone https://github.com/pmndrs/p2-es.git
-cd p2-es
+git clone https://github.com/pmndrs/p2-es.git && cd p2-es
+
 yarn && yarn build
+
+npx http-server apps/p2-es-website/dist
 ```
