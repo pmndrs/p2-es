@@ -28,7 +28,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          version: yarn version
+          version: yarn bump
           publish: yarn release
           commit: "chore(changeset): release packages"
         env:
