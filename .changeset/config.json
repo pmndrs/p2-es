@@ -10,6 +10,7 @@
   "ignore": [
     "p2-es-demos",
     "p2-es-docs",
-    "p2-es-examples"
+    "p2-es-examples",
+    "p2-es-website"
   ]
 }
