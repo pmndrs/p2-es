@@ -68,7 +68,6 @@ export class PrismaticConstraint extends Constraint {
      * The position of anchor A relative to anchor B, along the constraint axis.
      */
     position: number
-    velocity: number
 
     /**
      * Set to true to enable lower limit.
@@ -194,9 +193,6 @@ export class PrismaticConstraint extends Constraint {
         }
 
         this.position = 0
-
-        // Is this one used at all?
-        this.velocity = 0
 
         this.lowerLimitEnabled = options.lowerLimit !== undefined
         this.upperLimitEnabled = options.upperLimit !== undefined
