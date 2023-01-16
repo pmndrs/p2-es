@@ -1,29 +1,28 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Collision demo - p2.js physics engine</title>
+        <title>Collisions demo - p2-es physics engine</title>
         <link href="css/demo.css" rel="stylesheet" />
         <meta name="description" content="Tests all combinations of shape collisions." />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     </head>
     <body>
+        <div id="demo"></div>
         <script type="module">
+            import { Sandbox } from '@p2-es/sandbox'
             import * as p2 from 'p2-es'
-            import { Demo } from './js/Demo.js'
 
             const size = 0.23
             const dropHeight = size * 2
             const dist = size * 2
 
-            const setup = (demo) => {
+            const common = () => {
                 const world = new p2.World({
                     gravity: [0, -10],
                 })
 
                 world.on('beginContact', (e) => console.log(e))
-
-                demo.setWorld(world)
 
                 world.islandSplit = true
                 world.sleepMode = p2.World.ISLAND_SLEEPING
@@ -112,51 +111,65 @@
                 for (let i = 0; i < world.bodies.length; i++) {
                     world.bodies[i].position[0] -= ((numAdded - 1) * dist) / 2
                 }
+
+                return world
             }
 
-            // Create demo application
-            new Demo({
-                'Plane Ground': {
-                    setup: (demo) => {
-                        setup(demo)
-                        demo.frame(0, 0, 12, 2)
+            new Sandbox(
+                {
+                    'Plane Ground': {
+                        setup: ({ frame }) => {
+                            const world = common()
 
-                        // Create plane ground
-                        const planeShape = new p2.Plane()
-                        const plane = new p2.Body({
-                            position: [0, 0],
-                        })
-                        plane.addShape(planeShape)
-                        world.addBody(plane)
+                            frame(0, 0, 12, 2)
+
+                            // Create plane ground
+                            const planeShape = new p2.Plane()
+                            const plane = new p2.Body({
+                                position: [0, 0],
+                            })
+                            plane.addShape(planeShape)
+                            world.addBody(plane)
+
+                            return { world }
+                        },
+                    },
+                    'Heightfield Ground': {
+                        setup: ({ frame }) => {
+                            const world = common()
+
+                            frame(0, 0, 12, 2)
+
+                            // Create heightfield ground
+                            const data = []
+                            const numDataPoints = 30
+                            for (let i = 0; i < numDataPoints; i++) {
+                                data.push(
+                                    0.1 * Math.cos(0.2 * i) * Math.sin(0.5 * i) +
+                                        0.1 * Math.sin(0.1 * i) * Math.sin(0.05 * i)
+                                )
+                            }
+
+                            const heightfieldShape = new p2.Heightfield({
+                                heights: data,
+                                elementWidth: 0.5,
+                            })
+                            const heightfield = new p2.Body({
+                                position: [-8, 0],
+                            })
+                            heightfield.addShape(heightfieldShape)
+                            world.addBody(heightfield)
+
+                            return { world }
+                        },
                     },
                 },
-                'Heightfield Ground': {
-                    setup: (demo) => {
-                        setup(demo)
-                        demo.frame(0, 0, 12, 2)
-
-                        // Create heightfield ground
-                        const data = []
-                        const numDataPoints = 30
-                        for (let i = 0; i < numDataPoints; i++) {
-                            data.push(
-                                0.1 * Math.cos(0.2 * i) * Math.sin(0.5 * i) +
-                                    0.1 * Math.sin(0.1 * i) * Math.sin(0.05 * i)
-                            )
-                        }
-
-                        const heightfieldShape = new p2.Heightfield({
-                            heights: data,
-                            elementWidth: 0.5,
-                        })
-                        const heightfield = new p2.Body({
-                            position: [-8, 0],
-                        })
-                        heightfield.addShape(heightfieldShape)
-                        world.addBody(heightfield)
-                    },
-                },
-            })
+                document.getElementById('demo'),
+                {
+                    title: 'Collisions',
+                    codeLink: 'https://github.com/pmndrs/p2-es/blob/master/apps/p2-es-demos/src/collisions.html',
+                }
+            ).mount()
         </script>
     </body>
 </html>

@@ -1,56 +1,62 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>CCD demo - p2.js physics engine</title>
+        <title>CCD demo - p2-es physics engine</title>
         <link href="css/demo.css" rel="stylesheet" />
         <meta name="description" content="" />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     </head>
     <body>
+        <div id="demo"></div>
         <script type="module">
+            import { Sandbox } from '@p2-es/sandbox'
             import * as p2 from 'p2-es'
-            import { Demo } from './js/Demo.js'
 
-            // Create demo application
-            new Demo(function () {
-                // Create the world
-                var world = new p2.World({
-                    gravity: [0, 0],
-                })
-
-                this.setWorld(world)
-
-                // Set stiffness of all contacts and constraints
-                world.setGlobalStiffness(1e18)
-                world.defaultContactMaterial.restitution = 0.1
-
-                for (var i = 0; i < 2; i++) {
-                    var y = (i - 0.5) * 1.5
-
-                    // Create circle bodies
-                    var shape = new p2.Circle({ radius: 0.5 })
-                    var p = new p2.Body({
-                        mass: 1,
-                        position: [-11, y],
-                        velocity: [100, 0],
-                        ccdSpeedThreshold: i === 0 ? 0 : -1,
+            new Sandbox(
+                ({ frame }) => {
+                    // Create the world
+                    const world = new p2.World({
+                        gravity: [0, 0],
                     })
-                    p.addShape(shape)
-                    world.addBody(p)
 
-                    var shape = new p2.Circle({ radius: 0.5 })
-                    var p = new p2.Body({
-                        mass: 0,
-                        position: [0, y],
-                    })
-                    p.addShape(shape)
-                    world.addBody(p)
+                    // Set stiffness of all contacts and constraints
+                    world.setGlobalStiffness(1e18)
+                    world.defaultContactMaterial.restitution = 0.1
+
+                    for (let i = 0; i < 2; i++) {
+                        const y = (i - 0.5) * 1.5
+
+                        // Create circle bodies
+                        const circleA = new p2.Circle({ radius: 0.5 })
+                        const bodyA = new p2.Body({
+                            mass: 1,
+                            position: [-11, y],
+                            velocity: [100, 0],
+                            ccdSpeedThreshold: i === 0 ? 0 : -1,
+                        })
+                        bodyA.addShape(circleA)
+                        world.addBody(bodyA)
+
+                        const circleB = new p2.Circle({ radius: 0.5 })
+                        const bodyB = new p2.Body({
+                            mass: 0,
+                            position: [0, y],
+                        })
+                        bodyB.addShape(circleB)
+                        world.addBody(bodyB)
+                    }
+
+                    frame(0, 0, 20, 20)
+
+                    return { world }
+                },
+                document.getElementById('demo'),
+                {
+                    title: 'CCD',
+                    codeLink: 'https://github.com/pmndrs/p2-es/blob/master/apps/p2-es-demos/src/ccd.html',
                 }
-
-                // Start demo
-                this.frame(0, 0, 20, 20)
-            })
+            ).mount()
         </script>
     </body>
 </html>

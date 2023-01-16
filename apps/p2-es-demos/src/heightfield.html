@@ -1,152 +1,169 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Heightfield demo - p2.js physics engine</title>
+        <title>Heightfield demo - p2-es physics engine</title>
         <link href="css/demo.css" rel="stylesheet" />
         <meta name="description" content="" />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     </head>
     <body>
+        <div id="demo"></div>
         <script type="module">
+            import { Sandbox } from '@p2-es/sandbox'
             import * as p2 from 'p2-es'
-            import { Demo } from './js/Demo.js'
 
-            // Create demo application
-            new Demo(function () {
-                var world = new p2.World({
-                    gravity: [0, -10],
-                })
-
-                this.setWorld(world)
-
-                world.solver.tolerance = 0.01
-
-                // Set large friction - needed for powerful vehicle engine!
-                world.defaultContactMaterial.friction = 10
-
-                // Create ground
-                var data = []
-                var numDataPoints = 200
-                for (var i = 0; i < numDataPoints; i++) {
-                    data.push(
-                        0.5 * Math.cos(0.2 * i) * Math.sin(0.5 * i) + 0.6 * Math.sin(0.1 * i) * Math.sin(0.05 * i)
-                    )
-                }
-                var heightfieldShape = new p2.Heightfield({
-                    heights: data,
-                    elementWidth: 1,
-                })
-                var heightfield = new p2.Body({
-                    position: [-10, -1],
-                })
-                heightfield.addShape(heightfieldShape)
-                world.addBody(heightfield)
-
-                // Create chassis
-                var chassisBody = new p2.Body({ mass: 1, position: [-4, 1] })
-                var chassisShape = new p2.Box({ width: 1, height: 0.5 })
-                chassisBody.addShape(chassisShape)
-                world.addBody(chassisBody)
-
-                // Create wheels
-                var wheelBody1 = new p2.Body({ mass: 1, position: [chassisBody.position[0] - 0.5, 0.7] })
-                var wheelBody2 = new p2.Body({ mass: 1, position: [chassisBody.position[0] + 0.5, 0.7] })
-                var wheelShapeLeft = new p2.Circle({ radius: 0.3 })
-                var wheelShapeRight = new p2.Circle({ radius: 0.3 })
-                wheelBody1.addShape(wheelShapeLeft)
-                wheelBody2.addShape(wheelShapeRight)
-                world.addBody(wheelBody1)
-                world.addBody(wheelBody2)
-
-                // Disable collisions between chassis and wheels
-                var WHEELS = 1 // Define bits for each shape type
-                var CHASSIS = 2
-                var GROUND = 4
-                var OTHER = 8
-
-                wheelShapeLeft.collisionGroup = wheelShapeRight.collisionGroup = WHEELS // Assign groups
-                chassisShape.collisionGroup = CHASSIS
-                heightfieldShape.collisionGroup = GROUND
-
-                wheelShapeLeft.collisionMask = wheelShapeRight.collisionMask = GROUND | OTHER // Wheels can only collide with ground
-                chassisShape.collisionMask = GROUND | OTHER // Chassis can only collide with ground
-                heightfieldShape.collisionMask = WHEELS | CHASSIS | OTHER // Ground can collide with wheels and chassis
-
-                // Constrain wheels to chassis
-                var c1 = new p2.PrismaticConstraint(chassisBody, wheelBody1, {
-                    localAnchorA: [-0.5, -0.3],
-                    localAnchorB: [0, 0],
-                    localAxisA: [0, 1],
-                    disableRotationalLock: true,
-                })
-                var c2 = new p2.PrismaticConstraint(chassisBody, wheelBody2, {
-                    localAnchorA: [0.5, -0.3],
-                    localAnchorB: [0, 0],
-                    localAxisA: [0, 1],
-                    disableRotationalLock: true,
-                })
-                c1.setLimits(-0.4, 0.2)
-                c2.setLimits(-0.4, 0.2)
-                world.addConstraint(c1)
-                world.addConstraint(c2)
-
-                // Add springs for the suspension
-                var stiffness = 100,
-                    damping = 5,
-                    restLength = 0.5
-                // Left spring
-                world.addSpring(
-                    new p2.LinearSpring(chassisBody, wheelBody1, {
-                        restLength: restLength,
-                        stiffness: stiffness,
-                        damping: damping,
-                        localAnchorA: [-0.5, 0],
-                        localAnchorB: [0, 0],
+            new Sandbox(
+                ({ frame, onUpdate, centerCamera }) => {
+                    const world = new p2.World({
+                        gravity: [0, -10],
                     })
-                )
-                // Right spring
-                world.addSpring(
-                    new p2.LinearSpring(chassisBody, wheelBody2, {
-                        restLength: restLength,
-                        stiffness: stiffness,
-                        damping: damping,
-                        localAnchorA: [0.5, 0],
-                        localAnchorB: [0, 0],
-                    })
-                )
 
-                this.newShapeCollisionGroup = OTHER
-                this.newShapeCollisionMask = GROUND | WHEELS | CHASSIS | OTHER
+                    world.solver.tolerance = 0.01
 
-                // Apply current engine torque after each step
-                var torque = 0
-                world.on('postStep', function (evt) {
-                    wheelBody1.angularForce += torque
-                    wheelBody2.angularForce += torque
-                })
-                app.followBody = chassisBody // Make camera follow
+                    // Set large friction - needed for powerful vehicle engine!
+                    world.defaultContactMaterial.friction = 10
 
-                // Change the current engine torque with the left/right keys
-                this.on('keydown', function (evt) {
-                    var t = 5
-                    switch (evt.keyCode) {
-                        case 39: // right
-                            torque = -t
-                            break
-                        case 37: // left
-                            torque = t
-                            break
+                    // Create ground
+                    const data = []
+                    const numDataPoints = 200
+                    for (let i = 0; i < numDataPoints; i++) {
+                        data.push(
+                            0.5 * Math.cos(0.2 * i) * Math.sin(0.5 * i) + 0.6 * Math.sin(0.1 * i) * Math.sin(0.05 * i)
+                        )
                     }
-                })
-                this.on('keyup', function () {
-                    torque = 0
-                })
+                    const heightfieldShape = new p2.Heightfield({
+                        heights: data,
+                        elementWidth: 1,
+                    })
+                    const heightfield = new p2.Body({
+                        position: [-10, -1],
+                    })
+                    heightfield.addShape(heightfieldShape)
+                    world.addBody(heightfield)
 
-                world.on('addBody', function (evt) {
-                    evt.body.setDensity(1)
-                })
-            })
+                    // Create chassis
+                    const chassisBody = new p2.Body({ mass: 1, position: [-4, 1] })
+                    const chassisShape = new p2.Box({ width: 1, height: 0.5 })
+                    chassisBody.addShape(chassisShape)
+                    world.addBody(chassisBody)
+
+                    // Create wheels
+                    const wheelBody1 = new p2.Body({ mass: 1, position: [chassisBody.position[0] - 0.5, 0.7] })
+                    const wheelBody2 = new p2.Body({ mass: 1, position: [chassisBody.position[0] + 0.5, 0.7] })
+                    const wheelShapeLeft = new p2.Circle({ radius: 0.3 })
+                    const wheelShapeRight = new p2.Circle({ radius: 0.3 })
+                    wheelBody1.addShape(wheelShapeLeft)
+                    wheelBody2.addShape(wheelShapeRight)
+                    world.addBody(wheelBody1)
+                    world.addBody(wheelBody2)
+
+                    // Disable collisions between chassis and wheels
+                    const WHEELS = 1 // Define bits for each shape type
+                    const CHASSIS = 2
+                    const GROUND = 4
+                    const OTHER = 8
+
+                    wheelShapeLeft.collisionGroup = wheelShapeRight.collisionGroup = WHEELS // Assign groups
+                    chassisShape.collisionGroup = CHASSIS
+                    heightfieldShape.collisionGroup = GROUND
+
+                    wheelShapeLeft.collisionMask = wheelShapeRight.collisionMask = GROUND | OTHER // Wheels can only collide with ground
+                    chassisShape.collisionMask = GROUND | OTHER // Chassis can only collide with ground
+                    heightfieldShape.collisionMask = WHEELS | CHASSIS | OTHER // Ground can collide with wheels and chassis
+
+                    // Constrain wheels to chassis
+                    const c1 = new p2.PrismaticConstraint(chassisBody, wheelBody1, {
+                        localAnchorA: [-0.5, -0.3],
+                        localAnchorB: [0, 0],
+                        localAxisA: [0, 1],
+                        disableRotationalLock: true,
+                    })
+                    const c2 = new p2.PrismaticConstraint(chassisBody, wheelBody2, {
+                        localAnchorA: [0.5, -0.3],
+                        localAnchorB: [0, 0],
+                        localAxisA: [0, 1],
+                        disableRotationalLock: true,
+                    })
+                    c1.setLimits(-0.4, 0.2)
+                    c2.setLimits(-0.4, 0.2)
+                    world.addConstraint(c1)
+                    world.addConstraint(c2)
+
+                    // Add springs for the suspension
+                    const stiffness = 100
+                    const damping = 5
+                    const restLength = 0.5
+
+                    // Left spring
+                    world.addSpring(
+                        new p2.LinearSpring(chassisBody, wheelBody1, {
+                            restLength: restLength,
+                            stiffness: stiffness,
+                            damping: damping,
+                            localAnchorA: [-0.5, 0],
+                            localAnchorB: [0, 0],
+                        })
+                    )
+
+                    // Right spring
+                    world.addSpring(
+                        new p2.LinearSpring(chassisBody, wheelBody2, {
+                            restLength: restLength,
+                            stiffness: stiffness,
+                            damping: damping,
+                            localAnchorA: [0.5, 0],
+                            localAnchorB: [0, 0],
+                        })
+                    )
+
+                    // Apply current engine torque after each step
+                    let torque = 0
+                    world.on('postStep', function (evt) {
+                        wheelBody1.angularForce += torque
+                        wheelBody2.angularForce += torque
+                    })
+
+                    // Change the current engine torque with the left/right keys
+                    document.addEventListener('keydown', function (evt) {
+                        var t = 5
+                        switch (evt.keyCode) {
+                            case 39: // right
+                                torque = -t
+                                break
+                            case 37: // left
+                                torque = t
+                                break
+                        }
+                    })
+                    document.addEventListener('keyup', function () {
+                        torque = 0
+                    })
+
+                    world.on('addBody', function ({ body }) {
+                        for (let i = 0; i < body.shapes.length; i++) {
+                            const s = body.shapes[i]
+                            s.collisionMask = GROUND | WHEELS | CHASSIS | OTHER
+                            s.collisionGroup = OTHER
+                        }
+
+                        body.setDensity(1)
+                    })
+
+                    frame(0, 0, 10, 10)
+
+                    onUpdate.add(() =>
+                        centerCamera(chassisBody.interpolatedPosition[0], chassisBody.interpolatedPosition[1])
+                    )
+
+                    return { world }
+                },
+                document.getElementById('demo'),
+                {
+                    title: 'Heightfield',
+                    codeLink: 'https://github.com/pmndrs/p2-es/blob/master/apps/p2-es-demos/src/heightfield.html',
+                }
+            ).mount()
         </script>
     </body>
 </html>

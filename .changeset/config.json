@@ -3,14 +3,20 @@
   "changelog": "@changesets/cli/changelog",
   "commit": false,
   "fixed": [],
-  "linked": [],
+  "linked": [
+    ["p2-es", "@p2-es/*"]
+  ],
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",
   "ignore": [
+    "@p2-es/sandbox",
     "p2-es-demos",
     "p2-es-docs",
     "p2-es-examples",
     "p2-es-website"
-  ]
+  ],
+  "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
+    "onlyUpdatePeerDependentsWhenOutOfRange": true
+  }
 }

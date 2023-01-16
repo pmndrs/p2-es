@@ -1,14 +1,10 @@
 {
     "name": "p2-es-monorepo",
+    "private": true,
     "version": "0.0.0",
     "license": "MIT",
-    "private": true,
+    "packageManager": "yarn@3.2.1",
     "repository": "https://github.com/pmndrs/p2-es",
-    "author": "Stefan Hedman <schteppe@gmail.com> (http://steffe.se)",
-    "contributors": [
-        "Jörg Jäckel (https://github.com/joergjaeckel)",
-        "Isaac Mason <isaac@isaacmason.com> (https://github.com/isaac-mason)"
-    ],
     "devDependencies": {
         "@changesets/cli": "^2.22.0",
         "husky": "^7.0.4"
@@ -23,6 +19,7 @@
     },
     "workspaces": [
         "packages/p2-es",
+        "packages/p2-es-sandbox",
         "apps/p2-es-docs",
         "apps/p2-es-examples",
         "apps/p2-es-demos",

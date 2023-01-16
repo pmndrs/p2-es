@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Control demo - p2.js physics engine</title>
+        <title>Control demo - p2-es physics engine</title>
         <link href="css/demo.css" rel="stylesheet" />
         <meta name="description" content="Top-down control of a circle." />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     </head>
     <body>
+        <div id="demo"></div>
         <script type="module">
+            import { Sandbox } from '@p2-es/sandbox'
             import * as p2 from 'p2-es'
-            import { Demo } from './js/Demo.js'
 
-            var postStepHandler
+            let postStepHandler
 
-            var size = 6
+            let size = 6
 
             function createStaticBox(world, x, y, width, height) {
-                var body = new p2.Body({
+                const body = new p2.Body({
                     position: [x, y],
                 })
                 body.addShape(new p2.Box({ width: width, height: height }))
@@ -31,18 +32,16 @@
                 return b - a + Math.PI * 2.0
             }
 
-            // Create demo application
-            new Demo({
-                setup: function () {
+            new Sandbox(
+                ({ frame, pointer }) => {
                     // Create the physics world
-                    var world = new p2.World({
+                    const world = new p2.World({
                         gravity: [0, 0],
                     })
-                    this.setWorld(world)
 
                     // Add some boxes
-                    for (var i = 0; i < 10; i++) {
-                        var boxBody = new p2.Body({
+                    for (let i = 0; i < 10; i++) {
+                        const boxBody = new p2.Body({
                             mass: 0.5,
                             damping: 0.99,
                             angularDamping: 0.99,
@@ -60,28 +59,28 @@
                     createStaticBox(world, 0, size / 2, size, 0.1)
 
                     // Character
-                    var characterBody = new p2.Body({
+                    const characterBody = new p2.Body({
                         mass: 1,
                     })
-                    var characterShape = new p2.Circle({
+                    const characterShape = new p2.Circle({
                         radius: 0.5,
                     })
                     characterBody.addShape(characterShape)
                     world.addBody(characterBody)
 
                     // Control body
-                    var controlBody = new p2.Body({
+                    const controlBody = new p2.Body({
                         type: p2.Body.KINEMATIC,
                         collisionResponse: false,
                     })
-                    var controlShape = new p2.Circle({
+                    const controlShape = new p2.Circle({
                         radius: 0.1,
                     })
                     controlBody.addShape(controlShape)
                     world.addBody(controlBody)
 
                     // Constrain control to character
-                    var constraint = new p2.RevoluteConstraint(controlBody, characterBody, {
+                    const constraint = new p2.RevoluteConstraint(controlBody, characterBody, {
                         localPivotA: [0, 0],
                         localPivotB: [0, 0],
                         maxForce: 40,
@@ -89,23 +88,25 @@
                     constraint.setMaxBias(0) // emulate friction
                     world.addConstraint(constraint)
 
-                    var gear = new p2.GearConstraint(controlBody, characterBody, {
+                    const gear = new p2.GearConstraint(controlBody, characterBody, {
                         maxTorque: 100,
                     })
                     gear.setMaxBias(0)
                     world.addConstraint(gear)
 
-                    var mouseDelta = p2.vec2.create()
+                    const mouseDelta = p2.vec2.create()
                     world.on(
                         'postStep',
-                        (postStepHandler = function () {
+                        (postStepHandler = () => {
+                            const mousePosition = pointer.primaryPointer.physicsPosition
+
                             // turn the control body
-                            p2.vec2.subtract(mouseDelta, app.mousePosition, characterBody.position)
+                            p2.vec2.subtract(mouseDelta, mousePosition, characterBody.position)
                             controlBody.angularVelocity =
                                 10 * shortestArc(characterBody.angle, Math.atan2(mouseDelta[1], mouseDelta[0]))
 
                             // drive towards the mouse
-                            if (p2.vec2.distance(app.mousePosition, characterBody.position) < 0.5) {
+                            if (p2.vec2.distance(mousePosition, characterBody.position) < 0.5) {
                                 p2.vec2.set(controlBody.velocity, 0, 0)
                             } else {
                                 p2.vec2.copy(controlBody.velocity, mouseDelta)
@@ -115,12 +116,21 @@
                         })
                     )
 
-                    this.frame(0, 0, 7, 7)
+                    frame(0, 0, 7, 7)
+
+                    return {
+                        world,
+                        teardown: () => {
+                            world.off('postStep', postStepHandler)
+                        },
+                    }
                 },
-                teardown: function () {
-                    world.off('postStep', postStepHandler)
-                },
-            })
+                document.getElementById('demo'),
+                {
+                    title: 'Control',
+                    codeLink: 'https://github.com/pmndrs/p2-es/blob/master/apps/p2-es-demos/src/control.html',
+                }
+            ).mount()
         </script>
     </body>
 </html>

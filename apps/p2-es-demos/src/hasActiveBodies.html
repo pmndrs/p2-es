@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Has Active Bodies - p2.js physics engine</title>
+        <title>Has Active Bodies - p2-es physics engine</title>
         <link href="css/demo.css" rel="stylesheet" />
         <meta name="description" content="Demonstration of the hasActiveBodies world property." />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     </head>
     <body>
-        <div id="hasActiveBodies"></div>
         <style>
             #hasActiveBodies {
                 font-size: 20px;
@@ -19,67 +18,90 @@
                 z-index: 1;
             }
         </style>
+        <div id="demo"></div>
         <script type="module">
+            import { Sandbox } from '@p2-es/sandbox'
             import * as p2 from 'p2-es'
-            import { Demo } from './js/Demo.js'
 
             const radius = 0.15
 
-            // Create demo application
-            new Demo(function () {
-                const world = new p2.World({
-                    gravity: [0, -10],
-                })
-
-                this.setWorld(world)
-
-                // Create circles
-                const circleBodyOne = new p2.Body({
-                    mass: 1,
-                    position: [0, 0.6],
-                    damping: 0.01,
-                })
-                circleBodyOne.addShape(
-                    new p2.Circle({
-                        radius,
+            new Sandbox(
+                ({ onUpdate, frame, pixi }) => {
+                    const world = new p2.World({
+                        gravity: [0, -10],
                     })
-                )
-                circleBodyOne.allowSleep = true
-                circleBodyOne.sleepSpeedLimit = 1
-                circleBodyOne.sleepTimeLimit = 1
-                circleBodyOne.damping = 0.2
-                world.addBody(circleBodyOne)
 
-                const circleBodyTwo = new p2.Body({
-                    mass: 1,
-                    position: [0, 0.3],
-                    damping: 0.01,
-                })
-                circleBodyTwo.addShape(
-                    new p2.Circle({
-                        radius,
+                    // Create circles
+                    const circleBodyOne = new p2.Body({
+                        mass: 1,
+                        position: [0, 0.6],
+                        damping: 0.01,
                     })
-                )
-                circleBodyTwo.allowSleep = true
-                circleBodyTwo.sleepSpeedLimit = 1
-                circleBodyTwo.sleepTimeLimit = 1
-                circleBodyTwo.damping = 0.2
-                world.addBody(circleBodyTwo)
+                    circleBodyOne.addShape(
+                        new p2.Circle({
+                            radius,
+                        })
+                    )
+                    circleBodyOne.allowSleep = true
+                    circleBodyOne.sleepSpeedLimit = 1
+                    circleBodyOne.sleepTimeLimit = 1
+                    circleBodyOne.damping = 0.2
+                    world.addBody(circleBodyOne)
 
-                // Create ground
-                const plane = new p2.Body({
-                    position: [0, -1],
-                })
-                plane.addShape(new p2.Plane())
-                world.addBody(plane)
+                    const circleBodyTwo = new p2.Body({
+                        mass: 1,
+                        position: [0, 0.3],
+                        damping: 0.01,
+                    })
+                    circleBodyTwo.addShape(
+                        new p2.Circle({
+                            radius,
+                        })
+                    )
+                    circleBodyTwo.allowSleep = true
+                    circleBodyTwo.sleepSpeedLimit = 1
+                    circleBodyTwo.sleepTimeLimit = 1
+                    circleBodyTwo.damping = 0.2
+                    world.addBody(circleBodyTwo)
 
-                // Allow sleeping
-                world.sleepMode = p2.World.BODY_SLEEPING
+                    // Create ground
+                    const plane = new p2.Body({
+                        position: [0, -1],
+                    })
+                    plane.addShape(new p2.Plane())
+                    world.addBody(plane)
 
-                setInterval(() => {
-                    document.querySelector('#hasActiveBodies').textContent = `world.hasActiveBodies = ${world.hasActiveBodies}`
-                }, 500)
-            })
+                    // Allow sleeping
+                    world.sleepMode = p2.World.BODY_SLEEPING
+
+                    const hasActiveBodiesElement = document.createElement('div')
+                    hasActiveBodiesElement.id = 'hasActiveBodies'
+                    pixi.domElement.appendChild(hasActiveBodiesElement)
+
+                    const updateHasActiveBodiesText = () => {
+                        hasActiveBodiesElement.textContent = `world.hasActiveBodies = ${world.hasActiveBodies}`
+                    }
+
+                    onUpdate.add(updateHasActiveBodiesText)
+
+                    frame(0, 0, 4, 4)
+
+                    return {
+                        world,
+                        settings: {
+                            bodySleepOpacity: true,
+                        },
+                        teardown: () => {
+                            onUpdate.remove(updateHasActiveBodiesText)
+                        },
+                    }
+                },
+                document.getElementById('demo'),
+                {
+                    title: 'Has Active Bodies',
+                    codeLink: 'https://github.com/pmndrs/p2-es/blob/master/apps/p2-es-demos/src/hasActiveBodies.html',
+                }
+            ).mount()
         </script>
     </body>
 </html>

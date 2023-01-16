@@ -42,6 +42,11 @@ export type AddSpringEvent = {
     spring: Spring
 }
 
+export type RemoveSpringEvent = {
+    type: 'removeSpring'
+    spring: Spring
+}
+
 export type ImpactEvent = {
     type: 'impact'
     bodyA: Body
@@ -84,6 +89,7 @@ export type WorldEventMap = {
     addBody: AddBodyEvent
     removeBody: RemoveBodyEvent
     addSpring: AddSpringEvent
+    removeSpring: RemoveSpringEvent
     impact: ImpactEvent
     postBroadphase: PostBroadphaseEvent
     beginContact: BeginContactEvent
@@ -844,6 +850,10 @@ export class World extends EventEmitter<WorldEventMap> {
             throw new Error('Springs cannot be removed during step.')
         }
         arrayRemove(this.springs, spring)
+        this.emit({
+            type: 'removeSpring',
+            spring,
+        } as RemoveSpringEvent)
     }
 
     /**
