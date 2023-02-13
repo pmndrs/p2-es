@@ -1,59 +1,66 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Prismatic demo - p2.js physics engine</title>
+        <title>Prismatic demo - p2-es physics engine</title>
         <link href="css/demo.css" rel="stylesheet" />
         <meta name="description" content="Shows how to constrain two bodies using a PrismaticConstraint." />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     </head>
     <body>
+        <div id="demo"></div>
         <script type="module">
+            import { Sandbox } from '@p2-es/sandbox'
             import * as p2 from 'p2-es'
-            import { Demo } from './js/Demo.js'
 
-            // Create demo application
-            new Demo(function () {
-                // Create the physics world
-                var world = new p2.World({
-                    gravity: [0, -10],
-                })
+            new Sandbox(
+                () => {
+                    // Create the physics world
+                    const world = new p2.World({
+                        gravity: [0, -10],
+                    })
 
-                this.setWorld(world)
+                    // Create two rectangle bodies
+                    const bodyA = new p2.Body({
+                        mass: 1,
+                        position: [-1, 0],
+                    })
+                    bodyA.addShape(new p2.Box({ width: 1, height: 1 }))
+                    world.addBody(bodyA)
+                    const bodyB = new p2.Body({
+                        mass: 1,
+                        position: [1, 0],
+                    })
+                    bodyB.addShape(new p2.Box({ width: 1, height: 1 }))
+                    world.addBody(bodyB)
 
-                // Create two rectangle bodies
-                var bodyA = new p2.Body({
-                    mass: 1,
-                    position: [-1, 0],
-                })
-                bodyA.addShape(new p2.Box({ width: 1, height: 1 }))
-                world.addBody(bodyA)
-                var bodyB = new p2.Body({
-                    mass: 1,
-                    position: [1, 0],
-                })
-                bodyB.addShape(new p2.Box({ width: 1, height: 1 }))
-                world.addBody(bodyB)
+                    // Create PrismaticConstraint, aka "slider".
+                    // It lets two bodies slide along an axis.
+                    const prismatic = new p2.PrismaticConstraint(bodyA, bodyB, {
+                        localAnchorA: [1, 0], // Anchor point in bodyA, where the axis starts
+                        localAnchorB: [-1, 0], // Anchor point in bodyB, that will slide along the axis
+                        localAxisA: [0, 1], // An axis defined locally in bodyA
+                        upperLimit: 0.5, // Upper limit along the axis
+                        lowerLimit: -0.5, // Lower limit along the axis
+                    })
+                    world.addConstraint(prismatic)
 
-                // Create PrismaticConstraint, aka "slider".
-                // It lets two bodies slide along an axis.
-                var prismatic = new p2.PrismaticConstraint(bodyA, bodyB, {
-                    localAnchorA: [1, 0], // Anchor point in bodyA, where the axis starts
-                    localAnchorB: [-1, 0], // Anchor point in bodyB, that will slide along the axis
-                    localAxisA: [0, 1], // An axis defined locally in bodyA
-                    upperLimit: 0.5, // Upper limit along the axis
-                    lowerLimit: -0.5, // Lower limit along the axis
-                })
-                world.addConstraint(prismatic)
+                    // Create ground
+                    const planeShape = new p2.Plane()
+                    const plane = new p2.Body({
+                        position: [0, -1],
+                    })
+                    plane.addShape(planeShape)
+                    world.addBody(plane)
 
-                // Create ground
-                var planeShape = new p2.Plane()
-                var plane = new p2.Body({
-                    position: [0, -1],
-                })
-                plane.addShape(planeShape)
-                world.addBody(plane)
-            })
+                    return { world }
+                },
+                document.getElementById('demo'),
+                {
+                    title: 'Prismatic',
+                    codeLink: 'https://github.com/pmndrs/p2-es/blob/master/apps/p2-es-demos/src/prismatic.html',
+                }
+            ).mount()
         </script>
     </body>
 </html>

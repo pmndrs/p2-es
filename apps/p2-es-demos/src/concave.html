@@ -1,78 +1,87 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Concave shapes demo - p2.js physics engine</title>
+        <title>Concave shapes demo - p2-es physics engine</title>
         <link href="css/demo.css" rel="stylesheet" />
         <meta name="description" content="Demonstrates concave shapes and how to use Body.fromPolygon()." />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     </head>
     <body>
+        <div id="demo"></div>
         <script type="module">
+            import { Sandbox, Tools } from '@p2-es/sandbox'
             import * as p2 from 'p2-es'
-            import { Demo } from './js/Demo.js'
 
-            // Create demo application
-            new Demo(function () {
-                // Create the physics world
-                var world = new p2.World({
-                    gravity: [0, -10],
-                })
+            new Sandbox(
+                ({ frame }) => {
+                    // Create the physics world
+                    const world = new p2.World({
+                        gravity: [0, -10],
+                    })
 
-                // Register the world in the demo app
-                this.setWorld(world)
+                    // Set stiffness of contact & constraints
+                    world.setGlobalStiffness(1e4)
 
-                // Set stiffness of contact & constraints
-                world.setGlobalStiffness(1e4)
+                    world.solver.iterations = 20
+                    world.solver.tolerance = 0.01
+                    world.islandSplit = true
 
-                world.solver.iterations = 20
-                world.solver.tolerance = 0.01
-                world.islandSplit = true
+                    // Enable dynamic friction. A bit more expensive than without, but gives more accurate friction
+                    world.solver.frictionIterations = 10
 
-                // Enable dynamic friction. A bit more expensive than without, but gives more accurate friction
-                world.solver.frictionIterations = 10
+                    // Create ground
+                    const planeShape = new p2.Plane()
+                    const plane = new p2.Body({
+                        mass: 0, // static
+                        position: [0, -2],
+                    })
+                    plane.addShape(planeShape)
+                    world.addBody(plane)
 
-                // Create ground
-                var planeShape = new p2.Plane()
-                var plane = new p2.Body({
-                    mass: 0, // static
-                    position: [0, -2],
-                })
-                plane.addShape(planeShape)
-                world.addBody(plane)
+                    // Create a concave body
+                    const concaveBody = new p2.Body({
+                        mass: 1,
+                        position: [0, 2],
+                    })
 
-                // Create a concave body
-                var concaveBody = new p2.Body({
-                    mass: 1,
-                    position: [0, 2],
-                })
+                    // Give a concave path to the body.
+                    // Body.prototype.fromPolygon will automatically add shapes at
+                    // proper offsets and adjust the center of mass.
+                    const path = [
+                        [-1, 1],
+                        [-1, 0],
+                        [1, 0],
+                        [1, 1],
+                        [0.5, 0.5],
+                    ]
+                    concaveBody.fromPolygon(path)
 
-                // Give a concave path to the body.
-                // Body.prototype.fromPolygon will automatically add shapes at
-                // proper offsets and adjust the center of mass.
-                var path = [
-                    [-1, 1],
-                    [-1, 0],
-                    [1, 0],
-                    [1, 1],
-                    [0.5, 0.5],
-                ]
-                concaveBody.fromPolygon(path)
+                    // Add the body to the world
+                    world.addBody(concaveBody)
 
-                // Add the body to the world
-                world.addBody(concaveBody)
+                    // Automatically set the density of bodies that the user draws on the screen
+                    world.on('addBody', function ({ body }) {
+                        body.setDensity(1)
+                    })
 
-                // Automatically set the density of bodies that the user draws on the screen
-                world.on('addBody', function (evt) {
-                    evt.body.setDensity(1)
-                })
+                    // Set camera position and zoom
+                    frame(0, 1, 6, 8)
 
-                // Enable shape drawing
-                this.setState(Demo.DRAWPOLYGON)
-
-                // Set camera position and zoom
-                this.frame(0, 1, 6, 8)
-            })
+                    return {
+                        world,
+                        // Enable shape drawing
+                        tools: {
+                            default: Tools.POLYGON,
+                        },
+                    }
+                },
+                document.getElementById('demo'),
+                {
+                    title: 'Concave',
+                    codeLink: 'https://github.com/pmndrs/p2-es/blob/master/apps/p2-es-demos/src/concave.html',
+                }
+            ).mount()
         </script>
     </body>
 </html>

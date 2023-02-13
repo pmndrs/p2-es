@@ -1,52 +1,61 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Sleep demo - p2.js physics engine</title>
+        <title>Sleep demo - p2-es physics engine</title>
         <link href="css/demo.css" rel="stylesheet" />
         <meta name="description" content="How to enable and use body sleeping." />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     </head>
     <body>
+        <div id="demo">
         <script type="module">
+            import { Sandbox } from '@p2-es/sandbox'
             import * as p2 from 'p2-es'
-            import { Demo } from './js/Demo.js'
 
-            var radius = 0.15,
-                N = 20
+            const radius = 0.15
+            const N = 20
 
-            // Create demo application
-            new Demo(function () {
-                var world = new p2.World({
-                    gravity: [0, -10],
-                })
-
-                this.setWorld(world)
-
-                for (var i = 0; i < N; i++) {
-                    var circleBody = new p2.Body({
-                        mass: 1,
-                        position: [0, i * 2 * radius],
+            new Sandbox(
+                ({ frame }) => {
+                    const world = new p2.World({
+                        gravity: [0, -10],
                     })
-                    circleBody.allowSleep = true
-                    circleBody.sleepSpeedLimit = 1 // Body will feel sleepy if speed<1 (speed is the norm of velocity)
-                    circleBody.sleepTimeLimit = 1 // Body falls asleep after 1s of sleepiness
-                    circleBody.addShape(new p2.Circle({ radius: radius }))
-                    circleBody.damping = 0.2
-                    world.addBody(circleBody)
+
+                    for (let i = 0; i < N; i++) {
+                        const circleBody = new p2.Body({
+                            mass: 1,
+                            position: [0, i * 2 * radius],
+                        })
+                        circleBody.allowSleep = true
+                        circleBody.sleepSpeedLimit = 1 // Body will feel sleepy if speed<1 (speed is the norm of velocity)
+                        circleBody.sleepTimeLimit = 1 // Body falls asleep after 1s of sleepiness
+                        circleBody.addShape(new p2.Circle({ radius: radius }))
+                        circleBody.damping = 0.2
+                        world.addBody(circleBody)
+                    }
+
+                    // Create ground
+                    const planeShape = new p2.Plane()
+                    const plane = new p2.Body({
+                        position: [0, -1],
+                    })
+                    plane.addShape(planeShape)
+                    world.addBody(plane)
+
+                    // Allow sleeping
+                    world.sleepMode = p2.World.BODY_SLEEPING
+
+                    frame(0, 1, 10, 10)
+
+                    return { world, settings: { bodySleepOpacity: true } }
+                },
+                document.getElementById('demo'),
+                {
+                    title: 'Sleep',
+                    codeLink: 'https://github.com/pmndrs/p2-es/blob/master/apps/p2-es-demos/src/sleep.html',
                 }
-
-                // Create ground
-                var planeShape = new p2.Plane()
-                var plane = new p2.Body({
-                    position: [0, -1],
-                })
-                plane.addShape(planeShape)
-                world.addBody(plane)
-
-                // Allow sleeping
-                world.sleepMode = p2.World.BODY_SLEEPING
-            })
+            ).mount()
         </script>
     </body>
 </html>

@@ -1,90 +1,95 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Top down vehicle demo - p2.js physics engine</title>
-    <link href="css/demo.css" rel="stylesheet"/>
-    <meta name="description" content="">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-</head>
-<body>
-    <script type="module">
-        import * as p2 from 'p2-es'
-        import { Demo } from './js/Demo.js'
+    <head>
+        <title>Top down vehicle demo - p2-es physics engine</title>
+        <link href="css/demo.css" rel="stylesheet" />
+        <meta name="description" content="" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    </head>
+    <body>
+        <div id="demo"></div>
+        <script type="module">
+            import { Sandbox } from '@p2-es/sandbox'
+            import * as p2 from 'p2-es'
 
-        // Create demo application
-        new Demo(function(){
+            new Sandbox(
+                () => {
+                    // Create a World
+                    const world = new p2.World({
+                        gravity: [0, 0],
+                    })
 
-            // Create a World
-            var world = new p2.World({
-                gravity : [0,0]
-            });
-            this.setWorld(world);
+                    // Create a dynamic body for the chassis
+                    const chassisBody = new p2.Body({
+                        mass: 1,
+                    })
+                    const boxShape = new p2.Box({ width: 0.5, height: 1 })
+                    chassisBody.addShape(boxShape)
+                    world.addBody(chassisBody)
 
-            // Create a dynamic body for the chassis
-            var chassisBody = new p2.Body({
-                mass: 1
-            });
-            var boxShape = new p2.Box({ width: 0.5, height: 1 });
-            chassisBody.addShape(boxShape);
-            world.addBody(chassisBody);
+                    // Create the vehicle
+                    const vehicle = new p2.TopDownVehicle(chassisBody)
 
-            // Create the vehicle
-            var vehicle = new p2.TopDownVehicle(chassisBody);
+                    // Add one front wheel and one back wheel - we don't actually need four :)
+                    const frontWheel = vehicle.addWheel({
+                        localPosition: [0, 0.5], // front
+                    })
+                    frontWheel.setSideFriction(4)
 
-            // Add one front wheel and one back wheel - we don't actually need four :)
-            var frontWheel = vehicle.addWheel({
-                localPosition: [0, 0.5] // front
-            });
-            frontWheel.setSideFriction(4);
+                    // Back wheel
+                    const backWheel = vehicle.addWheel({
+                        localPosition: [0, -0.5], // back
+                    })
+                    backWheel.setSideFriction(3) // Less side friction on back wheel makes it easier to drift
 
-            // Back wheel
-            var backWheel = vehicle.addWheel({
-                localPosition: [0, -0.5] // back
-            });
-            backWheel.setSideFriction(3); // Less side friction on back wheel makes it easier to drift
+                    vehicle.addToWorld(world)
 
-            vehicle.addToWorld(world);
-
-            // Key controls
-            var keys = {
-                '37': 0, // left
-                '39': 0, // right
-                '38': 0, // up
-                '40': 0 // down
-            };
-            var maxSteer = Math.PI / 5;
-            this.on("keydown",function (evt){
-                keys[evt.keyCode] = 1;
-                onInputChange();
-            });
-            this.on("keyup",function (evt){
-                keys[evt.keyCode] = 0;
-                onInputChange();
-            });
-            function onInputChange(){
-
-                // Steer value zero means straight forward. Positive is left and negative right.
-                frontWheel.steerValue = maxSteer * (keys[37] - keys[39]);
-
-                // Engine force forward
-                backWheel.engineForce = keys[38] * 7;
-
-                backWheel.setBrakeForce(0);
-                if(keys[40]){
-                    if(backWheel.getSpeed() > 0.1){
-                        // Moving forward - add some brake force to slow down
-                        backWheel.setBrakeForce(5);
-                    } else {
-                        // Moving backwards - reverse the engine force
-                        backWheel.setBrakeForce(0);
-                        backWheel.engineForce = -2;
+                    // Key controls
+                    const keys = {
+                        37: 0, // left
+                        39: 0, // right
+                        38: 0, // up
+                        40: 0, // down
                     }
+                    const maxSteer = Math.PI / 5
+                    document.addEventListener('keydown', function (evt) {
+                        keys[evt.keyCode] = 1
+                        onInputChange()
+                    })
+                    document.addEventListener('keyup', function (evt) {
+                        keys[evt.keyCode] = 0
+                        onInputChange()
+                    })
+
+                    function onInputChange() {
+                        // Steer value zero means straight forward. Positive is left and negative right.
+                        frontWheel.steerValue = maxSteer * (keys[37] - keys[39])
+
+                        // Engine force forward
+                        backWheel.engineForce = keys[38] * 7
+
+                        backWheel.setBrakeForce(0)
+                        if (keys[40]) {
+                            if (backWheel.getSpeed() > 0.1) {
+                                // Moving forward - add some brake force to slow down
+                                backWheel.setBrakeForce(5)
+                            } else {
+                                // Moving backwards - reverse the engine force
+                                backWheel.setBrakeForce(0)
+                                backWheel.engineForce = -2
+                            }
+                        }
+                    }
+
+                    return { world }
+                },
+                document.getElementById('demo'),
+                {
+                    title: 'Top Down Vehicle',
+                    codeLink: 'https://github.com/pmndrs/p2-es/blob/master/apps/p2-es-demos/src/topDownVehicle.html',
                 }
-            }
-
-        });
-
-    </script>
-</body>
+            ).mount()
+        </script>
+    </body>
 </html>

@@ -1,83 +1,92 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Tearable constraints demo - p2.js physics engine</title>
+        <title>Tearable constraints demo - p2-es physics engine</title>
         <link href="css/demo.css" rel="stylesheet" />
         <meta name="description" content="Demonstrates constraints that are removed when they have too much load." />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     </head>
     <body>
+        <div id="demo"></div>
         <script type="module">
+            import { Sandbox } from '@p2-es/sandbox'
             import * as p2 from 'p2-es'
-            import { Demo } from './js/Demo.js'
 
-            // Create demo application
-            new Demo(function () {
-                // Create a World
-                var world = new p2.World({
-                    gravity: [0, -15],
-                })
-
-                this.setWorld(world)
-
-                world.solver.iterations = 30
-                world.solver.tolerance = 0.001
-
-                // Create circle rope
-                var N = 10, // Number of circles
-                    r = 0.1 // Radius of circle
-                var lastBody,
-                    constraints = []
-                for (var i = N - 1; i >= 0; i--) {
-                    var x = 0,
-                        y = (N - i - N / 2) * r * 2.1
-                    var p = new p2.Body({
-                        mass: i == 0 ? 0 : 1, // top body has mass=0 and is static
-                        position: [x, y],
-                        angularDamping: 0.5,
+            new Sandbox(
+                ({ frame }) => {
+                    // Create a World
+                    var world = new p2.World({
+                        gravity: [0, -15],
                     })
-                    p.addShape(new p2.Circle({ radius: r }))
-                    world.addBody(p)
-                    if (lastBody) {
-                        // Create a DistanceConstraint, it will constrain the
-                        // current and the last body to have a fixed distance from each other
-                        var dist = Math.abs(p.position[1] - lastBody.position[1]),
-                            c = new p2.DistanceConstraint(p, lastBody, {
-                                distance: dist,
-                            })
-                        world.addConstraint(c)
-                        constraints.push(c)
-                    } else {
-                        // Set horizontal velocity of the last body
-                        p.velocity[0] = 1
-                    }
-                    lastBody = p
-                }
 
-                // Create ground
-                var planeShape = new p2.Plane()
-                var plane = new p2.Body({
-                    position: [0, (-N / 2) * r * 2.1],
-                })
-                plane.addShape(planeShape)
-                world.addBody(plane)
+                    world.solver.iterations = 30
+                    world.solver.tolerance = 0.001
 
-                // After each physics step, we check the constraint force
-                // applied. If it is too large, we remove the constraint.
-                world.on('postStep', function (evt) {
-                    for (var i = 0; i < constraints.length; i++) {
-                        var c = constraints[i],
-                            eqs = c.equations
-                        // Equation.multiplier can be seen as the magnitude of the force
-                        if (Math.abs(eqs[0].multiplier) > 1500) {
-                            // Constraint force is too large... Remove the constraint.
-                            world.removeConstraint(c)
-                            constraints.splice(constraints.indexOf(c), 1)
+                    // Create circle rope
+                    const N = 10 // Number of circles
+                    const r = 0.1 // Radius of circle
+                    const constraints = []
+                    let lastBody
+                    for (let i = N - 1; i >= 0; i--) {
+                        const x = 0
+                        const y = (N - i - N / 2) * r * 2.1
+                        const p = new p2.Body({
+                            mass: i == 0 ? 0 : 1, // top body has mass=0 and is static
+                            position: [x, y],
+                            angularDamping: 0.5,
+                        })
+                        p.addShape(new p2.Circle({ radius: r }))
+                        world.addBody(p)
+                        if (lastBody) {
+                            // Create a DistanceConstraint, it will constrain the
+                            // current and the last body to have a fixed distance from each other
+                            const dist = Math.abs(p.position[1] - lastBody.position[1]),
+                                c = new p2.DistanceConstraint(p, lastBody, {
+                                    distance: dist,
+                                })
+                            world.addConstraint(c)
+                            constraints.push(c)
+                        } else {
+                            // Set horizontal velocity of the last body
+                            p.velocity[0] = 1
                         }
+                        lastBody = p
                     }
-                })
-            })
+
+                    // Create ground
+                    const planeShape = new p2.Plane()
+                    const plane = new p2.Body({
+                        position: [0, (-N / 2) * r * 2.1],
+                    })
+                    plane.addShape(planeShape)
+                    world.addBody(plane)
+
+                    // After each physics step, we check the constraint force
+                    // applied. If it is too large, we remove the constraint.
+                    world.on('postStep', function (evt) {
+                        for (let i = 0; i < constraints.length; i++) {
+                            const c = constraints[i]
+                            const eqs = c.equations
+                            // Equation.multiplier can be seen as the magnitude of the force
+                            if (Math.abs(eqs[0].multiplier) > 1500) {
+                                // Constraint force is too large... Remove the constraint.
+                                world.removeConstraint(c)
+                                constraints.splice(constraints.indexOf(c), 1)
+                            }
+                        }
+                    })
+
+                    frame(0, 0, 5, 5)
+
+                    return { world }
+                },
+                document.getElementById('demo'),
+                {
+                    title: 'Tearable',
+                    codeLink: 'https://github.com/pmndrs/p2-es/blob/master/apps/p2-es-demos/src/tearable.html',
+                }
+            ).mount()
         </script>
     </body>
 </html>

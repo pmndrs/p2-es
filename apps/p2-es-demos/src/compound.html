@@ -1,105 +1,113 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Compound objects demo - p2.js physics engine</title>
+        <title>Compound objects demo - p2-es physics engine</title>
         <link href="css/demo.css" rel="stylesheet" />
         <meta name="description" content="Shows how to add shapes with offset and rotation in a Body." />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     </head>
     <body>
+        <div id="demo"></div>
         <script type="module">
+            import { Sandbox } from '@p2-es/sandbox'
             import * as p2 from 'p2-es'
-            import { Demo } from './js/Demo.js'
 
-            // Create demo application
-            new Demo(function () {
-                var N = 2,
-                    M = 2,
-                    d = 1.2,
-                    r = 0.3
+            new Sandbox(
+                ({ frame }) => {
+                    const N = 2
+                    const M = 2
+                    const d = 1.2
+                    const r = 0.3
 
-                var world = new p2.World({
-                    gravity: [0, -10],
-                })
+                    const world = new p2.World({
+                        gravity: [0, -10],
+                    })
 
-                this.setWorld(world)
+                    // Create circle bodies
+                    const body1 = new p2.Body({
+                        mass: 1,
+                        position: [-M * r * d, N * r * d * 2],
+                        angularVelocity: 1,
+                    })
+                    const body2 = new p2.Body({
+                        mass: 1,
+                        position: [M * r * d, N * r * d * 2],
+                        angularVelocity: 1,
+                    })
+                    const body3 = new p2.Body({
+                        mass: 1,
+                        position: [-2 * M * r * d, N * r * d * 2],
+                        angularVelocity: 1,
+                    })
 
-                // Create circle bodies
-                var body1 = new p2.Body({
-                    mass: 1,
-                    position: [-M * r * d, N * r * d * 2],
-                    angularVelocity: 1,
-                })
-                var body2 = new p2.Body({
-                    mass: 1,
-                    position: [M * r * d, N * r * d * 2],
-                    angularVelocity: 1,
-                })
-                var body3 = new p2.Body({
-                    mass: 1,
-                    position: [-2 * M * r * d, N * r * d * 2],
-                    angularVelocity: 1,
-                })
-                for (var i = 0; i < N; i++) {
-                    for (var j = 0; j < M; j++) {
-                        var x = (i - N / 2 + 1 / 2) * 2 * r * d
-                        var y = (j - M / 2 + 1 / 2) * 2 * r * d
-                        var angle = ((j + i) * Math.PI) / 8
-                        body1.addShape(new p2.Particle(), [x, y], 0)
-                        body2.addShape(new p2.Circle({ radius: r }), [x, y], 0)
-                        body3.addShape(new p2.Capsule({ radius: r / 2, length: r }), [x, y], angle)
+                    for (let i = 0; i < N; i++) {
+                        for (let j = 0; j < M; j++) {
+                            const x = (i - N / 2 + 1 / 2) * 2 * r * d
+                            const y = (j - M / 2 + 1 / 2) * 2 * r * d
+                            const angle = ((j + i) * Math.PI) / 8
+                            body1.addShape(new p2.Particle(), [x, y], 0)
+                            body2.addShape(new p2.Circle({ radius: r }), [x, y], 0)
+                            body3.addShape(new p2.Capsule({ radius: r / 2, length: r }), [x, y], angle)
+                        }
                     }
+                    world.addBody(body1)
+                    world.addBody(body2)
+                    world.addBody(body3)
+
+                    // Create boxes
+                    const box = new p2.Body({
+                        position: [3, 2],
+                        mass: 1,
+                        angularVelocity: -0.2,
+                    })
+                    box.addShape(new p2.Box({ width: 1, height: 1 }), [0, 0.5], Math.PI / 4)
+                    box.addShape(new p2.Box({ width: 1, height: 1 }), [0, -0.5], 0)
+                    world.addBody(box)
+
+                    // Create circle
+                    const circleShape = new p2.Circle({ radius: 0.5 })
+                    const circle = new p2.Body({
+                        position: [3, 4],
+                        mass: 1,
+                        angularVelocity: 1,
+                    })
+                    circle.addShape(circleShape)
+                    world.addBody(circle)
+
+                    // Create convex
+                    const verts = []
+                    for (let i = 0, N = 5; i < N; i++) {
+                        var a = ((2 * Math.PI) / N) * i
+                        verts.push([0.5 * Math.cos(a), 0.5 * Math.sin(a)])
+                    }
+                    const convex = new p2.Body({
+                        position: [-4, 2],
+                        mass: 1,
+                        angularVelocity: -0.1,
+                    })
+                    convex.addShape(new p2.Convex({ vertices: verts }), [0, 0.5])
+                    convex.addShape(new p2.Convex({ vertices: verts }), [0, -0.5], Math.PI / 4)
+                    world.addBody(convex)
+
+                    // Create ground
+                    const planeShape = new p2.Plane()
+                    const plane = new p2.Body({
+                        position: [0, -1],
+                    })
+                    plane.addShape(planeShape)
+                    world.addBody(plane)
+
+                    frame(0, 0, 10, 10)
+
+                    return { world }
+                },
+                document.getElementById('demo'),
+                {
+                    title: 'Compound',
+                    codeLink: 'https://github.com/pmndrs/p2-es/blob/master/apps/p2-es-demos/src/compound.html',
                 }
-                world.addBody(body1)
-                world.addBody(body2)
-                world.addBody(body3)
-
-                // Create boxes
-                var box = new p2.Body({
-                    position: [3, 2],
-                    mass: 1,
-                    angularVelocity: -0.2,
-                })
-                box.addShape(new p2.Box({ width: 1, height: 1 }), [0, 0.5], Math.PI / 4)
-                box.addShape(new p2.Box({ width: 1, height: 1 }), [0, -0.5], 0)
-                world.addBody(box)
-
-                // Create circle
-                var circleShape = new p2.Circle({ radius: 0.5 })
-                var circle = new p2.Body({
-                    position: [3, 4],
-                    mass: 1,
-                    angularVelocity: 1,
-                })
-                circle.addShape(circleShape)
-                world.addBody(circle)
-
-                // Create convex
-                var verts = []
-                for (var i = 0, N = 5; i < N; i++) {
-                    var a = ((2 * Math.PI) / N) * i
-                    verts.push([0.5 * Math.cos(a), 0.5 * Math.sin(a)])
-                }
-                var convex = new p2.Body({
-                    position: [-4, 2],
-                    mass: 1,
-                    angularVelocity: -0.1,
-                })
-                convex.addShape(new p2.Convex({ vertices: verts }), [0, 0.5])
-                convex.addShape(new p2.Convex({ vertices: verts }), [0, -0.5], Math.PI / 4)
-                world.addBody(convex)
-
-                // Create ground
-                var planeShape = new p2.Plane()
-                var plane = new p2.Body({
-                    position: [0, -1],
-                })
-                plane.addShape(planeShape)
-                world.addBody(plane)
-
-                this.frame(0, 0, 6, 6)
-            })
+            ).mount()
         </script>
     </body>
 </html>

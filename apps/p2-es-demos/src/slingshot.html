@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Slingshot demo - p2-es physics engine</title>
+        <link href="css/demo.css" rel="stylesheet" />
+        <meta name="description" content="An example of using constraints to create an angry-birds style game" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    </head>
+    <body>
+        <div id="demo"></div>
+        <script type="module">
+            import { Sandbox } from '@p2-es/sandbox'
+            import * as p2 from 'p2-es'
+
+            new Sandbox(
+                ({ frame }) => {
+                    // Create the world
+                    const world = new p2.World({
+                        gravity: [0, -5],
+                    })
+                    world.defaultContactMaterial.friction = 0.5
+
+                    // Allow sleeping
+                    world.sleepMode = p2.World.BODY_SLEEPING
+
+                    // Define collision groups
+                    const ATTACHED_ROCK_COLLISION_GROUP = Math.pow(2, 1)
+                    const ROCK_COLLISION_GROUP = Math.pow(2, 2)
+                    const POST_COLLISION_GROUP = Math.pow(2, 3)
+                    const OTHER_COLLISION_GROUP = Math.pow(2, 4)
+
+                    // Create ground plane
+                    const plane = new p2.Body({
+                        position: [0, 0],
+                    })
+                    plane.addShape(
+                        new p2.Plane({
+                            collisionGroup: OTHER_COLLISION_GROUP,
+                            collisionMask: ROCK_COLLISION_GROUP | OTHER_COLLISION_GROUP,
+                        })
+                    )
+                    world.addBody(plane)
+
+                    // Add a pyramid of boxes
+                    const pyramidBaseX = 5
+                    const pyramidBaseY = 0.5
+                    const height = 12
+                    const baseWidth = 12
+                    const boxWidth = 0.3
+                    const boxHeight = 0.3
+                    const boxMass = 1
+                    for (let i = 0; i < height; i++) {
+                        for (let j = 0; j < baseWidth - i; j++) {
+                            const box = new p2.Body({
+                                mass: boxMass,
+                                position: [
+                                    pyramidBaseX + j * boxWidth - ((baseWidth - i) * boxWidth) / 2,
+                                    pyramidBaseY + i * boxHeight,
+                                ],
+                            })
+                            box.addShape(
+                                new p2.Box({
+                                    width: boxWidth,
+                                    height: boxHeight,
+                                    collisionGroup: OTHER_COLLISION_GROUP,
+                                    collisionMask: ROCK_COLLISION_GROUP | OTHER_COLLISION_GROUP,
+                                })
+                            )
+                            world.addBody(box)
+                        }
+                    }
+
+                    // Create a static body for the slingshot base
+                    const postBody = new p2.Body({
+                        mass: 0,
+                        position: [0, 1],
+                    })
+                    const postShape = new p2.Box({
+                        width: 0.5,
+                        height: 0.5,
+                        collisionGroup: POST_COLLISION_GROUP,
+                        collisionMask: ATTACHED_ROCK_COLLISION_GROUP,
+                        sensor: true,
+                    })
+                    postBody.addShape(postShape)
+                    world.addBody(postBody)
+
+                    // Function to create a circle body and a spring
+                    const createRockAndSpring = () => {
+                        const circleShape = new p2.Circle({
+                            radius: 0.2,
+                            collisionGroup: ATTACHED_ROCK_COLLISION_GROUP,
+                            collisionMask: POST_COLLISION_GROUP,
+                        })
+                        const circleBody = new p2.Body({
+                            mass: 1,
+                            position: [0, 1],
+                            angularDamping: 1,
+                        })
+                        circleBody.userData = 'rock'
+                        circleBody.addShape(circleShape)
+                        world.addBody(circleBody)
+
+                        const spring = new p2.LinearSpring(postBody, circleBody, {
+                            stiffness: 1000,
+                            damping: 10,
+                            restLength: 0,
+                        })
+                        world.addSpring(spring)
+
+                        return { circleBody, circleShape, spring }
+                    }
+
+                    // Create the first rock and spring
+                    let { circleBody, circleShape, spring } = createRockAndSpring()
+
+                    // Release the rock when it collides with the slingshot base and is moving fast enough
+                    let springToRemove = null
+                    world.on('beginContact', (e) => {
+                        if (e.bodyA === circleBody || e.bodyB === circleBody) {
+                            const speed = p2.vec2.squaredLength(circleBody.velocity)
+                            if (speed > 10) {
+                                springToRemove = spring
+                            }
+                        }
+                    })
+                    world.on('postStep', () => {
+                        if (springToRemove) {
+                            world.removeSpring(springToRemove)
+                            springToRemove = null
+
+                            // Change the rocks collision group and mask
+                            circleShape.collisionGroup = ROCK_COLLISION_GROUP
+                            circleShape.collisionMask = ROCK_COLLISION_GROUP | OTHER_COLLISION_GROUP
+
+                            // Create a new rock and spring
+                            const {
+                                circleBody: newCircleBody,
+                                circleShape: newCircleShape,
+                                spring: newSpring,
+                            } = createRockAndSpring()
+                            circleBody = newCircleBody
+                            circleShape = newCircleShape
+                            spring = newSpring
+                        }
+                    })
+
+                    // Set the collision group and mask for new bodies
+                    world.on('addBody', ({ body }) => {
+                        if (body.userData !== 'rock') {
+                            body.shapes.forEach((shape) => {
+                                shape.collisionGroup = ROCK_COLLISION_GROUP
+                                shape.collisionMask = ROCK_COLLISION_GROUP | OTHER_COLLISION_GROUP
+                            })
+                        }
+                    })
+
+                    // Framing
+                    frame(2.5, 1, 10, 10)
+
+                    return { world }
+                },
+                document.getElementById('demo'),
+                {
+                    title: 'Slingshot',
+                    codeLink: 'https://github.com/pmndrs/p2-es/blob/master/apps/p2-es-demos/src/slingshot.html',
+                }
+            ).mount()
+        </script>
+    </body>
+</html>

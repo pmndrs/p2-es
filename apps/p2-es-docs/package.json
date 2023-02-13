@@ -1,5 +1,6 @@
 {
     "name": "p2-es-docs",
+    "packageManager": "yarn@3.2.1",
     "version": "0.0.0",
     "private": true,
     "scripts": {

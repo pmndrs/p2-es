@@ -1,91 +1,98 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Constraints demo - p2.js physics engine</title>
+        <title>Constraints demo - p2-es physics engine</title>
         <link href="css/demo.css" rel="stylesheet" />
         <meta name="description" content="Tests a few constraints." />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     </head>
     <body>
+        <div id="demo"></div>
         <script type="module">
+            import { Sandbox } from '@p2-es/sandbox'
             import * as p2 from 'p2-es'
-            import { Demo } from './js/Demo.js'
 
-            var N = 10, // Number of circles
-                r = 0.1 // circle radius
+            const N = 10 // Number of circles
+            const r = 0.1 // circle radius
 
-            // Create demo application
-            new Demo(function () {
-                var world = new p2.World({
-                    gravity: [0, -15],
-                })
-
-                this.setWorld(world)
-
-                world.solver.iterations = N
-
-                // Add a line
-                var lineBody = new p2.Body({
-                    mass: 1,
-                    position: [-1.5, -0.5],
-                    angle: Math.PI / 2,
-                    angularVelocity: 10,
-                })
-                lineBody.addShape(new p2.Line({ length: 1 }))
-                world.addBody(lineBody)
-
-                // Add a "null" body
-                var groundBody = new p2.Body()
-                world.addBody(groundBody)
-
-                var revolute = new p2.RevoluteConstraint(lineBody, groundBody, {
-                    worldPivot: [-1.5, 0],
-                })
-                world.addConstraint(revolute)
-
-                // Create circle rope
-                var lastBody
-                for (var i = N - 1; i >= 0; i--) {
-                    var x = 0
-                    var y = (N - i - N / 2) * r * 2.1
-                    var p = new p2.Body({
-                        mass: i == 0 ? 0 : 1,
-                        position: [x, y],
+            new Sandbox(
+                ({ frame }) => {
+                    const world = new p2.World({
+                        gravity: [0, -15],
                     })
-                    p.addShape(new p2.Circle({ radius: r }))
-                    world.addBody(p)
-                    if (lastBody) {
-                        var c = new p2.DistanceConstraint(p, lastBody)
-                        world.addConstraint(c)
-                    } else {
-                        p.velocity[0] = 10
+
+                    world.solver.iterations = N
+
+                    // Add a line
+                    const lineBody = new p2.Body({
+                        mass: 1,
+                        position: [-1.5, -0.5],
+                        angle: Math.PI / 2,
+                        angularVelocity: 10,
+                    })
+                    lineBody.addShape(new p2.Line({ length: 1 }))
+                    world.addBody(lineBody)
+
+                    // Add a "null" body
+                    const groundBody = new p2.Body()
+                    world.addBody(groundBody)
+
+                    const revolute = new p2.RevoluteConstraint(lineBody, groundBody, {
+                        worldPivot: [-1.5, 0],
+                    })
+                    world.addConstraint(revolute)
+
+                    // Create circle rope
+                    let lastBody
+                    for (let i = N - 1; i >= 0; i--) {
+                        const x = 0
+                        const y = (N - i - N / 2) * r * 2.1
+                        const p = new p2.Body({
+                            mass: i == 0 ? 0 : 1,
+                            position: [x, y],
+                        })
+                        p.addShape(new p2.Circle({ radius: r }))
+                        world.addBody(p)
+                        if (lastBody) {
+                            var c = new p2.DistanceConstraint(p, lastBody)
+                            world.addConstraint(c)
+                        } else {
+                            p.velocity[0] = 10
+                        }
+                        lastBody = p
                     }
-                    lastBody = p
+
+                    // Create RevoluteConstraint
+                    const bodyA = new p2.Body({
+                        mass: 1,
+                        position: [3, 0],
+                        angularVelocity: 30,
+                    })
+                    bodyA.addShape(new p2.Circle({ radius: 1 }))
+                    world.addBody(bodyA)
+                    const bodyB = new p2.Body({
+                        mass: 0,
+                        position: [3, 4],
+                    })
+                    bodyB.addShape(new p2.Circle({ radius: 1 }))
+                    world.addBody(bodyB)
+                    const cr = new p2.RevoluteConstraint(bodyA, bodyB, {
+                        worldPivot: [3, 2],
+                    })
+                    cr.setLimits(-Math.PI / 4, Math.PI / 4)
+                    world.addConstraint(cr)
+
+                    frame(0, 0, 8, 8)
+
+                    return { world }
+                },
+                document.getElementById('demo'),
+                {
+                    title: 'Constraints',
+                    codeLink: 'https://github.com/pmndrs/p2-es/blob/master/apps/p2-es-demos/src/constraints.html',
                 }
-
-                // Create RevoluteConstraint
-                var bodyA = new p2.Body({
-                    mass: 1,
-                    position: [3, 0],
-                    angularVelocity: 30,
-                })
-                bodyA.addShape(new p2.Circle({ radius: 1 }))
-                world.addBody(bodyA)
-                var bodyB = new p2.Body({
-                    mass: 0,
-                    position: [3, 4],
-                })
-                bodyB.addShape(new p2.Circle({ radius: 1 }))
-                world.addBody(bodyB)
-                var cr = new p2.RevoluteConstraint(bodyA, bodyB, {
-                    worldPivot: [3, 2],
-                })
-                cr.setLimits(-Math.PI / 4, Math.PI / 4)
-                world.addConstraint(cr)
-
-                this.frame(0, 0, 8, 8)
-            })
+            ).mount()
         </script>
     </body>
 </html>

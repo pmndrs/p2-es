@@ -1,83 +1,90 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Surface velocity demo - p2.js physics engine</title>
+        <title>Surface velocity demo - p2-es physics engine</title>
         <link href="css/demo.css" rel="stylesheet" />
         <meta name="description" content="How to create a ContactMaterial with surface velocity." />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     </head>
     <body>
+        <div id="demo"></div>
         <script type="module">
+            import { Sandbox } from '@p2-es/sandbox'
             import * as p2 from 'p2-es'
-            import { Demo } from './js/Demo.js'
 
-            // Create demo application
-            new Demo(function () {
-                // Create a World
-                var world = new p2.World({
-                    gravity: [0, -10],
-                })
+            new Sandbox(
+                ({ frame }) => {
+                    // Create a World
+                    const world = new p2.World({
+                        gravity: [0, -10],
+                    })
 
-                this.setWorld(world)
+                    // Create ground
+                    const planeShape = new p2.Plane()
+                    const plane = new p2.Body()
+                    plane.addShape(planeShape)
+                    world.addBody(plane)
 
-                // Create ground
-                var planeShape = new p2.Plane()
-                var plane = new p2.Body()
-                plane.addShape(planeShape)
-                world.addBody(plane)
+                    // Create moving box
+                    const boxBody = new p2.Body({
+                        mass: 1,
+                        position: [1, 4],
+                    })
+                    const boxShape = new p2.Box({
+                        width: 0.5,
+                        height: 0.5,
+                        material: new p2.Material(),
+                    })
+                    boxBody.addShape(boxShape)
+                    world.addBody(boxBody)
 
-                // Create moving box
-                var boxBody = new p2.Body({
-                    mass: 1,
-                    position: [1, 4],
-                })
-                var boxShape = new p2.Box({
-                    width: 0.5,
-                    height: 0.5,
-                    material: new p2.Material(),
-                })
-                boxBody.addShape(boxShape)
-                world.addBody(boxBody)
+                    // Create static platform box
+                    const platformBody1 = new p2.Body({
+                        mass: 0, // static
+                        position: [-0.5, 1],
+                    })
+                    const platformShape1 = new p2.Box({
+                        width: 3,
+                        height: 0.2,
+                        material: new p2.Material(),
+                    })
+                    platformBody1.addShape(platformShape1)
+                    world.addBody(platformBody1)
 
-                // Create static platform box
-                var platformBody1 = new p2.Body({
-                    mass: 0, // static
-                    position: [-0.5, 1],
-                })
-                var platformShape1 = new p2.Box({
-                    width: 3,
-                    height: 0.2,
-                    material: new p2.Material(),
-                })
-                platformBody1.addShape(platformShape1)
-                world.addBody(platformBody1)
+                    // Create static platform box
+                    const platformBody2 = new p2.Body({
+                        mass: 0, // static
+                        position: [0.5, 2],
+                    })
+                    const platformShape2 = new p2.Box({
+                        width: 3,
+                        height: 0.2,
+                        material: new p2.Material(),
+                    })
+                    platformBody2.addShape(platformShape2)
+                    world.addBody(platformBody2)
 
-                // Create static platform box
-                var platformBody2 = new p2.Body({
-                    mass: 0, // static
-                    position: [0.5, 2],
-                })
-                var platformShape2 = new p2.Box({
-                    width: 3,
-                    height: 0.2,
-                    material: new p2.Material(),
-                })
-                platformBody2.addShape(platformShape2)
-                world.addBody(platformBody2)
+                    const contactMaterial1 = new p2.ContactMaterial(boxShape.material, platformShape1.material, {
+                        surfaceVelocity: -0.5,
+                    })
+                    world.addContactMaterial(contactMaterial1)
 
-                var contactMaterial1 = new p2.ContactMaterial(boxShape.material, platformShape1.material, {
-                    surfaceVelocity: -0.5,
-                })
-                world.addContactMaterial(contactMaterial1)
+                    const contactMaterial2 = new p2.ContactMaterial(boxShape.material, platformShape2.material, {
+                        surfaceVelocity: 0.5,
+                    })
+                    world.addContactMaterial(contactMaterial2)
 
-                var contactMaterial2 = new p2.ContactMaterial(boxShape.material, platformShape2.material, {
-                    surfaceVelocity: 0.5,
-                })
-                world.addContactMaterial(contactMaterial2)
+                    frame(0, 1, 4, 4)
 
-                this.frame(0, 1, 4, 4)
-            })
+                    return { world }
+                },
+                document.getElementById('demo'),
+                {
+                    title: 'Surface Velocity',
+                    codeLink: 'https://github.com/pmndrs/p2-es/blob/master/apps/p2-es-demos/src/surfaceVelocity.html',
+                }
+            ).mount()
         </script>
     </body>
 </html>
