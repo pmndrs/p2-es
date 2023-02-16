@@ -30,7 +30,7 @@ export const SandboxExample = () => {
             context.frame(0, 0, 4, 4)
 
             return { world }
-        }, document.getElementById('demo')!)
+        })
 
         sandbox.mount()
 
@@ -39,15 +39,7 @@ export const SandboxExample = () => {
         }
     })
 
-    return (
-        <div
-            id="demo"
-            style={{
-                width: '100%',
-                height: '100vh',
-            }}
-        ></div>
-    )
+    return null
 }
 
 export default {

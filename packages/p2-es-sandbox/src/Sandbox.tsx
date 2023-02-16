@@ -14,13 +14,18 @@ export class Sandbox {
     // eslint-disable-next-line no-useless-constructor
     constructor(
         private setup: SandboxFunction | Scenes,
-        private domElement: HTMLElement,
         private config?: SandboxProps
     ) {}
 
     mount(): this {
         if (!this.root) {
-            this.root = ReactDOM.createRoot(this.domElement)
+            const appElement = document.createElement('div')
+            appElement.style.width = '100%'
+            appElement.style.height = '100vh'
+            appElement.style.overflow = 'scroll'
+            document.body.appendChild(appElement)
+
+            this.root = ReactDOM.createRoot(appElement)
 
             this.root.render(
                 <App
