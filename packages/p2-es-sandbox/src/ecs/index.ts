@@ -1,5 +1,5 @@
-import { createECS } from '@arancini/react'
 import { World } from 'arancini'
+import { createECS } from 'arancini/react'
 import { PhysicsBodyComponent } from './components/PhysicsBodyComponent'
 import { PhysicsConstraintComponent } from './components/PhysicsConstraintComponent'
 import { PhysicsSpringComponent } from './components/PhysicsSpringComponent'
@@ -38,4 +38,5 @@ export * from './components/singletons/PointerComponent'
 export * from './components/singletons/SettingsComponent'
 export * from './components/SpriteComponent'
 export * from './components/UpdateHandlerComponent'
+
 export { ecs, world }

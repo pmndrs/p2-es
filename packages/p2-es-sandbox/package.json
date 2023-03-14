@@ -24,9 +24,8 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
-    "@arancini/react": "^2.0.1",
+    "arancini": "^2.2.0",
     "@pixi/core": "7.0.5",
-    "arancini": "^2.0.0",
     "leva": "^0.9.34",
     "pixi.js": "^7.0.5",
     "react": "^18.2.0",
