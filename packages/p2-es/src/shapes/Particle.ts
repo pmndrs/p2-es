@@ -1,5 +1,6 @@
 import type { AABB } from '../collision/AABB'
 import * as vec2 from '../math/vec2'
+import type { Vec2 } from '../types'
 import type { SharedShapeOptions } from './Shape'
 import { Shape } from './Shape'
 
@@ -22,7 +23,7 @@ export class Particle extends Shape {
         this.boundingRadius = 0
     }
 
-    computeAABB(out: AABB, position: [number, number]): void {
+    computeAABB(out: AABB, position: Vec2): void {
         vec2.copy(out.lowerBound, position)
         vec2.copy(out.upperBound, position)
     }

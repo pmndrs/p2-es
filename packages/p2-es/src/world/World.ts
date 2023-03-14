@@ -1039,7 +1039,7 @@ export class World extends EventEmitter<WorldEventMap> {
      * @todo Should use the broadphase
      * @todo Returning the hit shape would be fine - it carries a reference to the body now
      */
-    hitTest(worldPoint: [number, number], bodies: Body[], precision = 0): Body[] {
+    hitTest(worldPoint: Vec2, bodies: Body[], precision = 0): Body[] {
         // Create a dummy particle body with a particle shape to test against the bodies
         const shapeWorldPosition = hitTest_tmp1,
             shapeLocalPoint = hitTest_tmp2

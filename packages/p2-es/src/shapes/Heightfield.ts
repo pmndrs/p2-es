@@ -2,9 +2,9 @@ import type { AABB } from '../collision/AABB'
 import type { Ray } from '../collision/Ray'
 import type { RaycastResult } from '../collision/RaycastResult'
 import * as vec2 from '../math/vec2'
-import type { Vec2 } from '../types'
 import type { SharedShapeOptions } from './Shape'
 import { Shape } from './Shape'
+import type { Vec2 } from '../types'
 
 export interface HeightfieldOptions extends SharedShapeOptions {
     /**
@@ -132,7 +132,7 @@ export class Heightfield extends Shape {
         this.area = area
     }
 
-    computeAABB(out: AABB, position: [number, number], angle: number): void {
+    computeAABB(out: AABB, position: Vec2, angle: number): void {
         vec2.set(points[0], 0, this.maxValue!)
         vec2.set(points[1], this.elementWidth * this.heights.length, this.maxValue!)
         vec2.set(points[2], this.elementWidth * this.heights.length, this.minValue!)
