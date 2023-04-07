@@ -1,5 +1,11 @@
 # `p2-es` Changelog
 
+## 1.1.8
+
+### Patch Changes
+
+- 87d723a: feat: change remaining `[number, number]` tuple types to `Vec2` type
+
 ## 1.1.7
 
 ### Patch Changes

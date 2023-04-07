@@ -11,7 +11,7 @@
     },
     "dependencies": {
         "@p2-es/sandbox": "0.0.0",
-        "p2-es": "1.1.7"
+        "p2-es": "1.1.8"
     },
     "devDependencies": {
         "prettier": "^2.8.1",
