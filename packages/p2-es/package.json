@@ -64,7 +64,7 @@
         "eslint-plugin-typescript-enum": "^2.1.0",
         "jest": "^27.4.5",
         "lint-staged": "^12.1.4",
-        "prettier": "^2.5.1",
+        "prettier": "^2.8.7",
         "rimraf": "^3.0.2",
         "rollup": "^2.62.0",
         "rollup-plugin-filesize": "^9.1.1",
