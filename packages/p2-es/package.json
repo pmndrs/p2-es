@@ -70,7 +70,7 @@
         "rollup-plugin-filesize": "^9.1.1",
         "ts-jest": "^27.1.2",
         "ts-node": "^10.4.0",
-        "typedoc": "^0.22.10",
+        "typedoc": "^0.24.6",
         "typescript": "^4.5.4"
     },
     "dependencies": {
