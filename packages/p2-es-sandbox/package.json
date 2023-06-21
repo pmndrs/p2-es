@@ -24,7 +24,7 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
-    "arancini": "^2.2.0",
+    "arancini": "^2.2.1",
     "@pixi/core": "7.0.5",
     "leva": "^0.9.34",
     "pixi.js": "^7.0.5",
@@ -32,10 +32,11 @@
     "react-dom": "^18.2.0",
     "styled-breakpoints": "^11.1.1",
     "styled-components": "^5.3.9",
-    "zustand": "^4.3.2"
+    "zustand": "^4.3.2",
+    "p2-es": "^1.1.8"
   },
   "peerDependencies": {
-    "p2-es": "^1.1.6"
+    "p2-es": "^1.1.8"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",

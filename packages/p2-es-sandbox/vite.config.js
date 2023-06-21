@@ -12,7 +12,7 @@ export default defineConfig({
     ],
     build: {
         lib: {
-            entry: path.resolve('src/index.ts'),
+            entry: path.resolve('src/index.tsx'),
             name: '@p2-es/sandbox',
             formats: ['es', 'umd'],
             fileName: (format) => `index.${format}.js`,
