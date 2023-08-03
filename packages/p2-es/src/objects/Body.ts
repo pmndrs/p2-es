@@ -183,32 +183,32 @@ export class Body extends EventEmitter<BodyEventMap> {
     /**
      * Dynamic body.
      */
-    static DYNAMIC: 1 = 1
+    static DYNAMIC = 1 as const
 
     /**
      * Static body.
      */
-    static STATIC: 2 = 2
+    static STATIC = 2 as const
 
     /**
      * Kinematic body.
      */
-    static KINEMATIC: 4 = 4
+    static KINEMATIC = 4 as const
 
     /**
      * Awake sleep state.
      */
-    static AWAKE: 0 = 0
+    static AWAKE = 0 as const
 
     /**
      * Sleepy sleep state.
      */
-    static SLEEPY: 1 = 1
+    static SLEEPY = 1 as const
 
     /**
      * Sleeping sleep state.
      */
-    static SLEEPING: 2 = 2
+    static SLEEPING = 2 as const
 
     /**
      * Id counter for Body instances

@@ -182,42 +182,42 @@ export abstract class Shape {
     /**
      * Circle shape type
      */
-    static CIRCLE: 1 = 1
+    static CIRCLE = 1 as const
 
     /**
      * Particle shape type
      */
-    static PARTICLE: 2 = 2
+    static PARTICLE = 2 as const
 
     /**
      * Plane shape type
      */
-    static PLANE: 4 = 4
+    static PLANE = 4 as const
 
     /**
      * Convex shape type
      */
-    static CONVEX: 8 = 8
+    static CONVEX = 8 as const
 
     /**
      * Line shape type
      */
-    static LINE: 16 = 16
+    static LINE = 16 as const
 
     /**
      * Box shape type
      */
-    static BOX: 32 = 32
+    static BOX = 32 as const
 
     /**
      * Capsule shape type
      */
-    static CAPSULE: 64 = 64
+    static CAPSULE = 64 as const
 
     /**
      * Heightfield shape type
      */
-    static HEIGHTFIELD: 128 = 128
+    static HEIGHTFIELD = 128 as const
 
     /**
      * Constructor for a Shape

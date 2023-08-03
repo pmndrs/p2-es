@@ -10,22 +10,22 @@ export abstract class Broadphase {
     /**
      * Axis aligned bounding box type.
      */
-    static AABB: 1 = 1
+    static AABB = 1 as const
 
     /**
      * Bounding circle type.
      */
-    static BOUNDING_CIRCLE: 2 = 2
+    static BOUNDING_CIRCLE = 2 as const
 
     /**
      * Naive Broadphase
      */
-    static NAIVE: 1 = 1
+    static NAIVE = 1 as const
 
     /**
      * SAP Broadphase
      */
-    static SAP: 2 = 2
+    static SAP = 2 as const
 
     /**
      * Check whether the bounding radius of two bodies overlap.

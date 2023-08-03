@@ -17,12 +17,12 @@ export type ConstraintOptions = {
  * Base constraint class.
  */
 export class Constraint {
-    static OTHER: -1 = -1
-    static DISTANCE: 1 = 1
-    static GEAR: 2 = 2
-    static LOCK: 3 = 3
-    static PRISMATIC: 4 = 4
-    static REVOLUTE: 5 = 5
+    static OTHER = -1 as const
+    static DISTANCE = 1 as const
+    static GEAR = 2 as const
+    static LOCK = 3 as const
+    static PRISMATIC = 4 as const
+    static REVOLUTE = 5 as const
 
     /**
      * The type of constraint. May be one of Constraint.DISTANCE, Constraint.GEAR, Constraint.LOCK, Constraint.PRISMATIC or Constraint.REVOLUTE.

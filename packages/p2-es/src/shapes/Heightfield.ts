@@ -2,9 +2,9 @@ import type { AABB } from '../collision/AABB'
 import type { Ray } from '../collision/Ray'
 import type { RaycastResult } from '../collision/RaycastResult'
 import * as vec2 from '../math/vec2'
+import type { Vec2 } from '../types'
 import type { SharedShapeOptions } from './Shape'
 import { Shape } from './Shape'
-import type { Vec2 } from '../types'
 
 export interface HeightfieldOptions extends SharedShapeOptions {
     /**

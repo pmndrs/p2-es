@@ -11,7 +11,7 @@
  *     </script>
  *     <script src="p2-es.js"></script>
  */
-export const ARRAY_TYPE: new (n: number) => Float32Array | number[] = (() => {
+export const ARRAY_TYPE: new (_n: number) => Float32Array | number[] = (() => {
     if (typeof P2_ARRAY_TYPE !== 'undefined') {
         return P2_ARRAY_TYPE
     } else if (typeof Float32Array !== 'undefined') {
