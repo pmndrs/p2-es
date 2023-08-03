@@ -1,5 +1,5 @@
-import { Pixi, PointerComponent } from '../../ecs'
-import { SandboxContext, SandboxFunction } from '../types'
+import { Pixi, PointerComponent } from '../ecs'
+import { SandboxContext, SandboxFunction } from './types'
 
 export type SandboxRunnerProps = {
     pixi: Pixi
@@ -7,20 +7,14 @@ export type SandboxRunnerProps = {
     sandboxFunction: SandboxFunction
 }
 
-export const sandboxRunner = ({
-    pixi,
-    pointer,
-    sandboxFunction,
-}: SandboxRunnerProps) => {
+export const createSandbox = ({ pixi, pointer, sandboxFunction }: SandboxRunnerProps) => {
     const { application, container } = pixi
 
     const updateHandlers = new Set<(delta: number) => void>()
 
     const centerCamera = (x: number, y: number) => {
-        container.position.x =
-            application.renderer.width / 2 - container.scale.x * x
-        container.position.y =
-            application.renderer.height / 2 - container.scale.y * y
+        container.position.x = application.renderer.width / 2 - container.scale.x * x
+        container.position.y = application.renderer.height / 2 - container.scale.y * y
     }
 
     const frame = (x: number, y: number, w: number, h: number) => {

@@ -1,11 +1,4 @@
-import {
-    PhysicsWorldComponent,
-    PixiComponent,
-    STAGES,
-    SettingsComponent,
-    useFrame,
-    useSingletonComponent,
-} from '../../ecs'
+import { PhysicsWorldComponent, PixiComponent, STAGES, SettingsComponent, useFrame, useSingletonComponent } from '../../ecs'
 import { canvasTheme } from '../../ui'
 
 export const PhysicsContactRenderer = () => {
@@ -18,7 +11,6 @@ export const PhysicsContactRenderer = () => {
 
         const { drawContacts } = settings
         const { graphics, container } = pixi
-        const { world } = physicsWorld
 
         // Draw contacts
         if (drawContacts) {
@@ -27,17 +19,9 @@ export const PhysicsContactRenderer = () => {
             container.addChild(graphics.contacts)
 
             const g = graphics.contacts
-            g.lineStyle(
-                canvasTheme.lineWidth,
-                canvasTheme.contacts.lineColor,
-                1
-            )
-            for (
-                let i = 0;
-                i !== world.narrowphase.contactEquations.length;
-                i++
-            ) {
-                const eq = world.narrowphase.contactEquations[i]
+            g.lineStyle(canvasTheme.lineWidth, canvasTheme.contact.lineColor, 1)
+            for (let i = 0; i !== physicsWorld.narrowphase.contactEquations.length; i++) {
+                const eq = physicsWorld.narrowphase.contactEquations[i]
                 const bi = eq.bodyA
                 const bj = eq.bodyB
                 const ri = eq.contactPointA

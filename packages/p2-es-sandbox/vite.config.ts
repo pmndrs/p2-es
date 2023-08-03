@@ -23,6 +23,7 @@ export default defineConfig({
                 globals: {
                     react: 'React',
                     'react-dom': 'ReactDOM',
+                    'p2-es': 'p2',
                 },
             },
         },

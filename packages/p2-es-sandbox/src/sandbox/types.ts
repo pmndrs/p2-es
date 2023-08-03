@@ -1,6 +1,6 @@
 import type { World } from 'p2-es'
-import { Pixi, PointerComponent, SandboxSettings } from '../../ecs'
-import { Tool } from '../../tools'
+import { Pixi, PointerComponent, SandboxSettings } from '../ecs'
+import { Tool } from '../tools'
 
 export type SandboxContext = {
     pixi: Pixi
@@ -9,12 +9,7 @@ export type SandboxContext = {
 
     centerCamera: (x: number, y: number) => void
 
-    frame: (
-        centerX: number,
-        centerY: number,
-        width: number,
-        height: number
-    ) => void
+    frame: (centerX: number, centerY: number, width: number, height: number) => void
 
     onUpdate: {
         add: (callback: () => void) => void

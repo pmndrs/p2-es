@@ -1,13 +1,8 @@
 import * as p2 from 'p2-es'
 import { useEffect, useRef } from 'react'
-import {
-    PhysicsWorldComponent,
-    PixiComponent,
-    PointerComponent,
-    useSingletonComponent,
-} from '../../ecs'
-import { drawRectangle } from '../../pixi'
-import { canvasTheme } from '../../ui'
+import { PhysicsWorldComponent, PixiComponent, PointerComponent, useSingletonComponent } from '../ecs'
+import { drawRectangle } from '../pixi'
+import { canvasTheme } from '../ui'
 
 type RectangleToolState = 'default' | 'drawing'
 
@@ -16,10 +11,7 @@ export type RectangleToolProps = {
     newShapeCollisionMask?: number
 }
 
-export const RectangleTool = ({
-    newShapeCollisionGroup,
-    newShapeCollisionMask,
-}: RectangleToolProps) => {
+export const RectangleTool = ({ newShapeCollisionGroup, newShapeCollisionMask }: RectangleToolProps) => {
     const physicsWorld = useSingletonComponent(PhysicsWorldComponent)
     const pixi = useSingletonComponent(PixiComponent)
     const pointer = useSingletonComponent(PointerComponent)
@@ -30,8 +22,6 @@ export const RectangleTool = ({
 
     useEffect(() => {
         if (!pixi || !physicsWorld || !pointer) return
-
-        const { world } = physicsWorld
 
         const updateGraphics = () => {
             const { drawShape: graphics } = pixi.graphics
@@ -52,7 +42,7 @@ export const RectangleTool = ({
                 w: width,
                 h: height,
                 angle: 0,
-                lineColor: canvasTheme.bodies.drawing.lineColor,
+                lineColor: canvasTheme.body.drawing.lineColor,
                 lineWidth: canvasTheme.lineWidth,
             })
         }
@@ -76,10 +66,7 @@ export const RectangleTool = ({
                     // Create box
                     const body = new p2.Body({
                         mass: 1,
-                        position: [
-                            start[0] + width * 0.5,
-                            start[1] + height * 0.5,
-                        ],
+                        position: [start[0] + width * 0.5, start[1] + height * 0.5],
                     })
                     const rectangleShape = new p2.Box({ width, height })
 
@@ -92,7 +79,7 @@ export const RectangleTool = ({
                     }
 
                     body.addShape(rectangleShape)
-                    world.addBody(body)
+                    physicsWorld.addBody(body)
                 }
 
                 rectangleStart.current = [0, 0]
@@ -130,7 +117,7 @@ export const RectangleTool = ({
             pointer.onDown.delete(onDownHandler)
             pointer.onUp.delete(onUpHandler)
         }
-    }, [pixi?.id, physicsWorld?.id, pointer?.id])
+    }, [pixi, physicsWorld, pointer?.id])
 
     return null
 }

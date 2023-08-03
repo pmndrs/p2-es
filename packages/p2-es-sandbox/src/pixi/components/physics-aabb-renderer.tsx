@@ -1,11 +1,4 @@
-import {
-    PhysicsWorldComponent,
-    PixiComponent,
-    STAGES,
-    SettingsComponent,
-    useFrame,
-    useSingletonComponent,
-} from '../../ecs'
+import { PhysicsWorldComponent, PixiComponent, STAGES, SettingsComponent, useFrame, useSingletonComponent } from '../../ecs'
 import { canvasTheme } from '../../ui'
 
 export const PhysicsAABBRenderer = () => {
@@ -18,7 +11,6 @@ export const PhysicsAABBRenderer = () => {
 
         const { drawAABBs } = settings
         const { graphics, container } = pixi
-        const { world } = physicsWorld
 
         if (drawAABBs) {
             graphics.aabb.clear()
@@ -26,10 +18,10 @@ export const PhysicsAABBRenderer = () => {
             container.addChild(graphics.aabb)
 
             const g = graphics.aabb
-            g.lineStyle(canvasTheme.lineWidth, canvasTheme.aabbs.lineColor, 1)
+            g.lineStyle(canvasTheme.lineWidth, canvasTheme.aabb.lineColor, 1)
 
-            for (let i = 0; i !== world.bodies.length; i++) {
-                const aabb = world.bodies[i].getAABB()
+            for (let i = 0; i !== physicsWorld.bodies.length; i++) {
+                const aabb = physicsWorld.bodies[i].getAABB()
                 g.drawRect(
                     aabb.lowerBound[0],
                     aabb.lowerBound[1],

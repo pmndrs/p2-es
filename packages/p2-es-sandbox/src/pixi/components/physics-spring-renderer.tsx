@@ -30,14 +30,14 @@ export const PhysicsSpringRenderer = () => {
         const { container } = pixiComponent
 
         for (const entity of uninitialised.entities) {
-            const { spring } = entity.get(PhysicsSpringComponent)
+            const spring = entity.get(PhysicsSpringComponent)
             const sprite = entity.add(SpriteComponent)
 
             if (spring instanceof LinearSpring) {
                 drawRenderable({
                     sprite,
                     renderable: spring,
-                    lineColor: canvasTheme.springs.lineColor,
+                    lineColor: canvasTheme.spring.lineColor,
                     lineWidth: canvasTheme.lineWidth,
                 })
             }
@@ -46,7 +46,7 @@ export const PhysicsSpringRenderer = () => {
         }
 
         for (const entity of renderable.entities) {
-            const { spring } = entity.get(PhysicsSpringComponent)
+            const spring = entity.get(PhysicsSpringComponent)
             const sprite = entity.get(SpriteComponent)
             const { graphics } = sprite
 
@@ -60,18 +60,8 @@ export const PhysicsSpringRenderer = () => {
                 const distVec = vec2.fromValues(0, 0)
 
                 if (renderInterpolatedPositions && !paused) {
-                    vec2.toGlobalFrame(
-                        worldAnchorA,
-                        spring.localAnchorA,
-                        bA.interpolatedPosition,
-                        bA.interpolatedAngle
-                    )
-                    vec2.toGlobalFrame(
-                        worldAnchorB,
-                        spring.localAnchorB,
-                        bB.interpolatedPosition,
-                        bB.interpolatedAngle
-                    )
+                    vec2.toGlobalFrame(worldAnchorA, spring.localAnchorA, bA.interpolatedPosition, bA.interpolatedAngle)
+                    vec2.toGlobalFrame(worldAnchorB, spring.localAnchorB, bB.interpolatedPosition, bB.interpolatedAngle)
                 } else {
                     spring.getWorldAnchorA(worldAnchorA)
                     spring.getWorldAnchorB(worldAnchorB)
@@ -99,13 +89,10 @@ export const PhysicsSpringRenderer = () => {
                 distVec[1] = syA - syB
 
                 // Compute angle
-                graphics.rotation = Math.acos(
-                    vec2.dot(X, distVec) / vec2.length(distVec)
-                )
+                graphics.rotation = Math.acos(vec2.dot(X, distVec) / vec2.length(distVec))
 
                 // And scale
-                const clampedRestLength =
-                    spring.restLength > 0.1 ? spring.restLength : 0.1
+                const clampedRestLength = spring.restLength > 0.1 ? spring.restLength : 0.1
                 graphics.scale.x = vec2.length(distVec) / clampedRestLength
             }
         }

@@ -1,6 +1,6 @@
 import { up } from 'styled-breakpoints'
 import styled from 'styled-components'
-import { interfaceTheme } from '../constants/interface-theme'
+import { interfaceTheme } from './constants/interface-theme'
 
 export const Wrapper = styled.div`
     display: flex;
@@ -141,10 +141,8 @@ export const CanvasWrapper = styled.div<{ settingsHidden: boolean }>`
     flex: 1;
     width: 100%;
 
-    min-height: ${({ settingsHidden }) =>
-        settingsHidden ? `calc(100vh - ${HEADER_HEIGHT})` : '70vh'};
-    max-height: ${({ settingsHidden }) =>
-        settingsHidden ? `calc(100vh - ${HEADER_HEIGHT})` : '70vh'};
+    min-height: ${({ settingsHidden }) => (settingsHidden ? `calc(100vh - ${HEADER_HEIGHT})` : '70vh')};
+    max-height: ${({ settingsHidden }) => (settingsHidden ? `calc(100vh - ${HEADER_HEIGHT})` : '70vh')};
     height: 100%;
 
     ${up('md')} {

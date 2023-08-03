@@ -1,13 +1,8 @@
 import * as p2 from 'p2-es'
 import { useEffect, useRef } from 'react'
-import {
-    PhysicsWorldComponent,
-    PixiComponent,
-    PointerComponent,
-    useSingletonComponent,
-} from '../../ecs'
-import { drawPath } from '../../pixi'
-import { canvasTheme } from '../../ui'
+import { PhysicsWorldComponent, PixiComponent, PointerComponent, useSingletonComponent } from '../ecs'
+import { drawPath } from '../pixi'
+import { canvasTheme } from '../ui'
 
 type PolygonToolState = 'default' | 'drawing'
 
@@ -16,10 +11,7 @@ export type PolygonToolProps = {
     newShapeCollisionMask?: number
 }
 
-export const PolygonTool = ({
-    newShapeCollisionGroup,
-    newShapeCollisionMask,
-}: PolygonToolProps) => {
+export const PolygonTool = ({ newShapeCollisionGroup, newShapeCollisionMask }: PolygonToolProps) => {
     const physicsWorld = useSingletonComponent(PhysicsWorldComponent)
     const pixi = useSingletonComponent(PixiComponent)
     const pointer = useSingletonComponent(PointerComponent)
@@ -30,8 +22,6 @@ export const PolygonTool = ({
     useEffect(() => {
         if (!pixi || !physicsWorld || !pointer) return
 
-        const { world } = physicsWorld
-
         const updateGraphics = () => {
             const { drawShape: graphics } = pixi.graphics
             graphics.clear()
@@ -41,7 +31,7 @@ export const PolygonTool = ({
             drawPath({
                 graphics,
                 path: polygonPoints.current.map((point) => [...point]),
-                lineColor: canvasTheme.bodies.drawing.lineColor,
+                lineColor: canvasTheme.body.drawing.lineColor,
                 lineWidth: canvasTheme.lineWidth,
             })
         }
@@ -66,7 +56,7 @@ export const PolygonTool = ({
                             }
                         }
 
-                        world.addBody(body)
+                        physicsWorld.addBody(body)
                     }
                 }
 
@@ -78,9 +68,7 @@ export const PolygonTool = ({
 
         const onDownHandler = () => {
             toolState.current = 'drawing'
-            polygonPoints.current = [
-                [...pointer.primaryPointer.physicsPosition],
-            ]
+            polygonPoints.current = [[...pointer.primaryPointer.physicsPosition]]
             updateGraphics()
         }
 
@@ -94,9 +82,7 @@ export const PolygonTool = ({
 
             const sampling = 0.4
             if (sqdist > sampling * sampling) {
-                polygonPoints.current.push([
-                    ...pointer.primaryPointer.physicsPosition,
-                ])
+                polygonPoints.current.push([...pointer.primaryPointer.physicsPosition])
                 updateGraphics()
             }
         }
@@ -112,7 +98,7 @@ export const PolygonTool = ({
             pointer.onDown.delete(onDownHandler)
             pointer.onUp.delete(onUpHandler)
         }
-    }, [pixi?.id, physicsWorld?.id, pointer?.id])
+    }, [pixi, physicsWorld, pointer?.id])
 
     return null
 }

@@ -1,6 +1,6 @@
 import { Body, Shape } from 'p2-es'
 import { useCallback, useEffect } from 'react'
-import { randomPastelHex } from '../../color/utils/random-pastel-hex'
+import { randomPastelHex } from '../../color'
 import {
     PhysicsBodyComponent,
     PixiComponent,
@@ -30,37 +30,33 @@ export const PhysicsBodyRenderer = () => {
 
     const getIslandColor = useCallback((body: Body) => {
         if (body.islandId === -1) {
-            return canvasTheme.bodies.static.fillColor // Gray for static objects
+            return canvasTheme.body.static.fillColor // Gray for static objects
         }
 
         let color = islandIdToColor[body.islandId]
-        if (color) {
-            return color
-        }
+        if (color) return color
+
         color = parseInt(randomPastelHex(), 16)
         islandIdToColor[body.islandId] = color
-
         return color
     }, [])
 
     const getBodyColor = useCallback((body: Body) => {
         if (body.type === Body.STATIC) {
-            return canvasTheme.bodies.static.fillColor // Gray for static objects
+            return canvasTheme.body.static.fillColor // Gray for static objects
         }
 
         let color = bodyIdToColor[body.id]
-        if (color) {
-            return color
-        }
+        if (color) return color
+
         color = parseInt(randomPastelHex(), 16)
         bodyIdToColor[body.id] = color
-
         return color
     }, [])
 
     useEffect(() => {
         renderable.entities.forEach((e) => {
-            const { body } = e.get(PhysicsBodyComponent)
+            const body = e.get(PhysicsBodyComponent)
             if (body.shapes.some((s) => s.type === Shape.CONVEX)) {
                 e.get(SpriteComponent).dirty = true
             }
@@ -93,7 +89,7 @@ export const PhysicsBodyRenderer = () => {
         }
 
         for (const entity of renderable.entities) {
-            const { body } = entity.get(PhysicsBodyComponent)
+            const body = entity.get(PhysicsBodyComponent)
             const sprite = entity.get(SpriteComponent)
             const { graphics } = sprite
 
@@ -122,11 +118,7 @@ export const PhysicsBodyRenderer = () => {
                 color = getBodyColor(body)
             }
 
-            if (
-                sprite.drawnSleeping !== isSleeping ||
-                sprite.drawnFillColor !== color ||
-                sprite.dirty
-            ) {
+            if (sprite.drawnSleeping !== isSleeping || sprite.drawnFillColor !== color || sprite.dirty) {
                 sprite.dirty = false
 
                 graphics.clear()
@@ -134,13 +126,10 @@ export const PhysicsBodyRenderer = () => {
                     renderable: body,
                     sprite,
                     fillColor: color,
-                    lineColor:
-                        sprite.drawnLineColor ?? canvasTheme.bodies.lineColor,
+                    lineColor: sprite.drawnLineColor ?? canvasTheme.body.lineColor,
                     debugPolygons,
                     lineWidth: canvasTheme.lineWidth,
-                    sleepOpacity: bodySleepOpacity
-                        ? canvasTheme.bodies.sleeping.opacity
-                        : 1,
+                    sleepOpacity: bodySleepOpacity ? canvasTheme.body.sleeping.opacity : 1,
                 })
             }
         }

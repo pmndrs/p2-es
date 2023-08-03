@@ -1,7 +1,7 @@
 import { LevaStoreProvider, useCreateStore } from 'leva'
 import React from 'react'
-import { SandboxSettings } from '../../ecs'
-import { Tool } from '../../tools'
+import { SandboxSettings } from '../ecs'
+import { Tool } from '../tools'
 import { SettingsInner } from './settings-inner'
 
 export type SettingsProps = {

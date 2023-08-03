@@ -1,15 +1,8 @@
 import * as p2 from 'p2-es'
 import { useEffect, useRef } from 'react'
-import {
-    PhysicsWorldComponent,
-    PixiComponent,
-    PointerComponent,
-    STAGES,
-    useFrame,
-    useSingletonComponent,
-} from '../../ecs'
-import { useConst } from '../../hooks'
-import { canvasTheme } from '../../ui'
+import { PhysicsWorldComponent, PixiComponent, PointerComponent, STAGES, useFrame, useSingletonComponent } from '../ecs'
+import { useConst } from '../hooks'
+import { canvasTheme } from '../ui'
 
 const PICK_PRECISION = 0.1
 
@@ -29,9 +22,7 @@ export const PickPanTool = () => {
 
     const pinchingStartContainerScale = useRef([0, 0])
 
-    const pointerBody = useConst<p2.Body>(
-        () => new p2.Body({ type: p2.Body.STATIC })
-    )
+    const pointerBody = useConst<p2.Body>(() => new p2.Body({ type: p2.Body.STATIC }))
 
     const pointerConstraint = useRef<p2.RevoluteConstraint | null>(null)
 
@@ -39,16 +30,15 @@ export const PickPanTool = () => {
         if (!pixi || !physicsWorld || !pointer) return
 
         const { container } = pixi
-        const { world } = physicsWorld
 
         const onUpHandler = () => {
             if (interactionState.current === 'picking') {
                 if (pointerConstraint.current) {
-                    world.removeConstraint(pointerConstraint.current)
+                    physicsWorld.removeConstraint(pointerConstraint.current)
                     pointerConstraint.current = null
                 }
 
-                world.removeBody(pointerBody)
+                physicsWorld.removeBody(pointerBody)
             }
 
             interactionState.current = 'default'
@@ -59,21 +49,14 @@ export const PickPanTool = () => {
                 return
             }
 
-            if (
-                interactionState.current === 'panning' ||
-                interactionState.current === 'picking'
-            ) {
+            if (interactionState.current === 'panning' || interactionState.current === 'picking') {
                 onUpHandler()
             }
 
             const [x, y] = pointer.primaryPointer.physicsPosition
             const pointerPhysicsPosition: [number, number] = [x, y]
 
-            const hitTest = world.hitTest(
-                pointerPhysicsPosition,
-                world.bodies,
-                PICK_PRECISION
-            )
+            const hitTest = physicsWorld.hitTest(pointerPhysicsPosition, physicsWorld.bodies, PICK_PRECISION)
 
             // Remove static bodies
             let body: p2.Body | undefined
@@ -96,23 +79,19 @@ export const PickPanTool = () => {
                 pointerBody.position[1] = y
 
                 // add pointer body to world
-                world.addBody(pointerBody)
+                physicsWorld.addBody(pointerBody)
 
                 // Get local point of the body to create the joint on
                 const localPoint = p2.vec2.create()
                 body.toLocalFrame(localPoint, pointerPhysicsPosition)
 
                 // Add pointer joint
-                pointerConstraint.current = new p2.RevoluteConstraint(
-                    pointerBody,
-                    body,
-                    {
-                        localPivotA: [0, 0],
-                        localPivotB: localPoint,
-                        maxForce: 1000 * body.mass,
-                    }
-                )
-                world.addConstraint(pointerConstraint.current)
+                pointerConstraint.current = new p2.RevoluteConstraint(pointerBody, body, {
+                    localPivotA: [0, 0],
+                    localPivotB: localPoint,
+                    maxForce: 1000 * body.mass,
+                })
+                physicsWorld.addConstraint(pointerConstraint.current)
             } else {
                 interactionState.current = 'panning'
 
@@ -130,15 +109,11 @@ export const PickPanTool = () => {
         const onMoveHandler = () => {
             if (interactionState.current === 'panning') {
                 const [stageX, stageY] = pointer.primaryPointer.stagePosition
-                const [panningStartPointerX, panningStartPointerY] =
-                    panningStartPointerPosition.current
-                const [panningStartContainerX, panningStartContainerY] =
-                    panningStartContainerPosition.current
+                const [panningStartPointerX, panningStartPointerY] = panningStartPointerPosition.current
+                const [panningStartContainerX, panningStartContainerY] = panningStartContainerPosition.current
 
-                container.position.x =
-                    stageX - panningStartPointerX + panningStartContainerX
-                container.position.y =
-                    stageY - panningStartPointerY + panningStartContainerY
+                container.position.x = stageX - panningStartPointerX + panningStartContainerX
+                container.position.y = stageY - panningStartPointerY + panningStartContainerY
 
                 return
             }
@@ -150,12 +125,7 @@ export const PickPanTool = () => {
             }
         }
 
-        const zoomByMultiplier = (
-            x: number,
-            y: number,
-            zoomOut: boolean,
-            multiplier: number
-        ) => {
+        const zoomByMultiplier = (x: number, y: number, zoomOut: boolean, multiplier: number) => {
             let scrollFactor = SCROLL_FACTOR
 
             if (!zoomOut) {
@@ -172,12 +142,7 @@ export const PickPanTool = () => {
 
         const wheelHandler = (delta: number) => {
             const out = delta >= 0
-            zoomByMultiplier(
-                pointer.primaryPointer.stagePosition[0],
-                pointer.primaryPointer.stagePosition[1],
-                out,
-                delta
-            )
+            zoomByMultiplier(pointer.primaryPointer.stagePosition[0], pointer.primaryPointer.stagePosition[1], out, delta)
         }
 
         const pinchStartHandler = () => {
@@ -187,10 +152,7 @@ export const PickPanTool = () => {
 
             interactionState.current = 'pinching'
 
-            pinchingStartContainerScale.current = [
-                container.scale.x,
-                container.scale.y,
-            ]
+            pinchingStartContainerScale.current = [container.scale.x, container.scale.y]
         }
 
         const pinchEndHandler = () => {
@@ -210,8 +172,7 @@ export const PickPanTool = () => {
             const touchA = pointer.touches[pointer.pinchATouch!]
             const touchB = pointer.touches[pointer.pinchBTouch!]
 
-            const zoomScalar =
-                pointer.pinchLength! / pointer.pinchInitialLength!
+            const zoomScalar = pointer.pinchLength! / pointer.pinchInitialLength!
             const x = (touchA.stagePosition[0] + touchB.stagePosition[0]) * 0.5
             const y = (touchA.stagePosition[1] + touchB.stagePosition[1]) * 0.5
 
@@ -241,7 +202,7 @@ export const PickPanTool = () => {
             pointer.onDown.delete(onDownHandler)
             pointer.onUp.delete(onUpHandler)
         }
-    }, [pixi?.id, physicsWorld?.id, pointer?.id])
+    }, [pixi, physicsWorld, pointer?.id])
 
     // draw pick line
     const pickLineGraphicsCleared = useRef(false)
@@ -260,11 +221,7 @@ export const PickPanTool = () => {
             container.removeChild(pickGraphics)
             container.addChild(pickGraphics)
 
-            pickGraphics.lineStyle(
-                canvasTheme.lineWidth,
-                canvasTheme.bodies.drawing.lineColor,
-                1
-            )
+            pickGraphics.lineStyle(canvasTheme.lineWidth, canvasTheme.body.drawing.lineColor, 1)
 
             const constraint = pointerConstraint.current
 

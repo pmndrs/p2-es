@@ -1,10 +1,10 @@
 import React from 'react'
 import * as ReactDOM from 'react-dom/client'
 import { App } from './app'
-import { SandboxFunction, Scenes } from './sandbox'
+import { SandboxFunction, Scenes } from './sandbox/types'
 
 export * from './sandbox/types'
-export * from './tools/types'
+export { Tools, type Tool } from './tools'
 
 export type SandboxProps = {
     title?: string
@@ -14,11 +14,7 @@ export type SandboxProps = {
 export class Sandbox {
     root?: ReactDOM.Root
 
-    // eslint-disable-next-line no-useless-constructor
-    constructor(
-        private setup: SandboxFunction | Scenes,
-        private config?: SandboxProps
-    ) {}
+    constructor(private setup: SandboxFunction | Scenes, private config?: SandboxProps) {}
 
     mount(): this {
         if (!this.root) {
@@ -30,13 +26,7 @@ export class Sandbox {
 
             this.root = ReactDOM.createRoot(appElement)
 
-            this.root.render(
-                <App
-                    setup={this.setup}
-                    title={this.config?.title}
-                    codeLink={this.config?.codeLink}
-                />
-            )
+            this.root.render(<App setup={this.setup} title={this.config?.title} codeLink={this.config?.codeLink} />)
         }
 
         return this

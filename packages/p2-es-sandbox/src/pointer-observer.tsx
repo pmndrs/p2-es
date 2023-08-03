@@ -1,12 +1,7 @@
 import { vec2 } from 'p2-es'
 import { FederatedEvent, FederatedMouseEvent } from 'pixi.js'
 import { useEffect } from 'react'
-import {
-    PixiComponent,
-    PointerComponent,
-    ecs,
-    useSingletonComponent,
-} from '../../ecs'
+import { PixiComponent, PointerComponent, ecs, useSingletonComponent } from './ecs'
 
 const tmpVec2 = { x: 0, y: 0 }
 
@@ -16,24 +11,15 @@ export const PointerObserver = () => {
     useEffect(() => {
         if (!pixi) return
 
-        const pointerEntity = ecs.world.create.entity()
+        const pointerEntity = ecs.world.create()
         const pointer = pointerEntity.add(PointerComponent)
 
-        const getPhysicsPosition = (stagePosition: {
-            x: number
-            y: number
-        }): [number, number] => {
-            const { x, y } = pixi.container.worldTransform.applyInverse(
-                stagePosition,
-                tmpVec2
-            )
+        const getPhysicsPosition = (stagePosition: { x: number; y: number }): [number, number] => {
+            const { x, y } = pixi.container.worldTransform.applyInverse(stagePosition, tmpVec2)
             return [x, y]
         }
 
-        const updatePrimaryPointerPosition = (stagePosition: {
-            x: number
-            y: number
-        }) => {
+        const updatePrimaryPointerPosition = (stagePosition: { x: number; y: number }) => {
             pointer.primaryPointer.stagePosition[0] = stagePosition.x
             pointer.primaryPointer.stagePosition[1] = stagePosition.y
 
@@ -44,16 +30,11 @@ export const PointerObserver = () => {
         }
 
         const updateTouches = (e: FederatedMouseEvent) => {
-            if (
-                e.nativeEvent.type === 'touchmove' ||
-                e.nativeEvent.type === 'touchstart'
-            ) {
+            if (e.nativeEvent.type === 'touchmove' || e.nativeEvent.type === 'touchstart') {
                 const touchmove = e as FederatedEvent<PointerEvent>
 
                 const stagePosition: [number, number] = [e.global.x, e.global.y]
-                const physicsPosition: [number, number] = [
-                    ...getPhysicsPosition(e.global),
-                ]
+                const physicsPosition: [number, number] = [...getPhysicsPosition(e.global)]
 
                 pointer.touches[touchmove.nativeEvent.pointerId] = {
                     stagePosition,
@@ -80,10 +61,7 @@ export const PointerObserver = () => {
                 pointer.pinchATouch = touchAKey
                 pointer.pinchBTouch = touchBKey
 
-                pointer.pinchLength = vec2.distance(
-                    touchA.physicsPosition,
-                    touchB.physicsPosition
-                )
+                pointer.pinchLength = vec2.distance(touchA.physicsPosition, touchB.physicsPosition)
 
                 pointer.pinchInitialLength = pointer.pinchLength
 
@@ -98,10 +76,7 @@ export const PointerObserver = () => {
                     const touchA = pointer.touches[pointer.pinchATouch]
                     const touchB = pointer.touches[pointer.pinchBTouch]
 
-                    pointer.pinchLength = vec2.distance(
-                        touchA.physicsPosition,
-                        touchB.physicsPosition
-                    )
+                    pointer.pinchLength = vec2.distance(touchA.physicsPosition, touchB.physicsPosition)
 
                     pointer.onPinchMove.forEach((fn) => fn())
                 } else {
@@ -185,7 +160,7 @@ export const PointerObserver = () => {
 
             pointerEntity.destroy()
         }
-    }, [pixi?.id])
+    }, [pixi])
 
     return null
 }

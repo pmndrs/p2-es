@@ -19,24 +19,11 @@ import {
     useSingletonComponent,
 } from './ecs'
 import { useConst } from './hooks'
-import {
-    PhysicsAABBRenderer,
-    PhysicsBodyRenderer,
-    PhysicsContactRenderer,
-    PhysicsSpringRenderer,
-    initPixi,
-} from './pixi'
-import { SandboxFunction, Scenes, sandboxRunner } from './sandbox'
+import { PhysicsAABBRenderer, PhysicsBodyRenderer, PhysicsContactRenderer, PhysicsSpringRenderer, initPixi } from './pixi'
+import { PointerObserver } from './pointer-observer'
+import { SandboxFunction, Scenes, createSandbox } from './sandbox'
 import { Settings } from './settings'
-import {
-    CircleTool,
-    PickPanTool,
-    PointerObserver,
-    PolygonTool,
-    RectangleTool,
-    Tool,
-    Tools,
-} from './tools'
+import { CircleTool, PickPanTool, PolygonTool, RectangleTool, Tool, Tools } from './tools'
 import {
     CanvasWrapper,
     CodeSvg,
@@ -97,23 +84,16 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
     /* current tool */
     const [tool, setTool] = useState<Tool>(Tools.PICK_PAN)
 
-    /* settings visibility */
-    const [searchParams] = useState(
-        () => new URLSearchParams(window.location.search)
-    )
+    /* settings visibility, initially set by url search params */
+    const [searchParams] = useState(() => new URLSearchParams(window.location.search))
     const [settingsHidden, setSettingsHidden] = useState(() => {
         return searchParams.get('settings') === 'false'
     })
 
-    /* sandbox settings */
-    const [sandboxSettings, setSandboxSettings] = useState<SandboxSettings>(
-        defaultSandboxSettings
-    )
+    const [sandboxSettings, setSandboxSettings] = useState<SandboxSettings>(defaultSandboxSettings)
 
-    /* user-provided handlers for updating the sandbox */
-    const [sandboxUpdateHandlers, setSandboxUpdateHandlers] = useState<Set<
-        (delta: number) => void
-    > | null>()
+    /* user-land handlers */
+    const [sandboxUpdateHandlers, setSandboxUpdateHandlers] = useState<Set<(delta: number) => void> | undefined>()
 
     const bodyEntities: Map<Body, Entity> = useConst(() => new Map())
     const springEntities: Map<Spring, Entity> = useConst(() => new Map())
@@ -125,17 +105,14 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
 
     useEffect(() => {
         pixi?.onResize()
-    }, [pixi?.id, settingsHidden])
+    }, [pixi, settingsHidden])
 
     useEffect(() => {
-        const { destroyPixi, ...pixiObjects } = initPixi(
-            canvasWrapperElement.current!
-        )
+        const { destroyPixi, ...pixiObjects } = initPixi(canvasWrapperElement.current!)
 
-        const pixiEntity = ecs.world.create.entity()
+        const pixiEntity = ecs.world.create()
         pixiEntity.add(PixiComponent, pixiObjects)
 
-        // eslint-disable-next-line no-console
         console.log(CONSOLE_MESSAGE)
 
         return () => {
@@ -145,7 +122,7 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
     }, [])
 
     useEffect(() => {
-        const appEntity = ecs.world.create.entity()
+        const appEntity = ecs.world.create()
         appEntity.add(AppComponent, appWrapperElement.current!)
 
         appWrapperElement.current!.focus()
@@ -156,9 +133,8 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
     }, [])
 
     useEffect(() => {
-        if (!pixi || !pointer) return
+        if (!pixi || !pixi.application.renderer || !pointer) return
 
-        // evaluate the current scene's sandbox function
         const {
             world,
             tools,
@@ -166,7 +142,7 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
             sandboxContext,
             settings: newSandboxSettings,
             destroySandbox,
-        } = sandboxRunner({
+        } = createSandbox({
             pixi,
             pointer,
             sandboxFunction: scenes[scene].setup,
@@ -181,16 +157,15 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
             setSandboxSettings(s)
         }
 
-        // set tool config
         if (tools?.default) {
             setTool(tools.default)
         }
 
         // create entities for existing physics bodies and springs
         const addBodyEntity = (body: Body) => {
-            const entity = ecs.world.create.entity([
-                { type: PhysicsBodyComponent, args: [body] },
-            ])
+            const entity = ecs.world.create((e) => {
+                e.add(PhysicsBodyComponent, body)
+            })
 
             bodyEntities.set(body, entity)
         }
@@ -201,9 +176,9 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
         }
 
         const addSpringEntity = (spring: Spring) => {
-            const entity = ecs.world.create.entity([
-                { type: PhysicsSpringComponent, args: [spring] },
-            ])
+            const entity = ecs.world.create((e) => {
+                e.add(PhysicsSpringComponent, spring)
+            })
 
             springEntities.set(spring, entity)
         }
@@ -223,13 +198,10 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
 
         // add physics body and spring entities on world events
         const addBodyHandler = ({ body }: { body: Body }) => addBodyEntity(body)
-        const removeBodyHandler = ({ body }: { body: Body }) =>
-            removeBodyEntity(body)
+        const removeBodyHandler = ({ body }: { body: Body }) => removeBodyEntity(body)
 
-        const addSpringHandler = ({ spring }: { spring: Spring }) =>
-            addSpringEntity(spring)
-        const removeSpringHandler = ({ spring }: { spring: Spring }) =>
-            removeSpringRemoveSpringEntity(spring)
+        const addSpringHandler = ({ spring }: { spring: Spring }) => addSpringEntity(spring)
+        const removeSpringHandler = ({ spring }: { spring: Spring }) => removeSpringRemoveSpringEntity(spring)
 
         world.on('addBody', addBodyHandler)
         world.on('addSpring', addSpringHandler)
@@ -240,7 +212,7 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
         setSandboxUpdateHandlers(updateHandlers)
 
         // create singleton physics entity
-        const physicsEntity = ecs.world.create.entity()
+        const physicsEntity = ecs.world.create()
         physicsEntity.add(PhysicsWorldComponent, world)
 
         // set window globals
@@ -252,7 +224,7 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
         return () => {
             previousScene.current = scene
 
-            setSandboxUpdateHandlers(null)
+            setSandboxUpdateHandlers(undefined)
 
             world.off('addBody', addBodyHandler)
             world.off('addSpring', addSpringHandler)
@@ -271,18 +243,17 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
                 entity.destroy()
             })
         }
-    }, [pixi?.id, pointer?.id, scene, sceneVersion])
+    }, [pixi, pointer?.id, scene, sceneVersion])
 
     useFrame((delta) => {
         if (!settings || !physicsWorld) return
 
         const { timeStep, maxSubSteps, paused } = settings
-        const { world } = physicsWorld
 
         if (paused) return
 
         const clampedDelta = Math.min(delta, 1)
-        world.step(timeStep, clampedDelta, maxSubSteps)
+        physicsWorld.step(timeStep, clampedDelta, maxSubSteps)
     }, STAGES.PHYSICS)
 
     useFrame((delta) => {
@@ -290,6 +261,11 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
 
         sandboxUpdateHandlers.forEach((fn) => fn(delta))
     }, STAGES.SANDBOX_HANDLERS)
+
+    const shapeToolProps = {
+        newShapeCollisionMask: settings?.newShapeCollisionMask,
+        newShapeCollisionGroup: settings?.newShapeCollisionGroup,
+    }
 
     return (
         <>
@@ -317,11 +293,7 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
                             </HeaderButton>
 
                             <HeaderButton title="Settings">
-                                <button
-                                    onClick={() =>
-                                        setSettingsHidden((current) => !current)
-                                    }
-                                >
+                                <button onClick={() => setSettingsHidden((current) => !current)}>
                                     <PencilSvg />
                                 </button>
                             </HeaderButton>
@@ -344,10 +316,7 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
                     </a>
                 </Header>
                 <Main>
-                    <CanvasWrapper
-                        ref={canvasWrapperElement}
-                        settingsHidden={settingsHidden}
-                    />
+                    <CanvasWrapper ref={canvasWrapperElement} settingsHidden={settingsHidden} />
 
                     <SettingsWrapper hide={settingsHidden}>
                         <Settings
@@ -366,9 +335,9 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
 
             <PointerObserver />
             {tool === Tools.PICK_PAN && <PickPanTool />}
-            {tool === Tools.POLYGON && <PolygonTool />}
-            {tool === Tools.CIRCLE && <CircleTool />}
-            {tool === Tools.RECTANGLE && <RectangleTool />}
+            {tool === Tools.POLYGON && <PolygonTool {...shapeToolProps} />}
+            {tool === Tools.CIRCLE && <CircleTool {...shapeToolProps} />}
+            {tool === Tools.RECTANGLE && <RectangleTool {...shapeToolProps} />}
 
             <PhysicsBodyRenderer />
             <PhysicsContactRenderer />

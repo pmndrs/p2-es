@@ -1,13 +1,8 @@
 import * as p2 from 'p2-es'
 import { useEffect, useRef } from 'react'
-import {
-    PhysicsWorldComponent,
-    PixiComponent,
-    PointerComponent,
-    useSingletonComponent,
-} from '../../ecs'
-import { drawCircle } from '../../pixi'
-import { canvasTheme } from '../../ui'
+import { PhysicsWorldComponent, PixiComponent, PointerComponent, useSingletonComponent } from '../ecs'
+import { drawCircle } from '../pixi'
+import { canvasTheme } from '../ui'
 
 type CircleToolState = 'default' | 'drawing'
 
@@ -16,10 +11,7 @@ export type CircleToolProps = {
     newShapeCollisionMask?: number
 }
 
-export const CircleTool = ({
-    newShapeCollisionGroup,
-    newShapeCollisionMask,
-}: CircleToolProps) => {
+export const CircleTool = ({ newShapeCollisionGroup, newShapeCollisionMask }: CircleToolProps) => {
     const physicsWorld = useSingletonComponent(PhysicsWorldComponent)
     const pixi = useSingletonComponent(PixiComponent)
     const pointer = useSingletonComponent(PointerComponent)
@@ -30,8 +22,6 @@ export const CircleTool = ({
 
     useEffect(() => {
         if (!pixi || !physicsWorld || !pointer) return
-
-        const { world } = physicsWorld
 
         const updateGraphics = () => {
             const { drawShape: graphics } = pixi.graphics
@@ -45,7 +35,7 @@ export const CircleTool = ({
                 y: circleCenter.current[1],
                 angle: 0,
                 radius: circleRadius.current,
-                lineColor: canvasTheme.bodies.drawing.lineColor,
+                lineColor: canvasTheme.body.drawing.lineColor,
                 lineWidth: canvasTheme.lineWidth,
             })
         }
@@ -71,7 +61,7 @@ export const CircleTool = ({
                     }
 
                     body.addShape(circle)
-                    world.addBody(body)
+                    physicsWorld.addBody(body)
                 }
             }
 
@@ -86,20 +76,14 @@ export const CircleTool = ({
         const onDownHandler = () => {
             toolState.current = 'drawing'
             circleCenter.current = [...pointer.primaryPointer.physicsPosition]
-            circleRadius.current = getRadius(
-                circleCenter.current,
-                pointer.primaryPointer.physicsPosition
-            )
+            circleRadius.current = getRadius(circleCenter.current, pointer.primaryPointer.physicsPosition)
             updateGraphics()
         }
 
         const onMoveHandler = () => {
             if (toolState.current !== 'drawing') return
 
-            circleRadius.current = getRadius(
-                circleCenter.current,
-                pointer.primaryPointer.physicsPosition
-            )
+            circleRadius.current = getRadius(circleCenter.current, pointer.primaryPointer.physicsPosition)
             updateGraphics()
         }
 
@@ -114,7 +98,7 @@ export const CircleTool = ({
             pointer.onDown.delete(onDownHandler)
             pointer.onUp.delete(onUpHandler)
         }
-    }, [pixi?.id, physicsWorld?.id, pointer?.id])
+    }, [pixi, physicsWorld, pointer?.id])
 
     return null
 }

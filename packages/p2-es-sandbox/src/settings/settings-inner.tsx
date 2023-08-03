@@ -1,28 +1,12 @@
 import { button, LevaPanel, useControls, useStoreContext } from 'leva'
 import React, { useEffect, useMemo } from 'react'
-import {
-    AppComponent,
-    ecs,
-    PhysicsWorldComponent,
-    Settings,
-    SettingsComponent,
-    useSingletonComponent,
-} from '../../ecs'
-import { Tool, Tools } from '../../tools'
-import { levaTheme } from '../../ui'
-import { useButtonGroupControls } from '../hooks'
+import { AppComponent, ecs, PhysicsWorldComponent, Settings, SettingsComponent, useSingletonComponent } from '../ecs'
+import { Tool, Tools } from '../tools'
+import { levaTheme } from '../ui'
 import { SettingsProps } from './settings'
+import { useButtonGroupControls } from './use-button-group-controls'
 
-export const SettingsInner = ({
-    scene,
-    scenes,
-    setScene,
-    tool,
-    setTool,
-    defaultSettings,
-    reset,
-    hidden,
-}: SettingsProps) => {
+export const SettingsInner = ({ scene, scenes, setScene, tool, setTool, defaultSettings, reset, hidden }: SettingsProps) => {
     const store = useStoreContext()
 
     const app = useSingletonComponent(AppComponent)
@@ -51,35 +35,32 @@ export const SettingsInner = ({
         store,
     })
 
-    const [{ physicsStepsPerSecond, maxSubSteps, paused }, setPhysics] =
-        useControls(
-            'Physics',
-            () => ({
-                paused: {
-                    label: 'Paused [p] [space]',
-                    value: defaultSettings.paused,
-                },
-                physicsStepsPerSecond: {
-                    label: 'Steps per second',
-                    value: defaultSettings.physicsStepsPerSecond,
-                },
-                maxSubSteps: {
-                    label: 'Max sub steps',
-                    value: defaultSettings.maxSubSteps,
-                },
-            }),
-            { store }
-        )
+    const [{ physicsStepsPerSecond, maxSubSteps, paused }, setPhysics] = useControls(
+        'Physics',
+        () => ({
+            paused: {
+                label: 'Paused [p] [space]',
+                value: defaultSettings.paused,
+            },
+            physicsStepsPerSecond: {
+                label: 'Steps per second',
+                value: defaultSettings.physicsStepsPerSecond,
+            },
+            maxSubSteps: {
+                label: 'Max sub steps',
+                value: defaultSettings.maxSubSteps,
+            },
+        }),
+        { store }
+    )
 
     const timeStep = 1 / physicsStepsPerSecond
 
     const manualStep = () => {
         if (!physicsWorld) return
 
-        const { world } = physicsWorld
-
         setPhysics({ paused: true })
-        world.step(timeStep, timeStep)
+        physicsWorld.step(timeStep, timeStep)
     }
 
     useControls(
@@ -97,14 +78,7 @@ export const SettingsInner = ({
     )
 
     const [
-        {
-            bodyIslandColors,
-            bodySleepOpacity,
-            drawContacts,
-            drawAABBs,
-            debugPolygons,
-            renderInterpolatedPositions,
-        },
+        { bodyIslandColors, bodySleepOpacity, drawContacts, drawAABBs, debugPolygons, renderInterpolatedPositions },
         setRendering,
     ] = useControls(
         'Rendering',
@@ -143,10 +117,7 @@ export const SettingsInner = ({
         const handler = (event: KeyboardEvent) => {
             const target = event.target as HTMLElement | null
 
-            if (
-                target &&
-                (target.nodeName === 'INPUT' || target.nodeName === 'BUTTON')
-            ) {
+            if (target && (target.nodeName === 'INPUT' || target.nodeName === 'BUTTON')) {
                 return
             }
 
@@ -197,12 +168,12 @@ export const SettingsInner = ({
             }
         }
 
-        app.appWrapperElement.addEventListener('keydown', handler)
+        app.addEventListener('keydown', handler)
 
         return () => {
-            app.appWrapperElement.removeEventListener('keydown', handler)
+            app.removeEventListener('keydown', handler)
         }
-    }, [physicsWorld?.id, app?.id, paused, drawContacts, drawAABBs, reset])
+    }, [physicsWorld, app, paused, drawContacts, drawAABBs, reset])
 
     useEffect(() => {
         setPhysics({
@@ -216,8 +187,7 @@ export const SettingsInner = ({
             drawContacts: defaultSettings.drawContacts,
             drawAABBs: defaultSettings.drawAABBs,
             debugPolygons: defaultSettings.debugPolygons,
-            renderInterpolatedPositions:
-                defaultSettings.renderInterpolatedPositions,
+            renderInterpolatedPositions: defaultSettings.renderInterpolatedPositions,
         })
     }, [defaultSettings])
 
@@ -250,14 +220,7 @@ export const SettingsInner = ({
 
     return (
         <>
-            <LevaPanel
-                store={store}
-                fill
-                flat
-                theme={levaTheme}
-                titleBar={false}
-                hidden={hidden}
-            />
+            <LevaPanel store={store} fill flat theme={levaTheme} titleBar={false} hidden={hidden} />
             <ecs.Entity>
                 <ecs.Component type={SettingsComponent} args={[settings]} />
             </ecs.Entity>

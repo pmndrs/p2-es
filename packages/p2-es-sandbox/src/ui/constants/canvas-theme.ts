@@ -1,7 +1,7 @@
 export const canvasTheme = {
     background: 0xffffff,
     lineWidth: 0.01,
-    bodies: {
+    body: {
         lineColor: 0x000000,
         highlight: 0xeeeeee,
         sleeping: {
@@ -14,13 +14,13 @@ export const canvasTheme = {
             lineColor: 0x000000,
         },
     },
-    springs: {
+    spring: {
         lineColor: 0x000000,
     },
-    aabbs: {
+    aabb: {
         lineColor: 0x000000,
     },
-    contacts: {
+    contact: {
         lineColor: 0x222222,
     },
 }
