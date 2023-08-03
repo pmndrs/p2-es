@@ -1,6 +1,5 @@
 import * as p2 from 'p2-es'
-import { GSSolver } from 'p2-es'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Sandbox } from '../../src'
 
 export const SandboxExample = () => {

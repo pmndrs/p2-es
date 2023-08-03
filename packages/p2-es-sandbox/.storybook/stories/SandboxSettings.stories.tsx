@@ -1,7 +1,7 @@
 import * as p2 from 'p2-es'
 import React from 'react'
 import { SandboxFunction } from '../../src'
-import { App } from '../../src/components/App'
+import { App } from '../../src/app'
 
 export const SandboxSettings = () => {
     const fn: SandboxFunction = (context) => {

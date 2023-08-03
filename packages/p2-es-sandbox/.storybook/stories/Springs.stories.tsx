@@ -2,7 +2,7 @@ import * as p2 from 'p2-es'
 import { GSSolver } from 'p2-es'
 import React from 'react'
 import { SandboxContext } from '../../src'
-import { App } from '../../src/components/App'
+import { App } from '../../src/app'
 
 export const Springs = () => {
     const fn = (context: SandboxContext) => {
@@ -12,13 +12,8 @@ export const Springs = () => {
 
         ;(world.solver as GSSolver).tolerance = 0.001
 
-        const bodies: p2.Body[][] = []
-        const N = 10
         const M = 10
-        const k = 1000
-        const d = 10
         const l = 0.35
-        const m = 1
 
         // Create ground
         const planeShape = new p2.Plane()
