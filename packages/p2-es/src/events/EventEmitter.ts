@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
-
 /**
  * Base class for objects that dispatches events.
  *
@@ -13,8 +11,8 @@
  *         message: 'Hello world!'
  *     });
  */
-export class EventEmitter<EventMap extends Record<string, any> = Record<string, any>> {
-    private listeners: { [type: string]: Function[] } = {}
+export class EventEmitter<EventMap extends Record<string, { type: string }>> {
+    private listeners: { [type: string]: ((e: EventMap[never]) => void)[] } = {}
 
     /**
      * Add an event listener
@@ -26,8 +24,7 @@ export class EventEmitter<EventMap extends Record<string, any> = Record<string, 
      *         console.log('myEvt was triggered!');
      *     });
      */
-    on<E extends keyof EventMap>(type: E, listener: (e: EventMap[E]) => void, context?: any): EventEmitter<EventMap> {
-        (listener as any).context = context || this
+    on<E extends keyof EventMap>(type: E, listener: (e: EventMap[E]) => void): EventEmitter<EventMap> {
         let listeners = this.listeners[type as string]
         if (listeners === undefined) {
             listeners = []
@@ -48,7 +45,7 @@ export class EventEmitter<EventMap extends Record<string, any> = Record<string, 
      *     emitter.on('myEvent', handler); // Add handler
      *     emitter.off('myEvent', handler); // Remove handler
      */
-    off<E extends keyof EventMap>(type: E, listener: Function): EventEmitter<EventMap> {
+    off<E extends keyof EventMap>(type: E, listener: (e: EventMap[E]) => void): EventEmitter<EventMap> {
         const listeners = this.listeners[type as string]
         if (listeners) {
             const index = listeners.indexOf(listener)
@@ -65,22 +62,14 @@ export class EventEmitter<EventMap extends Record<string, any> = Record<string, 
      * @param listener
      * @return
      */
-    has<E extends keyof EventMap>(type: E, listener?: Function): boolean {
-        if (this.listeners === undefined) {
-            return false
-        }
+    has<E extends keyof EventMap>(type: E, listener?: (e: EventMap[E]) => void): boolean {
         const listeners = this.listeners[type as string]
-        if (listener) {
-            if (listeners !== undefined && listeners.indexOf(listener) !== -1) {
-                return true
-            }
-        } else {
-            if (listeners !== undefined) {
-                return true
-            }
-        }
 
-        return false
+        if (!listener) {
+            return listeners !== undefined
+        }
+        
+        return listeners !== undefined && listeners.indexOf(listener) !== -1
     }
 
     /**
@@ -101,14 +90,9 @@ export class EventEmitter<EventMap extends Record<string, any> = Record<string, 
         const eventListeners = this.listeners[event.type]
 
         if (eventListeners !== undefined) {
-            const toEmit = {
-                ...event,
-                target: this,
-            }
-
             // only emit to current listeners, ignore listeners that might be added inside a listener function
             for (const listener of [...eventListeners]) {
-                listener.call((listener as any).context, toEmit)
+                listener(event as never)
             }
         }
         return this
