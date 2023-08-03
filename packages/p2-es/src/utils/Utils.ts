@@ -65,8 +65,8 @@ export const arrayRemove = (array: unknown[], element: unknown): void => {
  */
 export const extend = <A, B>(a: A, b: B): A & B => {
     return {
-      ...a,
-      ...b,
+        ...a,
+        ...b,
     }
 }
 

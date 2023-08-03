@@ -24,12 +24,13 @@ You can also import the esm bundle with unpkg:
 ```html
 <script type="module">
     // import a specific version
-    import * as p2 from 'https://www.unpkg.com/p2-es@1.1.6/dist/p2-es.js';
+    import * as p2 from 'https://www.unpkg.com/p2-es@1.1.6/dist/p2-es.js'
 
     // or import latest
-    import * as p2 from 'https://www.unpkg.com/p2-es/dist/p2-es.js';
+    import * as p2 from 'https://www.unpkg.com/p2-es/dist/p2-es.js'
 </script>
 ```
+
 ---
 
 If you would like to use ordinary `Array` instead of `Float32Array`, define `P2_ARRAY_TYPE` globally before loading the library.
@@ -114,8 +115,8 @@ world.on('postStep', function (event) {
 
 ### Supported collision pairs
 
-|                                                                            | Circle | Plane |  Box   | Convex | Particle |  Line  | Capsule | Heightfield | Ray |
-| :------------------------------------------------------------------------: | :----: | :---: | :----: | :----: | :------: | :----: | :-----: | :---------: | :-: |
+|                                                                    | Circle | Plane |  Box   | Convex | Particle |  Line  | Capsule | Heightfield | Ray |
+| :----------------------------------------------------------------: | :----: | :---: | :----: | :----: | :------: | :----: | :-----: | :---------: | :-: |
 |      [Circle](https://p2-es.pmnd.rs/docs/classes/Circle.html)      |  Yes   |   -   |   -    |   -    |    -     |   -    |    -    |      -      |  -  |
 |       [Plane](https://p2-es.pmnd.rs/docs/classes/Plane.html)       |  Yes   |   -   |   -    |   -    |    -     |   -    |    -    |      -      |  -  |
 |         [Box](https://p2-es.pmnd.rs/docs/classes/Box.html)         |  Yes   |  Yes  |  Yes   |   -    |    -     |   -    |    -    |      -      |  -  |

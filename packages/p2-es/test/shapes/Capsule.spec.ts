@@ -12,7 +12,7 @@ describe('Shapes: Capsule', () => {
     test('pointTest', () => {
         const shape = new Capsule({
             radius: 1,
-            length: 2
+            length: 2,
         })
         expect(shape.pointTest([0, 0])).toBe(true)
         expect(shape.pointTest([2, 0])).toBe(true)
@@ -25,12 +25,12 @@ describe('Shapes: Capsule', () => {
     test('raycast', () => {
         const ray = new Ray({
             mode: Ray.CLOSEST,
-            from: [0,0],
-            to: [10,0]
+            from: [0, 0],
+            to: [10, 0],
         })
-    
+
         const capsule = new Capsule({ length: 1, radius: 0.5 })
         const result = new RaycastResult()
-        capsule.raycast(result, ray, [1,0], Math.PI / 2)
+        capsule.raycast(result, ray, [1, 0], Math.PI / 2)
     })
 })

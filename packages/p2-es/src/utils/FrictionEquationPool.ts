@@ -3,14 +3,14 @@ import { Body } from '../objects/Body'
 import { Pool } from './Pool'
 
 export class FrictionEquationPool extends Pool<FrictionEquation> {
-	create(): FrictionEquation {
-		return new FrictionEquation(tmpBody, tmpBody)
-	}
+    create(): FrictionEquation {
+        return new FrictionEquation(tmpBody, tmpBody)
+    }
 
-	destroy(equation: FrictionEquation): FrictionEquationPool {
-		equation.bodyA = equation.bodyB = tmpBody
-		return this
-	}
+    destroy(equation: FrictionEquation): FrictionEquationPool {
+        equation.bodyA = equation.bodyB = tmpBody
+        return this
+    }
 }
 
 const tmpBody = new Body()

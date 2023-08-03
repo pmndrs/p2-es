@@ -42,4 +42,3 @@ export * from './utils/FrictionEquationPool'
 export * from './utils/Pool'
 export * as Utils from './utils/Utils'
 export * from './world/World'
-

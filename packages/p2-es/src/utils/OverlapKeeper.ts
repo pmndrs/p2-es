@@ -79,7 +79,7 @@ export class OverlapKeeper {
         return this.getDiff(this.overlappingShapesLastState, this.overlappingShapesCurrentState, result)
     }
 
-    getEndOverlaps(result?: OverlapKeeperRecord[]) : OverlapKeeperRecord[]{
+    getEndOverlaps(result?: OverlapKeeperRecord[]): OverlapKeeperRecord[] {
         return this.getDiff(this.overlappingShapesCurrentState, this.overlappingShapesLastState, result)
     }
 

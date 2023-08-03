@@ -36,7 +36,7 @@ describe('Utils: ContactEquationPool', () => {
 
         // should add released object to pool
         expect(pool.objects.length).toEqual(1)
-        
+
         // should return pooled object
         const object2 = pool.get()
         expect(object).toBe(object2)

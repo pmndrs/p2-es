@@ -16,7 +16,7 @@ export class SAPBroadphase extends Broadphase {
     axisIndex = 0
 
     private addBodyHandler: (e: AddBodyEvent) => void
-    
+
     private removeBodyHandler: (e: RemoveBodyEvent) => void
 
     constructor() {

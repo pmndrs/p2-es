@@ -41,7 +41,7 @@ export class Circle extends Shape {
         }
 
         super(params)
-        
+
         this.radius = params.radius
 
         this.updateBoundingRadius()

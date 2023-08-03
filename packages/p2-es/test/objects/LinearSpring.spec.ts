@@ -1,7 +1,7 @@
 import * as vec2 from '../../src/math/vec2'
 import { Body } from '../../src/objects/Body'
 import { LinearSpring } from '../../src/objects/LinearSpring'
- 
+
 let bodyA: Body, bodyB: Body, spring: LinearSpring
 const options = {
     restLength: 1,

@@ -15,7 +15,7 @@ export interface GearConstraintOptions extends ConstraintOptions {
      * Gear ratio.
      */
     ratio?: number
-    
+
     /**
      * Maximum torque to apply.
      */
@@ -69,15 +69,15 @@ export class GearConstraint extends Constraint {
 
     /**
      * Set the max torque for the constraint.
-     * @param torque 
+     * @param torque
      */
     setMaxTorque(torque: number): void {
-        (this.equations[0] as AngleLockEquation).setMaxTorque(torque)
+        ;(this.equations[0] as AngleLockEquation).setMaxTorque(torque)
     }
-    
+
     /**
      * Get the max torque for the constraint.
-     * @returns 
+     * @returns
      */
     getMaxTorque(): number {
         return this.equations[0].maxForce

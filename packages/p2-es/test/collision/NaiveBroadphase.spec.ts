@@ -7,4 +7,3 @@ describe('Collison: NaiveBroadphase', () => {
         expect(broadphase.type).toEqual(Broadphase.NAIVE)
     })
 })
-

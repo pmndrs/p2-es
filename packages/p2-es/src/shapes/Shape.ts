@@ -118,7 +118,7 @@ export abstract class Shape {
 
     /**
      * Collision group that this shape belongs to (bit mask). See <a href="http://www.aurelienribon.com/blog/2011/07/box2d-tutorial-collision-filtering/">this tutorial</a>.
-     * 
+     *
      * @example
      *     // Setup bits for each available group
      *     var PLAYER = Math.pow(2,0),

@@ -50,7 +50,7 @@ export abstract class Pool<T> {
      */
     get(): T {
         const objects = this.objects
-        return objects.length ? objects.pop() as T : this.create()
+        return objects.length ? (objects.pop() as T) : this.create()
     }
 
     /**

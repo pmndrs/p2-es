@@ -27,7 +27,7 @@ describe('Utils: TupleDictionary', () => {
         obj = dict.get(3, 4)
         expect(obj).toEqual(undefined)
     })
-		
+
     test('set', () => {
         const dict = new TupleDictionary()
 
@@ -42,7 +42,7 @@ describe('Utils: TupleDictionary', () => {
         dict.set(2, 1, 3)
         expect(dict.keys).toEqual([key])
     })
-		
+
     test('reset', () => {
         const dict = new TupleDictionary()
 
@@ -52,7 +52,7 @@ describe('Utils: TupleDictionary', () => {
         dict.reset()
         expect(dict.keys.length).toEqual(0)
     })
-		
+
     test('copy', () => {
         const dict1 = new TupleDictionary()
         const dict2 = new TupleDictionary()

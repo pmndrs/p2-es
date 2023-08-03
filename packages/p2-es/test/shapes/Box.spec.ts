@@ -39,7 +39,7 @@ describe('Shapes: Box', () => {
             from: [0, 0],
             to: [10, 0],
         })
-    
+
         const shape = new Box()
         const result = new RaycastResult()
         shape.raycast(result, ray, [1, 0], Math.PI / 2)

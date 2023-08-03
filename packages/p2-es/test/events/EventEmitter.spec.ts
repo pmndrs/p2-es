@@ -8,7 +8,7 @@ describe('EventEmitter', () => {
     test('has', () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         const listener = () => {}
-        
+
         const emitter = new EventEmitter()
         emitter.on('event', listener)
 

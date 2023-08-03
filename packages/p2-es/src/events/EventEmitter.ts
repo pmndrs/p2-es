@@ -68,7 +68,7 @@ export class EventEmitter<EventMap extends Record<string, { type: string }>> {
         if (!listener) {
             return listeners !== undefined
         }
-        
+
         return listeners !== undefined && listeners.indexOf(listener) !== -1
     }
 

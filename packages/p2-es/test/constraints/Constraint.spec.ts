@@ -1,6 +1,6 @@
 import { Constraint } from '../../src/constraints/Constraint'
 import { DistanceConstraint } from '../../src/constraints/DistanceConstraint'
-import { Body, } from '../../src/objects/Body'
+import { Body } from '../../src/objects/Body'
 import { World } from '../../src/world/World'
 
 describe('Constraint', () => {

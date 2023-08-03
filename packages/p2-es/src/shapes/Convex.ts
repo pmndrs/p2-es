@@ -77,7 +77,7 @@ export class Convex extends Shape {
             ...options,
             type: options.type ?? Shape.CONVEX,
             vertices: options.vertices ?? [],
-            axes: options.axes ?? []
+            axes: options.axes ?? [],
         }
 
         super(params)

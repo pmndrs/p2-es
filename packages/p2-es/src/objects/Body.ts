@@ -16,119 +16,118 @@ export interface BodyOptions {
      * @see {@link Body.type}
      */
     type?: typeof Body.DYNAMIC | typeof Body.STATIC | typeof Body.KINEMATIC
-    
+
     /**
      * @see {@link Body.force}
      */
     force?: Vec2
-    
+
     /**
      * @see {@link Body.position}
      */
     position?: Vec2
-    
+
     /**
      * @see {@link Body.velocity}
      */
     velocity?: Vec2
-    
+
     /**
      * @see {@link Body.allowSleep}
      */
     allowSleep?: boolean
-    
+
     /**
      * @see {@link Body.collisionResponse}
      */
     collisionResponse?: boolean
-    
+
     /**
      * @see {@link Body.angle}
      */
     angle?: number
-    
+
     /**
      * @see {@link Body.angularDamping}
      */
     angularDamping?: number
-    
+
     /**
      * @see {@link Body.angularForce}
      */
     angularForce?: number
-    
+
     /**
      * @see {@link Body.angularVelocity}
      */
     angularVelocity?: number
-    
+
     /**
      * @see {@link Body.ccdIterations}
      */
     ccdIterations?: number
-    
+
     /**
      * @see {@link Body.ccdSpeedThreshold}
      */
     ccdSpeedThreshold?: number
-    
+
     /**
      * @see {@link Body.damping}
      */
     damping?: number
-    
+
     /**
      * @see {@link Body.fixedRotation}
      */
     fixedRotation?: boolean
-    
+
     /**
      * @see {@link Body.gravityScale}
      */
     gravityScale?: number
-    
+
     /**
      * @see {@link Body.id}
      */
     id?: number
-    
+
     /**
      * @see {@link Body.mass}
      */
     mass?: number
-    
+
     /**
      * @see {@link Body.sleepSpeedLimit}
      */
     sleepSpeedLimit?: number
-    
+
     /**
      * @see {@link Body.sleepTimeLimit}
      */
     sleepTimeLimit?: number
-    
+
     /**
      * @see {@link Body.fixedX}
      */
     fixedX?: boolean
-    
+
     /**
      * @see {@link Body.fixedY}
      */
     fixedY?: boolean
-
 }
 
 export type SleepyEvent = {
-    type: 'sleepy',
+    type: 'sleepy'
 }
 
 export type SleepEvent = {
-    type: 'sleep',
+    type: 'sleep'
 }
 
 export type WakeUpEvent = {
-    type: 'wakeup',
+    type: 'wakeup'
 }
 
 export type BodyEventMap = {
@@ -586,7 +585,7 @@ export class Body extends EventEmitter<BodyEventMap> {
         this.sleepTimeLimit = options.sleepTimeLimit ?? 1
         this.idleTime = 0
         this.timeLastSleepy = 0
-        
+
         this.collisionResponse = options.collisionResponse ?? true
         this.ccdSpeedThreshold = options.ccdSpeedThreshold ?? -1
         this.ccdIterations = options.ccdIterations ?? 10
@@ -1121,7 +1120,7 @@ export class Body extends EventEmitter<BodyEventMap> {
         this.idleTime = 0
         if (s !== Body.AWAKE) {
             this.emit({
-                type: 'wakeup'
+                type: 'wakeup',
             } as WakeUpEvent)
         }
     }
@@ -1164,7 +1163,7 @@ export class Body extends EventEmitter<BodyEventMap> {
             if (this.sleepState !== Body.SLEEPY) {
                 this.sleepState = Body.SLEEPY
                 this.emit({
-                    type: 'sleepy'
+                    type: 'sleepy',
                 })
             }
         }
@@ -1230,7 +1229,7 @@ export class Body extends EventEmitter<BodyEventMap> {
      * @param result A vector to store the result in
      * @param relativePoint A world oriented vector, indicating the position of the point to get the velocity from
      * @return The result vector
-     * 
+     *
      * @example
      *     var body = new Body({
      *         mass: 1,
