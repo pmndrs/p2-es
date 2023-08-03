@@ -141,12 +141,11 @@ export class Narrowphase {
                     if (
                         this.narrowphases[shapeA.type | shapeB.type](
                             bodyB,
-                            // @ts-expect-error todo
-                            shapeB,
+                            shapeB as never,
                             shapePositionB,
                             shapeB.angle + bodyB.angle,
                             bodyA,
-                            shapeA,
+                            shapeA as never,
                             shapePositionA,
                             shapeA.angle + bodyA.angle,
                             true
