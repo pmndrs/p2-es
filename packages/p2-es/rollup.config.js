@@ -1,5 +1,4 @@
 import babel from '@rollup/plugin-babel'
-import json from '@rollup/plugin-json'
 import resolve from '@rollup/plugin-node-resolve'
 import replace from '@rollup/plugin-replace'
 import filesize from 'rollup-plugin-filesize'
@@ -28,13 +27,12 @@ export default [
     {
         input: `./src/p2-es`,
         output: { file: `dist/p2-es.js`, format: 'esm' },
-        plugins: [json(), resolve({ extensions }), babel(babelOptions), filesize()],
+        plugins: [resolve({ extensions }), babel(babelOptions), filesize()],
     },
     {
         input: `./src/p2-es`,
         output: { file: `dist/p2-es.cjs.js`, format: 'cjs' },
         plugins: [
-            json(),
             resolve({ extensions }),
             babel(babelOptions),
             replace({
