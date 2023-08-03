@@ -2,10 +2,8 @@
   "$schema": "https://unpkg.com/@changesets/config@2.0.0/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": false,
-  "fixed": [],
-  "linked": [
-    ["p2-es", "@p2-es/*"]
-  ],
+  "fixed": [["p2-es", "@p2-es/*"]],
+  "linked": [],
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",
