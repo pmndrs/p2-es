@@ -1,6 +1,6 @@
 # p2-es
 
-2D rigid body physics engine written in JavaScript. Includes collision detection, contacts, friction, restitution, motors, springs, advanced constraints and various shape types.
+p2-es is a 2D rigid body physics engine written in JavaScript. Features include collision detection, contacts, friction, restitution, motors, springs, advanced constraints and various shape types.
 
 [Demos](https://p2-es.pmnd.rs/#demos) | [Examples](https://p2-es.pmnd.rs/#examples) | [Documentation](https://p2-es.pmnd.rs/docs/)
 
