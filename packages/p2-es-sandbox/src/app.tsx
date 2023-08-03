@@ -22,7 +22,7 @@ import { useConst } from './hooks'
 import { PhysicsAABBRenderer, PhysicsBodyRenderer, PhysicsContactRenderer, PhysicsSpringRenderer, initPixi } from './pixi'
 import { PointerObserver } from './pointer-observer'
 import { SandboxFunction, Scenes, createSandbox } from './sandbox'
-import { Settings } from './settings'
+import { Controls } from './controls'
 import { CircleTool, PickPanTool, PolygonTool, RectangleTool, Tool, Tools } from './tools'
 import {
     CanvasWrapper,
@@ -37,7 +37,7 @@ import {
     Main,
     PencilSvg,
     RefreshSvg,
-    SettingsWrapper,
+    ControlsWrapper,
     Wrapper,
 } from './ui'
 
@@ -84,10 +84,10 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
     /* current tool */
     const [tool, setTool] = useState<Tool>(Tools.PICK_PAN)
 
-    /* settings visibility, initially set by url search params */
+    /* controls visibility, initially set by url search params */
     const [searchParams] = useState(() => new URLSearchParams(window.location.search))
-    const [settingsHidden, setSettingsHidden] = useState(() => {
-        return searchParams.get('settings') === 'false'
+    const [controlsHidden, setControlsHidden] = useState(() => {
+        return searchParams.get('controls') === 'false'
     })
 
     const [sandboxSettings, setSandboxSettings] = useState<SandboxSettings>(defaultSandboxSettings)
@@ -105,7 +105,7 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
 
     useEffect(() => {
         pixi?.onResize()
-    }, [pixi, settingsHidden])
+    }, [pixi, controlsHidden])
 
     useEffect(() => {
         const { destroyPixi, ...pixiObjects } = initPixi(canvasWrapperElement.current!)
@@ -248,12 +248,12 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
     useFrame((delta) => {
         if (!settings || !physicsWorld) return
 
-        const { timeStep, maxSubSteps, paused } = settings
+        const { physicsStepsPerSecond, maxSubSteps, paused } = settings
 
         if (paused) return
 
         const clampedDelta = Math.min(delta, 1)
-        physicsWorld.step(timeStep, clampedDelta, maxSubSteps)
+        physicsWorld.step(1 / physicsStepsPerSecond, clampedDelta, maxSubSteps)
     }, STAGES.PHYSICS)
 
     useFrame((delta) => {
@@ -293,7 +293,7 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
                             </HeaderButton>
 
                             <HeaderButton title="Settings">
-                                <button onClick={() => setSettingsHidden((current) => !current)}>
+                                <button onClick={() => setControlsHidden((current) => !current)}>
                                     <PencilSvg />
                                 </button>
                             </HeaderButton>
@@ -316,20 +316,21 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
                     </a>
                 </Header>
                 <Main>
-                    <CanvasWrapper ref={canvasWrapperElement} settingsHidden={settingsHidden} />
+                    <CanvasWrapper ref={canvasWrapperElement} settingsHidden={controlsHidden} />
 
-                    <SettingsWrapper hide={settingsHidden}>
-                        <Settings
-                            hidden={settingsHidden}
+                    <ControlsWrapper hide={controlsHidden}>
+                        <Controls
+                            hidden={controlsHidden}
                             tool={tool}
                             setTool={(t) => setTool(t)}
                             scene={scene}
                             scenes={sceneNames}
                             setScene={(sceneName) => setScene(sceneName)}
-                            defaultSettings={sandboxSettings}
+                            settings={sandboxSettings}
+                            setSettings={setSandboxSettings}
                             reset={resetScene}
                         />
-                    </SettingsWrapper>
+                    </ControlsWrapper>
                 </Main>
             </Wrapper>
 
@@ -343,6 +344,10 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
             <PhysicsContactRenderer />
             <PhysicsSpringRenderer />
             <PhysicsAABBRenderer />
+
+            <ecs.Entity>
+                <ecs.Component type={SettingsComponent} args={[sandboxSettings]} />
+            </ecs.Entity>
 
             <Loop />
         </>

@@ -30,12 +30,7 @@ export const defaultSandboxSettings: SandboxSettings = {
     renderInterpolatedPositions: true,
 }
 
-export type Settings = SandboxSettings & {
-    // computed
-    timeStep: number
-}
-
-export const SettingsComponent = Component.object<Settings>('settings')
+export const SettingsComponent = Component.object<SandboxSettings>('settings')
 
 export const AppComponent = Component.object<HTMLDivElement>('app')
 

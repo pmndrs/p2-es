@@ -158,7 +158,7 @@ export const CanvasWrapper = styled.div<{ settingsHidden: boolean }>`
     }
 `
 
-export const SettingsWrapper = styled.div<{ hide: boolean }>`
+export const ControlsWrapper = styled.div<{ hide: boolean }>`
     flex: 1;
     width: 100%;
     min-height: 300px;
