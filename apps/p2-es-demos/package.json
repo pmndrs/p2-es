@@ -10,7 +10,7 @@
         "prettier-fix": "prettier --write ."
     },
     "dependencies": {
-        "@p2-es/sandbox": "0.0.0",
+        "@p2-es/sandbox": "0.0.0-alpha.0",
         "p2-es": "1.1.8"
     },
     "devDependencies": {

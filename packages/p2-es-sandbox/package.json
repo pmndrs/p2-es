@@ -1,8 +1,7 @@
 {
   "name": "@p2-es/sandbox",
   "description": "A demo renderer for p2-es",
-  "private": true,
-  "version": "0.0.0",
+  "version": "0.0.0-alpha.0",
   "keywords": [
     "p2.js",
     "p2-es",
