@@ -11323,10 +11323,10 @@ strip-json-comments@^3.0.1, strip-json-comments@^3.1.1, strip-json-comments@~3.1
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
-styled-breakpoints@^11.1.1:
-  version "11.1.1"
-  resolved "https://registry.yarnpkg.com/styled-breakpoints/-/styled-breakpoints-11.1.1.tgz#d25831bc25c090cf8e51a39f10efc45a26b210be"
-  integrity sha512-KUpoMNPoNji5zyB/AyrY+KO/eHj87smfGMOgrAM8cH/fN2wtEW9tnwzPlQimxMyma0Y849XUnChbJBk2zws9Ig==
+styled-breakpoints@^12.1.5:
+  version "12.1.5"
+  resolved "https://registry.yarnpkg.com/styled-breakpoints/-/styled-breakpoints-12.1.5.tgz#d7b5cf1b333b87b36d5859a027746280a9e238f8"
+  integrity sha512-YqtfKEQJsNJCQ61GG4+qtgQl5e1fizsNGW9JeU0+pXPb3wb3f4wFPrC8ZHuFjLv+cEW6A29UnfdT9mYP/V4ZQQ==
 
 styled-components@^6.0.2:
   version "6.0.2"

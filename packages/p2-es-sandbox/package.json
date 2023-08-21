@@ -30,7 +30,7 @@
     "pixi.js": "^7.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "styled-breakpoints": "^11.1.1",
+    "styled-breakpoints": "^12.1.5",
     "styled-components": "^6.0.2",
     "zustand": "^4.3.2"
   },
