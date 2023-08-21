@@ -2,6 +2,8 @@ import { Entity } from 'arancini'
 import * as p2 from 'p2-es'
 import { Body, Spring } from 'p2-es'
 import React, { useEffect, useRef, useState } from 'react'
+import { ThemeProvider } from 'styled-components'
+import { Controls } from './controls'
 import {
     AppComponent,
     Loop,
@@ -22,11 +24,11 @@ import { useConst } from './hooks'
 import { PhysicsAABBRenderer, PhysicsBodyRenderer, PhysicsContactRenderer, PhysicsSpringRenderer, initPixi } from './pixi'
 import { PointerObserver } from './pointer-observer'
 import { SandboxFunction, Scenes, createSandbox } from './sandbox'
-import { Controls } from './controls'
 import { CircleTool, PickPanTool, PolygonTool, RectangleTool, Tool, Tools } from './tools'
 import {
     CanvasWrapper,
     CodeSvg,
+    ControlsWrapper,
     ExternalLink,
     ExternalLinkSvg,
     Header,
@@ -37,8 +39,8 @@ import {
     Main,
     PencilSvg,
     RefreshSvg,
-    ControlsWrapper,
     Wrapper,
+    styledComponentsTheme,
 } from './ui'
 
 const CONSOLE_MESSAGE = `
@@ -357,7 +359,9 @@ const AppInner = ({ title, setup, codeLink }: AppProps) => {
 export const App = (props: AppProps) => {
     return (
         <React.StrictMode>
-            <AppInner {...props} />
+            <ThemeProvider theme={styledComponentsTheme}>
+                <AppInner {...props} />
+            </ThemeProvider>
         </React.StrictMode>
     )
 }

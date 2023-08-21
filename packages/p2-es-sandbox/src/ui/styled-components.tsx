@@ -1,6 +1,11 @@
-import { up } from 'styled-breakpoints'
+import { createStyledBreakpointsTheme } from 'styled-breakpoints'
 import styled from 'styled-components'
 import { interfaceTheme } from './constants/interface-theme'
+import { DefaultTheme } from 'styled-components'
+
+export const styledComponentsTheme = createStyledBreakpointsTheme()
+
+const up = (name: string) => ({ theme }: { theme: DefaultTheme }) => theme.breakpoints.up(name)
 
 export const Wrapper = styled.div`
     display: flex;
