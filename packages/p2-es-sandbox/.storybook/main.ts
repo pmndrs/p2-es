@@ -1,13 +1,8 @@
 import { dirname, join } from 'path'
 
 module.exports = {
-    stories: [
-        './stories/**/*.stories.@(js|jsx|ts|tsx)',
-    ],
-    addons: [
-        getAbsolutePath('@storybook/addon-links'),
-        getAbsolutePath('@storybook/addon-essentials'),
-    ],
+    stories: ['./stories/**/*.stories.@(js|jsx|ts|tsx)'],
+    addons: [getAbsolutePath('@storybook/addon-links'), getAbsolutePath('@storybook/addon-essentials')],
     framework: {
         name: getAbsolutePath('@storybook/react-vite'),
         options: {},
