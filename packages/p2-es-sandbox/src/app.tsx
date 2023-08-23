@@ -3,7 +3,6 @@ import { createECS } from 'arancini/react'
 import * as p2 from 'p2-es'
 import React, { useEffect, useRef, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
-import { Tools } from '.'
 import { Controls } from './controls'
 import {
     CircleTool,
@@ -21,6 +20,7 @@ import {
     SettingsComponent,
     SpriteComponent,
     Tool,
+    Tools,
     defaultSandboxSettings,
     useECS,
     useFrame,

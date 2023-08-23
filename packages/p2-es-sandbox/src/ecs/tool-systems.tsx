@@ -1,9 +1,10 @@
 import { System, SystemClass } from 'arancini'
 import * as p2 from 'p2-es'
 import { useEffect } from 'react'
-import { PhysicsWorldComponent, PixiComponent, PointerComponent, SettingsComponent, useECS } from '.'
 import { drawCircle, drawPath } from '../pixi'
 import { canvasTheme } from '../ui'
+import { PhysicsWorldComponent, PixiComponent, PointerComponent, SettingsComponent } from './components'
+import { useECS } from './context'
 
 export const Tools = {
     PICK_PAN: 'pickpan',
