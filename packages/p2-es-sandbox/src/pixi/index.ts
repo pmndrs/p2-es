@@ -1,3 +1,2 @@
-export * from './components'
-export * from './constants'
-export * from './utils'
+export * from './create-pixi-app'
+export * from './draw'

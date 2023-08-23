@@ -1,13 +1,15 @@
 import { createStyledBreakpointsTheme } from 'styled-breakpoints'
-import styled from 'styled-components'
-import { interfaceTheme } from './constants/interface-theme'
-import { DefaultTheme } from 'styled-components'
+import styled, { DefaultTheme } from 'styled-components'
+import { interfaceTheme } from './theme'
 
 export const styledComponentsTheme = createStyledBreakpointsTheme()
 
-const up = (name: string) => ({ theme }: { theme: DefaultTheme }) => theme.breakpoints.up(name)
+const up =
+    (name: string) =>
+    ({ theme }: { theme: DefaultTheme }) =>
+        theme.breakpoints.up(name)
 
-export const Wrapper = styled.div`
+export const SandboxContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -34,6 +36,7 @@ export const Header = styled.div`
     width: calc(100% - 30px);
     height: ${HEADER_HEIGHT};
     padding: 0 15px;
+
     border-bottom: 1px solid ${interfaceTheme.color.backgroundLight};
     background-color: ${interfaceTheme.color.background};
     color: ${interfaceTheme.color.highlight1};
@@ -140,15 +143,20 @@ export const Main = styled.div`
     }
 `
 
-export const CanvasWrapper = styled.div<{ settingsHidden: boolean }>`
+export const CanvasWrapper = styled.div`
     position: relative;
 
     flex: 1;
     width: 100%;
 
-    min-height: ${({ settingsHidden }) => (settingsHidden ? `calc(100vh - ${HEADER_HEIGHT})` : '70vh')};
-    max-height: ${({ settingsHidden }) => (settingsHidden ? `calc(100vh - ${HEADER_HEIGHT})` : '70vh')};
+    min-height: 70vh;
+    max-height: 70vh;
     height: 100%;
+
+    &.settings-hidden {
+        min-height: 100vh;
+        max-height: 100vh;
+    }
 
     ${up('md')} {
         min-height: unset;
@@ -163,7 +171,7 @@ export const CanvasWrapper = styled.div<{ settingsHidden: boolean }>`
     }
 `
 
-export const ControlsWrapper = styled.div<{ hide: boolean }>`
+export const ControlsWrapper = styled.div`
     flex: 1;
     width: 100%;
     min-height: 300px;
@@ -176,6 +184,4 @@ export const ControlsWrapper = styled.div<{ hide: boolean }>`
         min-height: unset;
         overflow-y: scroll;
     }
-
-    display: ${({ hide }) => (hide ? 'none' : 'block')};
 `

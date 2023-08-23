@@ -1,13 +1,46 @@
-import { Pixi, PointerComponent } from '../ecs'
-import { SandboxContext, SandboxFunction } from './types'
+import type { World } from 'p2-es'
+import { Tool } from './ecs'
+import { Pixi, PointerComponent, SandboxSettings } from './ecs/components'
 
-export type SandboxRunnerProps = {
+export type SandboxContext = {
+    pixi: Pixi
+
+    pointer: PointerComponent
+
+    centerCamera: (x: number, y: number) => void
+
+    frame: (centerX: number, centerY: number, width: number, height: number) => void
+
+    onUpdate: {
+        add: (callback: () => void) => void
+        remove: (callback: () => void) => void
+    }
+}
+
+export type Scenes = Record<string, { setup: SandboxFunction }>
+
+export type SandboxToolsConfig = {
+    default?: Tool
+}
+
+export type SandboxConfig = {
+    world: World
+    teardown?: () => void
+    tools?: SandboxToolsConfig
+    settings?: Partial<SandboxSettings>
+    hideControls?: boolean
+    hideHeader?: boolean
+}
+
+export type SandboxFunction = (context: SandboxContext) => SandboxConfig
+
+export type CreateSandboxProps = {
     pixi: Pixi
     pointer: PointerComponent
     sandboxFunction: SandboxFunction
 }
 
-export const createSandbox = ({ pixi, pointer, sandboxFunction }: SandboxRunnerProps) => {
+export const createSandbox = ({ pixi, pointer, sandboxFunction }: CreateSandboxProps) => {
     const { application, container } = pixi
 
     const updateHandlers = new Set<(delta: number) => void>()

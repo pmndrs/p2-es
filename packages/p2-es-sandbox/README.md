@@ -10,7 +10,7 @@ npm install @p2-es/sandbox
 
 ## Usage
 
-```ts
+```js
 import { Sandbox } from '@p2-es/sandbox'
 import * as p2 from 'p2-es'
 
@@ -90,5 +90,5 @@ const sandbox = new Sandbox(({ frame }) => {
     return { world }
 })
 
-sandbox.mount()
+sandbox.mount(document.querySelector('#app'))
 ```

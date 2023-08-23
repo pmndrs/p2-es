@@ -1,18 +1,12 @@
 import '@pixi/events'
 import { Application, Container, Graphics } from 'pixi.js'
-import { Pixi } from '../../ecs'
-import { canvasTheme } from '../../ui/constants/canvas-theme'
+import { Pixi } from '../ecs/components'
+import { canvasTheme } from '../ui'
 
-export const initPixi = (
-    canvasDomElement: HTMLElement
-): Pixi & { destroyPixi: () => void } => {
-    // set tabIndex to enable keyboard events
-    canvasDomElement.tabIndex = 0
-
+export const createPixiApp = (): Pixi & { destroy: () => void } => {
     const canvasElement = document.createElement('canvas')
     canvasElement.style.width = '100%'
     canvasElement.style.height = '100%'
-    canvasDomElement.appendChild(canvasElement)
 
     const application = new Application({
         backgroundColor: canvasTheme.background,
@@ -57,7 +51,7 @@ export const initPixi = (
         if (!application.stage) return
 
         const dpr = window.devicePixelRatio || 1
-        const rect = canvasDomElement.getBoundingClientRect()
+        const rect = canvasElement.parentElement?.getBoundingClientRect() ?? { width: 0, height: 0}
         const w = rect.width * dpr
         const h = rect.height * dpr
 
@@ -74,17 +68,14 @@ export const initPixi = (
         background.endFill()
     }
 
-    onResize()
     window.addEventListener('resize', onResize)
 
-    const destroyPixi = () => {
+    const destroy = () => {
         window.removeEventListener('resize', onResize)
         application.destroy()
-        canvasElement.remove()
     }
 
     return {
-        domElement: canvasDomElement,
         application,
         stage,
         container,
@@ -92,6 +83,6 @@ export const initPixi = (
         background,
         canvasElement,
         onResize,
-        destroyPixi,
+        destroy,
     }
 }

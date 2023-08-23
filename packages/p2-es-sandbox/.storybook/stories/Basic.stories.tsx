@@ -1,8 +1,10 @@
 import * as p2 from 'p2-es'
-import { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Sandbox } from '../../src'
 
-export const SandboxExample = () => {
+export const Basic = () => {
+    const ref = useRef<HTMLDivElement>(null!)
+
     useEffect(() => {
         const sandbox = new Sandbox((context) => {
             // Create the world
@@ -31,17 +33,25 @@ export const SandboxExample = () => {
             return { world }
         })
 
-        sandbox.mount()
+        sandbox.mount(ref.current)
 
         return () => {
             sandbox.unmount()
         }
     })
 
-    return null
+    return (
+        <div
+            ref={ref}
+            style={{
+                width: '100%',
+                height: '100vh',
+            }}
+        ></div>
+    )
 }
 
 export default {
-    name: 'Sandbox',
-    component: SandboxExample,
+    name: 'Basic',
+    component: Basic,
 }

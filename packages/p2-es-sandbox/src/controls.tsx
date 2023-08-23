@@ -1,8 +1,7 @@
 import { Leva, button, useControls } from 'leva'
 import { ButtonInput } from 'leva/plugin'
 import React, { Dispatch, SetStateAction, useEffect } from 'react'
-import { AppComponent, PhysicsWorldComponent, SandboxSettings, useSingletonComponent } from './ecs'
-import { Tool, Tools } from './tools'
+import { DomElementComponent, PhysicsWorldComponent, SandboxSettings, Tool, Tools, useSingletonComponent } from './ecs'
 import { levaTheme } from './ui'
 
 const useButtonGroupControls = (
@@ -51,11 +50,10 @@ export type ControlsProps = {
     setSettings: Dispatch<SetStateAction<SandboxSettings>>
 
     reset: () => void
-    hidden?: boolean
 }
 
-export const Controls = ({ scene, scenes, setScene, tool, setTool, settings, setSettings, hidden, reset }: ControlsProps) => {
-    const app = useSingletonComponent(AppComponent)
+export const Controls = ({ scene, scenes, setScene, tool, setTool, settings, setSettings, reset }: ControlsProps) => {
+    const appDomElement = useSingletonComponent(DomElementComponent)
     const physicsWorld = useSingletonComponent(PhysicsWorldComponent)
 
     useButtonGroupControls('Scene', {
@@ -185,7 +183,7 @@ export const Controls = ({ scene, scenes, setScene, tool, setTool, settings, set
     ])
 
     useEffect(() => {
-        if (!app) return
+        if (!appDomElement) return
 
         const handler = (event: KeyboardEvent) => {
             const target = event.target as HTMLElement | null
@@ -241,12 +239,12 @@ export const Controls = ({ scene, scenes, setScene, tool, setTool, settings, set
             }
         }
 
-        app.addEventListener('keydown', handler)
+        appDomElement.addEventListener('keydown', handler)
 
         return () => {
-            app.removeEventListener('keydown', handler)
+            appDomElement.removeEventListener('keydown', handler)
         }
-    }, [physicsWorld, settings, app, reset])
+    }, [physicsWorld, settings, appDomElement, reset])
 
-    return <Leva fill flat theme={levaTheme} titleBar={false} hidden={hidden} />
+    return <Leva fill flat theme={levaTheme} titleBar={false} />
 }

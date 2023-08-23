@@ -8,6 +8,8 @@
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     </head>
     <body>
+        <div id="app" style="width: 100%; height: 100vh;"></div>
+
         <script type="module">
             import { Sandbox } from '@p2-es/sandbox'
             import * as p2 from 'p2-es'
@@ -97,7 +99,7 @@
                     title: 'Piston',
                     codeLink: 'https://github.com/pmndrs/p2-es/blob/master/apps/p2-es-demos/src/piston.html',
                 }
-            ).mount()
+            ).mount(document.querySelector('#app'))
         </script>
     </body>
 </html>
