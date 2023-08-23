@@ -26,16 +26,15 @@
     "@pixi/core": "7.0.5",
     "arancini": "^3.1.0",
     "leva": "^0.9.34",
-    "p2-es": "^1.1.8",
+    "p2-es": "1.1.8",
     "pixi.js": "^7.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-breakpoints": "^12.1.5",
-    "styled-components": "^6.0.2",
-    "zustand": "^4.3.2"
+    "styled-components": "^6.0.2"
   },
   "peerDependencies": {
-    "p2-es": "^1.1.8"
+    "p2-es": "1.1.8"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^7.3.2",
@@ -59,7 +58,6 @@
     "eslint-plugin-import": "^2.28.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-storybook": "^0.6.13",
-    "p2-es": "^1.1.8",
     "prettier": "^2.8.7",
     "storybook": "^7.3.2",
     "typescript": "^4.5.4",
