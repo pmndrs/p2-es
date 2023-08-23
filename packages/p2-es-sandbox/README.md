@@ -90,5 +90,9 @@ const sandbox = new Sandbox(({ frame }) => {
     return { world }
 })
 
-sandbox.mount(document.querySelector('#app'))
+const domElement = document.querySelector('#app')
+domElement.style.width = '100%'
+domElement.style.height = '100vh'
+
+sandbox.mount(domElement)
 ```
