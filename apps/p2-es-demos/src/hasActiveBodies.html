@@ -78,7 +78,7 @@
 
                     const hasActiveBodiesElement = document.createElement('div')
                     hasActiveBodiesElement.id = 'hasActiveBodies'
-                    pixi.domElement.appendChild(hasActiveBodiesElement)
+                    document.querySelector('#app').appendChild(hasActiveBodiesElement)
 
                     const updateHasActiveBodiesText = () => {
                         hasActiveBodiesElement.textContent = `world.hasActiveBodies = ${world.hasActiveBodies}`
