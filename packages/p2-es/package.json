@@ -72,7 +72,7 @@
         "typescript": "^4.5.4"
     },
     "dependencies": {
-        "poly-decomp-es": "0.4.1"
+        "poly-decomp-es": "0.4.2"
     },
     "lint-staged": {
         "*.{js,json,jsx,ts,tsx,md,yaml,yml}": "prettier --write"

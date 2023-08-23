@@ -9762,10 +9762,10 @@ polished@^4.2.2:
   dependencies:
     "@babel/runtime" "^7.17.8"
 
-poly-decomp-es@0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/poly-decomp-es/-/poly-decomp-es-0.4.1.tgz#523e81338ab7e16b2f5648315ddb5a4370e00109"
-  integrity sha512-ClJK/YGQ3A2xCQ1YkxCM5KvHtwplZ9LHHoPlJMJ/+O3EnF7OSq9OcqsOfMilgIjZiFpccBobpb4nnDlEKdg+ig==
+poly-decomp-es@0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/poly-decomp-es/-/poly-decomp-es-0.4.2.tgz#2b874984e6f1d0efa3a27d0b13bbf18904a58156"
+  integrity sha512-akjZkaTeyfECMNkMqv0g9gFiU2HjpZ5ubJA/aczw1ILdgWQbv1OPwCi05/9JbY2GnGpjm9k85Jdbd/j/p/lg/g==
 
 postcss-value-parser@^4.0.2:
   version "4.2.0"
