@@ -90,7 +90,6 @@ const AppInner = ({ title, setup, codeLink, showControls: initialShowControls, s
 
     useEffect(() => {
         canvasWrapperElement.current!.appendChild(pixi!.canvasElement)
-        pixi!.onResize()
 
         canvasWrapperElement.current!.focus()
 

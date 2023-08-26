@@ -13,12 +13,9 @@ export const SandboxContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
-
-    ${up('md')} {
-        height: 100%;
-    }
+    height: 100%;
 
     &:focus {
         outline: none;
@@ -135,9 +132,10 @@ export const Main = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    height: 100%;
+    overflow: scroll;
 
     ${up('md')} {
-        height: 100%;
         flex-direction: row;
         overflow: hidden;
     }
@@ -151,11 +149,12 @@ export const CanvasWrapper = styled.div`
 
     min-height: 70%;
     max-height: 70%;
-    height: 100%;
+    height: 70%;
 
     &.settings-hidden {
         min-height: 100%;
         max-height: 100%;
+        height: 100%;
     }
 
     ${up('md')} {
