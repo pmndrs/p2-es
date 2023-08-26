@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@pixi/core": "7.0.5",
-    "arancini": "^3.1.0",
+    "arancini": "^3.2.0",
     "leva": "^0.9.34",
     "p2-es": "1.1.8",
     "pixi.js": "^7.2.4",

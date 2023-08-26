@@ -86,6 +86,9 @@ export class Sandbox {
             const pointerEntity = world.create()
             pointerEntity.add(PointerComponent)
 
+            const domElementEntity = world.create()
+            domElementEntity.add(DomElementComponent, domElement)
+
             world.registerSystem(PhysicsSystem)
             world.registerSystem(PointerSystem)
             world.registerSystem(PhysicsSpringRendererSystem)
@@ -96,8 +99,11 @@ export class Sandbox {
             world.init()
 
             this.cleanup = () => {
-                pixiEntity.destroy()
                 destroyPixi()
+
+                pixiEntity.destroy()
+                domElementEntity.destroy()
+                pointerEntity.destroy()
             }
 
             this.root = ReactDOM.createRoot(domElement)

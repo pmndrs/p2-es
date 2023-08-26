@@ -114,11 +114,11 @@ export class PhysicsBodyRendererSystem extends System {
 
                 graphics.clear()
                 drawRenderable({
-                    renderable: body,
                     sprite,
+                    debugPolygons,
+                    renderable: body,
                     fillColor: color,
                     lineColor: sprite.drawnLineColor ?? canvasTheme.body.lineColor,
-                    debugPolygons,
                     lineWidth: canvasTheme.lineWidth,
                     sleepOpacity: bodySleepOpacity ? canvasTheme.body.sleeping.opacity : 1,
                 })

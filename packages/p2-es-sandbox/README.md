@@ -2,6 +2,8 @@
 
 `@p2-es/sandbox` is a demo renderer for p2-es.
 
+> **Note:** This library is in early development, releases may not follow semver. For now this is more of an implementation detail of the p2-es website demos than a library you should use in serious projects.
+
 ## Installation
 
 ```sh

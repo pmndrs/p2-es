@@ -96,5 +96,5 @@ export const useSingletonComponent = <T extends ComponentDefinition<unknown>>(co
         }
 
         return component
-    }, [query])
+    }, [query.version])
 }

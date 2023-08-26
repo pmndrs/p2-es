@@ -6,7 +6,6 @@ import { ThemeProvider } from 'styled-components'
 import { Controls } from './controls'
 import {
     CircleTool,
-    DomElementComponent,
     EcsProvider,
     PhysicsBodyComponent,
     PhysicsSpringComponent,
@@ -90,21 +89,15 @@ const AppInner = ({ title, setup, codeLink, showControls: initialShowControls, s
     const settings = useSingletonComponent(SettingsComponent)
 
     useEffect(() => {
-        const domElementEntity = ecs.world.create((e) => {
-            e.add(DomElementComponent, sandboxContainerRef.current!)
-        })
-
-        sandboxContainerRef.current!.focus()
-
         canvasWrapperElement.current!.appendChild(pixi!.canvasElement)
         pixi!.onResize()
+
+        canvasWrapperElement.current!.focus()
 
         // set tabIndex to enable keyboard events
         canvasWrapperElement.current!.tabIndex = 0
 
         return () => {
-            domElementEntity.destroy()
-
             canvasWrapperElement.current?.removeChild(pixi!.canvasElement)
         }
     }, [])
@@ -136,15 +129,11 @@ const AppInner = ({ title, setup, codeLink, showControls: initialShowControls, s
             sandboxFunction: scenes[scene].setup,
         })
 
-        // set sandbox settings if the scene has changed
-        if (scene !== previousScene.current) {
-            const s = {
-                enablePanning,
-                ...defaultSandboxSettings,
-                ...newSandboxSettings,
-            }
-            setSandboxSettings(s)
-        }
+        setSandboxSettings({
+            ...defaultSandboxSettings,
+            enablePanning,
+            ...newSandboxSettings,
+        })
 
         if (tools?.default) {
             setTool(tools.default)
@@ -301,7 +290,7 @@ const AppInner = ({ title, setup, codeLink, showControls: initialShowControls, s
                                 setTool={(t) => setTool(t)}
                                 scene={scene}
                                 scenes={sceneNames}
-                                setScene={(sceneName) => setScene(sceneName)}
+                                setScene={setScene}
                                 settings={sandboxSettings}
                                 setSettings={setSandboxSettings}
                                 reset={resetScene}

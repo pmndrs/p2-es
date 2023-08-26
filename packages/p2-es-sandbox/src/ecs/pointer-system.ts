@@ -1,10 +1,7 @@
 import { System } from 'arancini'
 import * as p2 from 'p2-es'
 import { FederatedEvent, FederatedMouseEvent } from 'pixi.js'
-import {
-    PixiComponent,
-    PointerComponent
-} from './components'
+import { PixiComponent, PointerComponent } from './components'
 
 const tmpVec2 = { x: 0, y: 0 }
 
@@ -160,4 +157,3 @@ export class PointerSystem extends System {
         this.pointer.onWheel.forEach((handler) => handler(delta))
     }
 }
-

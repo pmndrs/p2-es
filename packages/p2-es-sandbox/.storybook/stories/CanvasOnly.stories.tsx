@@ -48,8 +48,8 @@ export const CanvasOnly = () => {
         <div
             ref={ref}
             style={{
-                width: '100%',
-                height: '100vh',
+                width: '500px',
+                height: '500px',
             }}
         ></div>
     )

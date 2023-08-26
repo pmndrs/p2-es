@@ -149,13 +149,13 @@ export const CanvasWrapper = styled.div`
     flex: 1;
     width: 100%;
 
-    min-height: 70vh;
-    max-height: 70vh;
+    min-height: 70%;
+    max-height: 70%;
     height: 100%;
 
     &.settings-hidden {
-        min-height: 100vh;
-        max-height: 100vh;
+        min-height: 100%;
+        max-height: 100%;
     }
 
     ${up('md')} {

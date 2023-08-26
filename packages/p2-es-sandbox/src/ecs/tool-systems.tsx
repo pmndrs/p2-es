@@ -36,9 +36,9 @@ export class CircleToolSystem extends System {
     onDestroy(): void {
         this.onUpHandler()
 
-        this.pointer.onMove.delete(this.onMoveHandler)
-        this.pointer.onDown.delete(this.onDownHandler)
-        this.pointer.onUp.delete(this.onUpHandler)
+        this.pointer?.onMove.delete(this.onMoveHandler)
+        this.pointer?.onDown.delete(this.onDownHandler)
+        this.pointer?.onUp.delete(this.onUpHandler)
     }
 
     updateGraphics(): void {
@@ -182,15 +182,15 @@ export class PickPanToolSystem extends System {
     onDestroy(): void {
         this.onUpHandler()
 
-        this.pointer.onWheel.delete(this.wheelHandler)
+        this.pointer?.onWheel.delete(this.wheelHandler)
 
-        this.pointer.onPinchStart.delete(this.pinchStartHandler)
-        this.pointer.onPinchMove.delete(this.pinchMoveHandler)
-        this.pointer.onPinchEnd.delete(this.pinchEndHandler)
+        this.pointer?.onPinchStart.delete(this.pinchStartHandler)
+        this.pointer?.onPinchMove.delete(this.pinchMoveHandler)
+        this.pointer?.onPinchEnd.delete(this.pinchEndHandler)
 
-        this.pointer.onMove.delete(this.onMoveHandler)
-        this.pointer.onDown.delete(this.onDownHandler)
-        this.pointer.onUp.delete(this.onUpHandler)
+        this.pointer?.onMove.delete(this.onMoveHandler)
+        this.pointer?.onDown.delete(this.onDownHandler)
+        this.pointer?.onUp.delete(this.onUpHandler)
     }
 
     onUpHandler = (): void => {
@@ -434,9 +434,9 @@ export class PolygonToolSystem extends System {
     onDestroy(): void {
         this.onUpHandler()
 
-        this.pointer.onMove.delete(this.onMoveHandler)
-        this.pointer.onDown.delete(this.onDownHandler)
-        this.pointer.onUp.delete(this.onUpHandler)
+        this.pointer?.onMove.delete(this.onMoveHandler)
+        this.pointer?.onDown.delete(this.onDownHandler)
+        this.pointer?.onUp.delete(this.onUpHandler)
     }
 }
 
@@ -461,9 +461,9 @@ export class RectangleToolSystem extends System {
     onDestroy(): void {
         this.onUpHandler()
 
-        this.pointer.onMove.delete(this.onMoveHandler)
-        this.pointer.onDown.delete(this.onDownHandler)
-        this.pointer.onUp.delete(this.onUpHandler)
+        this.pointer?.onMove.delete(this.onMoveHandler)
+        this.pointer?.onDown.delete(this.onDownHandler)
+        this.pointer?.onUp.delete(this.onUpHandler)
     }
 
     updateGraphics() {
@@ -472,12 +472,25 @@ export class RectangleToolSystem extends System {
 
         if (this.toolState === 'default') return
 
-        const [startX, startY] = this.rectangleStart
-        const [endX, endY] = this.rectangleEnd
+        let [startX, startY] = this.rectangleStart
+        let [endX, endY] = this.rectangleEnd
+
+        if (startX > endX) {
+            const tmp = endX
+            endX = startX
+            startX = tmp
+        }
+
+        if (startY > endY) {
+            const tmp = endY
+            endY = startY
+            startY = tmp
+        }
 
         const width = endX - startX
         const height = endY - startY
 
+        console.log('drawPath')
         if (width > 0 && height > 0) {
             drawPath({
                 graphics,

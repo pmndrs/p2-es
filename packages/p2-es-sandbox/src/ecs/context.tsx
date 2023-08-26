@@ -1,9 +1,9 @@
-import { createECS } from 'arancini/react'
+import { ECS, createECS } from 'arancini/react'
 import React, { createContext, useContext } from 'react'
 
 const ecsContext = createContext<ReturnType<typeof createECS>>(null!)
 
-export const useECS = () => {
+export const useECS = (): ECS => {
     return useContext(ecsContext)
 }
 

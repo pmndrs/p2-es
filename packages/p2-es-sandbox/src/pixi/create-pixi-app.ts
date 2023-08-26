@@ -1,4 +1,3 @@
-import '@pixi/events'
 import { Application, Container, Graphics } from 'pixi.js'
 import { Pixi } from '../ecs/components'
 import { canvasTheme } from '../ui'
@@ -18,6 +17,7 @@ export const createPixiApp = (): Pixi & { destroy: () => void } => {
 
     const stage = new Container()
     stage.interactive = true
+
     application.stage = stage
 
     const container = new Container()

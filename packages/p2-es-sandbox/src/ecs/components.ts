@@ -1,4 +1,4 @@
-import { Component } from 'arancini'
+import { Component, objectPooled } from 'arancini'
 import * as p2 from 'p2-es'
 import { Application, Container, FederatedMouseEvent, Graphics } from 'pixi.js'
 
@@ -32,7 +32,7 @@ export const defaultSandboxSettings: SandboxSettings = {
 
 export const SettingsComponent = Component.object<SandboxSettings>('settings')
 
-export const DomElementComponent = Component.object<HTMLDivElement>('dom element')
+export const DomElementComponent = Component.object<HTMLElement>('dom element')
 
 export const PhysicsBodyComponent = Component.object<p2.Body>('physics body')
 
@@ -122,6 +122,7 @@ export class PointerComponent extends Component {
     }
 }
 
+@objectPooled()
 export class SpriteComponent extends Component {
     graphics!: Graphics
 
