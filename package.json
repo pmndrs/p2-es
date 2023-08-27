@@ -11,7 +11,7 @@
     },
     "scripts": {
         "prepare": "husky install",
-        "build": "yarn workspace p2-es build && yarn workspace @p2-es/sandbox build && yarn workspace p2-es-demos build && yarn workspace p2-es-examples build && yarn workspace p2-es-docs build && yarn workspace p2-es-website build",
+        "build": "yarn workspaces foreach --topological-dev run build",
         "test": "(cd packages/p2-es && yarn test)",
         "change": "yarn changeset",
         "bump": "yarn changeset version && yarn install --mode update-lockfile",

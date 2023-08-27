@@ -3277,7 +3277,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@p2-es/sandbox@0.0.0-alpha.0, @p2-es/sandbox@workspace:packages/p2-es-sandbox":
+"@p2-es/sandbox@workspace:*, @p2-es/sandbox@workspace:packages/p2-es-sandbox":
   version: 0.0.0-use.local
   resolution: "@p2-es/sandbox@workspace:packages/p2-es-sandbox"
   dependencies:
@@ -13329,11 +13329,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"p2-es-demos@workspace:apps/p2-es-demos":
+"p2-es-demos@workspace:*, p2-es-demos@workspace:apps/p2-es-demos":
   version: 0.0.0-use.local
   resolution: "p2-es-demos@workspace:apps/p2-es-demos"
   dependencies:
-    "@p2-es/sandbox": 0.0.0-alpha.0
+    "@p2-es/sandbox": "workspace:*"
     p2-es: 1.1.8
     prettier: ^2.8.7
     typescript: ^4.9.4
@@ -13341,16 +13341,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"p2-es-docs@workspace:apps/p2-es-docs":
+"p2-es-docs@workspace:*, p2-es-docs@workspace:apps/p2-es-docs":
   version: 0.0.0-use.local
   resolution: "p2-es-docs@workspace:apps/p2-es-docs"
   dependencies:
+    p2-es: "workspace:*"
     typedoc: ^0.24.8
     typescript: ^4.9.4
   languageName: unknown
   linkType: soft
 
-"p2-es-examples@workspace:apps/p2-es-examples":
+"p2-es-examples@workspace:*, p2-es-examples@workspace:apps/p2-es-examples":
   version: 0.0.0-use.local
   resolution: "p2-es-examples@workspace:apps/p2-es-examples"
   dependencies:
@@ -13375,13 +13376,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "p2-es-website@workspace:apps/p2-es-website"
   dependencies:
+    p2-es-demos: "workspace:*"
+    p2-es-docs: "workspace:*"
+    p2-es-examples: "workspace:*"
     prettier: ^2.8.7
     ts-node: ^10.9.1
     typescript: ^4.9.4
   languageName: unknown
   linkType: soft
 
-"p2-es@1.1.8, p2-es@workspace:packages/p2-es":
+"p2-es@1.1.8, p2-es@workspace:*, p2-es@workspace:packages/p2-es":
   version: 0.0.0-use.local
   resolution: "p2-es@workspace:packages/p2-es"
   dependencies:
