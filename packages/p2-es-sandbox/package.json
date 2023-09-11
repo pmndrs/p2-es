@@ -23,7 +23,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@pixi/core": "7.0.5",
+    "@pixi/core": "7.2.4",
     "arancini": "^3.2.0",
     "leva": "^0.9.34",
     "p2-es": "1.1.8",
