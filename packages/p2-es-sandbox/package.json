@@ -1,7 +1,7 @@
 {
   "name": "@p2-es/sandbox",
   "description": "A demo renderer for p2-es",
-  "version": "0.0.0-alpha.0",
+  "version": "1.2.0",
   "keywords": [
     "p2.js",
     "p2-es",
@@ -26,7 +26,7 @@
     "@pixi/core": "7.0.5",
     "arancini": "^3.2.0",
     "leva": "^0.9.34",
-    "p2-es": "1.1.8",
+    "p2-es": "1.2.0",
     "pixi.js": "^7.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
