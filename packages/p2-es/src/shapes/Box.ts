@@ -60,9 +60,7 @@ export class Box extends Convex {
             vec2.fromValues(-params.width / 2, params.height / 2),
         ]
 
-        const convexOptions: ConvexOptions = options
-        convexOptions.vertices = verts
-        convexOptions.type = Shape.BOX
+        const convexOptions: ConvexOptions = { ...options, vertices: verts }
 
         super(convexOptions)
 

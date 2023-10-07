@@ -2,19 +2,14 @@ import { promises as fs } from 'fs'
 
 console.log('Building p2-es-website')
 
-console.log('Cleaning dist...')
-try {
-    await fs.rm('./dist', { recursive: true })
-} catch (e) {}
-
 console.log('Creating dist directories...')
-await fs.mkdir('./dist')
+
 await fs.mkdir('./dist/docs')
 await fs.mkdir('./dist/examples')
 await fs.mkdir('./dist/demos')
 
 console.log('Copying files from p2-es-docs, p2-es-examples, p2-es-demos...')
-await fs.cp('./index.html', './dist/index.html')
+
 await fs.cp('../p2-es-docs/dist', './dist/docs', { recursive: true })
 await fs.cp('../p2-es-examples/dist', './dist/examples', { recursive: true })
 await fs.cp('../p2-es-demos/dist', './dist/demos', { recursive: true })

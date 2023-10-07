@@ -133,7 +133,10 @@ export const Main = styled.div`
     align-items: center;
     justify-content: flex-start;
     height: 100%;
-    overflow: scroll;
+
+    .settings-enabled {
+        overflow: auto;
+    }
 
     ${up('md')} {
         flex-direction: row;

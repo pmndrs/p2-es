@@ -52,10 +52,19 @@ export type AppProps = {
     ecs: ReturnType<typeof createECS>
     showControls: boolean
     showHeader: boolean
-    enablePanning: boolean
+    enablePanning?: boolean
+    enableZooming?: boolean
 }
 
-const AppInner = ({ title, setup, codeLink, showControls: initialShowControls, showHeader, enablePanning }: AppProps) => {
+const AppInner = ({
+    title,
+    setup,
+    codeLink,
+    showControls: initialShowControls,
+    showHeader,
+    enablePanning,
+    enableZooming,
+}: AppProps) => {
     const ecs = useECS()
 
     const sandboxContainerRef = useRef<HTMLDivElement>(null)
@@ -131,6 +140,7 @@ const AppInner = ({ title, setup, codeLink, showControls: initialShowControls, s
         setSandboxSettings({
             ...defaultSandboxSettings,
             enablePanning,
+            enableZooming,
             ...newSandboxSettings,
         })
 
@@ -279,7 +289,7 @@ const AppInner = ({ title, setup, codeLink, showControls: initialShowControls, s
                         </a>
                     </Header>
                 )}
-                <Main>
+                <Main className={showControls ? 'settings-enabled' : ''}>
                     <CanvasWrapper ref={canvasWrapperElement} className={showControls ? '' : 'settings-hidden'} />
 
                     {showControls && (

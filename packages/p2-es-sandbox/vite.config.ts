@@ -14,7 +14,7 @@ export default defineConfig({
         lib: {
             entry: path.resolve('src/index.tsx'),
             name: '@p2-es/sandbox',
-            formats: ['es', 'umd'],
+            formats: ['es', 'cjs'],
             fileName: (format) => `index.${format}.js`,
         },
         rollupOptions: {

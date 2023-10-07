@@ -5,14 +5,22 @@
     "type": "module",
     "private": true,
     "scripts": {
-        "build": "ts-node build.ts --project ./tsconfig.json"
+        "dev": "vite",
+        "build": "rm -rf dist && vite build && node build.js",
+        "prettier": "prettier --list-different .",
+        "prettier-fix": "prettier --write ."
     },
-    "devDependencies": {
+    "dependencies": {
+        "@p2-es/sandbox": "workspace:*",
+        "p2-es": "workspace:*",
         "p2-es-demos": "workspace:*",
         "p2-es-docs": "workspace:*",
-        "p2-es-examples": "workspace:*",
-        "prettier": "^2.8.7",
+        "p2-es-examples": "workspace:*"
+    },
+    "devDependencies": {
+        "prettier": "^3.0.3",
         "ts-node": "^10.9.1",
-        "typescript": "^4.9.4"
+        "typescript": "^5.2.2",
+        "vite": "^4.4.11"
     }
 }

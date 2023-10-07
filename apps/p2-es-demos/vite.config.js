@@ -1,4 +1,3 @@
-import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
 
@@ -13,7 +12,6 @@ const createEntrypoints = (entrypoints) => {
 }
 
 export default defineConfig({
-    plugins: [react()],
     base: './',
     build: {
         outDir: '../dist',

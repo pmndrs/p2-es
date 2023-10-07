@@ -1,0 +1,10 @@
+{
+    "folders": [
+        {
+            "path": "."
+        },
+        {
+            "path": "packages/p2-es-sandbox"
+        }
+    ]
+}

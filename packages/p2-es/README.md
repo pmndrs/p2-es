@@ -136,7 +136,14 @@ Make sure you have git, [Node.js](http://nodejs.org) v14+ and Yarn installed
 ```sh
 git clone https://github.com/pmndrs/p2-es.git && cd p2-es
 
-yarn && yarn build
+# install deps
+yarn
+
+# build p2-es
+(cd packages/p2-es && yarn build)
+
+# build the website
+yarn build
 
 npx http-server apps/p2-es-website/dist
 ```

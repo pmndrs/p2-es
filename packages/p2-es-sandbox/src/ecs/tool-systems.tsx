@@ -302,6 +302,8 @@ export class PickPanToolSystem extends System {
     }
 
     wheelHandler = (delta: number) => {
+        if (!this.settings.enableZooming) return
+
         const out = delta >= 0
         this.zoomByMultiplier(
             this.pointer.primaryPointer.stagePosition[0],
@@ -315,6 +317,8 @@ export class PickPanToolSystem extends System {
         if (this.interactionState === 'picking') {
             this.onUpHandler()
         }
+
+        if (!this.settings.enableZooming) return
 
         this.interactionState = 'pinching'
 

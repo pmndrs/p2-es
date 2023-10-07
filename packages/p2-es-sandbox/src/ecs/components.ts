@@ -15,6 +15,7 @@ export interface SandboxSettings {
     newShapeCollisionGroup?: number
     newShapeCollisionMask?: number
     enablePanning?: boolean
+    enableZooming?: boolean
 }
 
 export const defaultSandboxSettings: SandboxSettings = {
@@ -28,6 +29,7 @@ export const defaultSandboxSettings: SandboxSettings = {
     drawAABBs: false,
     renderInterpolatedPositions: true,
     enablePanning: true,
+    enableZooming: true,
 }
 
 export const SettingsComponent = Component.object<SandboxSettings>('settings')

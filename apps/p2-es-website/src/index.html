@@ -1,0 +1,410 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>p2-es</title>
+        <style type="text/css">
+            @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+            body {
+                font-family: 'Open Sans', sans-serif;
+                font-weight: 400;
+                color: #333;
+                font-size: 1.2em;
+                line-height: 1.8;
+                text-align: left;
+                margin: 0;
+                padding: 1em;
+            }
+
+            .layout {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+
+            #demo {
+                width: 100%;
+                height: 300px;
+                min-height: 300px;
+                max-height: 300px;
+                margin-bottom: 20px;
+            }
+            #demo > div {
+                border: 1px solid #999;
+            }
+
+            #sidebar ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                margin-bottom: 1em;
+            }
+
+            .subtitle {
+                font-size: 1.3em;
+                font-weight: 400;
+                margin: 0;
+                margin-bottom: 0.2em;
+            }
+
+            .short-links {
+                font-size: 1.1em;
+                font-weight: 400;
+                margin: 0;
+                margin-bottom: 1em;
+            }
+
+            h1 {
+                margin-bottom: 0;
+            }
+
+            a {
+                color: #66e;
+            }
+
+            @media screen and (min-width: 768px) {
+                #demo {
+                    height: 500px;
+                    min-height: 500px;
+                    max-height: 500px;
+                }
+
+                main {
+                    max-width: 1200px;
+                    margin: auto;
+                    margin-top: 1em;
+                    padding: 1.5em 1.5em;
+                }
+
+                #sidebar {
+                    padding-right: 2em;
+                }
+
+                h1 {
+                    font-size: 2.5em;
+                    margin-top: 0;
+                    margin-bottom: 0.5em;
+                }
+
+                .subtitle {
+                    font-size: 1.4em;
+                }
+
+                h2 {
+                    font-size: 1.5em;
+                    margin: 0;
+                }
+
+                h3 {
+                    font-size: 1.1em;
+                    margin: 0;
+                }
+
+                .layout {
+                    flex-direction: row-reverse;
+                }
+
+                .sidebar {
+                    width: 25%;
+                }
+
+                .content {
+                    width: 75%;
+                }
+            }
+
+            @media screen and (min-width: 1024px) {
+                main {
+                    padding: 1.5em 3em;
+                }
+
+                #sidebar {
+                    padding-right: 1em;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <main>
+            <h1>p2-es</h1>
+            <div class="layout">
+                <section class="content">
+                    <p class="subtitle">p2-es is a JavaScript 2D rigid body physics engine</p>
+
+                    <div class="short-links">
+                        <a href="https://github.com/pmndrs/p2-es">github</a> -
+                        <a href="https://github.com/pmndrs/p2-es">npm</a> -
+                        <a href="docs/">docs</a>
+                    </div>
+
+                    <div id="demo"></div>
+
+                    <p>p2-es is a 2D rigid body physics engine written in JavaScript. Features include:</p>
+
+                    <ul>
+                        <li>Collision detection</li>
+                        <li>Contacts</li>
+                        <li>Friction and restitution</li>
+                        <li>Motors</li>
+                        <li>Springs</li>
+                        <li>Advanced constraints</li>
+                        <li>Gravity</li>
+                        <li>Body sleeping</li>
+                        <li>Various shape types</li>
+                        <li>Events</li>
+                    </ul>
+
+                    <p>
+                        This is a maintained fork of p2.js, originally created by Stefan Hedman @schteppe. It is a
+                        type-safe flatbundle (esm and cjs) which allows for tree shaking and usage in modern
+                        environments.
+                    </p>
+
+                    <section id="examples">
+                        <h2>Examples</h2>
+                        <p>Examples showing how to use p2-es with your favorite renderer.</p>
+
+                        <div>
+                            <h3>Canvas</h3>
+                            <ul>
+                                <li><a href="examples/canvas/asteroids.html">Asteroids game</a></li>
+                                <li><a href="examples/canvas/box.html">Box on plane</a></li>
+                                <li><a href="examples/canvas/character.html">Character demo</a></li>
+                                <li><a href="examples/canvas/circle.html">Circle on plane</a></li>
+                                <li><a href="examples/canvas/interpolation.html">Interpolation</a></li>
+                                <li><a href="examples/canvas/mouseJoint.html">Mousejoint</a></li>
+                                <li><a href="examples/canvas/platformer.html">Platformer</a></li>
+                                <li><a href="examples/canvas/raycasting.html">Raycasting</a></li>
+                                <li><a href="examples/canvas/rayreflect.html">Rayreflect</a></li>
+                                <li><a href="examples/canvas/sensors.html">Sensors</a></li>
+                                <li><a href="examples/canvas/sensors2.html">Sensors 2</a></li>
+                                <li><a href="examples/canvas/tapball.html">Tapball</a></li>
+                                <li><a href="examples/canvas/worker.html">Worker</a></li>
+                            </ul>
+
+                            <h3>PixiJS</h3>
+                            <ul>
+                                <li><a href="examples/pixijs/box.html">Box on plane</a></li>
+                            </ul>
+
+                            <h3>DOM</h3>
+                            <ul>
+                                <li><a href="examples/dom/index.html">DOM elements</a></li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section id="demos">
+                        <h2>Demos</h2>
+                        <p>These demos use the p2 Demo framework, which provides rendering and interactivity.</p>
+
+                        <div>
+                            <ul>
+                                <li><a href="demos/buoyancy.html">Buoyancy</a></li>
+                                <li><a href="demos/car.html">Car</a></li>
+                                <li><a href="demos/ccd.html">CCD</a></li>
+                                <li><a href="demos/circles.html">Circle container</a></li>
+                                <li><a href="demos/collisions.html">Collision tests</a></li>
+                                <li><a href="demos/compound.html">Compound objects</a></li>
+                                <li><a href="demos/concave.html">Concave objects</a></li>
+                                <li><a href="demos/constraints.html">Constraints</a></li>
+                                <li><a href="demos/control.html">Control</a></li>
+                                <li><a href="demos/distanceConstraint.html">DistanceConstraint</a></li>
+                                <li><a href="demos/fixedRotation.html">Fixed rotation</a></li>
+                                <li><a href="demos/fixedXY.html">Fixed XY</a></li>
+                                <li><a href="demos/friction.html">Friction</a></li>
+                                <li><a href="demos/gearConstraint.html">Gear constraint</a></li>
+                                <li><a href="demos/hasActiveBodies.html">Has active bodies</a></li>
+                                <li><a href="demos/heightfield.html">Heightfield</a></li>
+                                <li><a href="demos/islandSolver.html">Island solver</a></li>
+                                <li><a href="demos/kinematic.html">Kinematic body</a></li>
+                                <li><a href="demos/lock.html">Lock constraint</a></li>
+                                <li><a href="demos/piston.html">Piston</a></li>
+                                <li><a href="demos/prismatic.html">Prismatic constraint</a></li>
+                                <li><a href="demos/ragdoll.html">Ragdoll</a></li>
+                                <li><a href="demos/removeSensor.html">Sensor</a></li>
+                                <li><a href="demos/restitution.html">Restitution</a></li>
+                                <li><a href="demos/segway.html">Segway</a></li>
+                                <li><a href="demos/sleep.html">Sleep</a></li>
+                                <li><a href="demos/softWheel.html">Soft wheel</a></li>
+                                <li><a href="demos/springs.html">Springs</a></li>
+                                <li><a href="demos/surfaceVelocity.html">Surface velocity</a></li>
+                                <li><a href="demos/suspension.html">Suspension</a></li>
+                                <li><a href="demos/tearable.html">Tearable constraints</a></li>
+                                <li><a href="demos/topDownVehicle.html">TopDownVehicle</a></li>
+                                <li><a href="demos/voronoi.html">Voronoi</a></li>
+                            </ul>
+                        </div>
+                    </section>
+                </section>
+
+                <section id="sidebar">
+                    <h2>Docs</h2>
+                    <ul>
+                        <li>
+                            <a href="docs/">Documentation</a>
+                        </li>
+                        <li>
+                            <a href="#examples">Examples</a>
+                        </li>
+                        <li>
+                            <a href="#demos">Demos</a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/pmndrs/p2-es/blob/master/packages/p2-es/CHANGELOG.md"
+                                >Changelog</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://github.com/pmndrs/p2-es/blob/master/packages/p2-es/README.md">Readme</a>
+                        </li>
+                    </ul>
+
+                    <h2>Code</h2>
+                    <ul>
+                        <li>
+                            <a href="https://github.com/pmndrs/p2-es">GitHub</a>
+                        </li>
+                        <li>
+                            <a href="https://www.npmjs.com/package/p2-es">NPM</a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/pmndrs/p2-es/blob/master/packages/p2-es/LICENSE">License</a>
+                        </li>
+                    </ul>
+
+                    <h2>Community</h2>
+                    <ul>
+                        <li>
+                            <a href="https://github.com/pmndrs/p2-es/issues">Issues</a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/pmndrs/p2-es/discussions">Discussions</a>
+                        </li>
+                        <li>
+                            <a href="https://discord.com/invite/poimandres">Discord</a>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </main>
+    </body>
+
+    <script type="module">
+        import * as p2 from 'p2-es'
+        import { Sandbox } from '@p2-es/sandbox'
+
+        const sandbox = new Sandbox(
+            ({ frame }) => {
+                const world = new p2.World({
+                    gravity: [0, -10],
+                })
+
+                world.solver.iterations = 500
+                world.solver.tolerance = 0.02
+                world.solver.frictionIterations = 10
+                world.defaultContactMaterial.friction = 10
+
+                // ground
+                const ground = new p2.Body({
+                    type: p2.Body.STATIC,
+                    position: [0, -1],
+                })
+                ground.addShape(new p2.Plane())
+                world.addBody(ground)
+
+                // catapult
+                const catapultBase = new p2.Body({
+                    type: p2.Body.STATIC,
+                    position: [0, 0],
+                })
+                catapultBase.addShape(new p2.Box({ width: 0.2, height: 2 }))
+                world.addBody(catapultBase)
+
+                const catapultLeft = new p2.Body({
+                    mass: 1,
+                    position: [-2, 0],
+                })
+                catapultLeft.addShape(new p2.Box({ width: 1, height: 1 }))
+                world.addBody(catapultLeft)
+
+                const catapultTop = new p2.Body({
+                    mass: 0.5,
+                    position: [0, 1],
+                    angle: 0.2,
+                })
+                catapultTop.addShape(new p2.Box({ width: 5, height: 0.2 }))
+                catapultTop.addShape(new p2.Box({ width: 0.2, height: 1 }), [-2.5, 0.5])
+                world.addBody(catapultTop)
+
+                const catapultConstraint = new p2.RevoluteConstraint(catapultBase, catapultTop, {
+                    localPivotA: [0, 1],
+                    localPivotB: [0, 0],
+                    collideConnected: false,
+                })
+                world.addConstraint(catapultConstraint)
+
+                // ammo
+                const ammo = new p2.Body({
+                    mass: 20,
+                    position: [-2, 3],
+                })
+                ammo.addShape(new p2.Circle({ radius: 0.75 }))
+                world.addBody(ammo)
+
+                // trigger
+                const trigger = new p2.Body({
+                    mass: 70,
+                    position: [2, 10],
+                    velocity: [0, -5],
+                })
+                trigger.addShape(new p2.Box({ width: 1, height: 1 }))
+                world.addBody(trigger)
+
+                // tower of boxes
+                const towerX = 9
+                const towerY = 1
+                const towerWidth = 4
+                const towerHeight = 10
+                const towerBoxSize = 0.8
+                for (let y = 0; y < towerHeight; y++) {
+                    for (let x = 0; x < towerWidth; x++) {
+                        const box = new p2.Body({
+                            mass: 1,
+                            position: [towerX + x * towerBoxSize, towerY + y * towerBoxSize - towerBoxSize],
+                        })
+                        box.addShape(new p2.Box({ width: towerBoxSize, height: towerBoxSize }))
+                        world.addBody(box)
+                    }
+                }
+
+                const onResize = () => {
+                    frame(5, 3, 20, 10)
+                }
+
+                onResize()
+
+                window.addEventListener('resize', onResize)
+
+                return {
+                    world,
+                    onDestroy: () => {
+                        window.removeEventListener('resize', onResize)
+                    },
+                }
+            },
+            {
+                showControls: false,
+                showHeader: false,
+                enablePanning: false,
+                enableZooming: false,
+            }
+        )
+
+        sandbox.mount(document.querySelector('#demo'))
+    </script>
+</html>

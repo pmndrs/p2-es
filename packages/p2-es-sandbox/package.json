@@ -11,7 +11,6 @@
     "sandbox",
     "2d"
   ],
-  "type": "module",
   "author": "Isaac Mason <isaac@isaacmason.com>",
   "license": "MIT",
   "packageManager": "yarn@3.2.1",
@@ -64,13 +63,14 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/index.umd.js",
+  "main": "./dist/index.cjs.js",
   "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js"
+      "require": "./dist/index.cjs.js"
     }
   }
 }

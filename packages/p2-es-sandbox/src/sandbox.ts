@@ -25,11 +25,9 @@ export type SandboxToolsConfig = {
 
 export type SandboxConfig = {
     world: World
-    teardown?: () => void
+    onDestroy?: () => void
     tools?: SandboxToolsConfig
     settings?: Partial<SandboxSettings>
-    hideControls?: boolean
-    hideHeader?: boolean
 }
 
 export type SandboxFunction = (context: SandboxContext) => SandboxConfig
@@ -82,11 +80,11 @@ export const createSandbox = ({ pixi, pointer, sandboxFunction }: CreateSandboxP
     // default view
     frame(0, 0, 8, 6)
 
-    const { world, tools, settings, teardown } = sandboxFunction(sandboxContext)
+    const { world, tools, settings, onDestroy } = sandboxFunction(sandboxContext)
 
     const destroySandbox = () => {
-        if (teardown) {
-            teardown()
+        if (onDestroy) {
+            onDestroy()
         }
     }
 

@@ -55,6 +55,8 @@ export type SandboxProps = {
     showControls?: boolean
     /** @default true */
     enablePanning?: boolean
+    /** @default true */
+    enableZooming?: boolean
 }
 
 export class Sandbox {
@@ -111,7 +113,6 @@ export class Sandbox {
             const configProps = {
                 showControls: true,
                 showHeader: true,
-                enablePanning: true,
                 ...this.config,
             }
 

@@ -16,7 +16,7 @@ export const createPixiApp = (): Pixi & { destroy: () => void } => {
     })
 
     const stage = new Container()
-    stage.interactive = true
+    stage.eventMode = 'dynamic'
 
     application.stage = stage
 
