@@ -1,11 +1,10 @@
 import * as decomp from 'poly-decomp-es'
-
 import { AABB } from '../collision/AABB'
 import { Ray } from '../collision/Ray'
 import { RaycastResult } from '../collision/RaycastResult'
 import { EventEmitter } from '../events/EventEmitter'
 import * as vec2 from '../math/vec2'
-import { add, create as vec2create, subtract } from '../math/vec2'
+import { add, subtract, create as vec2create } from '../math/vec2'
 import { Convex } from '../shapes/Convex'
 import type { Shape } from '../shapes/Shape'
 import type { Vec2 } from '../types'

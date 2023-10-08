@@ -1,5 +1,4 @@
 import type { Vec2 } from 'types'
-
 import * as vec2 from '../math/vec2'
 import type { Body } from '../objects/Body'
 import type { Shape } from '../shapes/Shape'

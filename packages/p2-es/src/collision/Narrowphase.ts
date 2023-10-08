@@ -1,5 +1,4 @@
 import type { Heightfield } from 'shapes/Heightfield'
-
 import type { ContactEquation } from '../equations/ContactEquation'
 import type { FrictionEquation } from '../equations/FrictionEquation'
 import type { ContactMaterial } from '../material/ContactMaterial'
