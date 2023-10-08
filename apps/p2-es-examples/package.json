@@ -10,7 +10,7 @@
         "prettier-fix": "prettier --write ."
     },
     "dependencies": {
-        "p2-es": "1.2.1",
+        "p2-es": "1.2.2",
         "pixi.js": "7.2.4"
     },
     "devDependencies": {
