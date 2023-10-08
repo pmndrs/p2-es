@@ -62,8 +62,8 @@ const AppInner = ({
     codeLink,
     showControls: initialShowControls,
     showHeader,
-    enablePanning,
-    enableZooming,
+    enablePanning = true,
+    enableZooming = true,
 }: AppProps) => {
     const ecs = useECS()
 
