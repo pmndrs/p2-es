@@ -3819,7 +3819,7 @@ __metadata:
     eslint-plugin-simple-import-sort: ^10.0.0
     eslint-plugin-storybook: ^0.6.13
     leva: ^0.9.34
-    p2-es: 1.2.0
+    p2-es: 1.2.1
     pixi.js: ^7.2.4
     prettier: ^2.8.7
     react: ^18.2.0
@@ -13868,7 +13868,7 @@ __metadata:
   resolution: "p2-es-demos@workspace:apps/p2-es-demos"
   dependencies:
     "@p2-es/sandbox": "workspace:*"
-    p2-es: 1.2.0
+    p2-es: 1.2.1
     prettier: ^2.8.7
     typescript: ^4.9.4
     vite: ^4.0.4
@@ -13889,7 +13889,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "p2-es-examples@workspace:apps/p2-es-examples"
   dependencies:
-    p2-es: 1.2.0
+    p2-es: 1.2.1
     pixi.js: 7.2.4
     prettier: ^2.8.7
     typescript: ^4.9.4
@@ -13922,7 +13922,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"p2-es@1.2.0, p2-es@workspace:*, p2-es@workspace:packages/p2-es":
+"p2-es@1.2.1, p2-es@workspace:*, p2-es@workspace:packages/p2-es":
   version: 0.0.0-use.local
   resolution: "p2-es@workspace:packages/p2-es"
   dependencies:

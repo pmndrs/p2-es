@@ -1,5 +1,11 @@
 # `p2-es` Changelog
 
+## 1.2.1
+
+### Patch Changes
+
+- 50ab635: refactor: clean up Box constructor
+
 ## 1.2.0
 
 ### Minor Changes
