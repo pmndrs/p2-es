@@ -1,5 +1,12 @@
 # @p2-es/sandbox
 
+## 1.2.2
+
+### Patch Changes
+
+- d50d5be: fix: enablePanning and enableZooming should default to true
+  - p2-es@1.2.2
+
 ## 1.2.1
 
 ### Patch Changes
