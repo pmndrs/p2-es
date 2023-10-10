@@ -134,7 +134,7 @@ export const Main = styled.div`
     justify-content: flex-start;
     height: 100%;
 
-    .settings-enabled {
+    &.settings-enabled {
         overflow: auto;
     }
 
