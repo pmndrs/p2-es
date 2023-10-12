@@ -748,16 +748,17 @@ export class Body extends EventEmitter<BodyEventMap> {
             throw new Error('A shape cannot be removed during step.')
         }
 
-        const idx = this.shapes.indexOf(shape)
-
-        if (idx !== -1) {
-            this.shapes.splice(idx, 1)
-            this.aabbNeedsUpdate = true
-            shape.body = null
-            return true
-        } else {
-            return false
+        const l = this.shapes.length;
+        const shapes = this.shapes;
+        for (let i = 0; i < l; i++) {
+            if (shapes[i] === shape) {
+                shapes.splice(i, 1);
+                this.aabbNeedsUpdate = true;
+                shape.body = null;
+                return true;
+            }
         }
+        return false;
     }
 
     /**
@@ -971,8 +972,9 @@ export class Body extends EventEmitter<BodyEventMap> {
         }
 
         // Copy the path
-        const p = []
-        for (let i = 0; i < path.length; i++) {
+        const p = [];
+        const l = path.length;
+        for (let i = 0; i < l; i++) {
             p[i] = vec2.clone(path[i])
         }
 
@@ -998,8 +1000,9 @@ export class Body extends EventEmitter<BodyEventMap> {
         }
 
         // Save this path for later
-        const concavePath: Vec2[] = (this.concavePath = [])
-        for (let i = 0; i < p.length; i++) {
+        const concavePath: Vec2[] = (this.concavePath = []);
+        const pl = p.length;
+        for (let i = 0; i < pl; i++) {
             concavePath[i] = vec2.clone(p[i])
         }
 
@@ -1014,15 +1017,17 @@ export class Body extends EventEmitter<BodyEventMap> {
             convexes = decomp.quickDecomp(p as decomp.Polygon)
         }
 
-        const cm = vec2create()
+        const cm = vec2create();
 
         // Add convexes
-        for (let i = 0; i !== convexes.length; i++) {
+        const convexL = convexes.length;
+        for (let i = 0; i !== convexL; i++) {
             // Create convex
             let c = new Convex({ vertices: convexes[i] })
 
             // Move all vertices so its center of mass is in the local center of the convex
-            for (let j = 0; j !== c.vertices.length; j++) {
+            const vertsL = c.vertices.length;
+            for (let j = 0; j !== vertsL; j++) {
                 const v = c.vertices[j]
                 subtract(v, v, c.centerOfMass)
             }
@@ -1258,8 +1263,9 @@ export class Body extends EventEmitter<BodyEventMap> {
         // Ignore all the ignored body pairs
         // This should probably be done somewhere else for optimization
         const ignoreBodies = []
-        const disabledPairs = this.world.disabledBodyCollisionPairs
-        for (let i = 0; i < disabledPairs.length; i += 2) {
+        const disabledPairs = this.world.disabledBodyCollisionPairs;
+        const l = disabledPairs.length;
+        for (let i = 0; i < l; i += 2) {
             const bodyA = disabledPairs[i]
             const bodyB = disabledPairs[i + 1]
             if (bodyA === this) {

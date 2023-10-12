@@ -126,8 +126,9 @@ export class LockConstraint extends Constraint {
      * @param force
      */
     setMaxForce(force: number): void {
-        const eqs = this.equations
-        for (let i = 0; i < this.equations.length; i++) {
+        const eqs = this.equations;
+        const l = eqs.length;
+        for (let i = 0; i < l; i++) {
             eqs[i].maxForce = force
             eqs[i].minForce = -force
         }

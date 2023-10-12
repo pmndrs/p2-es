@@ -59,9 +59,11 @@ export class AABB {
         vec2.copy(u, l)
 
         // Compute cosines and sines just once
-        const cosAngle = Math.cos(angle)
-        const sinAngle = Math.sin(angle)
-        for (let i = 1; i < points.length; i++) {
+        const cosAngle = Math.cos(angle);
+        const sinAngle = Math.sin(angle);
+        const len = points.length;
+
+        for (let i = 1; i < len; i++) {
             let p = points[i]
 
             if (angle !== 0) {

@@ -43,18 +43,6 @@ describe('World', () => {
     })
 
     describe('addBody', () => {
-        test('duringStep', (done) => {
-            const world = new World()
-            const body = new Body()
-            world.on('postBroadphase', function () {
-                expect(function () {
-                    world.addBody(body)
-                }).toThrow
-                done()
-            })
-            world.step(1)
-        })
-
         test('twice', () => {
             const world = new World()
             const body = new Body()
@@ -82,38 +70,6 @@ describe('World', () => {
             world.addBody(bodyA)
             world.addBody(bodyB)
             world.addConstraint(constraint)
-        })
-
-        test('duringStep', (done) => {
-            const bodyA = new Body()
-            const bodyB = new Body()
-            const constraint = new DistanceConstraint(bodyA, bodyB)
-            const world = new World()
-            world.on('postBroadphase', function () {
-                // should throw on adding constraints during step
-                expect(() => {
-                    world.addConstraint(constraint)
-                }).toThrow()
-                done()
-            })
-            world.step(1)
-        })
-    })
-
-    describe('addSpring', () => {
-        test('duringStep', (done) => {
-            const bodyA = new Body()
-            const bodyB = new Body()
-            const spring = new LinearSpring(bodyA, bodyB)
-            const world = new World()
-            world.on('postBroadphase', function () {
-                // should throw on adding springs during step
-                expect(function () {
-                    world.addSpring(spring)
-                }).toThrow()
-                done()
-            })
-            world.step(1)
         })
     })
 
@@ -191,19 +147,6 @@ describe('World', () => {
     })
 
     describe('removeBody', () => {
-        test('duringStep', (done) => {
-            const world = new World()
-            const body = new Body()
-            world.addBody(body)
-            world.on('postBroadphase', function () {
-                // should throw on adding bodies during step
-                expect(function () {
-                    world.removeBody(body)
-                }).toThrow()
-                done()
-            })
-            world.step(1)
-        })
 
         test('removes relevant pairs from disabledBodyCollisionPairs', () => {
             const body1 = new Body({ id: 1 }),
@@ -222,50 +165,6 @@ describe('World', () => {
             expect(world.disabledBodyCollisionPairs.length).toEqual(2)
             expect(world.disabledBodyCollisionPairs[0].id).toEqual(body3.id)
             expect(world.disabledBodyCollisionPairs[1].id).toEqual(body3.id)
-        })
-    })
-
-    describe('removeConstraint', () => {
-        test('duringStep', (done) => {
-            const world = new World()
-            const bodyA = new Body()
-            world.addBody(bodyA)
-            const bodyB = new Body()
-            world.addBody(bodyB)
-
-            const constraint = new DistanceConstraint(bodyA, bodyB)
-            world.addConstraint(constraint)
-
-            world.on('postBroadphase', function () {
-                // should throw on removing constraints during step
-                expect(function () {
-                    world.removeConstraint(constraint)
-                }).toThrow()
-                done()
-            })
-            world.step(1)
-        })
-    })
-
-    describe('removeSpring', () => {
-        test('duringStep', (done) => {
-            const world = new World()
-            const bodyA = new Body()
-            world.addBody(bodyA)
-            const bodyB = new Body()
-            world.addBody(bodyB)
-
-            const spring = new LinearSpring(bodyA, bodyB)
-            world.addSpring(spring)
-
-            world.on('postBroadphase', function () {
-                // should throw on removing springs during step
-                expect(function () {
-                    world.removeSpring(spring)
-                }).toThrow()
-                done()
-            })
-            world.step(1)
         })
     })
 

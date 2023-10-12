@@ -137,11 +137,12 @@ export class GSSolver extends Solver {
                 for (j = 0; j !== Neq; j++) {
                     const eq = equations[j]
                     if (eq instanceof FrictionEquation) {
-                        let f = 0.0
-                        for (let k = 0; k !== eq.contactEquations.length; k++) {
-                            f += eq.contactEquations[k].multiplier
+                        let f = 0.0;
+                        const equationsLength = eq.contactEquations.length;
+                        for (let k = 0; k !== equationsLength; k++) {
+                            f += eq.contactEquations[k].multiplier;
                         }
-                        f *= eq.frictionCoefficient / eq.contactEquations.length
+                        f *= eq.frictionCoefficient / equationsLength;
                         eq.maxForce = f
                         eq.minForce = -f
 

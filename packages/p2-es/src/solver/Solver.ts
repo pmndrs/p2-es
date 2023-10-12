@@ -82,9 +82,12 @@ export abstract class Solver {
      * @param eq
      */
     removeEquation(eq: Equation): void {
-        const i = this.equations.indexOf(eq)
-        if (i !== -1) {
-            this.equations.splice(i, 1)
+        const l = this.equations.length;
+        for (let i = 0; i < l; i++) {
+            if (this.equations[i] === eq) {
+                this.equations.splice(i, 1);
+                break;
+            }
         }
     }
 

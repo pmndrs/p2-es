@@ -28,9 +28,13 @@ export class SAPBroadphase extends Broadphase {
 
         this.removeBodyHandler = (e) => {
             // Remove from list
-            const idx = this.axisList.indexOf(e.body)
-            if (idx !== -1) {
-                this.axisList.splice(idx, 1)
+            const l = this.axisList.length;
+            const list = this.axisList;
+            for (let i = 0; i < l; i++) {
+                if (list[i] === e.body) {
+                    list.splice(i, 1);
+                    break;
+                }
             }
         }
     }
@@ -118,8 +122,9 @@ export class SAPBroadphase extends Broadphase {
     aabbQuery(world: World, aabb: AABB, result: Body[] = []): Body[] {
         this.sortList()
 
-        const axisList = this.axisList
-        for (let i = 0; i < axisList.length; i++) {
+        const axisList = this.axisList;
+        const l = axisList.length;
+        for (let i = 0; i < l; i++) {
             const b = axisList[i]
 
             if (b.aabbNeedsUpdate) {

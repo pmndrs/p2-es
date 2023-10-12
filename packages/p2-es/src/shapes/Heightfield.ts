@@ -102,7 +102,8 @@ export class Heightfield extends Shape {
         const data = this.heights
         let maxValue = data[0]
         let minValue = data[0]
-        for (let i = 0; i !== data.length; i++) {
+        const l = data.length
+        for (let i = 0; i !== l; i++) {
             const v = data[i]
             if (v > maxValue) {
                 maxValue = v
@@ -126,7 +127,8 @@ export class Heightfield extends Shape {
     updateArea(): void {
         const data = this.heights
         let area = 0
-        for (let i = 0; i < data.length - 1; i++) {
+        const l = data.length
+        for (let i = 0; i < l - 1; i++) {
             area += ((data[i] + data[i + 1]) / 2) * this.elementWidth
         }
         this.area = area

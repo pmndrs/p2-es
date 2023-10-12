@@ -186,12 +186,14 @@ export class Narrowphase {
             this.collidingBodiesLastStep.set(id1, id2, true)
         }
 
-        const ce = this.contactEquations
-        const fe = this.frictionEquations
-        for (let i = 0; i < ce.length; i++) {
+        const ce = this.contactEquations;
+        const fe = this.frictionEquations;
+        const cel = ce.length;
+        const fel = fe.length;
+        for (let i = 0; i < cel; i++) {
             this.contactEquationPool.release(ce[i])
         }
-        for (let i = 0; i < fe.length; i++) {
+        for (let i = 0; i < fel; i++) {
             this.frictionEquationPool.release(fe[i])
         }
 
@@ -666,9 +668,11 @@ export class Narrowphase {
         vec2.rotate(worldNormal, yAxis, planeAngle)
 
         // Check line ends
-        verts[0] = worldVertex0
-        verts[1] = worldVertex1
-        for (let i = 0; i < verts.length; i++) {
+        verts[0] = worldVertex0;
+        verts[1] = worldVertex1;
+
+        const l = verts.length;
+        for (let i = 0; i < l; i++) {
             const v = verts[i]
 
             vec2.subtract(dist, v, planeOffset)
@@ -880,10 +884,12 @@ export class Narrowphase {
         }
 
         // Add corner
-        verts[0] = worldVertex0
-        verts[1] = worldVertex1
+        verts[0] = worldVertex0;
+        verts[1] = worldVertex1;
 
-        for (let i = 0; i < verts.length; i++) {
+        const l = verts.length;
+
+        for (let i = 0; i < l; i++) {
             const v = verts[i]
 
             vec2.subtract(dist, v, circleOffset)
@@ -1555,16 +1561,16 @@ export class Narrowphase {
 
         // Do Narrowphase as two circles
         const numContacts1 = this.circlePlane(
-                capsuleBody,
-                circle,
-                end1,
-                0,
-                planeBody,
-                planeShape,
-                planeOffset,
-                planeAngle,
-                justTest
-            ),
+            capsuleBody,
+            circle,
+            end1,
+            0,
+            planeBody,
+            planeShape,
+            planeOffset,
+            planeAngle,
+            justTest
+        ),
             numContacts2 = this.circlePlane(
                 capsuleBody,
                 circle,
