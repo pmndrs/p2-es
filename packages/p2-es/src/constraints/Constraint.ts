@@ -97,8 +97,9 @@ export class Constraint {
      * @param stiffness
      */
     setStiffness(stiffness: number): void {
-        const eqs = this.equations
-        for (let i = 0; i !== eqs.length; i++) {
+        const eqs = this.equations;
+        const l = eqs.length;
+        for (let i = 0; i !== l; i++) {
             const eq = eqs[i]
             eq.stiffness = stiffness
             eq.needsUpdate = true
@@ -110,8 +111,9 @@ export class Constraint {
      * @param relaxation
      */
     setRelaxation(relaxation: number): void {
-        const eqs = this.equations
-        for (let i = 0; i !== eqs.length; i++) {
+        const eqs = this.equations;
+        const l = eqs.length;
+        for (let i = 0; i !== l; i++) {
             const eq = eqs[i]
             eq.relaxation = relaxation
             eq.needsUpdate = true
@@ -123,8 +125,9 @@ export class Constraint {
      * @param maxBias
      */
     setMaxBias(maxBias: number): void {
-        const eqs = this.equations
-        for (let i = 0; i !== eqs.length; i++) {
+        const eqs = this.equations;
+        const l = eqs.length;
+        for (let i = 0; i !== l; i++) {
             const eq = eqs[i]
             eq.maxBias = maxBias
         }

@@ -185,7 +185,8 @@ export const drawConvex = ({
     if (!debugPolygons) {
         graphics.lineStyle(lineWidth, lineColor, 1)
         graphics.beginFill(fillColor, isSleeping ? sleepOpacity : 1.0)
-        for (let i = 0; i !== verts.length; i++) {
+        const l = verts.length
+        for (let i = 0; i !== l; i++) {
             const v = verts[i]
             const x = v[0]
             const y = v[1]

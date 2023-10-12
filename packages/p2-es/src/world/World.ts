@@ -300,6 +300,36 @@ export class World extends EventEmitter<WorldEventMap> {
     private unionFind = new UnionFind(1)
 
     /**
+     * Bodies to be added to the World in the next step.
+     */
+    bodiesToAdd: Body[] = []
+
+    /**
+     * Bodies to be removed from the World in the next step.
+     */
+    bodiesToRemove: Body[] = []
+
+    /**
+     * Constraints to be added to the World in the next step.
+     */
+    constraintsToAdd: Constraint[] = []
+
+    /**
+     * Constraints to be removed from the World in the next step.
+     */
+    constraintsToRemove: Constraint[] = []
+
+    /**
+     * Springs to be added to the World in the next step.
+     */
+    springsToAdd: Spring[] = []
+
+    /**
+     * Springs to be removed from the World in the next step.
+     */
+    springsToRemove: Spring[] = []
+
+    /**
      * Constructor for a p2-es World
      * @param options options for creating the world
      */
@@ -325,7 +355,7 @@ export class World extends EventEmitter<WorldEventMap> {
     }
 
     /**
-     * Add a constraint to the simulation. Note that both bodies connected to the constraint must be added to the world first. Also note that you can't run this method during step.
+     * Add a constraint to the simulation. Note that both bodies connected to the constraint must be added to the world first.
      * @param constraint
      *
      * @example
@@ -334,7 +364,8 @@ export class World extends EventEmitter<WorldEventMap> {
      */
     addConstraint(constraint: Constraint): void {
         if (this.stepping) {
-            throw new Error('Constraints cannot be added during step.')
+            this.constraintsToAdd.push(constraint);
+            return;
         }
 
         const bodies = this.bodies
@@ -385,12 +416,13 @@ export class World extends EventEmitter<WorldEventMap> {
     }
 
     /**
-     * Removes a constraint. Note that you can't run this method during step.
+     * Removes a constraint.
      * @param constraint
      */
     removeConstraint(constraint: Constraint): void {
         if (this.stepping) {
-            throw new Error('Constraints cannot be removed during step.')
+            this.constraintsToRemove.push(constraint);
+            return;
         }
         arrayRemove(this.constraints, constraint)
     }
@@ -445,6 +477,8 @@ export class World extends EventEmitter<WorldEventMap> {
      * @see http://bulletphysics.org/mediawiki-1.5.8/index.php/Stepping_The_World
      */
     step(dt: number, timeSinceLastCalled?: number, maxSubSteps = 10): void {
+        this.digestChanges();
+
         if (timeSinceLastCalled === undefined) {
             // Fixed, simple stepping
             this.internalStep(dt)
@@ -463,12 +497,48 @@ export class World extends EventEmitter<WorldEventMap> {
             }
 
             const t = (this.accumulator % dt) / dt
-            for (let j = 0; j !== this.bodies.length; j++) {
+            const l = this.bodies.length;
+            for (let j = 0; j !== l; j++) {
                 const b = this.bodies[j]
                 vec2.lerp(b.interpolatedPosition, b.previousPosition, b.position, t)
                 b.interpolatedAngle = b.previousAngle + t * (b.angle - b.previousAngle)
             }
         }
+    }
+
+    /**
+     * Digest changes that have been made while stepping.
+     */
+    digestChanges(): void {
+        const bodiesToAdd = this.bodiesToAdd;
+        const nBodiesToAdd = bodiesToAdd.length;
+        for (let i = 0; i !== nBodiesToAdd; i++) { this.addBody(bodiesToAdd[i]); }
+        bodiesToAdd.length = 0;
+
+        const constraintsToAdd = this.constraintsToAdd;
+        const nConstraintsToAdd = constraintsToAdd.length;
+        for (let i = 0; i !== nConstraintsToAdd; i++) { this.addConstraint(constraintsToAdd[i]); }
+        constraintsToAdd.length = 0;
+
+        const springsToAdd = this.springsToAdd;
+        const nSpringsToAdd = springsToAdd.length;
+        for (let i = 0; i !== nSpringsToAdd; i++) { this.addSpring(springsToAdd[i]); }
+        springsToAdd.length = 0;
+
+        const bodiesToRemove = this.bodiesToRemove;
+        const nBodiesToRemove = bodiesToRemove.length;
+        for (let i = 0; i !== nBodiesToRemove; i++) { this.removeBody(bodiesToRemove[i]); }
+        bodiesToRemove.length = 0;
+
+        const constraintsToRemove = this.constraintsToRemove;
+        const nConstraintsToRemove = constraintsToRemove.length;
+        for (let i = 0; i !== nConstraintsToRemove; i++) { this.removeConstraint(constraintsToRemove[i]); }
+        constraintsToRemove.length = 0;
+
+        const springsToRemove = this.springsToRemove;
+        const nSpringsToRemove = springsToRemove.length;
+        for (let i = 0; i !== nSpringsToRemove; i++) { this.removeSpring(springsToRemove[i]); }
+        springsToRemove.length = 0;
     }
 
     /**
@@ -666,15 +736,16 @@ export class World extends EventEmitter<WorldEventMap> {
             if (this.islandSplit) {
                 // Initialize the UnionFind
                 const unionFind = this.unionFind
-                unionFind.resize(this.bodies.length + 1)
+                unionFind.resize(Nbodies + 1)
 
                 // Update equation index
-                for (let i = 0; i < equations.length; i++) {
+                const Nequations = equations.length;
+                for (let i = 0; i < Nequations; i++) {
                     equations[i].index = i
                 }
 
                 // Unite bodies if they are connected by an equation
-                for (let i = 0; i < equations.length; i++) {
+                for (let i = 0; i < Nequations; i++) {
                     const bodyA = equations[i].bodyA
                     const bodyB = equations[i].bodyB
                     if (bodyA.type === Body.DYNAMIC && bodyB.type === Body.DYNAMIC) {
@@ -683,7 +754,7 @@ export class World extends EventEmitter<WorldEventMap> {
                 }
 
                 // Find the body islands
-                for (let i = 0; i < bodies.length; i++) {
+                for (let i = 0; i < Nbodies; i++) {
                     const body = bodies[i]
                     body.islandId = body.type === Body.DYNAMIC ? unionFind.find(body.index) : -1
                 }
@@ -692,7 +763,7 @@ export class World extends EventEmitter<WorldEventMap> {
                 equations = equations.sort(sortEquationsByIsland)
 
                 let equationIndex = 0
-                while (equationIndex < equations.length) {
+                while (equationIndex < Nequations) {
                     const equation = equations[equationIndex++]
                     solver.addEquation(equation)
 
@@ -785,7 +856,7 @@ export class World extends EventEmitter<WorldEventMap> {
                     islandEnd = islandStart + 1;
                     islandEnd < bodiesSortedByIsland.length && bodiesSortedByIsland[islandEnd].islandId === islandId;
                     islandEnd++ // eslint-disable-next-line no-empty
-                ) {}
+                ) { }
 
                 // Don't check static objects
                 if (islandId === -1) {
@@ -827,12 +898,13 @@ export class World extends EventEmitter<WorldEventMap> {
     }
 
     /**
-     * Add a spring to the simulation. Note that this operation can't be done during step.
+     * Add a spring to the simulation.
      * @param spring
      */
     addSpring(spring: Spring): void {
         if (this.stepping) {
-            throw new Error('Springs cannot be added during step.')
+            this.springsToAdd.push(spring);
+            return;
         }
         this.springs.push(spring)
         this.emit({
@@ -842,12 +914,13 @@ export class World extends EventEmitter<WorldEventMap> {
     }
 
     /**
-     * Remove a spring. Note that this operation can't be done during step.
+     * Remove a spring.
      * @param spring
      */
     removeSpring(spring: Spring): void {
         if (this.stepping) {
-            throw new Error('Springs cannot be removed during step.')
+            this.springsToRemove.push(spring);
+            return;
         }
         arrayRemove(this.springs, spring)
         this.emit({
@@ -857,8 +930,8 @@ export class World extends EventEmitter<WorldEventMap> {
     }
 
     /**
-     * Add a body to the simulation. Note that you can't add a body during step: you have to wait until after the step (see the postStep event).
-     * Also note that bodies can only be added to one World at a time.
+     * Add a body to the simulation.
+     * Note that bodies can only be added to one World at a time.
      * @param body
      *
      * @example
@@ -868,7 +941,8 @@ export class World extends EventEmitter<WorldEventMap> {
      */
     addBody(body: Body): void {
         if (this.stepping) {
-            throw new Error('Bodies cannot be added during step.')
+            this.bodiesToAdd.push(body);
+            return;
         }
 
         // Already added?
@@ -887,7 +961,7 @@ export class World extends EventEmitter<WorldEventMap> {
     }
 
     /**
-     * Remove a body from the simulation. Note that bodies cannot be removed during step (for example, inside the beginContact event). In that case you need to wait until the step is done (see the postStep event).
+     * Remove a body from the simulation.
      *
      * Also note that any constraints connected to the body must be removed before the body.
      *
@@ -896,7 +970,7 @@ export class World extends EventEmitter<WorldEventMap> {
      * @example
      *     var removeBody;
      *     world.on("beginContact",function(event){
-     *         // We cannot remove the body here since the world is still stepping.
+     *         // We cannot remove the body here since the world is still stepping. Or can we? Thanks to new changes it is possible, but still not good practice. See the example below.
      *         // Instead, schedule the body to be removed after the step is done.
      *         removeBody = body;
      *     });
@@ -910,7 +984,8 @@ export class World extends EventEmitter<WorldEventMap> {
      */
     removeBody(body: Body): void {
         if (this.stepping) {
-            throw new Error('Bodies cannot be removed during step.')
+            this.bodiesToRemove.push(body);
+            return;
         }
 
         // TODO: would it be smart to have a .constraints array on the body?
@@ -942,7 +1017,8 @@ export class World extends EventEmitter<WorldEventMap> {
         // Remove disabled body collision pairs that involve body
         const pairs = this.disabledBodyCollisionPairs
         let i = 0
-        while (i < pairs.length) {
+        const pl = pairs.length
+        while (i < pl) {
             if (pairs[i] === body || pairs[i + 1] === body) {
                 pairs.splice(i, 2)
             } else {
@@ -957,8 +1033,9 @@ export class World extends EventEmitter<WorldEventMap> {
      * @returns The body, or false if it was not found.
      */
     getBodyByID(id: number): Body | false {
-        const bodies = this.bodies
-        for (let i = 0; i < bodies.length; i++) {
+        const bodies = this.bodies;
+        const l = bodies.length;
+        for (let i = 0; i < l; i++) {
             const b = bodies[i]
             if (b.id === id) {
                 return b
@@ -983,7 +1060,8 @@ export class World extends EventEmitter<WorldEventMap> {
      */
     enableBodyCollision(bodyA: Body, bodyB: Body): void {
         const pairs = this.disabledBodyCollisionPairs
-        for (let i = 0; i < pairs.length; i += 2) {
+        const l = pairs.length
+        for (let i = 0; i < l; i += 2) {
             if ((pairs[i] === bodyA && pairs[i + 1] === bodyB) || (pairs[i + 1] === bodyA && pairs[i] === bodyB)) {
                 pairs.splice(i, 2)
                 return
@@ -1085,7 +1163,8 @@ export class World extends EventEmitter<WorldEventMap> {
 
         // Set for all contact materials
         const contactMaterials = this.contactMaterials
-        for (let i = 0; i !== contactMaterials.length; i++) {
+        const l = contactMaterials.length;
+        for (let i = 0; i !== l; i++) {
             const c = contactMaterials[i]
             c.stiffness = c.frictionStiffness = stiffness
         }
@@ -1103,7 +1182,8 @@ export class World extends EventEmitter<WorldEventMap> {
         this.setGlobalEquationParameters({ relaxation: relaxation })
 
         // Set for all contact materials
-        for (let i = 0; i !== this.contactMaterials.length; i++) {
+        const l = this.contactMaterials.length;
+        for (let i = 0; i !== l; i++) {
             const c = this.contactMaterials[i]
             c.relaxation = c.frictionRelaxation = relaxation
         }
@@ -1154,10 +1234,12 @@ export class World extends EventEmitter<WorldEventMap> {
 
     private setGlobalEquationParameters(parameters: { relaxation?: number; stiffness?: number }): void {
         const constraints = this.constraints
-        for (let i = 0; i !== constraints.length; i++) {
+        const l = constraints.length;
+        for (let i = 0; i !== l; i++) {
             const c = constraints[i]
-            const eqs = c.equations
-            for (let j = 0; j !== eqs.length; j++) {
+            const eqs = c.equations;
+            const Nequations = eqs.length;
+            for (let j = 0; j !== Nequations; j++) {
                 const eq = eqs[j]
                 eq.relaxation = parameters.relaxation ?? eq.relaxation
                 eq.stiffness = parameters.stiffness ?? eq.stiffness

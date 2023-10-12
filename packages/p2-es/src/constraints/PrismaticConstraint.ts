@@ -248,9 +248,14 @@ export class PrismaticConstraint extends Constraint {
         if (!this.motorEnabled) {
             return
         }
-        const i = this.equations.indexOf(this.motorEquation)
-        this.equations.splice(i, 1)
-        this.motorEnabled = false
+        const l = this.equations.length;
+        const eqs = this.equations;
+        for (let i = 0; i < l; i++) {
+            if (eqs[i] === this.motorEquation) {
+                eqs.splice(i, 1);
+                break;
+            }
+        }
     }
 
     /**
@@ -348,9 +353,12 @@ export class PrismaticConstraint extends Constraint {
                 eqs.push(upperLimitEquation)
             }
         } else {
-            const idx = eqs.indexOf(upperLimitEquation)
-            if (idx !== -1) {
-                eqs.splice(idx, 1)
+            const l = eqs.length;
+            for (let i = 0; i < l; i++) {
+                if (eqs[i] === upperLimitEquation) {
+                    eqs.splice(i, 1);
+                    break;
+                }
             }
         }
 
@@ -365,9 +373,12 @@ export class PrismaticConstraint extends Constraint {
                 eqs.push(lowerLimitEquation)
             }
         } else {
-            const idx = eqs.indexOf(lowerLimitEquation)
-            if (idx !== -1) {
-                eqs.splice(idx, 1)
+            const l = eqs.length;
+            for (let i = 0; i < l; i++) {
+                if (eqs[i] === lowerLimitEquation) {
+                    eqs.splice(i, 1);
+                    break;
+                }
             }
         }
     }

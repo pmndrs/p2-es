@@ -52,9 +52,12 @@ export const splice = (array: unknown[], index: number, howmany = 1): void => {
  * @param element
  */
 export const arrayRemove = (array: unknown[], element: unknown): void => {
-    const idx = array.indexOf(element)
-    if (idx !== -1) {
-        splice(array, idx, 1)
+    const l = array.length;
+    for (let i = 0; i < l; i++) {
+        if (array[i] === element) {
+            splice(array, i, 1);
+            break;
+        }
     }
 }
 

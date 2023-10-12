@@ -193,7 +193,8 @@ export class Convex extends Shape {
         const triangles = polyk.triangulate(polykVerts)
 
         // Loop over all triangles, add their inertia contributions to I
-        for (let i = 0; i < triangles.length; i += 3) {
+        const l = triangles.length;
+        for (let i = 0; i < l; i += 3) {
             const id1 = triangles[i],
                 id2 = triangles[i + 1],
                 id3 = triangles[i + 2]
@@ -221,9 +222,10 @@ export class Convex extends Shape {
         vec2.set(cm, 0, 0)
         let totalArea = 0
 
-        for (let i = 0; i !== triangles.length; i++) {
+        const l = triangles.length;
+        for (let i = 0; i !== l; i++) {
             const t = triangles[i]
-            ;(a = verts[t[0]]), (b = verts[t[1]]), (c = verts[t[2]])
+                ; (a = verts[t[0]]), (b = verts[t[1]]), (c = verts[t[2]])
 
             vec2.centroid(centroid, a, b, c)
 
@@ -266,7 +268,8 @@ export class Convex extends Shape {
         const verts = this.vertices
         let r2 = 0
 
-        for (let i = 0; i !== verts.length; i++) {
+        const l = verts.length;
+        for (let i = 0; i !== l; i++) {
             const l2 = vec2.squaredLength(verts[i])
             if (l2 > r2) {
                 r2 = l2
@@ -284,8 +287,9 @@ export class Convex extends Shape {
         this.area = 0
 
         const triangles = this.triangles,
-            verts = this.vertices
-        for (let i = 0; i !== triangles.length; i++) {
+            verts = this.vertices;
+        const l = triangles.length;
+        for (let i = 0; i !== l; i++) {
             const t = triangles[i],
                 a = verts[t[0]],
                 b = verts[t[1]],
