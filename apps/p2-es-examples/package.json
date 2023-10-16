@@ -11,7 +11,7 @@
     },
     "dependencies": {
         "p2-es": "1.2.2",
-        "pixi.js": "7.2.4"
+        "pixi.js": "7.3.1"
     },
     "devDependencies": {
         "prettier": "^2.8.7",
