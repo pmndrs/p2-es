@@ -4,20 +4,14 @@ import React from 'react'
 import * as ReactDOM from 'react-dom/client'
 import { App } from './app'
 import {
-    DomElementComponent,
+    COMPONENTS,
+    Entity,
     PhysicsAABBRendererSystem,
-    PhysicsBodyComponent,
     PhysicsBodyRendererSystem,
-    PhysicsConstraintComponent,
     PhysicsContactRendererSystem,
-    PhysicsSpringComponent,
     PhysicsSpringRendererSystem,
-    PhysicsWorldComponent,
-    PixiComponent,
-    PointerComponent,
     PointerSystem,
-    SettingsComponent,
-    SpriteComponent,
+    createPointer,
 } from './ecs'
 import { PhysicsSystem } from './ecs/physics-system'
 import { createPixiApp } from './pixi'
@@ -68,28 +62,15 @@ export class Sandbox {
 
     mount(domElement: HTMLElement): this {
         if (!this.root) {
-            const world = new World()
+            const world = new World<Entity>({ components: COMPONENTS })
             const ecs = createECS(world)
 
-            world.registerComponent(DomElementComponent)
-            world.registerComponent(PhysicsBodyComponent)
-            world.registerComponent(PhysicsSpringComponent)
-            world.registerComponent(PhysicsWorldComponent)
-            world.registerComponent(PhysicsConstraintComponent)
-            world.registerComponent(PixiComponent)
-            world.registerComponent(SettingsComponent)
-            world.registerComponent(SpriteComponent)
-            world.registerComponent(PointerComponent)
-
             const { destroy: destroyPixi, ...pixi } = createPixiApp()
-            const pixiEntity = world.create()
-            pixiEntity.add(PixiComponent, pixi)
+            const pixiEntity = world.create({ pixi })
 
-            const pointerEntity = world.create()
-            pointerEntity.add(PointerComponent)
+            const pointerEntity = world.create({ pointer: createPointer() })
 
-            const domElementEntity = world.create()
-            domElementEntity.add(DomElementComponent, domElement)
+            const domElementEntity = world.create({ domElement })
 
             world.registerSystem(PhysicsSystem)
             world.registerSystem(PointerSystem)
@@ -103,9 +84,9 @@ export class Sandbox {
             this.cleanup = () => {
                 destroyPixi()
 
-                pixiEntity.destroy()
-                domElementEntity.destroy()
-                pointerEntity.destroy()
+                world.destroy(pixiEntity)
+                world.destroy(domElementEntity)
+                world.destroy(pointerEntity)
             }
 
             this.root = ReactDOM.createRoot(domElement)

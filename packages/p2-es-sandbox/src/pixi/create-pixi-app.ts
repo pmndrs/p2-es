@@ -1,5 +1,5 @@
 import { Application, Container, Graphics } from 'pixi.js'
-import { Pixi } from '../ecs/components'
+import { Pixi } from '../ecs/entity'
 import { canvasTheme } from '../ui'
 
 export const createPixiApp = (): Pixi & { destroy: () => void } => {

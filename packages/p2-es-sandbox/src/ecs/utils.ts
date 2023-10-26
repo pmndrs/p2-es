@@ -1,5 +1,5 @@
-import { ComponentDefinition } from 'arancini'
 import { useEffect, useMemo, useRef } from 'react'
+import { Entity } from './entity'
 import { useECS } from './context'
 
 const VISIBILITY_CHANGE_EVENT = 'visibilitychange'
@@ -79,10 +79,10 @@ export const useFrame = (fn: (delta: number) => void) => {
     }, [])
 }
 
-export const useSingletonComponent = <T extends ComponentDefinition<unknown>>(componentDefinition: T) => {
+export const useSingletonComponent = <C extends keyof Entity>(component: C) => {
     const ecs = useECS()
 
-    const query = ecs.useQuery([componentDefinition])
+    const query = ecs.useQuery((e) => e.has(component))
 
     return useMemo(() => {
         const entity = query.first
@@ -90,11 +90,6 @@ export const useSingletonComponent = <T extends ComponentDefinition<unknown>>(co
             return null
         }
 
-        const component = entity.find(componentDefinition)
-        if (!component) {
-            return null
-        }
-
-        return component
+        return entity[component] ?? null
     }, [query.version])
 }

@@ -1,4 +1,3 @@
-import { Entity } from 'arancini'
 import { createECS } from 'arancini/react'
 import * as p2 from 'p2-es'
 import React, { useEffect, useRef, useState } from 'react'
@@ -6,24 +5,16 @@ import { ThemeProvider } from 'styled-components'
 import { Controls } from './controls'
 import {
     CircleTool,
-    EcsProvider,
-    PhysicsBodyComponent,
-    PhysicsSpringComponent,
-    PhysicsWorldComponent,
-    PickPanTool,
-    PixiComponent,
-    PointerComponent,
+    EcsProvider, Entity, PickPanTool,
     PolygonTool,
     RectangleTool,
     SandboxSettings,
-    SettingsComponent,
-    SpriteComponent,
     Tool,
     Tools,
     defaultSandboxSettings,
     useECS,
     useFrame,
-    useSingletonComponent,
+    useSingletonComponent
 } from './ecs'
 import { useConst } from './hooks'
 import { SandboxFunction, Scenes, createSandbox } from './sandbox'
@@ -93,9 +84,9 @@ const AppInner = ({
     const bodyEntities: Map<p2.Body, Entity> = useConst(() => new Map())
     const springEntities: Map<p2.Spring, Entity> = useConst(() => new Map())
 
-    const pixi = useSingletonComponent(PixiComponent)
-    const pointer = useSingletonComponent(PointerComponent)
-    const settings = useSingletonComponent(SettingsComponent)
+    const pixi = useSingletonComponent('pixi')
+    const pointer = useSingletonComponent('pointer')
+    const settings = useSingletonComponent('sandboxSettings')
 
     useEffect(() => {
         canvasWrapperElement.current!.appendChild(pixi!.canvasElement)
@@ -116,9 +107,11 @@ const AppInner = ({
 
     /* dirty sprites state when settings change */
     useEffect(() => {
-        ecs.world.find([PhysicsBodyComponent, SpriteComponent]).forEach((e) => {
-            e.get(SpriteComponent).dirty = true
-        })
+        ecs.world
+            .filter((e) => e.with('physicsBody', 'sprite'))
+            .forEach((e) => {
+                e.sprite.dirty = true
+            })
     }, [settings?.debugPolygons, settings?.bodySleepOpacity])
 
     useEffect(() => {
@@ -150,29 +143,27 @@ const AppInner = ({
 
         // create entities for existing physics bodies and springs
         const addBodyEntity = (body: p2.Body) => {
-            const entity = ecs.world.create((e) => {
-                e.add(PhysicsBodyComponent, body)
-            })
-
+            const entity = ecs.world.create({ physicsBody: body })
             bodyEntities.set(body, entity)
         }
 
         const removeBodyEntity = (body: p2.Body) => {
             const entity = bodyEntities.get(body)
-            entity?.destroy()
+            if (!entity) return
+            ecs.world.destroy(entity)
+            bodyEntities.delete(body)
         }
 
         const addSpringEntity = (spring: p2.Spring) => {
-            const entity = ecs.world.create((e) => {
-                e.add(PhysicsSpringComponent, spring)
-            })
-
+            const entity = ecs.world.create({ physicsSpring: spring })
             springEntities.set(spring, entity)
         }
 
         const removeSpringRemoveSpringEntity = (spring: p2.Spring) => {
-            const entity = springEntities.get(spring)
-            entity?.destroy()
+            const entity = springEntities.get(spring)!
+            if (!entity) return
+            ecs.world.destroy(entity)
+            springEntities.delete(spring)
         }
 
         for (const body of world.bodies) {
@@ -199,14 +190,14 @@ const AppInner = ({
         setSandboxUpdateHandlers(updateHandlers)
 
         // create singleton physics entity
-        const physicsEntity = ecs.world.create()
-        physicsEntity.add(PhysicsWorldComponent, world)
+        const physicsEntity = ecs.world.create({ physicsWorld: world })
 
         // set window globals
         const globalWindow = window as unknown as Record<string, unknown>
         globalWindow.world = world
         globalWindow.p2 = p2
         globalWindow.sandbox = sandboxContext
+        globalWindow.ecs = ecs.world
 
         return () => {
             previousScene.current = scene
@@ -220,20 +211,16 @@ const AppInner = ({
 
             destroySandbox()
 
-            const entities = [
-                physicsEntity,
-                ...ecs.world.query([PhysicsBodyComponent]),
-                ...ecs.world.query([PhysicsSpringComponent]),
-            ]
+            const entities = [physicsEntity, ...ecs.world.query((e) => e.some('physicsBody', 'physicsSpring'))]
 
             entities.forEach((entity) => {
-                entity.destroy()
+                ecs.world.destroy(entity)
             })
         }
-    }, [pixi, pointer?.id, scene, sceneVersion])
+    }, [pixi, pointer, scene, sceneVersion])
 
     useFrame((delta) => {
-        ecs.update(delta)
+        ecs.step(delta)
 
         if (!sandboxUpdateHandlers) return
         sandboxUpdateHandlers.forEach((fn) => fn(delta))
@@ -322,7 +309,7 @@ const AppInner = ({
             )}
 
             <ecs.Entity>
-                <ecs.Component type={SettingsComponent} args={[sandboxSettings]} />
+                <ecs.Component name="sandboxSettings" data={sandboxSettings} />
             </ecs.Entity>
         </>
     )

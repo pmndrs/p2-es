@@ -1,9 +1,9 @@
 import { System } from 'arancini'
-import { PhysicsWorldComponent, SettingsComponent } from './components'
+import { Entity } from './entity'
 
-export class PhysicsSystem extends System {
-    settings = this.singleton(SettingsComponent)
-    physicsWorld = this.singleton(PhysicsWorldComponent)
+export class PhysicsSystem extends System<Entity> {
+    settings = this.singleton('sandboxSettings')
+    physicsWorld = this.singleton('physicsWorld')
 
     onUpdate(delta: number): void {
         if (!this.settings || !this.physicsWorld) return

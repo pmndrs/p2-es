@@ -1,14 +1,14 @@
 import { System } from 'arancini'
 import * as p2 from 'p2-es'
 import { FederatedEvent, FederatedMouseEvent } from 'pixi.js'
-import { PixiComponent, PointerComponent } from './components'
+import { Entity } from './entity'
 
 const tmpVec2 = { x: 0, y: 0 }
 
-export class PointerSystem extends System {
-    pixi = this.singleton(PixiComponent)!
+export class PointerSystem extends System<Entity> {
+    pixi = this.singleton('pixi')!
 
-    pointer = this.singleton(PointerComponent)!
+    pointer = this.singleton('pointer')!
 
     onInit() {
         this.pixi.canvasElement.ontouchmove = (e: Event) => {

@@ -22,22 +22,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arancini/core@npm:3.2.0":
-  version: 3.2.0
-  resolution: "@arancini/core@npm:3.2.0"
-  checksum: 8f7e5126a1d34d63fcab6c7659406315b1dd0d7baf9d87981b20042a51d30a102d008887e3ff779a4da76adc73b3591db93ef90e40cfba24c552e57c505f8709
+"@arancini/core@npm:4.0.1":
+  version: 4.0.1
+  resolution: "@arancini/core@npm:4.0.1"
+  checksum: 93a8b201e930d75ec95f448f8452700b6ba227ed1c2732a2f8bb0e079ce3d7185d6030b945de2be907843b87d72ff0f39b563a79ed74de7bff0a3315fa9fdd78
   languageName: node
   linkType: hard
 
-"@arancini/react@npm:3.2.0":
-  version: 3.2.0
-  resolution: "@arancini/react@npm:3.2.0"
+"@arancini/react@npm:4.0.1":
+  version: 4.0.1
+  resolution: "@arancini/react@npm:4.0.1"
   dependencies:
-    "@arancini/core": 3.2.0
+    "@arancini/core": 4.0.1
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 3247704fa2bbaf4a0b6aaf70abe1b3533b5ac8dfc6cd3bb353098adb65c91f8d651927daa671045c2e4e7298b6b856d153c5be79664b7b50790e9f5004c0ac68
+  checksum: 74620a881723fa3b9a28912a25391ebc3acfdb0ab6b52414063c8c22ca8028829b5a7c4eea21cb275cb3ab7d37dca7c91cb6122d3cd8cf7db119fce6bbef74d5
   languageName: node
   linkType: hard
 
@@ -3810,7 +3810,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^6.5.0
     "@typescript-eslint/parser": ^6.2.1
     "@vitejs/plugin-react": ^4.0.4
-    arancini: ^3.2.0
+    arancini: ^4.0.1
     eslint: ^8.46.0
     eslint-config-prettier: ^9.0.0
     eslint-import-resolver-typescript: ^3.6.0
@@ -7471,16 +7471,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"arancini@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "arancini@npm:3.2.0"
+"arancini@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "arancini@npm:4.0.1"
   dependencies:
-    "@arancini/core": 3.2.0
-    "@arancini/react": 3.2.0
+    "@arancini/core": 4.0.1
+    "@arancini/react": 4.0.1
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 1bc7fa8cf851ea80b5930d7365f7d86a6a4018662235a3a431b41fe0cc4590301f3450998fd064ad89988b6eef9ef1f498e0b4e56796563e1ea2f50cf5ed6039
+  checksum: ff6ef8ebf0bb924e654bff57593c630a688336871121315d71cafd801afba5afd45ce433d246f0d8678c3a4f65e78f79835397f2ba4c02c374870089f9b31ae6
   languageName: node
   linkType: hard
 

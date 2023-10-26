@@ -1,11 +1,11 @@
 import type { World } from 'p2-es'
 import { Tool } from './ecs'
-import { Pixi, PointerComponent, SandboxSettings } from './ecs/components'
+import { Pixi, Pointer, SandboxSettings } from './ecs/entity'
 
 export type SandboxContext = {
     pixi: Pixi
 
-    pointer: PointerComponent
+    pointer: Pointer
 
     centerCamera: (x: number, y: number) => void
 
@@ -34,7 +34,7 @@ export type SandboxFunction = (context: SandboxContext) => SandboxConfig
 
 export type CreateSandboxProps = {
     pixi: Pixi
-    pointer: PointerComponent
+    pointer: Pointer
     sandboxFunction: SandboxFunction
 }
 

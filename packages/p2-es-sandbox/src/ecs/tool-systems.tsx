@@ -3,8 +3,8 @@ import * as p2 from 'p2-es'
 import { useEffect } from 'react'
 import { drawCircle, drawPath } from '../pixi'
 import { canvasTheme } from '../ui'
-import { PhysicsWorldComponent, PixiComponent, PointerComponent, SettingsComponent } from './components'
 import { useECS } from './context'
+import { Entity } from './entity'
 
 export const Tools = {
     PICK_PAN: 'pickpan',
@@ -17,11 +17,11 @@ export type Tool = (typeof Tools)[keyof typeof Tools]
 
 type CircleToolState = 'default' | 'drawing'
 
-export class CircleToolSystem extends System {
-    physicsWorld = this.singleton(PhysicsWorldComponent)!
-    pixi = this.singleton(PixiComponent)!
-    pointer = this.singleton(PointerComponent)!
-    settings = this.singleton(SettingsComponent)!
+export class CircleToolSystem extends System<Entity> {
+    physicsWorld = this.singleton('physicsWorld')!
+    pixi = this.singleton('pixi')!
+    pointer = this.singleton('pointer')!
+    settings = this.singleton('sandboxSettings')!
 
     toolState: CircleToolState = 'default'
     circleCenter: [number, number] = [0, 0]
@@ -115,11 +115,11 @@ const SCROLL_FACTOR = 0.1
 
 type InteractionState = 'default' | 'picking' | 'panning' | 'pinching'
 
-export class PickPanToolSystem extends System {
-    physicsWorld = this.singleton(PhysicsWorldComponent)!
-    pixi = this.singleton(PixiComponent)!
-    pointer = this.singleton(PointerComponent)!
-    settings = this.singleton(SettingsComponent)!
+export class PickPanToolSystem extends System<Entity> {
+    physicsWorld = this.singleton('physicsWorld')!
+    pixi = this.singleton('pixi')!
+    pointer = this.singleton('pointer')!
+    settings = this.singleton('sandboxSettings')!
 
     interactionState: InteractionState = 'default'
 
@@ -352,11 +352,11 @@ export class PickPanToolSystem extends System {
 
 type PolygonToolState = 'default' | 'drawing'
 
-export class PolygonToolSystem extends System {
-    physicsWorld = this.singleton(PhysicsWorldComponent)!
-    pixi = this.singleton(PixiComponent)!
-    pointer = this.singleton(PointerComponent)!
-    settings = this.singleton(SettingsComponent)!
+export class PolygonToolSystem extends System<Entity> {
+    physicsWorld = this.singleton('physicsWorld')!
+    pixi = this.singleton('pixi')!
+    pointer = this.singleton('pointer')!
+    settings = this.singleton('sandboxSettings')!
 
     toolState: PolygonToolState = 'default'
     polygonPoints: [number, number][] = []
@@ -446,11 +446,11 @@ export class PolygonToolSystem extends System {
 
 type RectangleToolState = 'default' | 'drawing'
 
-export class RectangleToolSystem extends System {
-    physicsWorld = this.singleton(PhysicsWorldComponent)!
-    pixi = this.singleton(PixiComponent)!
-    pointer = this.singleton(PointerComponent)!
-    settings = this.singleton(SettingsComponent)!
+export class RectangleToolSystem extends System<Entity> {
+    physicsWorld = this.singleton('physicsWorld')!
+    pixi = this.singleton('pixi')!
+    pointer = this.singleton('pointer')!
+    settings = this.singleton('sandboxSettings')!
 
     toolState: RectangleToolState = 'default'
     rectangleStart: [number, number] = [0, 0]

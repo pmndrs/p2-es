@@ -1,6 +1,6 @@
 import * as p2 from 'p2-es'
 import * as PIXI from 'pixi.js'
-import { SpriteComponent } from '../ecs'
+import { Sprite } from '../ecs'
 
 const RES_SCALAR = 20
 
@@ -441,7 +441,7 @@ export const drawSpring = ({ graphics, restLength, lineColor, lineWidth }: DrawS
 
 export type DrawRenderableProps = {
     renderable: p2.Body | p2.LinearSpring
-    sprite: SpriteComponent
+    sprite: Sprite
     lineColor: number
     fillColor?: number
     lineWidth: number

@@ -3,19 +3,12 @@ import * as p2 from 'p2-es'
 import { randomPastelHex } from '../color'
 import { drawRenderable } from '../pixi'
 import { canvasTheme } from '../ui'
-import {
-    PhysicsBodyComponent,
-    PhysicsSpringComponent,
-    PhysicsWorldComponent,
-    PixiComponent,
-    SettingsComponent,
-    SpriteComponent,
-} from './components'
+import { Entity, createSprite } from './entity'
 
-export class PhysicsAABBRendererSystem extends System {
-    pixi = this.singleton(PixiComponent)
-    physicsWorld = this.singleton(PhysicsWorldComponent)
-    settings = this.singleton(SettingsComponent)
+export class PhysicsAABBRendererSystem extends System<Entity> {
+    pixi = this.singleton('pixi')
+    physicsWorld = this.singleton('physicsWorld')
+    settings = this.singleton('sandboxSettings')
 
     onUpdate(_delta: number, _time: number): void {
         if (!this.pixi || !this.settings || !this.physicsWorld) return
@@ -46,19 +39,25 @@ export class PhysicsAABBRendererSystem extends System {
     }
 }
 
-export class PhysicsBodyRendererSystem extends System {
-    pixi = this.singleton(PixiComponent)
-    settings = this.singleton(SettingsComponent)
+export class PhysicsBodyRendererSystem extends System<Entity> {
+    pixi = this.singleton('pixi')
+    settings = this.singleton('sandboxSettings')
 
-    uninitialised = this.query({
-        all: [PhysicsBodyComponent],
-        not: [SpriteComponent],
-    })
+    uninitialised = this.query((e) => e.has('physicsBody').but.not('sprite'))
 
-    renderable = this.query([PhysicsBodyComponent, SpriteComponent])
+    renderable = this.query((e) => e.has('physicsBody', 'sprite'))
 
     bodyIdToColor: { [body: number]: number } = {}
     islandIdToColor: { [body: number]: number } = {}
+
+    onInit(): void {
+        this.renderable.onEntityRemoved.add((entity) => {
+            const { sprite } = entity
+            if (!sprite) return
+
+            sprite.graphics.destroy()
+        })
+    }
 
     onUpdate(): void {
         if (!this.settings || !this.pixi) {
@@ -75,38 +74,37 @@ export class PhysicsBodyRendererSystem extends System {
         const { container } = this.pixi
 
         for (const entity of this.uninitialised) {
-            const { graphics } = entity.add(SpriteComponent)
-            container.addChild(graphics)
+            this.world.add(entity, 'sprite', createSprite())
+            container.addChild(entity.sprite!.graphics)
         }
 
         for (const entity of this.renderable) {
-            const body = entity.get(PhysicsBodyComponent)
-            const sprite = entity.get(SpriteComponent)
+            const { physicsBody, sprite } = entity
             const { graphics } = sprite
 
             // update body transform
             if (useInterpolatedPositions && !paused) {
-                const [x, y] = body.interpolatedPosition
+                const [x, y] = physicsBody.interpolatedPosition
                 graphics.position.x = x
                 graphics.position.y = y
-                graphics.rotation = body.interpolatedAngle
+                graphics.rotation = physicsBody.interpolatedAngle
             } else {
-                const [x, y] = body.position
+                const [x, y] = physicsBody.position
                 graphics.position.x = x
                 graphics.position.y = y
-                graphics.rotation = body.angle
+                graphics.rotation = physicsBody.angle
             }
 
             // update zIndex
-            graphics.zIndex = body.type === p2.Body.STATIC ? 0 : 1
+            graphics.zIndex = physicsBody.type === p2.Body.STATIC ? 0 : 1
 
             // update graphics if body changed sleepState or island
-            const isSleeping = body.sleepState === p2.Body.SLEEPING
+            const isSleeping = physicsBody.sleepState === p2.Body.SLEEPING
             let color: number
             if (bodyIslandColors) {
-                color = this.getIslandColor(body)
+                color = this.getIslandColor(physicsBody)
             } else {
-                color = this.getBodyColor(body)
+                color = this.getBodyColor(physicsBody)
             }
 
             if (sprite.drawnSleeping !== isSleeping || sprite.drawnFillColor !== color || sprite.dirty) {
@@ -116,7 +114,7 @@ export class PhysicsBodyRendererSystem extends System {
                 drawRenderable({
                     sprite,
                     debugPolygons,
-                    renderable: body,
+                    renderable: physicsBody,
                     fillColor: color,
                     lineColor: sprite.drawnLineColor ?? canvasTheme.body.lineColor,
                     lineWidth: canvasTheme.lineWidth,
@@ -153,10 +151,10 @@ export class PhysicsBodyRendererSystem extends System {
     }
 }
 
-export class PhysicsContactRendererSystem extends System {
-    pixi = this.singleton(PixiComponent)
-    physicsWorld = this.singleton(PhysicsWorldComponent)
-    settings = this.singleton(SettingsComponent)
+export class PhysicsContactRendererSystem extends System<Entity> {
+    pixi = this.singleton('pixi')
+    physicsWorld = this.singleton('physicsWorld')
+    settings = this.singleton('sandboxSettings')
 
     onUpdate(): void {
         if (!this.settings || !this.pixi || !this.physicsWorld) return
@@ -194,16 +192,22 @@ export class PhysicsContactRendererSystem extends System {
     }
 }
 
-export class PhysicsSpringRendererSystem extends System {
-    pixi = this.singleton(PixiComponent)
-    settings = this.singleton(SettingsComponent)
+export class PhysicsSpringRendererSystem extends System<Entity> {
+    pixi = this.singleton('pixi')
+    settings = this.singleton('sandboxSettings')
 
-    uninitialised = this.query({
-        all: [PhysicsSpringComponent],
-        not: [SpriteComponent],
-    })
+    uninitialised = this.query((e) => e.has('physicsSpring').but.not('sprite'))
 
-    renderable = this.query([PhysicsSpringComponent, SpriteComponent])
+    renderable = this.query((e) => e.has('physicsSpring', 'sprite'))
+
+    onInit(): void {
+        this.renderable.onEntityRemoved.add((entity) => {
+            const { sprite } = entity
+            if (!sprite) return
+
+            sprite.graphics.destroy()
+        })
+    }
 
     onUpdate(): void {
         if (!this.settings || !this.pixi) return
@@ -212,13 +216,16 @@ export class PhysicsSpringRendererSystem extends System {
         const { container } = this.pixi
 
         for (const entity of this.uninitialised) {
-            const spring = entity.get(PhysicsSpringComponent)
-            const sprite = entity.add(SpriteComponent)
+            const { physicsSpring } = entity
+            const sprite = createSprite()
+            this.world.update(entity, {
+                sprite,
+            })
 
-            if (spring instanceof p2.LinearSpring) {
+            if (physicsSpring instanceof p2.LinearSpring) {
                 drawRenderable({
                     sprite,
-                    renderable: spring,
+                    renderable: physicsSpring,
                     lineColor: canvasTheme.spring.lineColor,
                     lineWidth: canvasTheme.lineWidth,
                 })
@@ -228,13 +235,12 @@ export class PhysicsSpringRendererSystem extends System {
         }
 
         for (const entity of this.renderable) {
-            const spring = entity.get(PhysicsSpringComponent)
-            const sprite = entity.get(SpriteComponent)
+            const { physicsSpring, sprite } = entity
             const { graphics } = sprite
 
-            if (spring instanceof p2.LinearSpring) {
-                const bA = spring.bodyA
-                const bB = spring.bodyB
+            if (physicsSpring instanceof p2.LinearSpring) {
+                const bA = physicsSpring.bodyA
+                const bB = physicsSpring.bodyB
 
                 let worldAnchorA = p2.vec2.fromValues(0, 0)
                 let worldAnchorB = p2.vec2.fromValues(0, 0)
@@ -242,11 +248,11 @@ export class PhysicsSpringRendererSystem extends System {
                 const distVec = p2.vec2.fromValues(0, 0)
 
                 if (renderInterpolatedPositions && !paused) {
-                    p2.vec2.toGlobalFrame(worldAnchorA, spring.localAnchorA, bA.interpolatedPosition, bA.interpolatedAngle)
-                    p2.vec2.toGlobalFrame(worldAnchorB, spring.localAnchorB, bB.interpolatedPosition, bB.interpolatedAngle)
+                    p2.vec2.toGlobalFrame(worldAnchorA, physicsSpring.localAnchorA, bA.interpolatedPosition, bA.interpolatedAngle)
+                    p2.vec2.toGlobalFrame(worldAnchorB, physicsSpring.localAnchorB, bB.interpolatedPosition, bB.interpolatedAngle)
                 } else {
-                    spring.getWorldAnchorA(worldAnchorA)
-                    spring.getWorldAnchorB(worldAnchorB)
+                    physicsSpring.getWorldAnchorA(worldAnchorA)
+                    physicsSpring.getWorldAnchorB(worldAnchorB)
                 }
 
                 graphics.scale.y = 1
@@ -274,7 +280,7 @@ export class PhysicsSpringRendererSystem extends System {
                 graphics.rotation = Math.acos(p2.vec2.dot(X, distVec) / p2.vec2.length(distVec))
 
                 // And scale
-                const clampedRestLength = spring.restLength > 0.1 ? spring.restLength : 0.1
+                const clampedRestLength = physicsSpring.restLength > 0.1 ? physicsSpring.restLength : 0.1
                 graphics.scale.x = p2.vec2.length(distVec) / clampedRestLength
             }
         }

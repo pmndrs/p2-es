@@ -1,4 +1,4 @@
-export * from './components'
+export * from './entity'
 export * from './context'
 export * from './pointer-system'
 export * from './renderer-systems'
