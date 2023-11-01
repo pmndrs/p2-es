@@ -1,5 +1,13 @@
 # `p2-es` Changelog
 
+## 1.2.3
+
+### Patch Changes
+
+- 14d64ac: refactor: Box Shape constructor
+- 14d64ac: fix: Box shape type incorrectly set to Shape.Convex instead of Shape.Box
+- f3f9d39: refactor: shape default options handling
+
 ## 1.2.2
 
 ## 1.2.1

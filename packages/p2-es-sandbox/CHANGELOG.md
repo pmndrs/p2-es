@@ -1,5 +1,15 @@
 # @p2-es/sandbox
 
+## 1.2.3
+
+### Patch Changes
+
+- 61fcd9f: fix: mobile layout should scroll when controls are enabled
+- Updated dependencies [14d64ac]
+- Updated dependencies [14d64ac]
+- Updated dependencies [f3f9d39]
+  - p2-es@1.2.3
+
 ## 1.2.2
 
 ### Patch Changes
