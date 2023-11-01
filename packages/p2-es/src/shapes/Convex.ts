@@ -74,10 +74,10 @@ export class Convex extends Shape {
      */
     constructor(options: ConvexOptions = {}) {
         const params = {
+            type: Shape.CONVEX,
+            vertices: [],
+            axes: [],
             ...options,
-            type: options.type ?? Shape.CONVEX,
-            vertices: options.vertices ?? [],
-            axes: options.axes ?? [],
         }
 
         super(params)
