@@ -33,9 +33,9 @@ export class Line extends Shape {
 
     constructor(options: LineOptions = {}) {
         const params = {
+            length: 1,
             ...options,
             type: Shape.LINE,
-            length: options.length ?? 1,
         }
 
         super(params)

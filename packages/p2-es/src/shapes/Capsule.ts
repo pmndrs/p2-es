@@ -47,10 +47,10 @@ export class Capsule extends Shape {
 
     constructor(options: CapsuleOptions = {}) {
         const params = {
+            length: 1,
+            radius: 1,
             ...options,
             type: Shape.CAPSULE,
-            length: options.length ?? 1,
-            radius: options.radius ?? 1,
         }
 
         super(params)

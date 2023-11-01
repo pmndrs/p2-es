@@ -77,10 +77,10 @@ export class Heightfield extends Shape {
 
     constructor(options: HeightfieldOptions = {}) {
         const params = {
+            elementWidth: 0.1,
             ...options,
             type: Shape.HEIGHTFIELD,
             heights: options.heights ? [...options.heights] : [],
-            elementWidth: options.elementWidth ?? 0.1,
         }
 
         super(params)

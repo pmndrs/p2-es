@@ -35,9 +35,9 @@ export class Circle extends Shape {
 
     constructor(options: CircleOptions = {}) {
         const params = {
+            radius: 1,
             ...options,
             type: Shape.CIRCLE,
-            radius: options.radius ?? 1,
         }
 
         super(params)
