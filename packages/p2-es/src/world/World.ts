@@ -97,6 +97,20 @@ export type WorldEventMap = {
     preSolve: PreSolveEvent
 }
 
+export type WorldDeferredChange =
+    | {
+          type: 'add-body' | 'remove-body'
+          body: Body
+      }
+    | {
+          type: 'add-constraint' | 'remove-constraint'
+          constraint: Constraint
+      }
+    | {
+          type: 'add-spring' | 'remove-spring'
+          spring: Spring
+      }
+
 export interface WorldOptions {
     /**
      * The solver used to satisfy constraints and contacts.
@@ -297,6 +311,11 @@ export class World extends EventEmitter<WorldEventMap> {
      */
     disabledBodyCollisionPairs: Body[] = []
 
+    /**
+     * Changes to be applied to the world immediately after the step
+     */
+    deferredChanges: WorldDeferredChange[] = []
+
     private unionFind = new UnionFind(1)
 
     /**
@@ -325,7 +344,9 @@ export class World extends EventEmitter<WorldEventMap> {
     }
 
     /**
-     * Add a constraint to the simulation. Note that both bodies connected to the constraint must be added to the world first. Also note that you can't run this method during step.
+     * Add a constraint to the simulation. Note that both bodies connected to the constraint must be added to the world first.
+     * If this is called while the world is stepping, the constraint will be added after the step.
+     *
      * @param constraint
      *
      * @example
@@ -334,7 +355,11 @@ export class World extends EventEmitter<WorldEventMap> {
      */
     addConstraint(constraint: Constraint): void {
         if (this.stepping) {
-            throw new Error('Constraints cannot be added during step.')
+            this.deferredChanges.push({
+                type: 'add-constraint',
+                constraint,
+            })
+            return
         }
 
         const bodies = this.bodies
@@ -385,12 +410,17 @@ export class World extends EventEmitter<WorldEventMap> {
     }
 
     /**
-     * Removes a constraint. Note that you can't run this method during step.
+     * Removes a constraint.
+     * If this is called while the world is stepping, the constraint will be removed after the step.
      * @param constraint
      */
     removeConstraint(constraint: Constraint): void {
         if (this.stepping) {
-            throw new Error('Constraints cannot be removed during step.')
+            this.deferredChanges.push({
+                type: 'remove-constraint',
+                constraint,
+            })
+            return
         }
         arrayRemove(this.constraints, constraint)
     }
@@ -467,6 +497,32 @@ export class World extends EventEmitter<WorldEventMap> {
                 const b = this.bodies[j]
                 vec2.lerp(b.interpolatedPosition, b.previousPosition, b.position, t)
                 b.interpolatedAngle = b.previousAngle + t * (b.angle - b.previousAngle)
+            }
+        }
+    }
+
+    /**
+     * Handle addition and removal of bodies, constraints, and springs requested during the step
+     */
+    private handleDeferredChanges(): void {
+        const deferredChanges = this.deferredChanges
+        this.deferredChanges = []
+
+        for (let i = 0; i < deferredChanges.length; i++) {
+            const operation = deferredChanges[i]
+
+            if (operation.type === 'add-body') {
+                this.addBody(operation.body)
+            } else if (operation.type === 'remove-body') {
+                this.removeBody(operation.body)
+            } else if (operation.type === 'add-constraint') {
+                this.addConstraint(operation.constraint)
+            } else if (operation.type === 'remove-constraint') {
+                this.removeConstraint(operation.constraint)
+            } else if (operation.type === 'add-spring') {
+                this.addSpring(operation.spring)
+            } else if (operation.type === 'remove-spring') {
+                this.removeSpring(operation.spring)
             }
         }
     }
@@ -821,18 +877,25 @@ export class World extends EventEmitter<WorldEventMap> {
 
         this.stepping = false
 
+        this.handleDeferredChanges()
+
         this.emit({
             type: 'postStep',
         } as PostStepEvent)
     }
 
     /**
-     * Add a spring to the simulation. Note that this operation can't be done during step.
+     * Add a spring to the simulation.
+     * If this is called while the world is stepping, the spring will be added after the step.
      * @param spring
      */
     addSpring(spring: Spring): void {
         if (this.stepping) {
-            throw new Error('Springs cannot be added during step.')
+            this.deferredChanges.push({
+                type: 'add-spring',
+                spring,
+            })
+            return
         }
         this.springs.push(spring)
         this.emit({
@@ -842,12 +905,17 @@ export class World extends EventEmitter<WorldEventMap> {
     }
 
     /**
-     * Remove a spring. Note that this operation can't be done during step.
+     * Remove a spring.
+     * If this is called while the world is stepping, the spring will be removed after the step.
      * @param spring
      */
     removeSpring(spring: Spring): void {
         if (this.stepping) {
-            throw new Error('Springs cannot be removed during step.')
+            this.deferredChanges.push({
+                type: 'remove-spring',
+                spring,
+            })
+            return
         }
         arrayRemove(this.springs, spring)
         this.emit({
@@ -857,7 +925,8 @@ export class World extends EventEmitter<WorldEventMap> {
     }
 
     /**
-     * Add a body to the simulation. Note that you can't add a body during step: you have to wait until after the step (see the postStep event).
+     * Add a body to the simulation.
+     * If this is called while the world is stepping, the body will be added after the step.
      * Also note that bodies can only be added to one World at a time.
      * @param body
      *
@@ -868,7 +937,11 @@ export class World extends EventEmitter<WorldEventMap> {
      */
     addBody(body: Body): void {
         if (this.stepping) {
-            throw new Error('Bodies cannot be added during step.')
+            this.deferredChanges.push({
+                type: 'add-body',
+                body,
+            })
+            return
         }
 
         // Already added?
@@ -887,30 +960,21 @@ export class World extends EventEmitter<WorldEventMap> {
     }
 
     /**
-     * Remove a body from the simulation. Note that bodies cannot be removed during step (for example, inside the beginContact event). In that case you need to wait until the step is done (see the postStep event).
+     * Remove a body from the simulation.
+     *
+     * If this is called while the world is stepping (for example, inside a beginContact event handler) the body will be removed after the step.
      *
      * Also note that any constraints connected to the body must be removed before the body.
      *
      * @param body
-     *
-     * @example
-     *     var removeBody;
-     *     world.on("beginContact",function(event){
-     *         // We cannot remove the body here since the world is still stepping.
-     *         // Instead, schedule the body to be removed after the step is done.
-     *         removeBody = body;
-     *     });
-     *     world.on("postStep",function(event){
-     *         if(removeBody){
-     *             // Safely remove the body from the world.
-     *             world.removeBody(removeBody);
-     *             removeBody = null;
-     *         }
-     *     });
      */
     removeBody(body: Body): void {
         if (this.stepping) {
-            throw new Error('Bodies cannot be removed during step.')
+            this.deferredChanges.push({
+                type: 'remove-body',
+                body,
+            })
+            return
         }
 
         // TODO: would it be smart to have a .constraints array on the body?
