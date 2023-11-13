@@ -84,12 +84,5 @@ export const useSingletonComponent = <C extends keyof Entity>(component: C) => {
 
     const query = ecs.useQuery((e) => e.has(component))
 
-    return useMemo(() => {
-        const entity = query.first
-        if (!entity) {
-            return null
-        }
-
-        return entity[component] ?? null
-    }, [query.version])
+    return useMemo(() => query.first?.[component] ?? null, [query.version])
 }

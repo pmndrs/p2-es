@@ -571,7 +571,7 @@ export class RectangleToolSystem extends System<Entity> {
     }
 }
 
-const ToolComponent = (system: SystemClass) => () => {
+const ToolSystemComponent = (system: SystemClass) => () => {
     const ecs = useECS()
 
     useEffect(() => {
@@ -585,7 +585,7 @@ const ToolComponent = (system: SystemClass) => () => {
     return null
 }
 
-export const CircleTool = ToolComponent(CircleToolSystem)
-export const PickPanTool = ToolComponent(PickPanToolSystem)
-export const PolygonTool = ToolComponent(PolygonToolSystem)
-export const RectangleTool = ToolComponent(RectangleToolSystem)
+export const CircleTool = ToolSystemComponent(CircleToolSystem)
+export const PickPanTool = ToolSystemComponent(PickPanToolSystem)
+export const PolygonTool = ToolSystemComponent(PolygonToolSystem)
+export const RectangleTool = ToolSystemComponent(RectangleToolSystem)

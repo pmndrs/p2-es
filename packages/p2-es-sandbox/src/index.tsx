@@ -1,5 +1,5 @@
 import { World } from 'arancini'
-import { createECS } from 'arancini/react'
+import { createReactAPI } from 'arancini/react'
 import React from 'react'
 import * as ReactDOM from 'react-dom/client'
 import { App } from './app'
@@ -63,7 +63,7 @@ export class Sandbox {
     mount(domElement: HTMLElement): this {
         if (!this.root) {
             const world = new World<Entity>({ components: COMPONENTS })
-            const ecs = createECS(world)
+            const ecs = createReactAPI(world)
 
             const { destroy: destroyPixi, ...pixi } = createPixiApp()
             const pixiEntity = world.create({ pixi })

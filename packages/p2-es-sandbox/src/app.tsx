@@ -1,11 +1,13 @@
-import { createECS } from 'arancini/react'
+import { ReactAPI as AranciniReactAPI } from 'arancini/react'
 import * as p2 from 'p2-es'
 import React, { useEffect, useRef, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 import { Controls } from './controls'
 import {
     CircleTool,
-    EcsProvider, Entity, PickPanTool,
+    EcsProvider,
+    Entity,
+    PickPanTool,
     PolygonTool,
     RectangleTool,
     SandboxSettings,
@@ -14,33 +16,18 @@ import {
     defaultSandboxSettings,
     useECS,
     useFrame,
-    useSingletonComponent
+    useSingletonComponent,
 } from './ecs'
 import { useConst } from './hooks'
 import { SandboxFunction, Scenes, createSandbox } from './sandbox'
-import {
-    CanvasWrapper,
-    CodeSvg,
-    ControlsWrapper,
-    ExternalLink,
-    ExternalLinkSvg,
-    Header,
-    HeaderButton,
-    HeaderButtons,
-    HeaderMiddle,
-    HeaderSandboxTitle,
-    Main,
-    PencilSvg,
-    RefreshSvg,
-    SandboxContainer,
-    styledComponentsTheme,
-} from './ui'
+import { CanvasWrapper, ControlsWrapper, Main, SandboxContainer, styledComponentsTheme } from './ui'
+import { Header } from './ui/header'
 
 export type AppProps = {
     setup: SandboxFunction | Scenes
     title?: string
     codeLink?: string
-    ecs: ReturnType<typeof createECS>
+    ecs: AranciniReactAPI<Entity>
     showControls: boolean
     showHeader: boolean
     enablePanning?: boolean
@@ -220,7 +207,7 @@ const AppInner = ({
     }, [pixi, pointer, scene, sceneVersion])
 
     useFrame((delta) => {
-        ecs.step(delta)
+        ecs.world.step(delta)
 
         if (!sandboxUpdateHandlers) return
         sandboxUpdateHandlers.forEach((fn) => fn(delta))
@@ -230,51 +217,14 @@ const AppInner = ({
         <>
             <SandboxContainer ref={sandboxContainerRef} tabIndex={0}>
                 {showHeader && (
-                    <Header>
-                        <a href="https://p2-es.pmnd.rs" target="_blank">
-                            <ExternalLink>
-                                p2-es
-                                <ExternalLinkSvg />
-                            </ExternalLink>
-                        </a>
-
-                        <HeaderMiddle>
-                            <HeaderSandboxTitle>
-                                {title}
-                                {title && sceneNames.length > 1 ? ' - ' : ''}
-                                {scene !== 'default' ? scene : ''}
-                            </HeaderSandboxTitle>
-
-                            <HeaderButtons>
-                                <HeaderButton title="Reset">
-                                    <button onClick={() => resetScene()}>
-                                        <RefreshSvg />
-                                    </button>
-                                </HeaderButton>
-
-                                <HeaderButton title="Settings">
-                                    <button onClick={() => setShowControls((current) => !current)}>
-                                        <PencilSvg />
-                                    </button>
-                                </HeaderButton>
-
-                                {codeLink !== undefined ? (
-                                    <HeaderButton title="Sandbox Source Code">
-                                        <a href={codeLink} target="_blank">
-                                            <CodeSvg />
-                                        </a>
-                                    </HeaderButton>
-                                ) : null}
-                            </HeaderButtons>
-                        </HeaderMiddle>
-
-                        <a href="https://p2-es.pmnd.rs/docs" target="_blank">
-                            <ExternalLink>
-                                docs
-                                <ExternalLinkSvg />
-                            </ExternalLink>
-                        </a>
-                    </Header>
+                    <Header
+                        title={title}
+                        codeLink={codeLink}
+                        sceneNames={sceneNames}
+                        scene={scene}
+                        resetScene={resetScene}
+                        toggleShowSceneControls={() => setShowControls((s) => !s)}
+                    />
                 )}
                 <Main className={showControls ? 'settings-enabled' : ''}>
                     <CanvasWrapper ref={canvasWrapperElement} className={showControls ? '' : 'settings-hidden'} />
@@ -309,7 +259,7 @@ const AppInner = ({
             )}
 
             <ecs.Entity>
-                <ecs.Component name="sandboxSettings" data={sandboxSettings} />
+                <ecs.Component name="sandboxSettings" value={sandboxSettings} />
             </ecs.Entity>
         </>
     )
