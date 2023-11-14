@@ -18,7 +18,6 @@ import {
     useFrame,
     useSingletonComponent,
 } from './ecs'
-import { useConst } from './hooks'
 import { SandboxFunction, Scenes, createSandbox } from './sandbox'
 import { CanvasWrapper, ControlsWrapper, Main, SandboxContainer, styledComponentsTheme } from './ui'
 import { Header } from './ui/header'
@@ -67,9 +66,6 @@ const AppInner = ({
 
     /* user-land handlers */
     const [sandboxUpdateHandlers, setSandboxUpdateHandlers] = useState<Set<(delta: number) => void> | undefined>()
-
-    const bodyEntities: Map<p2.Body, Entity> = useConst(() => new Map())
-    const springEntities: Map<p2.Spring, Entity> = useConst(() => new Map())
 
     const pixi = useSingletonComponent('pixi')
     const pointer = useSingletonComponent('pointer')
@@ -128,55 +124,10 @@ const AppInner = ({
             setTool(tools.default)
         }
 
-        // create entities for existing physics bodies and springs
-        const addBodyEntity = (body: p2.Body) => {
-            const entity = ecs.world.create({ physicsBody: body })
-            bodyEntities.set(body, entity)
-        }
-
-        const removeBodyEntity = (body: p2.Body) => {
-            const entity = bodyEntities.get(body)
-            if (!entity) return
-            ecs.world.destroy(entity)
-            bodyEntities.delete(body)
-        }
-
-        const addSpringEntity = (spring: p2.Spring) => {
-            const entity = ecs.world.create({ physicsSpring: spring })
-            springEntities.set(spring, entity)
-        }
-
-        const removeSpringRemoveSpringEntity = (spring: p2.Spring) => {
-            const entity = springEntities.get(spring)!
-            if (!entity) return
-            ecs.world.destroy(entity)
-            springEntities.delete(spring)
-        }
-
-        for (const body of world.bodies) {
-            addBodyEntity(body)
-        }
-
-        for (const spring of world.springs) {
-            addSpringEntity(spring)
-        }
-
-        // add physics body and spring entities on world events
-        const addBodyHandler = ({ body }: { body: p2.Body }) => addBodyEntity(body)
-        const removeBodyHandler = ({ body }: { body: p2.Body }) => removeBodyEntity(body)
-
-        const addSpringHandler = ({ spring }: { spring: p2.Spring }) => addSpringEntity(spring)
-        const removeSpringHandler = ({ spring }: { spring: p2.Spring }) => removeSpringRemoveSpringEntity(spring)
-
-        world.on('addBody', addBodyHandler)
-        world.on('addSpring', addSpringHandler)
-        world.on('removeBody', removeBodyHandler)
-        world.on('removeSpring', removeSpringHandler)
-
         // set the sandbox update handlers
         setSandboxUpdateHandlers(updateHandlers)
 
-        // create singleton physics entity
+        // create physics world singleton
         const physicsEntity = ecs.world.create({ physicsWorld: world })
 
         // set window globals
@@ -190,11 +141,6 @@ const AppInner = ({
             previousScene.current = scene
 
             setSandboxUpdateHandlers(undefined)
-
-            world.off('addBody', addBodyHandler)
-            world.off('addSpring', addSpringHandler)
-            world.off('removeBody', removeBodyHandler)
-            world.off('removeSpring', removeSpringHandler)
 
             destroySandbox()
 
