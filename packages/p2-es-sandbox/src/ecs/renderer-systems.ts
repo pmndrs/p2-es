@@ -1,4 +1,4 @@
-import { System } from 'arancini'
+import { System } from 'arancini/systems'
 import * as p2 from 'p2-es'
 import { randomPastelHex } from '../color'
 import { drawRenderable } from '../pixi'

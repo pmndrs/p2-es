@@ -16,6 +16,7 @@ import {
 import { PhysicsSystem } from './ecs/physics-system'
 import { createPixiApp } from './pixi'
 import { SandboxConfig, SandboxContext, SandboxFunction, Scenes } from './sandbox'
+import { Executor } from 'arancini/systems'
 
 const CONSOLE_MESSAGE = `
 === p2-es ===
@@ -63,7 +64,8 @@ export class Sandbox {
     mount(domElement: HTMLElement): this {
         if (!this.root) {
             const world = new World<Entity>({ components: COMPONENTS })
-            const ecs = createReactAPI(world)
+            const executor = new Executor(world)
+            const react = createReactAPI(world)
 
             const { destroy: destroyPixi, ...pixi } = createPixiApp()
             const pixiEntity = world.create({ pixi })
@@ -72,14 +74,14 @@ export class Sandbox {
 
             const domElementEntity = world.create({ domElement })
 
-            world.registerSystem(PhysicsSystem)
-            world.registerSystem(PointerSystem)
-            world.registerSystem(PhysicsSpringRendererSystem)
-            world.registerSystem(PhysicsContactRendererSystem)
-            world.registerSystem(PhysicsBodyRendererSystem)
-            world.registerSystem(PhysicsAABBRendererSystem)
+            executor.add(PhysicsSystem)
+            executor.add(PointerSystem)
+            executor.add(PhysicsSpringRendererSystem)
+            executor.add(PhysicsContactRendererSystem)
+            executor.add(PhysicsBodyRendererSystem)
+            executor.add(PhysicsAABBRendererSystem)
 
-            world.init()
+            executor.init()
 
             this.cleanup = () => {
                 destroyPixi()
@@ -97,7 +99,11 @@ export class Sandbox {
                 ...this.config,
             }
 
-            this.root.render(<App ecs={ecs} setup={this.setup} {...configProps} />)
+            this.root.render(<App ecs={{
+                world,
+                executor,
+                react,
+            }} setup={this.setup} {...configProps} />)
 
             console.log(CONSOLE_MESSAGE)
         }

@@ -1,4 +1,4 @@
-import { System, SystemClass } from 'arancini'
+import { System, SystemClass } from 'arancini/systems'
 import * as p2 from 'p2-es'
 import { useEffect } from 'react'
 import { drawCircle, drawPath } from '../pixi'
@@ -572,13 +572,13 @@ export class RectangleToolSystem extends System<Entity> {
 }
 
 const ToolSystemComponent = (system: SystemClass) => () => {
-    const ecs = useECS()
+    const { executor } = useECS()
 
     useEffect(() => {
-        ecs.world.registerSystem(system)
+        executor.add(system)
 
         return () => {
-            ecs.world.unregisterSystem(system)
+            executor.remove(system)
         }
     }, [])
 

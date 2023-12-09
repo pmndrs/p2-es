@@ -1,4 +1,4 @@
-import { System } from 'arancini'
+import { System } from 'arancini/systems'
 import * as p2 from 'p2-es'
 import { FederatedEvent, FederatedMouseEvent } from 'pixi.js'
 import { Entity } from './entity'

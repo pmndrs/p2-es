@@ -1,12 +1,11 @@
-import { ReactAPI as AranciniReactAPI } from 'arancini/react'
 import * as p2 from 'p2-es'
 import React, { useEffect, useRef, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 import { Controls } from './controls'
 import {
     CircleTool,
+    EcsContext,
     EcsProvider,
-    Entity,
     PickPanTool,
     PolygonTool,
     RectangleTool,
@@ -16,7 +15,7 @@ import {
     defaultSandboxSettings,
     useECS,
     useFrame,
-    useSingletonComponent,
+    useSingletonComponent
 } from './ecs'
 import { SandboxFunction, Scenes, createSandbox } from './sandbox'
 import { CanvasWrapper, ControlsWrapper, Main, SandboxContainer, styledComponentsTheme } from './ui'
@@ -26,7 +25,7 @@ export type AppProps = {
     setup: SandboxFunction | Scenes
     title?: string
     codeLink?: string
-    ecs: AranciniReactAPI<Entity>
+    ecs: EcsContext
     showControls: boolean
     showHeader: boolean
     enablePanning?: boolean
@@ -42,7 +41,7 @@ const AppInner = ({
     enablePanning = true,
     enableZooming = true,
 }: AppProps) => {
-    const ecs = useECS()
+    const { world, executor, react: { Entity, Component }} = useECS()
 
     const sandboxContainerRef = useRef<HTMLDivElement>(null)
     const canvasWrapperElement = useRef<HTMLDivElement>(null)
@@ -90,7 +89,7 @@ const AppInner = ({
 
     /* dirty sprites state when settings change */
     useEffect(() => {
-        ecs.world
+        world
             .filter((e) => e.with('physicsBody', 'sprite'))
             .forEach((e) => {
                 e.sprite.dirty = true
@@ -101,7 +100,7 @@ const AppInner = ({
         if (!pixi || !pixi.application.renderer || !pointer) return
 
         const {
-            world,
+            world: physicsWorld,
             tools,
             updateHandlers,
             sandboxContext,
@@ -128,14 +127,14 @@ const AppInner = ({
         setSandboxUpdateHandlers(updateHandlers)
 
         // create physics world singleton
-        const physicsEntity = ecs.world.create({ physicsWorld: world })
+        const physicsEntity = world.create({ physicsWorld: physicsWorld })
 
         // set window globals
         const globalWindow = window as unknown as Record<string, unknown>
-        globalWindow.world = world
+        globalWindow.world = physicsWorld
         globalWindow.p2 = p2
         globalWindow.sandbox = sandboxContext
-        globalWindow.ecs = ecs.world
+        globalWindow.ecs = world
 
         return () => {
             previousScene.current = scene
@@ -144,16 +143,16 @@ const AppInner = ({
 
             destroySandbox()
 
-            const entities = [physicsEntity, ...ecs.world.query((e) => e.some('physicsBody', 'physicsSpring'))]
+            const entities = [physicsEntity, ...world.query((e) => e.some('physicsBody', 'physicsSpring'))]
 
             entities.forEach((entity) => {
-                ecs.world.destroy(entity)
+            world.destroy(entity)
             })
         }
     }, [pixi, pointer, scene, sceneVersion])
 
     useFrame((delta) => {
-        ecs.world.step(delta)
+        executor.update(delta)
 
         if (!sandboxUpdateHandlers) return
         sandboxUpdateHandlers.forEach((fn) => fn(delta))
@@ -204,9 +203,9 @@ const AppInner = ({
                 </>
             )}
 
-            <ecs.Entity>
-                <ecs.Component name="sandboxSettings" value={sandboxSettings} />
-            </ecs.Entity>
+            <Entity>
+                <Component name="sandboxSettings" value={sandboxSettings} />
+            </Entity>
         </>
     )
 }

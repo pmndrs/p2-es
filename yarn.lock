@@ -22,22 +22,48 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arancini/core@npm:4.1.0":
-  version: 4.1.0
-  resolution: "@arancini/core@npm:4.1.0"
-  checksum: 04282a2447e1ae5c7c07ac9c2ed4e505f93b9e0fd5e1364ce0657405201b68c91dfbbfda1d312fc4befaa18107514e6a753831e6cf01890bf027937fe3eda890
+"@arancini/core@npm:5.0.0":
+  version: 5.0.0
+  resolution: "@arancini/core@npm:5.0.0"
+  dependencies:
+    "@arancini/events": 5.0.0
+    "@arancini/pool": 5.0.0
+  checksum: 7a84bde23e1b3650b2f5b25fb315e914b333dfa5fd57a08e09cf858f07d42d9281df01b19a31d3a7960795dbf1fb403e7f1a50e71e63d067d44cd11525472267
   languageName: node
   linkType: hard
 
-"@arancini/react@npm:4.1.0":
-  version: 4.1.0
-  resolution: "@arancini/react@npm:4.1.0"
+"@arancini/events@npm:5.0.0":
+  version: 5.0.0
+  resolution: "@arancini/events@npm:5.0.0"
+  checksum: 8381c696106098389290524d89799ee742a3d90072bfcdd1d80bc6aa462183b32928d06182e41bb355d40fe997976dadf6bc12e91c9c6bb78149f9610c968f2c
+  languageName: node
+  linkType: hard
+
+"@arancini/pool@npm:5.0.0":
+  version: 5.0.0
+  resolution: "@arancini/pool@npm:5.0.0"
+  checksum: 4854cc87d93904c19e03cf9c4c73d227d00ce509d9f8a5ebff4426fe0e05a86a24ca21bd134db21da609f287dca23b4945927e2fd0846e649f3d57eebae5bd6f
+  languageName: node
+  linkType: hard
+
+"@arancini/react@npm:5.0.0":
+  version: 5.0.0
+  resolution: "@arancini/react@npm:5.0.0"
   dependencies:
-    "@arancini/core": 4.1.0
+    "@arancini/core": 5.0.0
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: cd1de70b0d5cdd3e6e81f1ae78a9dacf5163941b48e6d0d98a6a239290dff65dddb036fbcce00c6daf6a789fd72be505f029a9e6dfed98ba9ba36eecb5d8cb36
+  checksum: 9e92a161fd901b33d53c5f3176ac8f028580bbf5de125f9a5282fe42ad4c6ef9263c0d043a151378a7206cfb4f1778e0160b4920fce3d332522bee0c6e1f6c70
+  languageName: node
+  linkType: hard
+
+"@arancini/systems@npm:5.0.0":
+  version: 5.0.0
+  resolution: "@arancini/systems@npm:5.0.0"
+  dependencies:
+    "@arancini/core": 5.0.0
+  checksum: 0d74c7168980bef587c01f0308527985fe985c4e142a0dc1628217cceb90aab054d6d65c01fcc45522e5ea1a80b9070abb9bab4af6328b88e6793edc96662086
   languageName: node
   linkType: hard
 
@@ -3810,7 +3836,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^6.5.0
     "@typescript-eslint/parser": ^6.2.1
     "@vitejs/plugin-react": ^4.0.4
-    arancini: ^4.1.0
+    arancini: ^5.0.0
     eslint: ^8.46.0
     eslint-config-prettier: ^9.0.0
     eslint-import-resolver-typescript: ^3.6.0
@@ -3827,7 +3853,7 @@ __metadata:
     storybook: ^7.3.2
     styled-breakpoints: ^12.1.5
     styled-components: ^6.0.2
-    typescript: ^4.5.4
+    typescript: ^5.3.3
     vite: ^4.4.8
     vite-plugin-dts: ^3.6.0
   languageName: unknown
@@ -7482,16 +7508,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"arancini@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "arancini@npm:4.1.0"
+"arancini@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "arancini@npm:5.0.0"
   dependencies:
-    "@arancini/core": 4.1.0
-    "@arancini/react": 4.1.0
+    "@arancini/core": 5.0.0
+    "@arancini/events": 5.0.0
+    "@arancini/react": 5.0.0
+    "@arancini/systems": 5.0.0
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: dd7663a4c3698d7f9e67c5da3bb04864588ed62fac3c344c1703747e83ef29d8635c4c15331fd37d547fe2907ba3e0208a86aeaaa9b6145cc21a343e25b60a42
+  checksum: 2889c171d9a2fe1e78011287ba3c2813809bc812eaa9c3f766cf4994c3e5d6deec8ad3345eac611c18744edc314b485fd1cd3b16c9c3427326ed83d9e395bd08
   languageName: node
   linkType: hard
 
@@ -16663,6 +16691,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:^5.3.3":
+  version: 5.3.3
+  resolution: "typescript@npm:5.3.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 2007ccb6e51bbbf6fde0a78099efe04dc1c3dfbdff04ca3b6a8bc717991862b39fd6126c0c3ebf2d2d98ac5e960bcaa873826bb2bb241f14277034148f41f6a2
+  languageName: node
+  linkType: hard
+
 "typescript@npm:~5.0.4":
   version: 5.0.4
   resolution: "typescript@npm:5.0.4"
@@ -16690,6 +16728,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 0f4da2f15e6f1245e49db15801dbee52f2bbfb267e1c39225afdab5afee1a72839cd86000e65ee9d7e4dfaff12239d28beaf5ee431357fcced15fb08583d72ca
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^5.3.3#~builtin<compat/typescript>":
+  version: 5.3.3
+  resolution: "typescript@patch:typescript@npm%3A5.3.3#~builtin<compat/typescript>::version=5.3.3&hash=f3b441"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: f61375590b3162599f0f0d5b8737877ac0a7bc52761dbb585d67e7b8753a3a4c42d9a554c4cc929f591ffcf3a2b0602f65ae3ce74714fd5652623a816862b610
   languageName: node
   linkType: hard
 
