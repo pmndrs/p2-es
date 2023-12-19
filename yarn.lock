@@ -22,48 +22,48 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arancini/core@npm:5.0.0":
-  version: 5.0.0
-  resolution: "@arancini/core@npm:5.0.0"
+"@arancini/core@npm:6.0.0":
+  version: 6.0.0
+  resolution: "@arancini/core@npm:6.0.0"
   dependencies:
-    "@arancini/events": 5.0.0
-    "@arancini/pool": 5.0.0
-  checksum: 7a84bde23e1b3650b2f5b25fb315e914b333dfa5fd57a08e09cf858f07d42d9281df01b19a31d3a7960795dbf1fb403e7f1a50e71e63d067d44cd11525472267
+    "@arancini/events": 6.0.0
+    "@arancini/pool": 6.0.0
+  checksum: 594da4aeec54bf22dc6bb779de0e4786d0c2506b0af892de01a96e66aa932269ffc1136ac9083d63d84f50934092dc64eb4165f51df0c3737aeaa8e4bba48c3b
   languageName: node
   linkType: hard
 
-"@arancini/events@npm:5.0.0":
-  version: 5.0.0
-  resolution: "@arancini/events@npm:5.0.0"
-  checksum: 8381c696106098389290524d89799ee742a3d90072bfcdd1d80bc6aa462183b32928d06182e41bb355d40fe997976dadf6bc12e91c9c6bb78149f9610c968f2c
+"@arancini/events@npm:6.0.0":
+  version: 6.0.0
+  resolution: "@arancini/events@npm:6.0.0"
+  checksum: 285b74b2a0c8f4fa20a0e10cf53a86a99d21e3e9aa08644c31908edfe6167115657b9f77924d5282f2eb0864c15bbb66de4a2f7e8bbf967683bac5e6920594a1
   languageName: node
   linkType: hard
 
-"@arancini/pool@npm:5.0.0":
-  version: 5.0.0
-  resolution: "@arancini/pool@npm:5.0.0"
-  checksum: 4854cc87d93904c19e03cf9c4c73d227d00ce509d9f8a5ebff4426fe0e05a86a24ca21bd134db21da609f287dca23b4945927e2fd0846e649f3d57eebae5bd6f
+"@arancini/pool@npm:6.0.0":
+  version: 6.0.0
+  resolution: "@arancini/pool@npm:6.0.0"
+  checksum: 7fccbbac9c07e9a4b4b36050b3cee6f974f7f1fc9ac9166137aecb0ffafe8946017d7ad2d8d2e1fa93479a007e6d41e06312c2cdc7723d0fa68d04569d13d498
   languageName: node
   linkType: hard
 
-"@arancini/react@npm:5.0.0":
-  version: 5.0.0
-  resolution: "@arancini/react@npm:5.0.0"
+"@arancini/react@npm:6.0.0":
+  version: 6.0.0
+  resolution: "@arancini/react@npm:6.0.0"
   dependencies:
-    "@arancini/core": 5.0.0
+    "@arancini/core": 6.0.0
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 9e92a161fd901b33d53c5f3176ac8f028580bbf5de125f9a5282fe42ad4c6ef9263c0d043a151378a7206cfb4f1778e0160b4920fce3d332522bee0c6e1f6c70
+  checksum: 663b2140b1a62441c7a6a4c7623d567c537db618ab0c297e92f2721a17eed346de6bddc017cba27e0025536593d7a3005a15efdf422b29623e885b5c4ca5b478
   languageName: node
   linkType: hard
 
-"@arancini/systems@npm:5.0.0":
-  version: 5.0.0
-  resolution: "@arancini/systems@npm:5.0.0"
+"@arancini/systems@npm:6.0.0":
+  version: 6.0.0
+  resolution: "@arancini/systems@npm:6.0.0"
   dependencies:
-    "@arancini/core": 5.0.0
-  checksum: 0d74c7168980bef587c01f0308527985fe985c4e142a0dc1628217cceb90aab054d6d65c01fcc45522e5ea1a80b9070abb9bab4af6328b88e6793edc96662086
+    "@arancini/core": 6.0.0
+  checksum: 1bfe46e6344c352d9084a4a7f9e8d5c044595bb57c1b5e30b71e1b4f22535fd5fc3743e3f8aa5717797a1c2a7dafe7f63680451945f09d734061dcce90c00cd9
   languageName: node
   linkType: hard
 
@@ -3836,7 +3836,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^6.5.0
     "@typescript-eslint/parser": ^6.2.1
     "@vitejs/plugin-react": ^4.0.4
-    arancini: ^5.0.0
+    arancini: ^6.0.0
     eslint: ^8.46.0
     eslint-config-prettier: ^9.0.0
     eslint-import-resolver-typescript: ^3.6.0
@@ -7508,18 +7508,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"arancini@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "arancini@npm:5.0.0"
+"arancini@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "arancini@npm:6.0.0"
   dependencies:
-    "@arancini/core": 5.0.0
-    "@arancini/events": 5.0.0
-    "@arancini/react": 5.0.0
-    "@arancini/systems": 5.0.0
+    "@arancini/core": 6.0.0
+    "@arancini/events": 6.0.0
+    "@arancini/react": 6.0.0
+    "@arancini/systems": 6.0.0
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 2889c171d9a2fe1e78011287ba3c2813809bc812eaa9c3f766cf4994c3e5d6deec8ad3345eac611c18744edc314b485fd1cd3b16c9c3427326ed83d9e395bd08
+  checksum: a0ade4b1155e211a72bd73863b7e4ff156c6036405d229230447d0cb29a85fee4928b2100aeea50f7fa3ce5f5b9a9619b9218dbae1436fbc5447409aac478af6
   languageName: node
   linkType: hard
 

@@ -80,9 +80,14 @@ export const useFrame = (fn: (delta: number) => void) => {
 }
 
 export const useSingletonComponent = <C extends keyof Entity>(component: C) => {
-    const { react: { useQuery }} = useECS()
+    const {
+        world,
+        react: { useQuery },
+    } = useECS()
 
-    const query = useQuery((e) => e.has(component))
+    const singletonComponentQuery = useMemo(() => world.query((e) => e.has(component)), [world])
+
+    const query = useQuery(singletonComponentQuery)
 
     return useMemo(() => query.first?.[component] ?? null, [query.version])
 }
