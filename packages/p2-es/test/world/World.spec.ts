@@ -43,18 +43,16 @@ describe('World', () => {
     })
 
     describe('addBody', () => {
-        test('duringStep', () => {
+        test('duringStep', (done) => {
             const world = new World()
             const body = new Body()
-
             world.on('postBroadphase', function () {
-                world.addBody(body)
-                expect(world.bodies).not.toContain(body)
+                expect(function () {
+                    world.addBody(body)
+                }).toThrow
+                done()
             })
-
             world.step(1)
-
-            expect(world.bodies).toContain(body)
         })
 
         test('twice', () => {
@@ -86,40 +84,36 @@ describe('World', () => {
             world.addConstraint(constraint)
         })
 
-        test('duringStep', () => {
+        test('duringStep', (done) => {
             const bodyA = new Body()
             const bodyB = new Body()
             const constraint = new DistanceConstraint(bodyA, bodyB)
             const world = new World()
-            world.addBody(bodyA)
-            world.addBody(bodyB)
-
             world.on('postBroadphase', function () {
-                world.addConstraint(constraint)
-                expect(world.constraints).not.toContain(constraint)
+                // should throw on adding constraints during step
+                expect(() => {
+                    world.addConstraint(constraint)
+                }).toThrow()
+                done()
             })
-
             world.step(1)
-
-            expect(world.constraints).toContain(constraint)
         })
     })
 
     describe('addSpring', () => {
-        test('duringStep', () => {
+        test('duringStep', (done) => {
             const bodyA = new Body()
             const bodyB = new Body()
             const spring = new LinearSpring(bodyA, bodyB)
             const world = new World()
-
             world.on('postBroadphase', function () {
-                world.addSpring(spring)
-                expect(world.springs).not.toContain(spring)
+                // should throw on adding springs during step
+                expect(function () {
+                    world.addSpring(spring)
+                }).toThrow()
+                done()
             })
-
             world.step(1)
-
-            expect(world.springs).toContain(spring)
         })
     })
 
@@ -197,19 +191,18 @@ describe('World', () => {
     })
 
     describe('removeBody', () => {
-        test('duringStep', () => {
+        test('duringStep', (done) => {
             const world = new World()
             const body = new Body()
             world.addBody(body)
-
             world.on('postBroadphase', function () {
-                world.removeBody(body)
-                expect(world.bodies).toContain(body)
+                // should throw on adding bodies during step
+                expect(function () {
+                    world.removeBody(body)
+                }).toThrow()
+                done()
             })
-
             world.step(1)
-
-            expect(world.bodies).not.toContain(body)
         })
 
         test('removes relevant pairs from disabledBodyCollisionPairs', () => {
@@ -233,7 +226,7 @@ describe('World', () => {
     })
 
     describe('removeConstraint', () => {
-        test('duringStep', () => {
+        test('duringStep', (done) => {
             const world = new World()
             const bodyA = new Body()
             world.addBody(bodyA)
@@ -245,18 +238,17 @@ describe('World', () => {
 
             world.on('postBroadphase', function () {
                 // should throw on removing constraints during step
-                world.removeConstraint(constraint)
-                expect(world.constraints).toContain(constraint)
+                expect(function () {
+                    world.removeConstraint(constraint)
+                }).toThrow()
+                done()
             })
-
             world.step(1)
-
-            expect(world.constraints).not.toContain(constraint)
         })
     })
 
     describe('removeSpring', () => {
-        test('duringStep', () => {
+        test('duringStep', (done) => {
             const world = new World()
             const bodyA = new Body()
             world.addBody(bodyA)
@@ -267,13 +259,13 @@ describe('World', () => {
             world.addSpring(spring)
 
             world.on('postBroadphase', function () {
-                world.removeSpring(spring)
-                expect(world.springs).toContain(spring)
+                // should throw on removing springs during step
+                expect(function () {
+                    world.removeSpring(spring)
+                }).toThrow()
+                done()
             })
-
             world.step(1)
-
-            expect(world.springs).not.toContain(spring)
         })
     })
 
