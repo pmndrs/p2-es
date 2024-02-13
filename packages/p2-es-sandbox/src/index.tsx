@@ -4,7 +4,6 @@ import React from 'react'
 import * as ReactDOM from 'react-dom/client'
 import { App } from './app'
 import {
-    COMPONENTS,
     Entity,
     PhysicsAABBRendererSystem,
     PhysicsBodyRendererSystem,
@@ -63,7 +62,7 @@ export class Sandbox {
 
     mount(domElement: HTMLElement): this {
         if (!this.root) {
-            const world = new World<Entity>({ components: COMPONENTS })
+            const world = new World<Entity>()
             const executor = new Executor(world)
             const react = createReactAPI(world)
 

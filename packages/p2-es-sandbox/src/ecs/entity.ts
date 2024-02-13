@@ -121,15 +121,3 @@ export type Entity = {
     pointer?: Pointer
     sprite?: Sprite
 }
-
-export const COMPONENTS: (keyof Entity)[] = [
-    'sandboxSettings',
-    'domElement',
-    'physicsBody',
-    'physicsConstraint',
-    'physicsSpring',
-    'physicsWorld',
-    'pixi',
-    'pointer',
-    'sprite',
-]
