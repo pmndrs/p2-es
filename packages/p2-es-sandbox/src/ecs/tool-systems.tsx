@@ -494,7 +494,6 @@ export class RectangleToolSystem extends System<Entity> {
         const width = endX - startX
         const height = endY - startY
 
-        console.log('drawPath')
         if (width > 0 && height > 0) {
             drawPath({
                 graphics,
