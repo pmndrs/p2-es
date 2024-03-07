@@ -22,40 +22,40 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arancini/core@npm:6.2.0":
-  version: 6.2.0
-  resolution: "@arancini/core@npm:6.2.0"
+"@arancini/core@npm:6.5.0":
+  version: 6.5.0
+  resolution: "@arancini/core@npm:6.5.0"
   dependencies:
-    "@arancini/events": 6.2.0
-  checksum: 002ddcf169778860b752836ac0b672b94c26375be67a036b00edfdd791c5744d94174318f76d086bfcd68f562bf549686d741ea99774cca8294c486a3309214c
+    "@arancini/events": 6.5.0
+  checksum: 98eabd5b770ff29e6892b1f98491f1fb953d65db895f61cf5bb61f7be14bfaae5b1bf7c1ff7bab0a32362ce902103775992036117f74e422d40717aad72e4824
   languageName: node
   linkType: hard
 
-"@arancini/events@npm:6.2.0":
-  version: 6.2.0
-  resolution: "@arancini/events@npm:6.2.0"
-  checksum: 11f4287a51172845bdf1d3b037acba8ef2cba7d51db4f1486e8132a5e85c2b39f809e895f650dd1f3d56cce507b0591f313fac931ee3ca5833846b9ad1032b71
+"@arancini/events@npm:6.5.0":
+  version: 6.5.0
+  resolution: "@arancini/events@npm:6.5.0"
+  checksum: 6c51ddeb160c913fe3f681b23df60a26cdaca7fc671f8bab2935897eb5a29c5882636b7466aa1d0d080ee931e15d44039c8b7fce3db151df081f75fe8a1a1de1
   languageName: node
   linkType: hard
 
-"@arancini/react@npm:6.2.0":
-  version: 6.2.0
-  resolution: "@arancini/react@npm:6.2.0"
+"@arancini/react@npm:6.5.0":
+  version: 6.5.0
+  resolution: "@arancini/react@npm:6.5.0"
   dependencies:
-    "@arancini/core": 6.2.0
+    "@arancini/core": 6.5.0
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 84f8a11b50557be490c9ac4ac902ff149145fd5e1cc06858cba1e5fed8fa2559c76283100deea2907880f5f640db83ac66f6b56d2bb0a41f7dbea2deb09ee39d
+  checksum: dca3017fe17e4055deabf235cc0bc7236d58c101f58b44e20b2216e5d73ead8236123df4628f68f11cf87a5106788786b359fc652761b8875bda57b5012a4d19
   languageName: node
   linkType: hard
 
-"@arancini/systems@npm:6.2.0":
-  version: 6.2.0
-  resolution: "@arancini/systems@npm:6.2.0"
+"@arancini/systems@npm:6.5.0":
+  version: 6.5.0
+  resolution: "@arancini/systems@npm:6.5.0"
   dependencies:
-    "@arancini/core": 6.2.0
-  checksum: 2593fe0e506d7e1b46f02096791e5bb3becb3b0ab29ef6e50c4cedbec8f9e757b47c116cb069683b4ea4757c3aaa5fe70ac1ac363e5ee744af68a37a4d267829
+    "@arancini/core": 6.5.0
+  checksum: eacf34a26d7420d74cfcf932ee3eab1f3c2079c4c11e9a0f2a92f838ad0725b600a1d6cd704a3b0d3606b8ee5d4b711a53346ee452e6baae203dd829bbf356e9
   languageName: node
   linkType: hard
 
@@ -3828,7 +3828,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^6.5.0
     "@typescript-eslint/parser": ^6.2.1
     "@vitejs/plugin-react": ^4.0.4
-    arancini: ^6.2.0
+    arancini: ^6.5.0
     eslint: ^8.46.0
     eslint-config-prettier: ^9.0.0
     eslint-import-resolver-typescript: ^3.6.0
@@ -7500,18 +7500,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"arancini@npm:^6.2.0":
-  version: 6.2.0
-  resolution: "arancini@npm:6.2.0"
+"arancini@npm:^6.5.0":
+  version: 6.5.0
+  resolution: "arancini@npm:6.5.0"
   dependencies:
-    "@arancini/core": 6.2.0
-    "@arancini/events": 6.2.0
-    "@arancini/react": 6.2.0
-    "@arancini/systems": 6.2.0
+    "@arancini/core": 6.5.0
+    "@arancini/events": 6.5.0
+    "@arancini/react": 6.5.0
+    "@arancini/systems": 6.5.0
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 6585c0ac098bdce3966b50adafe1282f9534f849bb8bfe1960ef645855e7a9aa4deb5345c4155fd312bd53ebc4463fecc22a3a380151ca38d08cd20f875d9214
+  checksum: 8f0e014cdff45bde15bce1bf15905dea99e66da28e34970a5e988d8b37e7d6b0a4999a5c893257b4c3170aa269d1bf03d1ebe717c08ef6b2c0aa5dd258f37ebd
   languageName: node
   linkType: hard
 
