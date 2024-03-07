@@ -13,6 +13,7 @@ const HeaderContainer = styled.div`
     justify-content: space-between;
 
     width: calc(100% - 30px);
+    min-height: ${HEADER_HEIGHT};
     height: ${HEADER_HEIGHT};
     padding: 0 15px;
 
