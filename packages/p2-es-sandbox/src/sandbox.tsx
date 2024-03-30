@@ -150,7 +150,7 @@ export const Sandbox = ({
         canvasWrapperElement.current.tabIndex = 0
 
         return () => {
-            canvasWrapperElement.current.removeChild(pixi!.canvasElement)
+            canvasWrapperElement.current?.removeChild(pixi!.canvasElement)
         }
     }, [])
 
