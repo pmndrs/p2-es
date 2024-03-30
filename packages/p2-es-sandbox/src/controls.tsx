@@ -4,6 +4,13 @@ import React, { Dispatch, SetStateAction, useEffect } from 'react'
 import { SandboxSettings, Tool, Tools, useSingletonComponent } from './ecs'
 import { levaTheme } from './ui'
 
+type ButtonGroupControlsProps = {
+    options: { name: string; value: string }[]
+    current: string
+    onChange: (value: string) => void
+    hidden?: boolean
+}
+
 const useButtonGroupControls = (
     name: string,
     {
@@ -11,12 +18,7 @@ const useButtonGroupControls = (
         current,
         onChange,
         hidden,
-    }: {
-        options: { name: string; value: string }[]
-        current: string
-        onChange: (value: string) => void
-        hidden?: boolean
-    }
+    }: ButtonGroupControlsProps
 ) => {
     return useControls(
         name,

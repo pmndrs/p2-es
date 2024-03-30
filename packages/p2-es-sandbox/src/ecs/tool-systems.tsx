@@ -74,7 +74,6 @@ export class CircleToolSystem extends System<Entity> {
                     radius: this.circleRadius,
                 })
 
-                body.wakeUp()
                 if (this.settings.newShapeCollisionMask) {
                     circle.collisionMask = this.settings.newShapeCollisionMask
                 }
@@ -83,6 +82,7 @@ export class CircleToolSystem extends System<Entity> {
                 }
 
                 body.addShape(circle)
+
                 this.physicsWorld.addBody(body)
             }
         }

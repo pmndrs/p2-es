@@ -1,9 +1,11 @@
 import { World } from 'arancini'
 import { createReactAPI } from 'arancini/react'
+import { Executor } from 'arancini/systems'
 import React from 'react'
 import * as ReactDOM from 'react-dom/client'
-import { App } from './app'
+import { ThemeProvider } from 'styled-components'
 import {
+    EcsProvider,
     Entity,
     PhysicsAABBRendererSystem,
     PhysicsBodyRendererSystem,
@@ -14,8 +16,9 @@ import {
 } from './ecs'
 import { PhysicsSystem } from './ecs/physics-system'
 import { createPixiApp } from './pixi'
-import { SandboxConfig, SandboxContext, SandboxFunction, Scenes } from './sandbox'
-import { Executor } from 'arancini/systems'
+import { Sandbox as SandboxComponent } from './sandbox'
+import { SandboxConfig, SandboxContext, SandboxFunction, Scenes } from './sandbox-api'
+import { styledComponentsTheme } from './ui'
 
 const CONSOLE_MESSAGE = `
 === p2-es ===
@@ -98,11 +101,19 @@ export class Sandbox {
                 ...this.config,
             }
 
-            this.root.render(<App ecs={{
-                world,
-                executor,
-                react,
-            }} setup={this.setup} {...configProps} />)
+            this.root.render(
+                <ThemeProvider theme={styledComponentsTheme}>
+                    <EcsProvider
+                        ecs={{
+                            world,
+                            executor,
+                            react,
+                        }}
+                    >
+                        <SandboxComponent setup={this.setup} {...configProps} />
+                    </EcsProvider>
+                </ThemeProvider>
+            )
 
             console.log(CONSOLE_MESSAGE)
         }

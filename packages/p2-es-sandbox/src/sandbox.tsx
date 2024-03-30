@@ -1,11 +1,9 @@
 import * as p2 from 'p2-es'
 import React, { useEffect, useRef, useState } from 'react'
-import { ThemeProvider } from 'styled-components'
+import styled from 'styled-components'
 import { Controls } from './controls'
 import {
     CircleTool,
-    EcsContext,
-    EcsProvider,
     PickPanTool,
     PolygonTool,
     RectangleTool,
@@ -14,25 +12,101 @@ import {
     Tools,
     defaultSandboxSettings,
     useECS,
-    useFrame,
-    useSingletonComponent
+    useSingletonComponent,
 } from './ecs'
-import { SandboxFunction, Scenes, createSandbox } from './sandbox'
-import { CanvasWrapper, ControlsWrapper, Main, SandboxContainer, styledComponentsTheme } from './ui'
+import { useFrame } from './use-frame'
+import { SandboxFunction, Scenes, createSandbox } from './sandbox-api'
+import { interfaceTheme, up } from './ui'
 import { Header } from './ui/header'
 
-export type AppProps = {
+const Main = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+
+    &.settings-enabled {
+        overflow: auto;
+
+        ${up('md')} {
+            overflow: hidden;
+        }
+    }
+
+    ${up('md')} {
+        flex-direction: row;
+    }
+`
+
+const SandboxContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+
+    &:focus {
+        outline: none;
+    }
+`
+
+const CanvasWrapper = styled.div`
+    position: relative;
+
+    flex: 1;
+    width: 100%;
+
+    min-height: 70%;
+    max-height: 70%;
+    height: 70%;
+
+    &.settings-hidden {
+        min-height: 100%;
+        max-height: 100%;
+        height: 100%;
+    }
+
+    ${up('md')} {
+        min-height: unset;
+        max-height: unset;
+        height: 100%;
+    }
+
+    &:focus,
+    &:focus-visible,
+    &:focus-within {
+        outline: none;
+    }
+`
+
+const ControlsWrapper = styled.div`
+    flex: 1;
+    width: 100%;
+    min-height: 300px;
+    background-color: ${interfaceTheme.color.background};
+
+    ${up('md')} {
+        flex: none;
+        width: 320px;
+        height: 100%;
+        min-height: unset;
+        overflow-y: scroll;
+    }
+`
+
+export type SandboxProps = {
     setup: SandboxFunction | Scenes
     title?: string
     codeLink?: string
-    ecs: EcsContext
     showControls: boolean
     showHeader: boolean
     enablePanning?: boolean
     enableZooming?: boolean
 }
 
-const AppInner = ({
+export const Sandbox = ({
     title,
     setup,
     codeLink,
@@ -40,35 +114,35 @@ const AppInner = ({
     showHeader,
     enablePanning = true,
     enableZooming = true,
-}: AppProps) => {
-    const { world, executor, react: { Entity, Component }} = useECS()
+}: SandboxProps) => {
+    const { world, executor } = useECS()
 
-    const sandboxContainerRef = useRef<HTMLDivElement>(null)
     const canvasWrapperElement = useRef<HTMLDivElement>(null)
 
-    /* state and function for resetting the current scene */
-    const [sceneVersion, setSceneVersion] = useState(0)
-    const resetScene = () => setSceneVersion((v) => v + 1)
-
-    /* scene state */
     const scenes = typeof setup === 'function' ? { default: { setup } } : setup
     const sceneNames = Object.keys(scenes)
     const [scene, setScene] = useState(sceneNames[0])
-    const previousScene = useRef<string | null>(null)
-
-    /* current tool */
-    const [tool, setTool] = useState<Tool>(Tools.PICK_PAN)
-
-    /* controls visibility, initially set by props */
-    const [showControls, setShowControls] = useState(initialShowControls)
+    const [sceneVersion, setSceneVersion] = useState(0)
+    const resetScene = () => setSceneVersion((v) => v + 1)
+    
     const [sandboxSettings, setSandboxSettings] = useState<SandboxSettings>(defaultSandboxSettings)
+    
+    const [tool, setTool] = useState<Tool>(Tools.PICK_PAN)
+    const [showControls, setShowControls] = useState(initialShowControls)
+
+    useEffect(() => {
+        const entity = world.create({ sandboxSettings })
+
+        return () => {
+            world.destroy(entity)
+        }
+    }, [sandboxSettings])
 
     /* user-land handlers */
     const [sandboxUpdateHandlers, setSandboxUpdateHandlers] = useState<Set<(delta: number) => void> | undefined>()
 
     const pixi = useSingletonComponent('pixi')
     const pointer = useSingletonComponent('pointer')
-    const settings = useSingletonComponent('sandboxSettings')
 
     useEffect(() => {
         canvasWrapperElement.current!.appendChild(pixi!.canvasElement)
@@ -94,7 +168,7 @@ const AppInner = ({
             .forEach((e) => {
                 e.sprite.dirty = true
             })
-    }, [settings?.debugPolygons, settings?.bodySleepOpacity])
+    }, [sandboxSettings?.debugPolygons, sandboxSettings?.bodySleepOpacity])
 
     useEffect(() => {
         if (!pixi || !pixi.application.renderer || !pointer) return
@@ -137,8 +211,6 @@ const AppInner = ({
         globalWindow.ecs = world
 
         return () => {
-            previousScene.current = scene
-
             setSandboxUpdateHandlers(undefined)
 
             destroySandbox()
@@ -146,7 +218,7 @@ const AppInner = ({
             const entities = [physicsEntity, ...world.query((e) => e.some('physicsBody', 'physicsSpring'))]
 
             entities.forEach((entity) => {
-            world.destroy(entity)
+                world.destroy(entity)
             })
         }
     }, [pixi, pointer, scene, sceneVersion])
@@ -160,7 +232,7 @@ const AppInner = ({
 
     return (
         <>
-            <SandboxContainer ref={sandboxContainerRef} tabIndex={0}>
+            <SandboxContainer tabIndex={0}>
                 {showHeader && (
                     <Header
                         title={title}
@@ -171,6 +243,7 @@ const AppInner = ({
                         toggleShowSceneControls={() => setShowControls((s) => !s)}
                     />
                 )}
+
                 <Main className={showControls ? 'settings-enabled' : ''}>
                     <CanvasWrapper ref={canvasWrapperElement} className={showControls ? '' : 'settings-hidden'} />
 
@@ -202,22 +275,6 @@ const AppInner = ({
                     {tool === Tools.RECTANGLE && <RectangleTool />}
                 </>
             )}
-
-            <Entity>
-                <Component name="sandboxSettings" value={sandboxSettings} />
-            </Entity>
         </>
-    )
-}
-
-export const App = (props: AppProps) => {
-    return (
-        <React.StrictMode>
-            <ThemeProvider theme={styledComponentsTheme}>
-                <EcsProvider ecs={props.ecs}>
-                    <AppInner {...props} />
-                </EcsProvider>
-            </ThemeProvider>
-        </React.StrictMode>
     )
 }

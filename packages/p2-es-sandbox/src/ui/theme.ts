@@ -1,4 +1,14 @@
 import { LevaCustomTheme } from 'leva/dist/declarations/src/styles'
+import { createStyledBreakpointsTheme } from 'styled-breakpoints'
+import { DefaultTheme } from 'styled-components'
+
+export const styledComponentsTheme = createStyledBreakpointsTheme()
+
+export const up =
+    (name: string) =>
+    ({ theme }: { theme: DefaultTheme }) =>
+        theme.breakpoints.up(name)
+
 
 export const levaTheme: LevaCustomTheme = {
     sizes: {

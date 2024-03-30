@@ -1,8 +1,7 @@
 import React from 'react'
 import { styled } from 'styled-components'
-import { up } from './styled-components'
 import { CodeSvg, ExternalLinkSvg, PencilSvg, RefreshSvg } from './svgs'
-import { interfaceTheme } from './theme'
+import { interfaceTheme, up } from './theme'
 
 const HEADER_HEIGHT = '50px'
 
