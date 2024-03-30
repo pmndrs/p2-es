@@ -1,7 +1,7 @@
 import { Leva, button, useControls } from 'leva'
 import { ButtonInput } from 'leva/plugin'
 import React, { Dispatch, SetStateAction, useEffect } from 'react'
-import { SandboxSettings, Tool, Tools, useSingletonComponent } from './ecs'
+import { SandboxSettings, Tool, Tools, useSingletonQuery } from './ecs'
 import { levaTheme } from './ui'
 
 type ButtonGroupControlsProps = {
@@ -55,8 +55,8 @@ export type ControlsProps = {
 }
 
 export const Controls = ({ scene, scenes, setScene, tool, setTool, settings, setSettings, reset }: ControlsProps) => {
-    const appDomElement = useSingletonComponent('domElement')
-    const physicsWorld = useSingletonComponent('physicsWorld')
+    const appDomElement = useSingletonQuery('domElement')
+    const physicsWorld = useSingletonQuery('physicsWorld')
 
     useButtonGroupControls('Scene', {
         options: scenes.map((s, idx) => ({

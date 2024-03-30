@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { useECS } from './context'
 import { Entity } from './entity'
 
-export const useSingletonComponent = <C extends keyof Entity>(component: C) => {
+export const useSingletonQuery = <C extends keyof Entity>(component: C) => {
     const {
         world,
         react: { useQuery },

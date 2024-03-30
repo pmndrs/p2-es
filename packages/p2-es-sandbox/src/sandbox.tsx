@@ -12,7 +12,7 @@ import {
     Tools,
     defaultSandboxSettings,
     useECS,
-    useSingletonComponent,
+    useSingletonQuery,
 } from './ecs'
 import { SandboxFunction, Scenes, createSandbox } from './sandbox-api'
 import { interfaceTheme, up } from './ui'
@@ -141,8 +141,8 @@ export const Sandbox = ({
     /* user-land handlers */
     const [sandboxUpdateHandlers, setSandboxUpdateHandlers] = useState<Set<(delta: number) => void> | undefined>()
 
-    const pixi = useSingletonComponent('pixi')
-    const pointer = useSingletonComponent('pointer')
+    const pixi = useSingletonQuery('pixi')
+    const pointer = useSingletonQuery('pointer')
 
     useEffect(() => {
         canvasWrapperElement.current.appendChild(pixi!.canvasElement)
