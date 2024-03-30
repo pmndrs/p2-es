@@ -14,10 +14,10 @@ import {
     useECS,
     useSingletonComponent,
 } from './ecs'
-import { useFrame } from './use-frame'
 import { SandboxFunction, Scenes, createSandbox } from './sandbox-api'
 import { interfaceTheme, up } from './ui'
 import { Header } from './ui/header'
+import { useFrame } from './use-frame'
 
 const Main = styled.div`
     display: flex;
@@ -117,16 +117,16 @@ export const Sandbox = ({
 }: SandboxProps) => {
     const { world, executor } = useECS()
 
-    const canvasWrapperElement = useRef<HTMLDivElement>(null)
+    const canvasWrapperElement = useRef<HTMLDivElement>(null!)
 
     const scenes = typeof setup === 'function' ? { default: { setup } } : setup
     const sceneNames = Object.keys(scenes)
     const [scene, setScene] = useState(sceneNames[0])
     const [sceneVersion, setSceneVersion] = useState(0)
     const resetScene = () => setSceneVersion((v) => v + 1)
-    
+
     const [sandboxSettings, setSandboxSettings] = useState<SandboxSettings>(defaultSandboxSettings)
-    
+
     const [tool, setTool] = useState<Tool>(Tools.PICK_PAN)
     const [showControls, setShowControls] = useState(initialShowControls)
 
@@ -145,15 +145,12 @@ export const Sandbox = ({
     const pointer = useSingletonComponent('pointer')
 
     useEffect(() => {
-        canvasWrapperElement.current!.appendChild(pixi!.canvasElement)
-
-        canvasWrapperElement.current!.focus()
-
-        // set tabIndex to enable keyboard events
-        canvasWrapperElement.current!.tabIndex = 0
+        canvasWrapperElement.current.appendChild(pixi!.canvasElement)
+        canvasWrapperElement.current.focus()
+        canvasWrapperElement.current.tabIndex = 0
 
         return () => {
-            canvasWrapperElement.current?.removeChild(pixi!.canvasElement)
+            canvasWrapperElement.current.removeChild(pixi!.canvasElement)
         }
     }, [])
 
