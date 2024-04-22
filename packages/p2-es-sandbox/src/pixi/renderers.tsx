@@ -1,8 +1,11 @@
-import { System } from 'arancini/systems'
 import * as p2 from 'p2-es'
-import { drawRenderable } from '../pixi'
+import { useEffect, useRef } from 'react'
+import { useQuery, world } from '../ecs'
+import { useFrame } from '../hooks/use-frame'
+import { usePhysicsWorldStore, usePixiStore, useSandboxSettings } from '../state'
 import { canvasTheme } from '../ui'
-import { Entity, createSprite } from './entity'
+import { drawRenderable } from './draw'
+import { createSprite } from './sprite'
 
 const componentToHex = (c: number) => {
     const hex = c.toString(16)
@@ -27,16 +30,15 @@ const randomPastelHex = () => {
     return rgbToHex(red, green, blue)
 }
 
-export class PhysicsAABBRendererSystem extends System<Entity> {
-    pixi = this.singleton('pixi')
-    physicsWorld = this.singleton('physicsWorld')
-    settings = this.singleton('sandboxSettings')
+export const PhysicsAABBRenderer = () => {
+    const pixi = usePixiStore()
+    const { world: physics } = usePhysicsWorldStore()
+    const settings = useSandboxSettings()
 
-    onUpdate(_delta: number, _time: number): void {
-        if (!this.pixi || !this.settings || !this.physicsWorld) return
-
-        const { drawAABBs } = this.settings
-        const { graphics, container } = this.pixi
+    useFrame(() => {
+        if (!physics) return
+        const { drawAABBs } = settings
+        const { graphics, container } = pixi
 
         if (drawAABBs) {
             graphics.aabb.clear()
@@ -46,8 +48,8 @@ export class PhysicsAABBRendererSystem extends System<Entity> {
             const g = graphics.aabb
             g.lineStyle(canvasTheme.lineWidth, canvasTheme.aabb.lineColor, 1)
 
-            for (let i = 0; i !== this.physicsWorld.bodies.length; i++) {
-                const aabb = this.physicsWorld.bodies[i].getAABB()
+            for (let i = 0; i !== physics.bodies.length; i++) {
+                const aabb = physics.bodies[i].getAABB()
                 g.drawRect(
                     aabb.lowerBound[0],
                     aabb.lowerBound[1],
@@ -58,49 +60,49 @@ export class PhysicsAABBRendererSystem extends System<Entity> {
         } else {
             graphics.aabb.clear()
         }
-    }
+    })
+
+    return null
 }
 
-export class PhysicsBodyRendererSystem extends System<Entity> {
-    pixi = this.singleton('pixi')
-    settings = this.singleton('sandboxSettings')
+export const PhysicsBodyRenderer = () => {
+    const pixi = usePixiStore()
+    const settings = useSandboxSettings()
 
-    uninitialised = this.query((e) => e.has('physicsBody').but.not('sprite'))
+    const uninitialised = useQuery((e) => e.has('physicsBody').but.without('sprite'))
 
-    renderable = this.query((e) => e.has('physicsBody', 'sprite'))
+    const renderable = useQuery((e) => e.has('physicsBody', 'sprite'))
 
-    bodyIdToColor: { [body: number]: number } = {}
-    islandIdToColor: { [body: number]: number } = {}
+    const bodyIdToColor = useRef<Record<number, number>>({})
+    const islandIdToColor = useRef<Record<number, number>>({})
 
-    onInit(): void {
-        this.renderable.onEntityRemoved.add((entity) => {
+    useEffect(
+        renderable.onEntityRemoved.add((entity) => {
             const { sprite } = entity
             if (!sprite) return
 
-            sprite.graphics.destroy()
-        })
-    }
+            pixi.container.removeChild(sprite.graphics)
+        }),
+        []
+    )
 
-    onUpdate(): void {
-        if (!this.settings || !this.pixi) {
-            return
-        }
-
+    useFrame(() => {
         const {
             renderInterpolatedPositions: useInterpolatedPositions,
             paused,
             bodyIslandColors,
             bodySleepOpacity,
             debugPolygons,
-        } = this.settings
-        const { container } = this.pixi
+        } = settings
 
-        for (const entity of this.uninitialised) {
-            this.world.add(entity, 'sprite', createSprite())
+        const { container } = pixi
+
+        for (const entity of uninitialised) {
+            world.add(entity, 'sprite', createSprite())
             container.addChild(entity.sprite!.graphics)
         }
 
-        for (const entity of this.renderable) {
+        for (const entity of renderable) {
             const { physicsBody, sprite } = entity
             const { graphics } = sprite
 
@@ -124,9 +126,9 @@ export class PhysicsBodyRendererSystem extends System<Entity> {
             const isSleeping = physicsBody.sleepState === p2.Body.SLEEPING
             let color: number
             if (bodyIslandColors) {
-                color = this.getIslandColor(physicsBody)
+                color = getIslandColor(physicsBody)
             } else {
-                color = this.getBodyColor(physicsBody)
+                color = getBodyColor(physicsBody)
             }
 
             if (sprite.drawnSleeping !== isSleeping || sprite.drawnFillColor !== color || sprite.dirty) {
@@ -144,45 +146,47 @@ export class PhysicsBodyRendererSystem extends System<Entity> {
                 })
             }
         }
-    }
+    })
 
-    getIslandColor(body: p2.Body) {
+    const getIslandColor = (body: p2.Body) => {
         if (body.islandId === -1) {
             return canvasTheme.body.static.fillColor // Gray for static objects
         }
 
-        let color = this.islandIdToColor[body.islandId]
+        let color = islandIdToColor.current[body.islandId]
         if (color) return color
 
         color = parseInt(randomPastelHex(), 16)
-        this.islandIdToColor[body.islandId] = color
+        islandIdToColor.current[body.islandId] = color
         return color
     }
 
-    getBodyColor(body: p2.Body) {
+    const getBodyColor = (body: p2.Body) => {
         if (body.type === p2.Body.STATIC) {
             return canvasTheme.body.static.fillColor // Gray for static objects
         }
 
-        let color = this.bodyIdToColor[body.id]
+        let color = bodyIdToColor.current[body.id]
         if (color) return color
 
         color = parseInt(randomPastelHex(), 16)
-        this.bodyIdToColor[body.id] = color
+        bodyIdToColor.current[body.id] = color
         return color
     }
+
+    return null
 }
 
-export class PhysicsContactRendererSystem extends System<Entity> {
-    pixi = this.singleton('pixi')
-    physicsWorld = this.singleton('physicsWorld')
-    settings = this.singleton('sandboxSettings')
+export const PhysicsContactRenderer = () => {
+    const pixi = usePixiStore()
+    const { world: physics } = usePhysicsWorldStore()
+    const settings = useSandboxSettings()
 
-    onUpdate(): void {
-        if (!this.settings || !this.pixi || !this.physicsWorld) return
+    useFrame(() => {
+        if (!physics) return
 
-        const { drawContacts } = this.settings
-        const { graphics, container } = this.pixi
+        const { drawContacts } = settings
+        const { graphics, container } = pixi
 
         if (drawContacts) {
             graphics.contacts.clear()
@@ -191,8 +195,8 @@ export class PhysicsContactRendererSystem extends System<Entity> {
 
             const g = graphics.contacts
             g.lineStyle(canvasTheme.lineWidth, canvasTheme.contact.lineColor, 1)
-            for (let i = 0; i !== this.physicsWorld.narrowphase.contactEquations.length; i++) {
-                const eq = this.physicsWorld.narrowphase.contactEquations[i]
+            for (let i = 0; i !== physics.narrowphase.contactEquations.length; i++) {
+                const eq = physics.narrowphase.contactEquations[i]
                 const bi = eq.bodyA
                 const bj = eq.bodyB
                 const ri = eq.contactPointA
@@ -211,36 +215,38 @@ export class PhysicsContactRendererSystem extends System<Entity> {
         } else {
             graphics.contacts.clear()
         }
-    }
+    })
+
+    return null
 }
 
-export class PhysicsSpringRendererSystem extends System<Entity> {
-    pixi = this.singleton('pixi')
-    settings = this.singleton('sandboxSettings')
+export const PhysicsSpringRenderer = () => {
+    const pixi = usePixiStore()
+    const settings = useSandboxSettings()
 
-    uninitialised = this.query((e) => e.has('physicsSpring').but.not('sprite'))
+    const uninitialised = useQuery((e) => e.has('physicsSpring').but.without('sprite'))
+    const renderable = useQuery((e) => e.has('physicsSpring', 'sprite'))
 
-    renderable = this.query((e) => e.has('physicsSpring', 'sprite'))
-
-    onInit(): void {
-        this.renderable.onEntityRemoved.add((entity) => {
+    useEffect(
+        renderable.onEntityRemoved.add((entity) => {
             const { sprite } = entity
             if (!sprite) return
 
-            sprite.graphics.destroy()
-        })
-    }
+            pixi.container.removeChild(sprite.graphics)
+        }),
+        []
+    )
 
-    onUpdate(): void {
-        if (!this.settings || !this.pixi) return
+    useFrame(() => {
+        if (!world) return
 
-        const { renderInterpolatedPositions, paused } = this.settings
-        const { container } = this.pixi
+        const { renderInterpolatedPositions, paused } = settings
+        const { container } = pixi
 
-        for (const entity of this.uninitialised) {
+        for (const entity of uninitialised) {
             const { physicsSpring } = entity
             const sprite = createSprite()
-            this.world.update(entity, {
+            world.update(entity, {
                 sprite,
             })
 
@@ -256,7 +262,7 @@ export class PhysicsSpringRendererSystem extends System<Entity> {
             container.addChild(sprite.graphics)
         }
 
-        for (const entity of this.renderable) {
+        for (const entity of renderable) {
             const { physicsSpring, sprite } = entity
             const { graphics } = sprite
 
@@ -306,5 +312,7 @@ export class PhysicsSpringRendererSystem extends System<Entity> {
                 graphics.scale.x = p2.vec2.length(distVec) / clampedRestLength
             }
         }
-    }
+    })
+
+    return null
 }

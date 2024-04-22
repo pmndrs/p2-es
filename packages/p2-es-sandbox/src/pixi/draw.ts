@@ -1,6 +1,6 @@
 import * as p2 from 'p2-es'
 import * as PIXI from 'pixi.js'
-import { Sprite } from '../ecs'
+import { Sprite } from '../pixi'
 
 const RES_SCALAR = 20
 

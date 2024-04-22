@@ -1,5 +1,5 @@
 import { Application, Container, Graphics } from 'pixi.js'
-import { Pixi } from '../ecs/entity'
+import { Pixi } from '../state'
 import { canvasTheme } from '../ui'
 
 export const createPixiApp = (): Pixi & { destroy: () => void } => {
@@ -51,7 +51,7 @@ export const createPixiApp = (): Pixi & { destroy: () => void } => {
         if (!application.stage) return
 
         const dpr = window.devicePixelRatio || 1
-        const rect = canvasElement.parentElement?.getBoundingClientRect() ?? { width: 0, height: 0}
+        const rect = canvasElement.parentElement?.getBoundingClientRect() ?? { width: 0, height: 0 }
         const w = rect.width * dpr
         const h = rect.height * dpr
 
@@ -59,12 +59,7 @@ export const createPixiApp = (): Pixi & { destroy: () => void } => {
 
         background.clear()
         background.beginFill(canvasTheme.background)
-        background.drawRect(
-            0,
-            0,
-            application.renderer.view.width,
-            application.renderer.view.height
-        )
+        background.drawRect(0, 0, application.renderer.view.width, application.renderer.view.height)
         background.endFill()
     }
 

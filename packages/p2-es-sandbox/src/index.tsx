@@ -1,23 +1,11 @@
-import { World } from 'arancini'
-import { createReactAPI } from 'arancini/react'
-import { Executor } from 'arancini/systems'
 import React from 'react'
 import * as ReactDOM from 'react-dom/client'
 import { ThemeProvider } from 'styled-components'
-import {
-    EcsProvider,
-    Entity,
-    PhysicsAABBRendererSystem,
-    PhysicsBodyRendererSystem,
-    PhysicsContactRendererSystem,
-    PhysicsSpringRendererSystem,
-    PointerSystem,
-    createPointer,
-} from './ecs'
-import { PhysicsSystem } from './ecs/physics-system'
+import { world } from './ecs'
 import { createPixiApp } from './pixi'
 import { Sandbox as SandboxComponent } from './sandbox'
 import { SandboxConfig, SandboxContext, SandboxFunction, Scenes } from './sandbox-api'
+import { usePixiStore } from './state'
 import { styledComponentsTheme } from './ui'
 
 const CONSOLE_MESSAGE = `
@@ -40,7 +28,7 @@ body.addShape(new p2.Circle({
 world.addBody(body);
 `
 
-export { Tools, type Tool } from './ecs'
+export { Tool } from './tools'
 export type { SandboxConfig, SandboxContext, SandboxFunction, Scenes }
 
 export type SandboxProps = {
@@ -65,32 +53,13 @@ export class Sandbox {
 
     mount(domElement: HTMLElement): this {
         if (!this.root) {
-            const world = new World<Entity>()
-            const executor = new Executor(world)
-            const react = createReactAPI(world)
+            world.clear()
 
             const { destroy: destroyPixi, ...pixi } = createPixiApp()
-            const pixiEntity = world.create({ pixi })
-
-            const pointerEntity = world.create({ pointer: createPointer() })
-
-            const domElementEntity = world.create({ domElement })
-
-            executor.add(PhysicsSystem)
-            executor.add(PointerSystem)
-            executor.add(PhysicsSpringRendererSystem)
-            executor.add(PhysicsContactRendererSystem)
-            executor.add(PhysicsBodyRendererSystem)
-            executor.add(PhysicsAABBRendererSystem)
-
-            executor.init()
+            usePixiStore.setState(pixi)
 
             this.cleanup = () => {
                 destroyPixi()
-
-                world.destroy(pixiEntity)
-                world.destroy(domElementEntity)
-                world.destroy(pointerEntity)
             }
 
             this.root = ReactDOM.createRoot(domElement)
@@ -103,15 +72,7 @@ export class Sandbox {
 
             this.root.render(
                 <ThemeProvider theme={styledComponentsTheme}>
-                    <EcsProvider
-                        ecs={{
-                            world,
-                            executor,
-                            react,
-                        }}
-                    >
-                        <SandboxComponent setup={this.setup} {...configProps} />
-                    </EcsProvider>
+                    <SandboxComponent setup={this.setup} {...configProps} />
                 </ThemeProvider>
             )
 
@@ -123,6 +84,8 @@ export class Sandbox {
 
     unmount(): void {
         if (this.root) {
+            world.clear()
+
             this.cleanup?.()
             this.cleanup = undefined
 

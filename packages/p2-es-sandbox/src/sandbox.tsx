@@ -2,22 +2,16 @@ import * as p2 from 'p2-es'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { Controls } from './controls'
-import {
-    CircleTool,
-    PickPanTool,
-    PolygonTool,
-    RectangleTool,
-    SandboxSettings,
-    Tool,
-    Tools,
-    defaultSandboxSettings,
-    useECS,
-    useSingletonQuery,
-} from './ecs'
+import { world } from './ecs'
+import { useFrame } from './hooks/use-frame'
+import { Physics } from './physics'
+import { PhysicsAABBRenderer, PhysicsBodyRenderer, PhysicsContactRenderer, PhysicsSpringRenderer } from './pixi'
 import { SandboxFunction, Scenes, createSandbox } from './sandbox-api'
+import { defaultSandboxSettings, usePhysicsWorldStore, usePixiStore, usePointerStore, useSandboxSettings } from './state'
+import { CircleTool, PickPanTool, PolygonTool, RectangleTool, Tool } from './tools'
+import { PointerEvents } from './tools/pointer-events'
 import { interfaceTheme, up } from './ui'
 import { Header } from './ui/header'
-import { useFrame } from './use-frame'
 
 const Main = styled.div`
     display: flex;
@@ -115,9 +109,13 @@ export const Sandbox = ({
     enablePanning = true,
     enableZooming = true,
 }: SandboxProps) => {
-    const { world, executor } = useECS()
-
     const canvasWrapperElement = useRef<HTMLDivElement>(null!)
+
+    const pixi = usePixiStore()
+    const pointer = usePointerStore()
+
+    const { setSandboxSettings, ...sandboxSettings } = useSandboxSettings()
+    const { debugPolygons, bodySleepOpacity } = sandboxSettings
 
     const scenes = typeof setup === 'function' ? { default: { setup } } : setup
     const sceneNames = Object.keys(scenes)
@@ -125,24 +123,10 @@ export const Sandbox = ({
     const [sceneVersion, setSceneVersion] = useState(0)
     const resetScene = () => setSceneVersion((v) => v + 1)
 
-    const [sandboxSettings, setSandboxSettings] = useState<SandboxSettings>(defaultSandboxSettings)
-
-    const [tool, setTool] = useState<Tool>(Tools.PICK_PAN)
+    const [tool, setTool] = useState<Tool>(Tool.PICK_PAN)
     const [showControls, setShowControls] = useState(initialShowControls)
 
-    useEffect(() => {
-        const entity = world.create({ sandboxSettings })
-
-        return () => {
-            world.destroy(entity)
-        }
-    }, [sandboxSettings])
-
-    /* user-land handlers */
     const [sandboxUpdateHandlers, setSandboxUpdateHandlers] = useState<Set<(delta: number) => void> | undefined>()
-
-    const pixi = useSingletonQuery('pixi')
-    const pointer = useSingletonQuery('pointer')
 
     useEffect(() => {
         canvasWrapperElement.current.appendChild(pixi!.canvasElement)
@@ -165,11 +149,9 @@ export const Sandbox = ({
             .forEach((e) => {
                 e.sprite.dirty = true
             })
-    }, [sandboxSettings?.debugPolygons, sandboxSettings?.bodySleepOpacity])
+    }, [debugPolygons, bodySleepOpacity])
 
     useEffect(() => {
-        if (!pixi || !pixi.application.renderer || !pointer) return
-
         const {
             world: physicsWorld,
             tools,
@@ -198,7 +180,7 @@ export const Sandbox = ({
         setSandboxUpdateHandlers(updateHandlers)
 
         // create physics world singleton
-        const physicsEntity = world.create({ physicsWorld: physicsWorld })
+        usePhysicsWorldStore.setState({ world: physicsWorld })
 
         // set window globals
         const globalWindow = window as unknown as Record<string, unknown>
@@ -212,7 +194,7 @@ export const Sandbox = ({
 
             destroySandbox()
 
-            const entities = [physicsEntity, ...world.query((e) => e.some('physicsBody', 'physicsSpring'))]
+            const entities = [...world.query((e) => e.some('physicsBody', 'physicsSpring'))]
 
             entities.forEach((entity) => {
                 world.destroy(entity)
@@ -221,14 +203,20 @@ export const Sandbox = ({
     }, [pixi, pointer, scene, sceneVersion])
 
     useFrame((delta) => {
-        executor.update(delta)
-
         if (!sandboxUpdateHandlers) return
         sandboxUpdateHandlers.forEach((fn) => fn(delta))
     })
 
     return (
         <>
+            <Physics />
+            <PointerEvents />
+
+            <PhysicsAABBRenderer />
+            <PhysicsBodyRenderer />
+            <PhysicsContactRenderer />
+            <PhysicsSpringRenderer />
+
             <SandboxContainer tabIndex={0}>
                 {showHeader && (
                     <Header
@@ -266,10 +254,10 @@ export const Sandbox = ({
                 <PickPanTool />
             ) : (
                 <>
-                    {tool === Tools.PICK_PAN && <PickPanTool />}
-                    {tool === Tools.POLYGON && <PolygonTool />}
-                    {tool === Tools.CIRCLE && <CircleTool />}
-                    {tool === Tools.RECTANGLE && <RectangleTool />}
+                    {tool === Tool.PICK_PAN && <PickPanTool />}
+                    {tool === Tool.POLYGON && <PolygonTool />}
+                    {tool === Tool.CIRCLE && <CircleTool />}
+                    {tool === Tool.RECTANGLE && <RectangleTool />}
                 </>
             )}
         </>

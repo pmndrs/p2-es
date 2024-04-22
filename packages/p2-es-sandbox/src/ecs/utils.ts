@@ -1,16 +1,9 @@
+import { QueryFn } from 'arancini'
 import { useMemo } from 'react'
-import { useECS } from './context'
-import { Entity } from './entity'
+import { react, world } from './world'
 
-export const useSingletonQuery = <C extends keyof Entity>(component: C) => {
-    const {
-        world,
-        react: { useQuery },
-    } = useECS()
+export const useQuery = <Q extends QueryFn<any, any>>(queryFn: Q) => {
+    const query = useMemo(() => world.query(queryFn), [world])
 
-    const singletonComponentQuery = useMemo(() => world.query((e) => e.has(component)), [world])
-
-    const query = useQuery(singletonComponentQuery)
-
-    return useMemo(() => query.first?.[component] ?? null, [query.version])
+    return react.useQuery(query)
 }

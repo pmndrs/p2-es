@@ -1,6 +1,6 @@
 import type { World } from 'p2-es'
-import { Tool } from './ecs'
-import { Pixi, Pointer, SandboxSettings } from './ecs/entity'
+import { Pixi, Pointer, SandboxSettings } from './state'
+import { Tool } from './tools'
 
 export type SandboxContext = {
     pixi: Pixi

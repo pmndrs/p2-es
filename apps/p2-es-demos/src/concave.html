@@ -11,7 +11,7 @@
         <div id="app" style="width: 100%; height: 100vh;"></div>
 
         <script type="module">
-            import { Sandbox, Tools } from '@p2-es/sandbox'
+            import { Sandbox, Tool } from '@p2-es/sandbox'
             import * as p2 from 'p2-es'
 
             new Sandbox(
@@ -73,7 +73,7 @@
                         world,
                         // Enable shape drawing
                         tools: {
-                            default: Tools.POLYGON,
+                            default: Tool.POLYGON,
                         },
                     }
                 },

@@ -1,7 +1,8 @@
 import { Leva, button, useControls } from 'leva'
 import { ButtonInput } from 'leva/plugin'
-import React, { Dispatch, SetStateAction, useEffect } from 'react'
-import { SandboxSettings, Tool, Tools, useSingletonQuery } from './ecs'
+import React, { useEffect } from 'react'
+import { SandboxSettings, SandboxSettingsStore, usePhysicsWorldStore } from './state'
+import { Tool } from './tools'
 import { levaTheme } from './ui'
 
 type ButtonGroupControlsProps = {
@@ -11,15 +12,7 @@ type ButtonGroupControlsProps = {
     hidden?: boolean
 }
 
-const useButtonGroupControls = (
-    name: string,
-    {
-        options,
-        current,
-        onChange,
-        hidden,
-    }: ButtonGroupControlsProps
-) => {
+const useButtonGroupControls = (name: string, { options, current, onChange, hidden }: ButtonGroupControlsProps) => {
     return useControls(
         name,
         () =>
@@ -49,14 +42,13 @@ export type ControlsProps = {
     setScene: (scene: string) => void
 
     settings: SandboxSettings
-    setSettings: Dispatch<SetStateAction<SandboxSettings>>
+    setSettings: SandboxSettingsStore['setSandboxSettings']
 
     reset: () => void
 }
 
 export const Controls = ({ scene, scenes, setScene, tool, setTool, settings, setSettings, reset }: ControlsProps) => {
-    const appDomElement = useSingletonQuery('domElement')
-    const physicsWorld = useSingletonQuery('physicsWorld')
+    const { world: physics } = usePhysicsWorldStore()
 
     useButtonGroupControls('Scene', {
         options: scenes.map((s, idx) => ({
@@ -70,10 +62,10 @@ export const Controls = ({ scene, scenes, setScene, tool, setTool, settings, set
 
     useButtonGroupControls('Tool', {
         options: [
-            { name: 'Pick/Pan [q]', value: Tools.PICK_PAN },
-            { name: 'Polygon [d]', value: Tools.POLYGON },
-            { name: 'Circle [a]', value: Tools.CIRCLE },
-            { name: 'Rectangle [f]', value: Tools.RECTANGLE },
+            { name: 'Pick/Pan [q]', value: Tool.PICK_PAN },
+            { name: 'Polygon [d]', value: Tool.POLYGON },
+            { name: 'Circle [a]', value: Tool.CIRCLE },
+            { name: 'Rectangle [f]', value: Tool.RECTANGLE },
         ],
         current: tool,
         onChange: (value) => setTool(value as Tool),
@@ -82,7 +74,7 @@ export const Controls = ({ scene, scenes, setScene, tool, setTool, settings, set
     const onChange = (value: unknown, propName: string, { initial }: { initial: boolean }) => {
         if (initial) return
 
-        setSettings((current) => ({ ...current, [propName.split('.')[1]]: value }))
+        setSettings({ [propName.split('.')[1]]: value })
     }
 
     const [, setPhysics] = useControls('Physics', () => ({
@@ -112,12 +104,12 @@ export const Controls = ({ scene, scenes, setScene, tool, setTool, settings, set
     }, [settings.paused, settings.physicsStepsPerSecond, settings.maxSubSteps])
 
     const manualStep = () => {
-        if (!physicsWorld) return
+        if (!physics) return
 
-        setSettings((current) => ({ ...current, paused: true }))
+        setSettings({ paused: true })
 
         const timeStep = 1 / settings.physicsStepsPerSecond
-        physicsWorld.step(timeStep, timeStep)
+        physics.step(timeStep, timeStep)
     }
 
     useControls(
@@ -130,7 +122,7 @@ export const Controls = ({ scene, scenes, setScene, tool, setTool, settings, set
                 reset()
             }),
         },
-        [physicsWorld, settings, reset]
+        [physics, settings, reset]
     )
 
     const [, setRendering] = useControls('Rendering', () => ({
@@ -185,8 +177,6 @@ export const Controls = ({ scene, scenes, setScene, tool, setTool, settings, set
     ])
 
     useEffect(() => {
-        if (!appDomElement) return
-
         const handler = (event: KeyboardEvent) => {
             const target = event.target as HTMLElement | null
 
@@ -197,19 +187,19 @@ export const Controls = ({ scene, scenes, setScene, tool, setTool, settings, set
             const key = event.key.toLowerCase()
 
             if (key === 'q') {
-                return setTool(Tools.PICK_PAN)
+                return setTool(Tool.PICK_PAN)
             }
 
             if (key === 'd') {
-                return setTool(Tools.POLYGON)
+                return setTool(Tool.POLYGON)
             }
 
             if (key === 'a') {
-                return setTool(Tools.CIRCLE)
+                return setTool(Tool.CIRCLE)
             }
 
             if (key === 'f') {
-                return setTool(Tools.RECTANGLE)
+                return setTool(Tool.RECTANGLE)
             }
 
             if (key === 'p' || key === ' ') {
@@ -241,12 +231,12 @@ export const Controls = ({ scene, scenes, setScene, tool, setTool, settings, set
             }
         }
 
-        appDomElement.addEventListener('keydown', handler)
+        window.addEventListener('keydown', handler)
 
         return () => {
-            appDomElement.removeEventListener('keydown', handler)
+            window.removeEventListener('keydown', handler)
         }
-    }, [physicsWorld, settings, appDomElement, reset])
+    }, [physics, settings, reset])
 
     return <Leva fill flat theme={levaTheme} titleBar={false} />
 }
