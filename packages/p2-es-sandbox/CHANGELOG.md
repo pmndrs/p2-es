@@ -1,5 +1,12 @@
 # @p2-es/sandbox
 
+## 1.2.4
+
+### Patch Changes
+
+- 588904d: chore: update arancini to v6, stop using @arancini/systems
+  - p2-es@1.2.4
+
 ## 1.2.3
 
 ### Patch Changes
