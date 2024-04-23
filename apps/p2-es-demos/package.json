@@ -11,7 +11,7 @@
     },
     "dependencies": {
         "@p2-es/sandbox": "workspace:*",
-        "p2-es": "1.2.3"
+        "p2-es": "1.2.4"
     },
     "devDependencies": {
         "prettier": "^2.8.7",
