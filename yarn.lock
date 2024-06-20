@@ -3814,7 +3814,7 @@ __metadata:
   resolution: "@p2-es/sandbox@workspace:packages/p2-es-sandbox"
   dependencies:
     "@pixi/core": 7.3.1
-    "@storybook/addon-actions": ^7.3.2
+    "@storybook/addon-actions": ^7.6.7
     "@storybook/addon-docs": ^7.3.2
     "@storybook/addon-essentials": ^7.3.2
     "@storybook/addon-interactions": ^7.3.2
@@ -5334,7 +5334,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-actions@npm:7.3.2, @storybook/addon-actions@npm:^7.3.2":
+"@storybook/addon-actions@npm:7.3.2":
   version: 7.3.2
   resolution: "@storybook/addon-actions@npm:7.3.2"
   dependencies:
@@ -5363,6 +5363,20 @@ __metadata:
     react-dom:
       optional: true
   checksum: af7588ac3f32cf93b846c2304f480f9082e796515b41798fe5cdfda3be1b1bee6fbe399c6cc51bf106c3d4b0dd5f0901feffd7777396ae034d556ba3c8329a0d
+  languageName: node
+  linkType: hard
+
+"@storybook/addon-actions@npm:^7.6.7":
+  version: 7.6.7
+  resolution: "@storybook/addon-actions@npm:7.6.7"
+  dependencies:
+    "@storybook/core-events": 7.6.7
+    "@storybook/global": ^5.0.0
+    "@types/uuid": ^9.0.1
+    dequal: ^2.0.2
+    polished: ^4.2.2
+    uuid: ^9.0.0
+  checksum: 0a68abbb89e2aa569dd0d1bb7793bd571e6095e108e19028a7f23afdbf4625d008c96e0b0c95c4a77fce97380f50765ef922152fe02134e5a9a96a66ca4237a7
   languageName: node
   linkType: hard
 
@@ -5904,6 +5918,15 @@ __metadata:
   version: 7.3.2
   resolution: "@storybook/core-events@npm:7.3.2"
   checksum: 86c809250fc3ad05e3254fc86d163339108569749ffee47496a2717bf1a9052304975007e8c05075415361cda0e0c530cc1f2ae6d4fa682d9573240ebfd1d170
+  languageName: node
+  linkType: hard
+
+"@storybook/core-events@npm:7.6.7":
+  version: 7.6.7
+  resolution: "@storybook/core-events@npm:7.6.7"
+  dependencies:
+    ts-dedent: ^2.0.0
+  checksum: b355f2cdfa8a805d035e7f05909cdb670cf1ced653d3cf2281976dbc7591faaeca066ba8c3b68f1b19097301b5908b3d37381ff00364ce509bce38c5f9c2465c
   languageName: node
   linkType: hard
 
@@ -6821,6 +6844,13 @@ __metadata:
   version: 2.0.6
   resolution: "@types/unist@npm:2.0.6"
   checksum: 25cb860ff10dde48b54622d58b23e66214211a61c84c0f15f88d38b61aa1b53d4d46e42b557924a93178c501c166aa37e28d7f6d994aba13d24685326272d5db
+  languageName: node
+  linkType: hard
+
+"@types/uuid@npm:^9.0.1":
+  version: 9.0.7
+  resolution: "@types/uuid@npm:9.0.7"
+  checksum: c7321194aeba9ea173efd1e721403bdf4e7ae6945f8f8cdbc87c791f4b505ccf3dbc4a8883d90b394ef13b7c2dc778045792b05dbb23b3c746f8ea347804d448
   languageName: node
   linkType: hard
 
